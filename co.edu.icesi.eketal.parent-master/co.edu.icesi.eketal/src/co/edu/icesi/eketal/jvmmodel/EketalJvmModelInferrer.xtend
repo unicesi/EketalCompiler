@@ -198,6 +198,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 			
 			members+=claseEventos.toMethod("getInstance", typeRef(it))[
+				static = true
 				body = '''
 				if(instance==null)
 					instance = new «eventClassName»();

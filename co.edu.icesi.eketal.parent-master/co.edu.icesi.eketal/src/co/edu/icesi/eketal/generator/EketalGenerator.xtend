@@ -51,6 +51,8 @@ class EketalGenerator implements IGenerator{
 		var pointcuts = new ArrayList<String>
 		importaciones+="co.edu.icesi.eketal.automaton.*"
 		importaciones+="co.edu.icesi.eketal.groupsimpl.*"
+		importaciones+="co.edu.icesi.eketal.handlercontrol.*"
+		//TODO línea 82, saber cómo se crea el evento
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
 		
@@ -77,6 +79,7 @@ class EketalGenerator implements IGenerator{
 						System.out.println("Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
+						«EketalJvmModelInferrer.eventClassName».getInstance().multicast(null);
 						System.out.println("Returned or threw an Exception");
 					}
 				«ENDIF»
@@ -119,6 +122,7 @@ class EketalGenerator implements IGenerator{
 		return valor
 	}
 	
+	//El warnning es omitible, dado que no va a fallar bajo ninguna situación
 	def eventExpression(EventExpression event, ArrayList<String> pointcuts) {
 			if(event.tipoEvento!=null){
 				var tipoEvento = event.tipoEvento
