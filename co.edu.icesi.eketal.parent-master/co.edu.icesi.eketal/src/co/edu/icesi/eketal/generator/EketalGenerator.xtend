@@ -27,7 +27,7 @@ class EketalGenerator implements IGenerator{
 		
 	override doGenerate(Resource resource, IFileSystemAccess fsa) {
 		
-		println("doGenerate")
+		println("generator línea 30")
 		
 		resource.allContents.filter(typeof(EventClass)).forEach[it.generateAspect(fsa)]
 	}
@@ -159,7 +159,7 @@ class EketalGenerator implements IGenerator{
 	
 	def returnAttribute(KindAttribute attribute) {
 		if(attribute.condition!=null){
-			println(attribute.condition.eContents.size)
+			println(attribute.condition.eContents.size + "doGenerate línea 162")
 			var body = ""
 			if(attribute.condition.eContents.size==1){
 				var XStringLiteralImpl valone = attribute.condition.eContents.get(0) as XStringLiteralImpl

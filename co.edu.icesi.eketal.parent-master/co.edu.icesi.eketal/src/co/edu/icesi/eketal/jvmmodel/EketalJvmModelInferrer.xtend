@@ -39,8 +39,6 @@ import co.edu.icesi.ketal.distribution.EventBroker
 import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker
 import co.edu.icesi.ketal.distribution.KetalMessageHandler
 import java.util.Vector
-import com.google.inject.Singleton
-import org.eclipse.xtext.common.types.JvmAnnotationReference
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -101,7 +99,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		eventClassGenerate.eAdapters.add(new OutputConfigurationAdapter(IFileSystemAccess.DEFAULT_OUTPUT))
 
 		acceptor.accept(eventClassGenerate)[
-			println("dentra")
+			println("línea 102 inferrer")
 		]
 		
 		val claseHandler = element.typeDeclaration;
@@ -177,40 +175,61 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	
 	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseEventos) {
 		acceptor.accept(claseEventos.toClass("co.edu.icesi.eketal.handlercontrol."+eventClassName)) [
-			annotations+=annotationRef(Singleton)
+			//Implementaciuón de la simulación Singleton
+			members+=claseEventos.toField("instance", typeRef(it))[
+				static = true
+				initializer = '''new «eventClassName»()'''
+			]
+			
 			members+=claseEventos.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
-							static = true
-							initializer = '''new «typeRef(ReceiverMessageHandler)»()'''
-						]
-						members+=claseEventos.toField("eventBroker", typeRef(EventBroker))[
-							static = true
-							initializer = '''new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler)'''
-						]
-						
-						//TODO en este es el mulsticasSync o el Async?
-						members+=claseEventos.toMethod("multicast", typeRef(void))[
-							parameters+=claseEventos.toParameter("evento", Event.typeRef)
-							static = true
-							body='''
-								eventBroker.multicastSync(evento, null);
-							'''
-						]
-						
-						members+=claseEventos.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
-							static = true
-							initializer = '''new «typeRef(KetalMessageHandler)»()'''
-						]
-						members+=claseEventos.toField("eventBrokerHandler", typeRef(EventBroker))[
-							static = true
-							initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
-						]
-						members+=claseEventos.toMethod("getEvents", typeRef(Vector))[
-							parameters+=claseEventos.toParameter("evento", Event.typeRef)
-							static = true
-							body='''
-								return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
-							'''
-						]		
+				static = true
+			]
+			members+=claseEventos.toField("eventBroker", typeRef(EventBroker))[
+				static = true
+			]
+			
+			members+=claseEventos.toConstructor[
+				visibility = JvmVisibility.PRIVATE
+				body = 
+				'''
+				brokerMessageHandler = new «typeRef(ReceiverMessageHandler)»();
+				eventBroker = new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler);
+				'''
+			]
+			
+			members+=claseEventos.toMethod("getInstance", typeRef(it))[
+				body = '''
+				if(instance==null)
+					instance = new «eventClassName»();
+				return instance;
+				'''
+			]
+			//Aquí termina la definición sintética del Sigleton
+			
+			//TODO en este es el mulsticasSync o el Async?
+			members+=claseEventos.toMethod("multicast", typeRef(void))[
+				parameters+=claseEventos.toParameter("evento", Event.typeRef)
+				static = true
+				body='''
+					eventBroker.multicastSync(evento, null);
+				'''
+			]
+			
+			members+=claseEventos.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
+				static = true
+				initializer = '''new «typeRef(KetalMessageHandler)»()'''
+			]
+			members+=claseEventos.toField("eventBrokerHandler", typeRef(EventBroker))[
+				static = true
+				initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
+			]
+			members+=claseEventos.toMethod("getEvents", typeRef(Vector))[
+				parameters+=claseEventos.toParameter("evento", Event.typeRef)
+				static = true
+				body='''
+					return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
+				'''
+			]		
 			
 		]
 	}
