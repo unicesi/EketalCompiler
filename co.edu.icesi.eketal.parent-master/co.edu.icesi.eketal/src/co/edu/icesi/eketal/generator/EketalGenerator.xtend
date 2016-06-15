@@ -76,6 +76,9 @@ class EketalGenerator implements IGenerator{
 					after(): «event.name.toFirstLower»(){
 						System.out.println("Returned or threw an Exception");
 					}
+					before(): «event.name.toFirstLower»(){
+						System.out.println("Returned or threw an Exception");
+					}
 				«ENDIF»
 			«ENDFOR»
 			

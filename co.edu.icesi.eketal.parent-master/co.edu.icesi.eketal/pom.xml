@@ -51,6 +51,12 @@
 						<artifactId>org.eclipse.xtext.xbase</artifactId>
 						<version>${xtextVersion}</version>
 					</dependency>
+					<!-- http://mvnrepository.com/artifact/com.google.inject/guice
+					<dependency>
+					    <groupId>com.google.inject</groupId>
+					    <artifactId>guice</artifactId>
+					    <version>3.0</version>
+					</dependency> -->
 				</dependencies>
 			</plugin>
 			<plugin>
