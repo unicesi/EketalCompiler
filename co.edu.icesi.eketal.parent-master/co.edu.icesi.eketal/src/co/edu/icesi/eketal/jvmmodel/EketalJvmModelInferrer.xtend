@@ -56,7 +56,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension IQualifiedNameProvider
 		
 	public static String groupClassName = "GroupsControl"
-	public static String eventClassName = "EventHandler"
+	public static String handlerClassName = "EventHandler"
 		
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -174,11 +174,11 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseEventos) {
-		acceptor.accept(claseEventos.toClass("co.edu.icesi.eketal.handlercontrol."+eventClassName)) [
+		acceptor.accept(claseEventos.toClass("co.edu.icesi.eketal.handlercontrol."+co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName)) [
 			//Implementaciuón de la simulación Singleton
 			members+=claseEventos.toField("instance", typeRef(it))[
 				static = true
-				initializer = '''new «eventClassName»()'''
+				initializer = '''new «co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName»()'''
 			]
 			
 			members+=claseEventos.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
@@ -201,7 +201,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				static = true
 				body = '''
 				if(instance==null)
-					instance = new «eventClassName»();
+					instance = new «co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName»();
 				return instance;
 				'''
 			]

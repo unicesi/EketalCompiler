@@ -40,7 +40,7 @@ class EketalGenerator implements IGenerator{
 	
 	
 	def prepareFileName(String packageName, String fileName) {
-		return (packageName + "." + fileName).replaceAll("\\.", File.separator) + ".aj"
+		return (packageName + "." + fileName).replaceAll("\\+.", File.separator) + ".aj"
 	}
 	
 	def CharSequence generate(EventClass modelo, String packageName){
@@ -79,7 +79,7 @@ class EketalGenerator implements IGenerator{
 						System.out.println("Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
-						«EketalJvmModelInferrer.eventClassName».getInstance().multicast(null);
+						«EketalJvmModelInferrer.handlerClassName».getInstance().multicast(null);
 						System.out.println("Returned or threw an Exception");
 					}
 				«ENDIF»
