@@ -174,8 +174,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseEventos) {
-		acceptor.accept(claseEventos.toClass("co.edu.icesi.eketal.handlercontrol."+co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName)) [
-			//Implementaciuón de la simulación Singleton
+		acceptor.accept(claseEventos.toClass("co.edu.icesi.eketal.handlercontrol."+handlerClassName)) [
+			//Implementación de la simulación Singleton
 			members+=claseEventos.toField("instance", typeRef(it))[
 				static = true
 				initializer = '''new «co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName»()'''
