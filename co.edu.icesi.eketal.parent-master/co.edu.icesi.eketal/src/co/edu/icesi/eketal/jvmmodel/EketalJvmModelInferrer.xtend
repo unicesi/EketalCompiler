@@ -113,12 +113,18 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		for(declaracion:declarations){
 			switch(declaracion){
 				co.edu.icesi.eketal.eketal.Automaton:{//Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
-					//TODO estandar de nombre del atributo principal (si hay un estado con ese nombre va a dar problemas)
 					acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.automaton."+declaracion.name.toFirstUpper)) [
-						
-						members+=declaracion.toField("automaton", typeRef(Automaton))[static = true]
-						members+=declaracion.toGetter("automaton", typeRef(Automaton))
+						members+=declaracion.toField("instance", typeRef(Automaton))[static = true]
+						members+=declaracion.toMethod("getInstance", typeRef(Automaton))[
+							static = true
+							body = '''
+							if(instance==null)
+								new «declaracion.name.toFirstUpper»();
+							return instance;
+							'''
+						]
 						members+=declaracion.toConstructor[
+							visibility = JvmVisibility::PRIVATE
 							body = '''
 							inicialize();
 							'''
@@ -349,7 +355,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		transitionSet.addAll(eventos.values());
 		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales);
 		automata.initializeAutomaton();
-		automaton = automata;
+		instance = automata;
 		'''
 		]
 		return method

@@ -40,7 +40,10 @@ class EketalGenerator implements IGenerator{
 	
 	
 	def prepareFileName(String packageName, String fileName) {
-		return (packageName + "." + fileName).replaceAll("\\+.", File.separator) + ".aj"
+		if(System.getProperty("os.name").contains("Windows")){
+			return (packageName + "." + fileName).replaceAll("\\+"+"\\.", File.separator) + ".aj"		
+		}else
+			return (packageName + "." + fileName).replaceAll("\\.", File.separator) + ".aj"
 	}
 	
 	def CharSequence generate(EventClass modelo, String packageName){
@@ -56,7 +59,7 @@ class EketalGenerator implements IGenerator{
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
 		
-			//private Automaton automata = miprieraclase.getAutomaton();
+			//private Automaton automata = miprieraclase.getInstance();
 			
 			«FOR event:modelo.declarations»
 				«IF event instanceof JVarD»
@@ -163,7 +166,7 @@ class EketalGenerator implements IGenerator{
 	
 	def returnAttribute(KindAttribute attribute) {
 		if(attribute.condition!=null){
-			println(attribute.condition.eContents.size + "doGenerate línea 162")
+			println(attribute.condition.eContents.size + "doGenerate línea 169")
 			var body = ""
 			if(attribute.condition.eContents.size==1){
 				var XStringLiteralImpl valone = attribute.condition.eContents.get(0) as XStringLiteralImpl
