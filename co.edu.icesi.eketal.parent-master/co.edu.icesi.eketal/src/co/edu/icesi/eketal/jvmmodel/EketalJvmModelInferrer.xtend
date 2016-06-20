@@ -216,12 +216,13 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			//TODO en este es el mulsticasSync o el Async?
 			members+=claseEventos.toMethod("multicast", typeRef(void))[
 				parameters+=claseEventos.toParameter("evento", Event.typeRef)
-				static = true
+				parameters+=claseEventos.toParameter("map", Map.typeRef)
+				static = false
 				body='''
-					eventBroker.multicastSync(evento, null);
+					eventBroker.multicast(evento, map);
 				'''
 			]
-			
+			//TODO Síncrono
 			members+=claseEventos.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
 				static = true
 				initializer = '''new «typeRef(KetalMessageHandler)»()'''
@@ -229,6 +230,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			members+=claseEventos.toField("eventBrokerHandler", typeRef(EventBroker))[
 				static = true
 				initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
+			]
+			members+=claseEventos.toMethod("multicastSync", typeRef(void))[
+				parameters+=claseEventos.toParameter("evento", Event.typeRef)
+				parameters+=claseEventos.toParameter("map", Map.typeRef)
+				static = false
+				body='''
+					eventBrokerHandler.multicastSync(evento, map);
+				'''
 			]
 			members+=claseEventos.toMethod("getEvents", typeRef(Vector))[
 				parameters+=claseEventos.toParameter("evento", Event.typeRef)
@@ -243,6 +252,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	
 	def createGroupClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseGrupos) {
 		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl."+groupClassName)) [
+			//TODO Make it Singleton
 //			annotations+=annotationRef(Singleton)
 			members+=claseGrupos.toField("grupos", typeRef(Set))[
 				static = true
