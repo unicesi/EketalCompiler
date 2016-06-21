@@ -20,6 +20,9 @@ import java.util.ArrayList
 import co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer
 import org.eclipse.xtext.xbase.impl.XStringLiteralImpl
 import org.eclipse.xtext.xbase.XStringLiteral
+import org.eclipse.xtext.TypeRef
+import co.edu.icesi.eketal.eketal.Automaton
+import java.util.regex.Pattern
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -27,7 +30,7 @@ class EketalGenerator implements IGenerator{
 		
 	override doGenerate(Resource resource, IFileSystemAccess fsa) {
 		
-		println("doGenerate")
+		println("generator línea 30")
 		
 		resource.allContents.filter(typeof(EventClass)).forEach[it.generateAspect(fsa)]
 	}
@@ -40,27 +43,39 @@ class EketalGenerator implements IGenerator{
 	
 	
 	def prepareFileName(String packageName, String fileName) {
-		return (packageName + "." + fileName).replaceAll("\\.", File.separator) + ".aj"
+		if(System.getProperty("os.name").contains("Windows")){
+			return (packageName + "." + fileName).replaceAll("\\+"+"\\.", File.separator) + ".aj"		
+		}else
+			return (packageName + "." + fileName).replaceAll("\\.", File.separator) + ".aj"
 	}
 	
 	def CharSequence generate(EventClass modelo, String packageName){
 		var paquete = '''package «packageName»;
 		
 		'''
+		var String automataName = null
 		var Set<String> importaciones = new TreeSet()
 		var pointcuts = new ArrayList<String>
 		importaciones+="co.edu.icesi.eketal.automaton.*"
 		importaciones+="co.edu.icesi.eketal.groupsimpl.*"
+		importaciones+="co.edu.icesi.eketal.handlercontrol.*"
+		importaciones+="co.edu.icesi.ketal.core.Automaton"
+		importaciones+="co.edu.icesi.ketal.core.NamedEvent"
+		importaciones+="co.edu.icesi.ketal.core.Event"
+		importaciones+="java.util.Map"
+		importaciones+="java.util.HashMap"
+		//TODO línea 82, saber cómo se crea el evento
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
-		
-			//private Automaton automata = miprieraclase.getAutomaton();
 			
 			«FOR event:modelo.declarations»
 				«IF event instanceof JVarD»
 					//«importaciones+=agregarImports((event as JVarD).type.qualifiedName)»
 					//--------Evento: «event.name.toString»-------------
 					private «(event as JVarD).type.simpleName» «(event as JVarD).name.toFirstLower»;
+				«ENDIF»
+				«IF event instanceof co.edu.icesi.eketal.eketal.Automaton»
+					//«automataName=event.name»
 				«ENDIF»
 				«IF event instanceof EvDecl»
 					//--------Evento: «event.name.toString»-------------
@@ -74,6 +89,17 @@ class EketalGenerator implements IGenerator{
 						System.out.println("Threw an exception: " + e);
 					}
 					after(): «event.name.toFirstLower»(){
+						System.out.println("Returned or threw an Exception");
+					}
+					before(): «event.name.toFirstLower»(){
+						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
+						Automaton automata = «automataName.toFirstUpper».getInstance();
+						Map map = new HashMap<String, Object>();
+						map.put("Automata", automata);
+						Event event = new NamedEvent("«event.name»");
+						distribuidor.multicast(event, map);
+						
+						//distribuidor.multicast(null, null);
 						System.out.println("Returned or threw an Exception");
 					}
 				«ENDIF»
@@ -116,6 +142,7 @@ class EketalGenerator implements IGenerator{
 		return valor
 	}
 	
+	//El warnning es omitible, dado que no va a fallar bajo ninguna situación
 	def eventExpression(EventExpression event, ArrayList<String> pointcuts) {
 			if(event.tipoEvento!=null){
 				var tipoEvento = event.tipoEvento
@@ -123,7 +150,17 @@ class EketalGenerator implements IGenerator{
 					Trigger:{
 						var pointcutTemp = returnCall(tipoEvento as Trigger)
 //						println("---porintcut: "+pointcutTemp.get(0)+"---"+pointcutTemp.get(1))
-						pointcuts+=pointcutTemp.get(1).toString
+						var patron = pointcutTemp.get(1).toString
+						var p = Pattern.compile("(?=param).*?(?=,)");
+						var m = p.matcher(patron);
+						patron = m.replaceAll("Object");
+						
+						p = Pattern.compile("(?=param).*?(?=\\))");
+						m = p.matcher(patron);
+						patron = m.replaceAll("Object");
+						
+//						pointcuts+=pointcutTemp.get(1).toString.replaceAll("param \\w+ )","Object").replaceAll("param \\w+ ,","Object")
+						pointcuts+=patron
 						return pointcutTemp.get(0).toString
 					}
 					KindAttribute:{
@@ -156,7 +193,7 @@ class EketalGenerator implements IGenerator{
 	
 	def returnAttribute(KindAttribute attribute) {
 		if(attribute.condition!=null){
-			println(attribute.condition.eContents.size)
+			println(attribute.condition.eContents.size + "doGenerate línea 169")
 			var body = ""
 			if(attribute.condition.eContents.size==1){
 				var XStringLiteralImpl valone = attribute.condition.eContents.get(0) as XStringLiteralImpl

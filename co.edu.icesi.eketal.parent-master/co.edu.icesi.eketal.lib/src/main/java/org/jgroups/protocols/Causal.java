@@ -273,7 +273,7 @@ public class Causal extends Protocol
         }
         
         @Override
-        public void writeTo(DataOutput out) throws IOException {
+        public void writeTo(DataOutput out) throws IOException, Exception {
         	newViewId.writeTo(out);
         	out.writeInt(localTime);
         	out.writeBoolean(complete);
@@ -281,7 +281,7 @@ public class Causal extends Protocol
         
         @Override
         public void readFrom(DataInput in) throws IOException,
-        		IllegalAccessException, InstantiationException {
+				IllegalAccessException, InstantiationException, Exception {
         	newViewId=new ViewId();
         	newViewId.readFrom(in);
         	localTime=in.readInt();

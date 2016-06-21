@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="co.edu.icesi.eketal.feature"
+	label="Eketal Feature "
+	version="1.0.0.qualifier">
+	<plugin
+			id="co.edu.icesi.eketal"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="co.edu.icesi.eketal.ide"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="co.edu.icesi.eketal.ui"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+</feature>

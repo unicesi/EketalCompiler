@@ -11,5 +11,4 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <packaging>eclipse-plugin</packaging>
   
   <artifactId>co.edu.icesi.eketal.lib.osgi</artifactId>
-  <name>Runtime Library Bundle</name>
 </project>
