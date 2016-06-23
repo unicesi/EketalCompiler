@@ -13,8 +13,6 @@ import java.util.Set
 import org.eclipse.xtext.common.types.JvmVisibility
 import co.edu.icesi.eketal.eketal.Group
 import org.eclipse.xtext.common.types.JvmField
-import java.util.List
-import java.util.ArrayList
 import java.util.HashSet
 import co.edu.icesi.eketal.eketal.StateType
 import co.edu.icesi.ketal.core.State
@@ -27,12 +25,9 @@ import co.edu.icesi.ketal.core.DefaultEqualsExpression
 import java.util.TreeSet
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import co.edu.icesi.eketal.outputconfiguration.OutputConfigurationAdapter
-import co.edu.icesi.eketal.outputconfiguration.EketalOutputConfigurationProvider
 import co.edu.icesi.ketal.core.NamedEvent
 import org.eclipse.xtext.generator.IFileSystemAccess
-import co.edu.icesi.eketal.eketal.impl.DeclImpl
 import co.edu.icesi.eketal.eketal.EventClass
-import co.edu.icesi.eketal.eketal.EvDecl
 import co.edu.icesi.ketal.distribution.BrokerMessageHandler
 import co.edu.icesi.ketal.distribution.ReceiverMessageHandler
 import co.edu.icesi.ketal.distribution.EventBroker
