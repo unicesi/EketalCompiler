@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: co.edu.icesi.eketal
-Bundle-Vendor: My Company
+Bundle-Vendor: Icesi
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: co.edu.icesi.eketal; singleton:=true
 Bundle-ActivationPolicy: lazy
