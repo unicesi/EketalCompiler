@@ -25,7 +25,9 @@ Workflow {
 		language = StandardLanguage {
 			name = "co.edu.icesi.eketal.Eketal"
 			fileExtensions = "eketal"
-
+			newProjectWizardForEclipse={
+				generate = true
+			}
 			serializer = {
 				generateStub = false
 			}
