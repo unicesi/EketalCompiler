@@ -14,12 +14,13 @@ class EketalNewProjectWizardInitialContents {
 
 	def generateInitialContents(IFileSystemAccess2 fsa) {
 		fsa.generateFile(
-			"src/model/Model." + fileExtensionProvider.primaryFileExtension,
+			"src/model/eketal." + fileExtensionProvider.primaryFileExtension,
 			'''
 			/*
 			 * This is an example model
 			 */
-			Hello Xtext!
+			package eketal;
+			
 			'''
 			)
 	}
