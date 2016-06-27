@@ -7,6 +7,7 @@ package co.edu.icesi.eketal.ui.wizard
 import com.google.inject.Inject
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.resource.FileExtensionProvider
+import java.io.File
 
 class EketalNewProjectWizardInitialContents {
 	@Inject
@@ -14,13 +15,16 @@ class EketalNewProjectWizardInitialContents {
 
 	def generateInitialContents(IFileSystemAccess2 fsa) {
 		fsa.generateFile(
-			"src/model/eketal." + fileExtensionProvider.primaryFileExtension,
+//			"src.main.java/Modelo." + fileExtensionProvider.primaryFileExtension, //TODO agregar la carpeta src.main.java al classpath
+			"src/core"+File.separator+"Modelo." + fileExtensionProvider.primaryFileExtension,
 			'''
 			/*
 			 * This is an example model
 			 */
-			package eketal;
-			
+			package core;
+			eventclass Modelo{
+				
+			}
 			'''
 			)
 	}
