@@ -3,11 +3,8 @@
  */
 package co.edu.icesi.eketal.ui.wizard;
 
-import org.eclipse.xtext.ui.wizard.AbstractPluginProjectCreator;
+import org.eclipse.xtext.ui.wizard.AbstractProjectCreator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -21,13 +18,12 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
-import org.eclipse.xtext.ui.util.PluginProjectFactory;
+import org.eclipse.xtext.ui.util.ProjectFactory;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class EketalProjectCreator extends AbstractPluginProjectCreator {
+public class EketalProjectCreator extends AbstractProjectCreator {
 	protected static final String DSL_PROJECT_NAME = "co.edu.icesi.eketal";
 
 	@Inject
@@ -39,37 +35,12 @@ public class EketalProjectCreator extends AbstractPluginProjectCreator {
 	@Inject
 	private IOutputConfigurationProvider outputConfigurationProvider;
 
-	@Override
-	protected PluginProjectFactory createProjectFactory() {
-		PluginProjectFactory projectFactory = super.createProjectFactory();
-		projectFactory.addImportedPackages(eketalRequiredPackages());
-		projectFactory.addRequiredBundles(eketalRequiredBundles());
-		projectFactory.addProjectNatures(aspectjNature());
-		projectFactory.setWithPluginXml(false);
-		return projectFactory;
-	}
-
-	private String aspectjNature() {
-		return "org.eclipse.ajdt.ui.ajnature";
-	}
+	@Inject
+	private Provider<ProjectFactory> projectFactoryProvider;
 	
-	private String mavenNature() {
-		return "org.eclipse.m2e.core.maven2Nature";
-	}
-
-	private List<String> eketalRequiredBundles() {
-		ArrayList<String> array = new ArrayList<>();
-		array.add("co.edu.icesi.eketal");
-		array.add("co.edu.icesi.eketal.lib.osgi;bundle-version=\"1.0.0\"");
-		array.add("org.aspectj.runtime");
-		return array;
-	}
-
-	private List<String> eketalRequiredPackages() {
-		ArrayList<String> array = new ArrayList<>();
-		array.add("co.edu.icesi.ketal.distribution");
-		array.add("co.edu.icesi.ketal.distribution.transports.jgroups");
-		return array;
+	@Override
+	protected ProjectFactory createProjectFactory() {
+		return projectFactoryProvider.get();
 	}
 
 	@Override
@@ -93,11 +64,6 @@ public class EketalProjectCreator extends AbstractPluginProjectCreator {
 			}
 		}
 		return ImmutableList.of(getModelFolderName(), outputFolder);
-	}
-
-	@Override
-	protected List<String> getRequiredBundles() {
-		return Lists.newArrayList(DSL_PROJECT_NAME);
 	}
 
 	@Override
