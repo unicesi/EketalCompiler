@@ -51,7 +51,7 @@ public class EketalProjectCreator extends AbstractProjectCreator {
 
 	@Override
 	protected String getModelFolderName() {
-		return "src/main/java";
+		return "src";
 	}
 
 	@Override
