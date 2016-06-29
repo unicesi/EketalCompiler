@@ -5,6 +5,7 @@ package co.edu.icesi.eketal.ui.wizard;
 
 import org.eclipse.xtext.ui.wizard.AbstractProjectCreator;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class EketalProjectCreator extends AbstractProjectCreator {
 
 	@Override
 	protected String getModelFolderName() {
-		return "src";
+		return "src/main/java";
 	}
 
 	@Override

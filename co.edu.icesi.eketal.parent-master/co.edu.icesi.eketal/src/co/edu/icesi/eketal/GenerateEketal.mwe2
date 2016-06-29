@@ -27,6 +27,7 @@ Workflow {
 			fileExtensions = "eketal"
 			newProjectWizardForEclipse={
 				generate = true
+				pluginProject = false
 			}
 			serializer = {
 				generateStub = false
