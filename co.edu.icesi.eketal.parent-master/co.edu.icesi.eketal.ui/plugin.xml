@@ -596,8 +596,8 @@
     	</category>
 		<wizard
 			category="co.edu.icesi.eketal.ui"
-			class="co.edu.icesi.eketal.ui.EketalExecutableExtensionFactory:co.edu.icesi.eketal.ui.wizard.EketalNewProjectWizard"
-			id="co.edu.icesi.eketal.ui.wizard.EketalNewProjectWizard"
+			class="co.edu.icesi.eketal.ui.EketalExecutableExtensionFactory:co.edu.icesi.eketal.ui.wizard.EketalNewProjectWizardMvn"
+			id="co.edu.icesi.eketal.ui.wizard.EketalNewProjectWizardMvn"
 			name="Eketal Project"
 				project="true">
 		</wizard>
