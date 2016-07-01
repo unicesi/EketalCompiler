@@ -1,194 +1,265 @@
 package co.edu.icesi.eketal.ui.wizard;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import org.apache.maven.model.Model;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.eclipse.m2e.core.ui.internal.MavenImages;
+import org.eclipse.m2e.core.ui.internal.Messages;
+import org.eclipse.m2e.core.ui.internal.wizards.AbstractCreateMavenProjectJob;
+import org.eclipse.m2e.core.ui.internal.wizards.AbstractMavenProjectWizard;
+import org.eclipse.m2e.core.ui.internal.wizards.MappingDiscoveryJob;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.xtext.ui.util.FileOpener;
 import org.eclipse.xtext.ui.wizard.IProjectCreator;
-import org.eclipse.xtext.ui.wizard.IProjectInfo;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
-public class EketalMavenWizard extends EketalNewProjectWizard{
+import co.edu.icesi.eketal.ui.EketalMavenProject;
+import co.edu.icesi.eketal.ui.EketalConstants;
+import co.edu.icesi.eketal.ui.EketalMavenManager;
+import co.edu.icesi.eketal.ui.apis.artifacts.Metadata;
+
+public class EketalMavenWizard extends AbstractMavenProjectWizard implements INewWizard, IExecutableExtension{
 
 	private static final Logger logger = Logger.getLogger(EketalNewProjectWizard.class);
+	
+	private EketalWizardNewProjectCreationPage _pageOne;
 	
 	@Inject
 	private FileOpener fileOpener;
 	
 	@Inject
-	public EketalMavenWizard(IProjectCreator projectCreator) {
-		super(projectCreator);
+	public EketalMavenWizard() {
+		setWindowTitle(EketalConstants.WIZARD_NAME);
+		setNeedsProgressMonitor(true);
+//		setDefaultPageImageDescriptor(MavenImages.WIZ_NEW_PROJECT);
 	}
 	
+	@SuppressWarnings("unused")
+	private IConfigurationElement _configurationElement;
+
+	/**
+	 * 
+	 */
 	@Override
-	protected void doFinish(final IProjectInfo projectInfo, final IProgressMonitor monitor) {
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
+
+	}
+
+	/** Returns the model. */
+	public Model getModel() {
+
+		Model _model = _pageOne.getModel();
+
+		return _model;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean performFinish() {
+
+		final Model model = getModel();
+		// final String projectName = importConfiguration.getProjectName(model);
+		final String projectName = model.getName();
+		IStatus nameStatus = importConfiguration.validateProjectName(model);
+		if (!nameStatus.isOK()) {
+			MessageDialog.openError(getShell(),
+					NLS.bind(Messages.wizardProjectJobFailed, projectName),
+					nameStatus.getMessage());
+			return false;
+		}
+
+		if (!EketalMavenManager.isInternetConnected()) {
+			MessageDialog.openError(getShell(), NLS.bind(
+					EketalConstants.INTERNET_CONNECTION_REQUIRED_MESSAGE_TITLE,
+					projectName),
+					EketalConstants.MAVEN_INTERNET_CONNECTION_REQUIRED_MESSAGE);
+
+			return false;
+		}
+
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
+		final IPath location;
+		if (!_pageTwo.useDefaults()) {
+
+			location = _pageTwo.getLocationPath();
+		} else
+			location = null;
+
+		final IWorkspaceRoot root = workspace.getRoot();
+		final IProject project = importConfiguration.getProject(root, model);
+
+		final IPath pomFile;
+
+		if (location == null || root.getLocation().equals(location)) {
+			pomFile = root.getLocation().append(project.getName())
+					.append(IMavenConstants.POM_FILE_NAME);
+
+		} else {
+			pomFile = location.append(IMavenConstants.POM_FILE_NAME);
+
+		}
+
+		if (pomFile.toFile().exists()) {
+			MessageDialog.openError(getShell(),
+					NLS.bind(Messages.wizardProjectJobFailed, projectName),
+					Messages.wizardProjectErrorPomAlreadyExists);
+			return false;
+		}
+
+		final AbstractCreateMavenProjectJob job;
+		final String[] folders = _pageOne.getFolders();
+
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+
 		try {
-			
-			getCreator().setProjectInfo(projectInfo);
-			getCreator().run(monitor);
-			fileOpener.selectAndReveal(getCreator().getResult());
-			fileOpener.openFileToEdit(getShell(), getCreator().getResult());
-			
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		    IResource resource = root.findMember(new Path(projectInfo.getProjectName()));
-		    if ((!resource.exists()) || ((resource.getType() & 0x2 | 0x4) == 0))
-		    {
-		    	logger.error("No existe el pom jaja", new Exception(){
+			dialog.run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor) {
+					monitor.beginTask(
+							"Retrieving Aspose Maven Dependencies ...",
+							EketalMavenProject.getApiList().size());
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-		    		@Override
-		    		public String getMessage() {
-		    			return "No existe el pom jaja";
-		    		}
-		    	});
-		    }
-		    
-		    IContainer container = (IContainer)resource;
-		    final IFile file = container.getFile(new Path("pom.xml"));
-		    if (file.exists())
-		    {
-		    	logger.error("No existe el pom jaja", new Exception(){
+					EketalMavenManager.retrieveAsposeMavenDependencies(monitor);
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-		    		@Override
-		    		public String getMessage() {
-		    			return "No existe el pom jaja";
-		    		}
-		    	});
-		    }
-
-		    File pom = file.getLocation().toFile();
-		    System.out.println(pom);
-//		      MavenPlugin.getProjectConversionManager().convert(resource.getProject(), model, monitor);
-//
-//		      MavenModelManager modelManager = MavenPlugin.getMavenModelManager();
-//		      modelManager.createMavenModel(file, model);
-		    
-		    ByteArrayOutputStream buf = new ByteArrayOutputStream();
-		    
-		    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		      documentBuilderFactory.setNamespaceAware(false);
-		      DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
-//		      public void writeModel(Model model, OutputStream out) throws CoreException {
-//		    	    try {
-//		    	      ((ModelWriter)lookup(ModelWriter.class)).write(out, null, model);
-//		    	    } catch (IOException ex) {
-//		    	      throw new CoreException(new Status(4, "org.eclipse.m2e.core", -1, 
-//		    	        Messages.MavenImpl_error_write_pom, ex));
-//		    	    }
-//		    	  }
-		      
-		      
-		      Document document = documentBuilder.parse(new ByteArrayInputStream(buf.toByteArray()));
-		      Element documentElement = document.getDocumentElement();
-
-		      NamedNodeMap attributes = documentElement.getAttributes();
-
-		      if ((attributes == null) || (attributes.getNamedItem("xmlns") == null)) {
-		        Attr attr = document.createAttribute("xmlns");
-		        attr.setTextContent("http://maven.apache.org/POM/4.0.0");
-		        documentElement.setAttributeNode(attr);
-		      }
-
-		      if ((attributes == null) || (attributes.getNamedItem("xmlns:xsi") == null)) {
-		        Attr attr = document.createAttribute("xmlns:xsi");
-		        attr.setTextContent("http://www.w3.org/2001/XMLSchema-instance");
-		        documentElement.setAttributeNode(attr);
-		      }
-
-		      if ((attributes == null) || (attributes.getNamedItem("xsi:schemaLocation") == null)) {
-		        Attr attr = document.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation");
-		        attr.setTextContent("http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd");
-		        documentElement.setAttributeNode(attr);
-		      }
-
-		      TransformerFactory transfac = TransformerFactory.newInstance();
-		      Transformer trans = transfac.newTransformer();
-		      trans.setOutputProperty("omit-xml-declaration", "yes");
-
-		      buf.reset();
-		      trans.transform(new DOMSource(document), new StreamResult(buf));
-		      
-		    file.create(new ByteArrayInputStream(buf.toByteArray()), true, new NullProgressMonitor());
-
-		      getShell().getDisplay().asyncExec(new Runnable() {
-		        public void run() {
-		          IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		          try {
-		            IDE.openEditor(page, file, true);
-		          } catch (PartInitException localPartInitException) {
-		          }
-		        }
-		      });
-			
-			
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
-		catch (final InvocationTargetException e) {
-			logger.error(e.getMessage(), e);
-		}
-		catch (final InterruptedException e) {
-			// cancelled by user, ok
-			return;
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		job = new AbstractCreateMavenProjectJob(NLS.bind(
+				Messages.wizardProjectJobCreatingProject, projectName),
+				workingSets) {
+			@Override
+			protected List<IProject> doCreateMavenProjects(
+					IProgressMonitor monitor) throws CoreException {
+				MavenPlugin.getProjectConfigurationManager()
+						.createSimpleProject(project, location, model, folders, //
+								importConfiguration, monitor);
+
+				try {
+					Document pomDocument = EketalMavenManager
+							.getXmlDocument(pomFile.toString());
+
+					// Get the root element
+					Node projectNode = pomDocument.getFirstChild();
+					// Adding Aspose Cloud Maven Repository configuration
+					// setting here
+					EketalMavenManager.addEketalMavenRepositoryConfiguration(
+							pomDocument, projectNode);
+
+					// Adding Dependencies here
+					Element dependenciesTag = pomDocument
+							.createElement("dependencies");
+					projectNode.appendChild(dependenciesTag);
+
+					for (Metadata dependency : EketalMavenManager
+							.getEketalProjectMavenDependencies()) {
+
+						EketalMavenManager.addEketalMavenDependency(
+								pomDocument, dependenciesTag, dependency);
+
+					}
+
+					EketalMavenManager.updatePOM(pomDocument, monitor, project);
+
+				} catch (ParserConfigurationException | SAXException
+						| IOException | TransformerConfigurationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				return Arrays.asList(project);
+			}
+		};
+		job.addJobChangeListener(new JobChangeAdapter() {
+			public void done(IJobChangeEvent event) {
+				final IStatus result = event.getResult();
+				if (!result.isOK()) {
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							MessageDialog.openError(getShell(), //
+									NLS.bind(Messages.wizardProjectJobFailed,
+											projectName), result.getMessage());
+						}
+					});
+				}
+
+				MappingDiscoveryJob discoveryJob = new MappingDiscoveryJob(job
+						.getCreatedProjects());
+				discoveryJob.schedule();
+
+			}
+		});
+
+		job.setRule(MavenPlugin.getProjectConfigurationManager().getRule());
+		job.schedule();
+
+		return true;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public void addPages() {
+		super.addPages();
+
+		_pageOne = new EketalWizardNewProjectCreationPage(
+				EketalConstants.FIRST_PAGE_NAME);
+
+		addPage(_pageOne);
+
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public void setInitializationData(IConfigurationElement config,
+			String propertyName, Object data) throws CoreException {
+		_configurationElement = config;
 	}
 
 }
