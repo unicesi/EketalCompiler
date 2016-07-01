@@ -16,7 +16,7 @@ class EketalNewProjectWizardInitialContents {
 	def generateInitialContents(IFileSystemAccess2 fsa) {
 		fsa.generateFile(
 //			"src.main.java/Modelo." + fileExtensionProvider.primaryFileExtension, //TODO agregar la carpeta src.main.java al classpath
-			"src/core"+File.separator+"Modelo." + fileExtensionProvider.primaryFileExtension,
+			"src/main/java"+File.separator+"Modelo." + fileExtensionProvider.primaryFileExtension,
 			'''
 			/*
 			 * This is an example model
