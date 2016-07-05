@@ -5,8 +5,8 @@ package co.edu.icesi.eketal.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import com.google.inject.Binder
-import co.edu.icesi.eketal.ui.wizard.MavenProjectCreator
 import org.eclipse.xtext.ui.wizard.IProjectCreator
+import co.edu.icesi.eketal.ui.wizard.JavaProjectCreator
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
@@ -22,7 +22,7 @@ class EketalUiModule extends AbstractEketalUiModule {
 	}
 	
 	override Class<? extends IProjectCreator> bindIProjectCreator() {
-		return MavenProjectCreator
+		return JavaProjectCreator
 	}
 	
 }
