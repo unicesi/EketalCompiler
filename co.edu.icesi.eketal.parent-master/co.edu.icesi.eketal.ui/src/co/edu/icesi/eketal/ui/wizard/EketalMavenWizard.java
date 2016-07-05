@@ -116,26 +116,26 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-		final IPath location;
-		if (!_pageTwo.useDefaults()) {
-
-			location = _pageTwo.getLocationPath();
-		} else
-			location = null;
-
+//		final IPath location;
+//		if (!_pageTwo.useDefaults()) {
+//
+//			location = _pageTwo.getLocationPath();
+//		} else
+//			location = null;
+//
 		final IWorkspaceRoot root = workspace.getRoot();
 		final IProject project = importConfiguration.getProject(root, model);
-
+//
 		final IPath pomFile;
-
-		if (location == null || root.getLocation().equals(location)) {
+//
+//		if (location == null || root.getLocation().equals(location)) {
 			pomFile = root.getLocation().append(project.getName())
 					.append(IMavenConstants.POM_FILE_NAME);
-
-		} else {
-			pomFile = location.append(IMavenConstants.POM_FILE_NAME);
-
-		}
+//
+//		} else {
+//			pomFile = location.append(IMavenConstants.POM_FILE_NAME);
+//
+//		}
 
 		if (pomFile.toFile().exists()) {
 			MessageDialog.openError(getShell(),
@@ -156,7 +156,7 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 							"Retrieving Aspose Maven Dependencies ...",
 							EketalMavenProject.getApiList().size());
 
-					EketalMavenManager.retrieveAsposeMavenDependencies(monitor);
+					EketalMavenManager.retrieveEketalMavenDependencies(monitor);
 
 				}
 			});
@@ -172,7 +172,7 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 			protected List<IProject> doCreateMavenProjects(
 					IProgressMonitor monitor) throws CoreException {
 				MavenPlugin.getProjectConfigurationManager()
-						.createSimpleProject(project, location, model, folders, //
+						.createSimpleProject(project, root.getLocation(), model, folders, //
 								importConfiguration, monitor);
 
 				try {
@@ -183,8 +183,8 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 					Node projectNode = pomDocument.getFirstChild();
 					// Adding Aspose Cloud Maven Repository configuration
 					// setting here
-					EketalMavenManager.addEketalMavenRepositoryConfiguration(
-							pomDocument, projectNode);
+//					EketalMavenManager.addEketalMavenRepositoryConfiguration(
+//							pomDocument, projectNode);
 
 					// Adding Dependencies here
 					Element dependenciesTag = pomDocument

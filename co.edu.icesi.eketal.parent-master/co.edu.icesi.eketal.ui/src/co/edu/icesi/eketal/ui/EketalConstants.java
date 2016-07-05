@@ -1,5 +1,7 @@
 package co.edu.icesi.eketal.ui;
 
+import co.edu.icesi.eketal.ui.apis.artifacts.Metadata;
+
 public class EketalConstants {
 	/**
 	 * Constants
@@ -13,7 +15,11 @@ public class EketalConstants {
 	public static final String FIRST_PAGE_TITLE = "Eketal New Maven Project";
 	public static final String FIRST_PAGE_DESCRIPTION = "Create Eketal New Maven Project";
 	public static final String WIZARD_NAME = "Eketal Maven Project Wizard";
-	public static final String INTERNET_CONNECTION_REQUIRED_MESSAGE_TITLE = "Internet connectivity";
+	public static final String INTERNET_CONNECTION_REQUIRED_MESSAGE_TITLE = "Internet connectivity";	
+	
+	public static final String LIBRARY = "Eketal.Library";
+	public static final String ASPECT_J = "AspectJ";
+	
 	// advertise
 //	public static final String ASPOSE_ALL_COMPONENTS_TEXT = "» Generate reports using mail merge"
 //			+ "\n» Excel Reporting - Build dynamic Excel reports on the fly"
@@ -113,6 +119,8 @@ public class EketalConstants {
 	private static final boolean printing_allowed = true;
 
 	public static final String MAVEN_INTERNET_CONNECTION_REQUIRED_MESSAGE = "Internet connectivity is not available!\nInternet connectivity is required to retrieve latest Aspose Maven Artifacts";
+
+
 
 	public static final void println(String message) {
 		if (printing_allowed) {

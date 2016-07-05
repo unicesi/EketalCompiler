@@ -41,24 +41,24 @@ import co.edu.icesi.eketal.ui.apis.artifacts.Metadata;
 
 public class EketalMavenManager {
 
-	public static void addEketalMavenRepositoryConfiguration(
-			Document pomDocument, Node projectNode) {
-		// Adding Aspose Cloud Maven Repository configuration
-		Element repositories = pomDocument.createElement("repositories");
-		projectNode.appendChild(repositories);
-		Element repository = pomDocument.createElement("repository");
-		repositories.appendChild(repository);
-		Element id = pomDocument.createElement("id");
-		id.appendChild(pomDocument.createTextNode("AsposeJavaAPI"));
-		Element name = pomDocument.createElement("name");
-		name.appendChild(pomDocument.createTextNode("Aspose Java API"));
-		Element url = pomDocument.createElement("url");
-		url.appendChild(pomDocument
-				.createTextNode("http://maven.aspose.com/artifactory/simple/ext-release-local/"));
-		repository.appendChild(id);
-		repository.appendChild(name);
-		repository.appendChild(url);
-	}
+//	public static void addEketalMavenRepositoryConfiguration(
+//			Document pomDocument, Node projectNode) {
+//		// Adding Aspose Cloud Maven Repository configuration
+//		Element repositories = pomDocument.createElement("repositories");
+//		projectNode.appendChild(repositories);
+//		Element repository = pomDocument.createElement("repository");
+//		repositories.appendChild(repository);
+//		Element id = pomDocument.createElement("id");
+//		id.appendChild(pomDocument.createTextNode("AsposeJavaAPI"));
+//		Element name = pomDocument.createElement("name");
+//		name.appendChild(pomDocument.createTextNode("Aspose Java API"));
+//		Element url = pomDocument.createElement("url");
+//		url.appendChild(pomDocument
+//				.createTextNode("http://maven.aspose.com/artifactory/simple/ext-release-local/"));
+//		repository.appendChild(id);
+//		repository.appendChild(name);
+//		repository.appendChild(url);
+//	}
 	
 	public static Document getXmlDocument(String mavenPomXmlfile)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -138,17 +138,18 @@ public class EketalMavenManager {
 
         return true;
     }
-    public static boolean retrieveAsposeMavenDependencies(IProgressMonitor monitor) {
+    public static boolean retrieveEketalMavenDependencies(IProgressMonitor monitor) {
         try {
             getEketalProjectMavenDependencies().clear();
-            monitor.subTask("Retrieving Aspose Maven Dependencies latest artifacts...");
+            monitor.subTask("Retrieving Eketal Maven Dependencies latest artifacts...");
 
             for (EketalJavaAPI component : EketalMavenProject.getApiList().values()) {
 
                 if (component.is_selected()) {
                 	   monitor.subTask("Retrieving "+component.get_name()+" Maven artifact info...");
 
-                    Metadata productMavenDependency = getProductMavenDependency(component.get_mavenRepositoryURL());
+//                    Metadata productMavenDependency = getProductMavenDependency(component.get_mavenRepositoryURL());
+                    Metadata productMavenDependency = EketalMavenProject.getProductMavenDependency(component.get_name());
                     if (productMavenDependency != null) {
                         getEketalProjectMavenDependencies().add(productMavenDependency);
                     }
