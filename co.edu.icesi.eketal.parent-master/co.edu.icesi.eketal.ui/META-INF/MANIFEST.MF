@@ -26,7 +26,6 @@ Require-Bundle: co.edu.icesi.eketal,
  org.eclipse.m2e.core.ui;bundle-version="1.6.2"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: co.edu.icesi.eketal.ui.quickfix,
- co.edu.icesi.eketal.ui.internal,
- co.edu.icesi.eketal.ui.contentassist
+Export-Package: co.edu.icesi.eketal.ui.contentassist,
+ co.edu.icesi.eketal.ui.quickfix
 Bundle-Activator: co.edu.icesi.eketal.ui.internal.EketalActivator
