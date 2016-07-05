@@ -590,8 +590,12 @@
 	</extension>
 	<extension
 		point="org.eclipse.ui.newWizards">
+		<category
+          id="co.edu.icesi.eketal.ui"
+          name="Eketal">
+    	</category>
 		<wizard
-			category="org.eclipse.xtext.projectwiz"
+			category="co.edu.icesi.eketal.ui"
 			class="co.edu.icesi.eketal.ui.EketalExecutableExtensionFactory:co.edu.icesi.eketal.ui.wizard.EketalNewProjectWizard"
 			id="co.edu.icesi.eketal.ui.wizard.EketalNewProjectWizard"
 			name="Eketal Project"

@@ -4,10 +4,18 @@
 package co.edu.icesi.eketal.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import com.google.inject.Binder
+import org.eclipse.xtext.ui.wizard.IProjectCreator
+import co.edu.icesi.eketal.ui.wizard.EketalPluginCreator
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
  */
 @FinalFieldsConstructor
 class EketalUiModule extends AbstractEketalUiModule {
+	override void configure(Binder binder){
+		super.configure(binder)
+		binder.bind(IProjectCreator).to(EketalPluginCreator)
+	}
+	
 }
