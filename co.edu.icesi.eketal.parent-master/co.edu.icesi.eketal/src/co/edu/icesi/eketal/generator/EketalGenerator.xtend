@@ -23,6 +23,8 @@ import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.TypeRef
 import co.edu.icesi.eketal.eketal.Automaton
 import java.util.regex.Pattern
+import org.eclipse.emf.common.util.EList
+import co.edu.icesi.eketal.eketal.Decl
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -56,7 +58,9 @@ class EketalGenerator implements IGenerator{
 		var String automataName = null
 		var Set<String> importaciones = new TreeSet()
 		var pointcuts = new ArrayList<String>
-		importaciones+="co.edu.icesi.eketal.automaton.*"
+		
+		if(modelo.declarations.containsAutomaton)			
+			importaciones+="co.edu.icesi.eketal.automaton.*"
 		importaciones+="co.edu.icesi.eketal.groupsimpl.*"
 		importaciones+="co.edu.icesi.eketal.handlercontrol.*"
 		importaciones+="co.edu.icesi.ketal.core.Automaton"
@@ -118,6 +122,14 @@ class EketalGenerator implements IGenerator{
 		
 		'''
 		return paquete+imports+aspect
+	}
+	
+	def boolean containsAutomaton(EList<Decl> list){
+		for(Decl decl : list){
+			if(decl instanceof Automaton)
+				return true
+		}
+		return false
 	}
 	
 	def agregarImports(String name) {
