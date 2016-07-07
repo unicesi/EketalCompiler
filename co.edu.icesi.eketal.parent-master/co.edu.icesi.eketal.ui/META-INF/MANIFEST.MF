@@ -22,7 +22,10 @@ Require-Bundle: co.edu.icesi.eketal,
  org.eclipse.jdt.debug.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources
-Import-Package: org.apache.log4j
+Import-Package: org.apache.log4j,
+ org.aspectj.ajdt.core,
+ org.aspectj.org.eclipse.jdt.core,
+ org.eclipse.jdt.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: co.edu.icesi.eketal.ui.quickfix,
  co.edu.icesi.eketal.ui.internal,

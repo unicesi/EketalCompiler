@@ -4,7 +4,7 @@
       label="Eketal Feature "
       version="1.0.0.qualifier">
 
-	<requires>
+   <requires>
       <import plugin="org.eclipse.xtext"/>
       <import plugin="org.eclipse.xtext.xbase"/>
       <import plugin="org.eclipse.equinox.common" version="3.5.0" match="greaterOrEqual"/>
@@ -29,6 +29,7 @@
       <import plugin="org.eclipse.xtext.xbase.ui"/>
       <import plugin="org.eclipse.xtext.xbase.ide"/>
       <import plugin="org.eclipse.xtext.ide"/>
+      <import plugin="org.eclipse.ajdt.core"/>
    </requires>
 
    <plugin
