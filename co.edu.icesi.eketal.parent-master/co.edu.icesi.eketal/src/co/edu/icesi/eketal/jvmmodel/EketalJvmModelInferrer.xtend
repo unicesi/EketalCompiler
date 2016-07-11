@@ -336,7 +336,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				//Estado inicial: «step.name»
 				inicial = estados.get(estado«step.name.toFirstUpper»);
 			«ENDIF»
-			
+		«ENDFOR»
+		«FOR step : declaracion.steps»	
 			«IF !step.transitions.isEmpty && step.type!=StateType.END»
 				«FOR transition : step.transitions»
 				//"Transiciones de " + «transition.event.name»+" -> "+«transition.target.name»
