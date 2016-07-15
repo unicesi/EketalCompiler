@@ -1,0 +1,27 @@
+/*
+ * This is an example model
+ */
+package core;
+eventclass Modelo{
+
+    /*
+     * This automaton recognize the following event sequence:
+     * (eventoHello (eventoWorld eventoHello)* eventoHello) 
+     */ 
+    automaton miPrimerAuromata(){
+        start inicio : (eventoHello -> medio);
+        medio : (eventoHello -> estadoFin) || (eventoWorld -> inicio);
+        end estadoFin;
+    }
+
+    /* 
+     * Means that accept only the local calls
+     */
+    group localGroup{
+        localhost
+    }
+
+    event eventoHello():on(localGroup)&&call(core.HelloWorld.helloMethod());
+
+    event eventoWorld(): call(core.HelloWorld.worldMethod());
+}
