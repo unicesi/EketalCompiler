@@ -5,10 +5,13 @@ Bundle-SymbolicName: co.edu.icesi.eketal.lib.osgi
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: co.edu.icesi.eketal.lib-1.0.0-SNAPSHOT.jar,
  automaton.jar,
- jgroups-3.0.0.CR1.jar
+ jgroups-3.0.0.CR1.jar,
+ aspectjtools-1.8.9.jar
 Export-Package: co.edu.icesi.ketal.core,
  co.edu.icesi.ketal.distribution,
  co.edu.icesi.ketal.distribution.transports.jgroups,
  dk.brics.automaton,
+ org.aspectj.ajdt.core,
+ org.aspectj.org.eclipse.jdt.core,
  org.jgroups.protocols,
  org.jgroups.util
