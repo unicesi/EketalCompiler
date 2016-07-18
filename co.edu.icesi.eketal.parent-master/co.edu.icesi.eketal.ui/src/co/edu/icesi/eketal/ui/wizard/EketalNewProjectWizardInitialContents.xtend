@@ -23,9 +23,64 @@ class EketalNewProjectWizardInitialContents {
 			 */
 			package core;
 			eventclass Modelo{
+				/*
+				 * This automaton recognize the following event sequence:
+				 * (eventoHello (eventoWorld eventoHello)* eventoHello) 
+				 */	
+				automaton miPrimerAuromata(){
+					start inicio : (eventoHello -> medio);
+					medio : (eventoHello -> estadoFin) || (eventoWorld -> inicio);
+					end estadoFin;
+				}
 				
+				/* 
+				 * Means that accept only the local calls
+				 */
+				group localGroup{
+					localhost
+				}
+				
+				event eventoHello():on(localGroup)&&call(core.HelloWorld.helloMethod());
+				
+				event eventoWorld(): call(core.HelloWorld.worldMethod());
 			}
 			'''
-			)
+		)
+		fsa.generateFile(
+			"src/test"+File.separator+"TestAutomaton.java",
+			'''
+			/*
+			 * This is an example Test
+			 */
+			package test;
+			
+			import static org.junit.Assert.*;
+			import org.junit.Test;
+			
+			import co.edu.icesi.eketal.automaton.MiPrimerAuromata;
+			import co.edu.icesi.ketal.core.Automaton;
+			import co.edu.icesi.ketal.core.Event;
+			import co.edu.icesi.ketal.core.NamedEvent;
+			
+			public class TestAutomaton {
+				
+				Automaton instance = MiPrimerAuromata.getInstance();
+				
+				@Test
+				public void testCase(){
+					Event eventHello = new NamedEvent("eventHello");
+					Event eventWorld = new NamedEvent("eventWorld");
+					
+					
+					System.out.println(instance.getCurrentState().toString());
+					assertTrue(instance.evaluate(eventHello));
+					System.out.println(instance.getCurrentState().toString());
+					assertTrue(instance.evaluate(eventWorld));
+					System.out.println(instance.getCurrentState().toString());
+				}
+			
+			}
+			'''
+		)
 	}
 }

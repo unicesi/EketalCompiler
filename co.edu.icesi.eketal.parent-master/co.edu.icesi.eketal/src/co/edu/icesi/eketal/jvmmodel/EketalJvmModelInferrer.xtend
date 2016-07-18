@@ -121,7 +121,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						members+=declaracion.toConstructor[
 							visibility = JvmVisibility::PRIVATE
 							body = '''
-							inicialize();
+							initialize();
 							'''
 						]
 						members += AutomatonInit(declaracion as co.edu.icesi.eketal.eketal.Automaton)
@@ -307,7 +307,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	def AutomatonInit(co.edu.icesi.eketal.eketal.Automaton declaracion) {
-		val method = declaracion.toMethod("inicialize", typeRef(void))[
+		val method = declaracion.toMethod("initialize", typeRef(void))[
 		visibility = JvmVisibility::PRIVATE
 		body = '''
 		//Relación evento caracter
@@ -357,7 +357,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				estadosFinales.add(estados.get(estado«step.name.toFirstUpper»));
 			«ENDIF»
 		«ENDFOR»
-		«TreeSet.canonicalName» transitionSet = new «TreeSet.canonicalName»();
+		«HashSet.canonicalName» transitionSet = new «HashSet.canonicalName»();
 		transitionSet.addAll(eventos.values());
 		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales);
 		automata.initializeAutomaton();

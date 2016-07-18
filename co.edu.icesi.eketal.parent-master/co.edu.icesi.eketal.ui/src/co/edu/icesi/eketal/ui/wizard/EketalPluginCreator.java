@@ -32,6 +32,7 @@ public class EketalPluginCreator extends EketalProjectCreator {
 		array.add("co.edu.icesi.eketal");
 		array.add("co.edu.icesi.eketal.lib.osgi;bundle-version=\"1.0.0\"");
 		array.add("org.aspectj.runtime");
+		array.add("org.junit");
 		return array;
 	}
 
