@@ -45,10 +45,7 @@ class EketalGenerator implements IGenerator{
 	
 	
 	def prepareFileName(String packageName, String fileName) {
-		if(System.getProperty("os.name").contains("Windows")){
-			return (packageName + "." + fileName).replaceAll("\\+"+"\\.", File.separator) + ".aj"		
-		}else
-			return (packageName + "." + fileName).replaceAll("\\.", File.separator) + ".aj"
+		return (packageName + "." + fileName).replace(".", File.separator) + ".aj"
 	}
 	
 	def CharSequence generate(EventClass modelo, String packageName){
