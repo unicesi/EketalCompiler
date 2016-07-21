@@ -27,10 +27,10 @@ class EketalNewProjectWizardInitialContents {
 				 * This automaton recognize the following event sequence:
 				 * (eventoHello (eventoWorld eventoHello)* eventoHello) 
 				 */	
-				automaton miPrimerAuromata(){
-					start inicio : (eventoHello -> medio);
-					medio : (eventoHello -> estadoFin) || (eventoWorld -> inicio);
-					end estadoFin;
+				automaton automatonConstructor(){
+					start firstState : (eventoHello -> middleState);
+					middleState : (eventoHello -> finalState) || (eventoWorld -> firstState);
+					end finalState;
 				}
 				
 				/* 
@@ -40,7 +40,7 @@ class EketalNewProjectWizardInitialContents {
 					localhost
 				}
 				
-				event eventoHello():on(localGroup)&&call(core.HelloWorld.helloMethod());
+				event eventoHello():host(localGroup)&&call(core.HelloWorld.helloMethod());
 				
 				event eventoWorld(): call(core.HelloWorld.worldMethod());
 			}
@@ -57,14 +57,14 @@ class EketalNewProjectWizardInitialContents {
 			import static org.junit.Assert.*;
 			import org.junit.Test;
 			
-			import co.edu.icesi.eketal.automaton.MiPrimerAuromata;
+			import co.edu.icesi.eketal.automaton.AutomatonConstructor;
 			import co.edu.icesi.ketal.core.Automaton;
 			import co.edu.icesi.ketal.core.Event;
 			import co.edu.icesi.ketal.core.NamedEvent;
 			
 			public class TestAutomaton {
 				
-				Automaton instance = MiPrimerAuromata.getInstance();
+				Automaton instance = AutomatonConstructor.getInstance();
 				
 				@Test
 				public void testCase(){
