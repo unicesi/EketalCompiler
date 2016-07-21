@@ -82,8 +82,8 @@ KindAttribute:
 ;
 
 Trigger:
-	'call''('esig=QualifiedName'('(params+=FullJvmFormalParameter 
-		(',' params+=FullJvmFormalParameter)* )?')'')'//funciona 
+	'call''('esig=QualifiedName'('(params+=JvmTypeReference 
+		(',' params+=JvmTypeReference)* )?')'')'//funciona 
 ;
 	
 Group:

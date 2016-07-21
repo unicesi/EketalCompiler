@@ -27,7 +27,7 @@ Require-Bundle: co.edu.icesi.eketal,
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: co.edu.icesi.eketal.ui.contentassist,
- co.edu.icesi.eketal.ui.quickfix
+ co.edu.icesi.eketal.ui.quickfix,
+ co.edu.icesi.eketal.ui.internal
 Bundle-Activator: co.edu.icesi.eketal.ui.internal.EketalActivator
-Bundle-ClassPath: maven-model-3.0.jar,
- .
+Bundle-ClassPath: maven-model-3.0.jar,.
