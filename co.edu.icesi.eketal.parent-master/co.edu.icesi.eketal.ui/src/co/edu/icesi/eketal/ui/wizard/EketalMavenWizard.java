@@ -57,7 +57,9 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 
 	private static final Logger logger = Logger.getLogger(EketalNewProjectWizard.class);
 	
-	private EketalWizardNewProjectCreationPage _pageOne;
+	private EketalMavenProjectWizardArtifactPage _pageOne;
+	
+	private EketalWizardNewProjectCreationPage _pageTwo;
 	
 	@Inject
 	private FileOpener fileOpener;
@@ -246,10 +248,14 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 	public void addPages() {
 		super.addPages();
 
-		_pageOne = new EketalWizardNewProjectCreationPage(
+		_pageTwo = new EketalWizardNewProjectCreationPage(
 				EketalConstants.FIRST_PAGE_NAME);
-
+		
+		_pageOne = new EketalMavenProjectWizardArtifactPage(
+				EketalConstants.FIRST_PAGE_NAME);
+		
 		addPage(_pageOne);
+		addPage(_pageTwo);
 
 	}
 

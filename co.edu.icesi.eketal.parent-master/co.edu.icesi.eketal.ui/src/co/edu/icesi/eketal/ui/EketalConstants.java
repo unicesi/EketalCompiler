@@ -21,7 +21,7 @@ public class EketalConstants {
 	public static final String ASPECT_J = "AspectJ";
 	
 	// advertise
-//	public static final String ASPOSE_ALL_COMPONENTS_TEXT = "» Generate reports using mail merge"
+	public static final String ASPOSE_ALL_COMPONENTS_TEXT = "» Generate eketal project";
 //			+ "\n» Excel Reporting - Build dynamic Excel reports on the fly"
 //			+ "\n» Create Excel dashboards, incorporating charts and pivot tables"
 //			+ "\n» High-fidelity Excel rendering and printing"
