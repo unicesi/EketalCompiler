@@ -17,6 +17,35 @@
 ###Sample project
   
    Once you have done this, you can create your own sample project of type Eketal in the "New Project" window, this project have a class with the .eketal extension and his own TestClass, all the other classes are generated.
+   
+   This example defines the declaration of an automaton, a working group and finally, the events of interest.
+   We will look toward the source code of the class to explain each of his statements.
+   
+   Automaton:
+   
+   ```
+   automaton automatonConstructor(){
+	start firstState : (eventoHello -> middleState);
+	middleState : (eventoHello -> finalState) || (eventoWorld -> firstState);
+	end finalState;
+   }
+   ```
+   This is a finite state automaton and is composed by three states: firstState, middleState, finalState; where the first is the initial state, and the last is the final state, it counts with two events (eventHello and eventWorld) which are defined later. As we can see, this automaton will recognize all the events sequences of the type: **eventoHello (eventoWorld eventoHello)* eventoHello**.
+   
+   Group:
+   ```
+   group localGroup{
+	localhost
+   }
+   ```
+   This declaration allows to create groups, with multiple host's, that will filter the incoming calls of the events. In other words, this is reflect in a validation for the incoming events, and verifies which machine (or node in the distributed application) triggers the event.
+   
+   Event Declaration:
+   ```
+   event eventoHello():host(localGroup)&&call(core.HelloWorld.helloMethod());
+   event eventoWorld(): call(core.HelloWorld.worldMethod());
+   ```
+   Finally, the events are a set of methods with formal sintax, each 'event' declaration can support multiple methods call and the 'host' mappes the grouos that will be affected by that event.
   
 ###Compiling from sources
   If you want to compile this project locally, you must do the following
