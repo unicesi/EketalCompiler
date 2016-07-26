@@ -108,6 +108,7 @@ Ip:
 //TODO Validación de que debe haber uno y solo un estado inicial
 //TODO estado de finalización default
 //TODO validacion: si es tipo estado end, no puede tener transiciones
+//TODO Restricción: Solo puede haber una aparición algùn evento en cada Step (restriccion de automata de estado finito), es decir, un stado no puede ir con el mismo evento a 2 estados diferentes
 //TODO Restricción de que solo puede haber un autómata
 Automaton:
 	'automaton' name=ID '('(params+=FullJvmFormalParameter 

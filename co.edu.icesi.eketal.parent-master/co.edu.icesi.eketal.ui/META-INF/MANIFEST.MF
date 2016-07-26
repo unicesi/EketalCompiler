@@ -23,11 +23,12 @@ Require-Bundle: co.edu.icesi.eketal,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.m2e.core;bundle-version="1.6.2",
- org.eclipse.m2e.core.ui;bundle-version="1.6.2"
+ org.eclipse.m2e.core.ui;bundle-version="1.6.2",
+ org.eclipse.m2e.maven.runtime;bundle-version="1.6.2"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: co.edu.icesi.eketal.ui.contentassist,
  co.edu.icesi.eketal.ui.quickfix,
  co.edu.icesi.eketal.ui.internal
 Bundle-Activator: co.edu.icesi.eketal.ui.internal.EketalActivator
-Bundle-ClassPath: maven-model-3.0.jar,.
+Bundle-ClassPath: .

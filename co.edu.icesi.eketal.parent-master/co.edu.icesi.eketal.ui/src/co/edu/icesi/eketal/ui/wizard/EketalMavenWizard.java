@@ -97,7 +97,7 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 	public boolean performFinish() {
 
 		final Model model = getModel();
-		// final String projectName = importConfiguration.getProjectName(model);
+//		final String projectName = importConfiguration.getProjectName(model);
 		final String projectName = model.getName();
 		IStatus nameStatus = importConfiguration.validateProjectName(model);
 		if (!nameStatus.isOK()) {
@@ -118,26 +118,25 @@ public class EketalMavenWizard extends AbstractMavenProjectWizard implements INe
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-//		final IPath location;
-//		if (!_pageTwo.useDefaults()) {
-//
-//			location = _pageTwo.getLocationPath();
-//		} else
-//			location = null;
-//
+		final IPath location;
+		if (!_pageTwo.useDefaults()) {
+
+			location = _pageTwo.getLocationPath();
+		} else
+			location = null;
+
 		final IWorkspaceRoot root = workspace.getRoot();
 		final IProject project = importConfiguration.getProject(root, model);
-//
+
 		final IPath pomFile;
-//
-//		if (location == null || root.getLocation().equals(location)) {
+
+		if (location == null || root.getLocation().equals(location)) {
 			pomFile = root.getLocation().append(project.getName())
 					.append(IMavenConstants.POM_FILE_NAME);
-//
-//		} else {
-//			pomFile = location.append(IMavenConstants.POM_FILE_NAME);
-//
-//		}
+		} else {
+			pomFile = location.append(IMavenConstants.POM_FILE_NAME);
+
+		}
 
 		if (pomFile.toFile().exists()) {
 			MessageDialog.openError(getShell(),
