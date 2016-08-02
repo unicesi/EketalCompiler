@@ -22,46 +22,15 @@
 			<version>${xtext-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.8.9</version>
-		</dependency>
+						<groupId>co.edu.icesi.eketal</groupId>
+						<artifactId>co.edu.icesi.eketal.lib</artifactId>
+						<version>1.0.0-SNAPSHOT</version>
+					</dependency>
 	</dependencies>
 
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>1.8</version>
-					<dependencies>
-						<!-- You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjrt</artifactId>
-							<version>1.8.9</version>
-						</dependency>
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjtools</artifactId>
-							<version>1.8.9</version>
-						</dependency>
-					</dependencies>
-					<executions>
-						<execution>
-							<goals>
-								<goal>compile</goal>
-								<goal>test-compile</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<outxml>true</outxml>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -115,9 +84,13 @@
 					</execution>
 				</executions>
 				<configuration>
+					<sourceRoots>
+						<sourceRoot>src/main/java/core</sourceRoot>
+					</sourceRoots>
 					<languages>
 						<language>
-							<setup>co.edu.icesi.eketal.EketalStandaloneSetup</setup>
+						<javaSupport>true</javaSupport>
+							<setup>co.edu.icesi.eketal.EketalStandaloneSetupGenerated</setup>
 							<outputConfigurations>
 								<outputConfiguration>
 									<outputDirectory>src/main/generated-sources/xtend/</outputDirectory>
@@ -130,6 +103,11 @@
 					<dependency>
 						<groupId>co.edu.icesi.eketal</groupId>
 						<artifactId>co.edu.icesi.eketal</artifactId>
+						<version>1.0.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>co.edu.icesi.eketal</groupId>
+						<artifactId>co.edu.icesi.eketal.lib</artifactId>
 						<version>1.0.0-SNAPSHOT</version>
 					</dependency>
 				</dependencies>
