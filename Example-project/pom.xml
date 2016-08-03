@@ -85,12 +85,12 @@
 				</executions>
 				<configuration>
 					<sourceRoots>
-						<sourceRoot>src/main/java/core</sourceRoot>
+						<sourceRoot>src/main/java</sourceRoot>
 					</sourceRoots>
 					<languages>
 						<language>
 						<javaSupport>true</javaSupport>
-							<setup>co.edu.icesi.eketal.EketalStandaloneSetupGenerated</setup>
+							<setup>co.edu.icesi.eketal.EketalStandaloneSetup</setup>
 							<outputConfigurations>
 								<outputConfiguration>
 									<outputDirectory>src/main/generated-sources/xtend/</outputDirectory>
