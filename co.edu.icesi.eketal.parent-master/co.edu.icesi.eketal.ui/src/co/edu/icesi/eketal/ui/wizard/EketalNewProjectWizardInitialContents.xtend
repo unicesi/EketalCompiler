@@ -47,6 +47,23 @@ class EketalNewProjectWizardInitialContents {
 			'''
 		)
 		fsa.generateFile(
+			"src/core"+File.separator+"HelloWorld.java",
+			'''
+			package core;
+			
+			public class HelloWorld {
+				
+				public String helloMethod(){
+					return "Hello from " + this.getClass().getName();
+				}
+				
+				public String worldMethod(){
+					return "HelloWorld from " +  this.getClass().getName();
+				}
+			}
+			'''
+		)
+		fsa.generateFile(
 			"src/test"+File.separator+"TestAutomaton.java",
 			'''
 			/*
@@ -71,16 +88,21 @@ class EketalNewProjectWizardInitialContents {
 					Event eventHello = new NamedEvent("eventHello");
 					Event eventWorld = new NamedEvent("eventWorld");
 					
+					HelloWorld hw = new HelloWorld();
+							
+					hw.helloMethod();
+					hw.worldMethod();
 					
 					System.out.println(instance.getCurrentState().toString());
-					assertTrue(instance.evaluate(eventHello));
+					//assertTrue(instance.evaluate(eventHello));
 					System.out.println(instance.getCurrentState().toString());
-					assertTrue(instance.evaluate(eventWorld));
+					//assertTrue(instance.evaluate(eventWorld));
 					System.out.println(instance.getCurrentState().toString());
 				}
 			
 			}
-			'''
+			'''		
 		)
+		
 	}
 }
