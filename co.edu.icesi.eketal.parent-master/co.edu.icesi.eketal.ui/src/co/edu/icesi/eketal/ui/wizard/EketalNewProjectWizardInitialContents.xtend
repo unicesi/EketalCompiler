@@ -71,6 +71,8 @@ class EketalNewProjectWizardInitialContents {
 			 */
 			package test;
 			
+			import core.HelloWorld;
+			
 			import static org.junit.Assert.*;
 			import org.junit.Test;
 			
