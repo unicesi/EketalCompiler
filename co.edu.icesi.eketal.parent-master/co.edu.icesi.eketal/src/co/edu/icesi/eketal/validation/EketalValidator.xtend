@@ -25,18 +25,16 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val NON_CAPITAL_NAME = "eketal.issue.nonCapitalName"
 	public static val DETERMINIST_AUTOMATON_DEFINITION = "eketal.issue.deterministAutomatonDefinition"
 	
-	
+	@Check
 	def checkAutomatonDeterminism(Step step){
-		var transitions = step.transitions;
-		var container = new TreeSet
-		for(transition: transitions){
-			if(container.contains(transition.event.name)){
-			error("The step '" + step.name + "' cannot have another transition with the same event as '" + transition.event.name +
-				"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)	
-			}
-			container.add(transition.event.name)
+		val duplicate = step.transitions.groupBy[t|t.event].filter[e,l|l.size > 1]
+		if (!duplicate.empty) {
+			for(event:duplicate.keySet){
+				error("The step '" + step.name + "' cannot have another transition with the same event as '" + event.name +
+					"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)	
+				
+			}			
 		}
-		
 	}
 	
 	@Check
