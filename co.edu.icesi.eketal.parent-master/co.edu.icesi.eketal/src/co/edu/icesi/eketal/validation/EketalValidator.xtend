@@ -3,6 +3,15 @@
  */
 package co.edu.icesi.eketal.validation
 
+import co.edu.icesi.eketal.eketal.Model
+import java.util.ArrayList
+import org.eclipse.xtext.validation.Check
+import org.eclipse.emf.common.util.URI
+import java.util.Arrays
+import co.edu.icesi.eketal.eketal.EketalPackage
+import co.edu.icesi.eketal.eketal.EventClass
+import co.edu.icesi.eketal.eketal.Step
+import java.util.TreeSet
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +20,72 @@ package co.edu.icesi.eketal.validation
  */
 class EketalValidator extends AbstractEketalValidator {
 	
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					EketalPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	public static val INVALID_PACKAGE_NAME = "eketal.issue.invalidPackageName"
+	public static val INVALID_FILE_NAME = "eketal.issue.invalidFileName"
+	public static val NON_CAPITAL_NAME = "eketal.issue.nonCapitalName"
+	public static val DETERMINIST_AUTOMATON_DEFINITION = "eketal.issue.deterministAutomatonDefinition"
+	
+	
+	def checkAutomatonDeterminism(Step step){
+		var transitions = step.transitions;
+		var container = new TreeSet
+		for(transition: transitions){
+			if(container.contains(transition.event.name)){
+			error("The step '" + step.name + "' cannot have another transition with the same event as '" + transition.event.name +
+				"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)	
+			}
+			container.add(transition.event.name)
+		}
+		
+	}
+	
+	@Check
+	def checkPackageMatchesPhysicalDirectory(Model model) {
+		val packageSegments = model.name.split("\\.")
+		val fqn = fromURItoFQN(model.typeDeclaration.eResource.URI)
+		var expectedPackage = if(fqn.contains(".")) fqn.substring(0, fqn.lastIndexOf(".")) else ""
+
+		if (!Arrays.equals(expectedPackage.split("\\."), packageSegments)) {
+			error("The declared package '" + model.name + "' does not match the expected package '" + expectedPackage +
+				"'", EketalPackage.Literals.MODEL__NAME, INVALID_PACKAGE_NAME)
+		}
+	}
+	
+	def fromURItoFQN(URI resourceURI) {
+		// e.g., platform:/resource/<project>/<source-folder>/org/example/.../TypeDecl.pascani
+		var segments = new ArrayList
+		if (resourceURI.segments.size > 1) {
+			// Remove the first 3 segments, and return the package and file segments
+			segments.addAll(resourceURI.segmentsList.subList(3, resourceURI.segments.size - 1))
+			// Remove file extension and add the last segment
+			segments.add(resourceURI.lastSegment.substring(0, resourceURI.lastSegment.lastIndexOf(".")))
+		} else if(resourceURI.lastSegment.contains(".")) {
+			segments.add(resourceURI.lastSegment.substring(0, resourceURI.lastSegment.lastIndexOf(".")))
+		} else {
+			segments.add(resourceURI.lastSegment)
+		}
+		return segments.fold("", [r, t|if(r.isEmpty) t else r + "." + t])
+	}
+	
+	@Check
+	def checkMonitorStartsWithCapital(EventClass typeDecl) {
+		if (!Character.isUpperCase(typeDecl.name.charAt(0))) {
+			warning("Name should start with a capital", EketalPackage.Literals.EVENT_CLASS__NAME,
+				NON_CAPITAL_NAME)
+		}
+	}
+	
+	@Check
+	def checkTypeDeclarationNameMatchesPhysicalName(EventClass typeDecl) {
+		// e.g., platform:/resource/<project>/<source-folder>/org/example/.../TypeDecl.pascani
+		val URI = typeDecl.eResource.URI
+		val fileName = URI.lastSegment.substring(0, URI.lastSegment.indexOf(URI.fileExtension) - 1)
+		val isPublic = typeDecl.eContainer != null && typeDecl.eContainer instanceof Model
+
+		if (isPublic && !fileName.equals(typeDecl.name)) {
+			error("The declared type '" + typeDecl.name + "' does not match the corresponding file name '" + fileName +
+				"'", EketalPackage.Literals.EVENT_CLASS__NAME, INVALID_FILE_NAME)
+		}
+	}
 	
 }
