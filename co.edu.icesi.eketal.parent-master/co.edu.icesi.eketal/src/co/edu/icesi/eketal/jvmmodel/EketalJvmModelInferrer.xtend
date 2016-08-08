@@ -208,7 +208,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				body = 
 				'''
 				brokerMessageHandler = new «typeRef(ReceiverMessageHandler)»();
-				eventBroker = new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler);
+				eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler);
 				'''
 			]
 			
@@ -238,7 +238,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 			members+=eventDefinitionClass.toField("eventBrokerHandler", typeRef(EventBroker))[
 				static = true
-				initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
+				initializer = '''new «typeRef(JGroupsEventBroker)»("Eketal", ketalMessageHandler)'''
 			]
 			members+=eventDefinitionClass
 			.toMethod("multicastSync", typeRef(void))[
@@ -262,7 +262,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	
 	def createGroupClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseGrupos) {
 		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl."+groupClassName)) [
-			//TODO Make it Singleton
 //			annotations+=annotationRef(Singleton)
 			members+=claseGrupos.toField("grupos", typeRef(Set))[
 				static = true
@@ -356,9 +355,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			«ENDIF»
 		«ENDFOR»
 		«FOR step : declaracion.steps»	
-			«IF !step.transitions.isEmpty && step.type!=StateType.END»
+			«IF !step.transitions.isEmpty»
 				«FOR transition : step.transitions»
-				//"Transiciones de " + «transition.event.name»+" -> "+«transition.target.name»
+					//Transicion de «transition.event.name» -> «transition.target.name»
 					estadoLlegada = "«transition.target.name»";
 					if(!estados.containsKey(estadoLlegada)){
 						estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
@@ -372,8 +371,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					}
 					«typeRef(Transition)» «step.name»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.name.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
 					transitionSet.add(«step.name»«transition.event.name.toFirstUpper»);
+					
 				«ENDFOR»
-			«ELSE»
+			«ENDIF»
+			«IF step.type==StateType.END»
 				//Estado final «step.name.toFirstUpper»
 				estados.get(estado«step.name.toFirstUpper»).setAccept(true);
 				estadosFinales.add(estados.get(estado«step.name.toFirstUpper»));

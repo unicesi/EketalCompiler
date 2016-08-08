@@ -116,7 +116,7 @@ Automaton:
 ;
         
 Step:
-	(type=StateType)? name=ID ( ':' '('transitions+=TransDef')' ('||' '('transitions+=TransDef* ')')? )? ';'
+	(type=StateType)? name=ID ( ':' '('transitions+=TransDef')' ('||' '('transitions+=TransDef* ')')* )? ';'
 ;
 
 TransDef:
