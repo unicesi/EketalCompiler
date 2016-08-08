@@ -94,7 +94,6 @@ class EketalGenerator implements IGenerator{
 						Event event = new NamedEvent("«event.name»");
 						distribuidor.multicast(event, map);
 						
-						//distribuidor.multicast(null, null);
 						System.out.println("Returned or threw an Exception");
 					}
 				«ENDIF»

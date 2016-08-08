@@ -87,8 +87,8 @@ class EketalNewProjectWizardInitialContents {
 				
 				@Test
 				public void testCase(){
-					Event eventHello = new NamedEvent("eventHello");
-					Event eventWorld = new NamedEvent("eventWorld");
+					Event eventHello = new NamedEvent("eventoHello");
+					Event eventWorld = new NamedEvent("eventoWorld");
 					
 					HelloWorld hw = new HelloWorld();
 							
@@ -96,10 +96,19 @@ class EketalNewProjectWizardInitialContents {
 					hw.worldMethod();
 					
 					System.out.println(instance.getCurrentState().toString());
-					//assertTrue(instance.evaluate(eventHello));
+					String state = instance.getCurrentState().toString();
+					assertFalse(instance.evaluate(eventWorld));
+					
 					System.out.println(instance.getCurrentState().toString());
-					//assertTrue(instance.evaluate(eventWorld));
+					assertEquals(state, instance.getCurrentState().toString());
+					assertTrue(instance.evaluate(eventHello));
+					
 					System.out.println(instance.getCurrentState().toString());
+					assertNotEquals(state, instance.getCurrentState().toString());
+					assertTrue(instance.evaluate(eventWorld));
+					
+					System.out.println(instance.getCurrentState().toString());
+					assertFalse(instance.getCurrentState().getAccept());
 				}
 			
 			}
