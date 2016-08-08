@@ -14,10 +14,6 @@ import co.edu.icesi.eketal.ui.wizard.EketalPluginCreator
 @FinalFieldsConstructor
 class EketalUiModule extends AbstractEketalUiModule {
 	
-	override void configure(Binder binder){
-		super.configure(binder)
-	}
-	
 	override Class<? extends IProjectCreator> bindIProjectCreator() {
 		return EketalPluginCreator
 	}
