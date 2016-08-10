@@ -34,6 +34,8 @@ import co.edu.icesi.ketal.distribution.EventBroker
 import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker
 import co.edu.icesi.ketal.distribution.KetalMessageHandler
 import java.util.Vector
+import java.util.Hashtable
+import co.edu.icesi.ketal.core.Expression
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -82,9 +84,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
 //		println("Inferring model for " + element.name)
 		
-		val implementacion = element.toClass(element.fullyQualifiedName)
+		val implementation = element.toClass(element.fullyQualifiedName)
 		
-		if(implementacion==null)
+		if(implementation==null)
 			return;
 		
 		var eventClass = element.typeDeclaration
@@ -94,20 +96,31 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		eventClassGenerate.eAdapters.add(new OutputConfigurationAdapter(IFileSystemAccess.DEFAULT_OUTPUT))
 
 		acceptor.accept(eventClassGenerate)[
-			println("línea 102 inferrer")
+			println("línea 97 Inferrer")
 		]
 		
-		val claseHandler = element.typeDeclaration;
-		createHandlerClass(acceptor, claseHandler)
+		/*
+		 * Creates the class that handles the control in the jgroups
+		 */
+		val handlerClass = element.typeDeclaration;
+		createHandlerClass(acceptor, handlerClass)
 		
-		val claseGrupos = element.typeDeclaration
-		createGroupClass(acceptor, claseGrupos)
+		/*
+		 * Creates a class that contains the groups declared
+		 */
+		val groupsClass = element.typeDeclaration
+		createGroupClass(acceptor, groupsClass)
 		
-		
+		/*
+		 * Navigates for the declarations looking for automatons
+		 */
 		var declarations = element.typeDeclaration.declarations
 		for(declaracion:declarations){
 			switch(declaracion){
 				co.edu.icesi.eketal.eketal.Automaton:{//Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
+					/*
+					 * Creates the class with the singleton nature
+					 */
 					acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.automaton."+declaracion.name.toFirstUpper)) [
 						members+=declaracion.toField("instance", typeRef(Automaton))[static = true]
 						members+=declaracion.toMethod("getInstance", typeRef(Automaton))[
@@ -121,9 +134,12 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						members+=declaracion.toConstructor[
 							visibility = JvmVisibility::PRIVATE
 							body = '''
-							inicialize();
+							initialize();
 							'''
 						]
+						/*
+						 * Creates the main method
+						 */
 						members += AutomatonInit(declaracion as co.edu.icesi.eketal.eketal.Automaton)
 					]	
 				}
@@ -166,39 +182,37 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //				}
 			}
 		}
-//		acceptor.accept(element.toClass("co.edu.icesi.ketal.automaton."+element.name)) [
-//			members += element.toConstructor[
-//				body = '''System.out.println("Hello world");'''
-//			]
-//		]
 		
 	}
 	
-	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseEventos) {
-		acceptor.accept(claseEventos.toClass("co.edu.icesi.eketal.handlercontrol."+handlerClassName)) [
+	/*
+	 * Also adds the Singleton nature
+	 */
+	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass) {
+		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol."+handlerClassName)) [
 			//Implementación de la simulación Singleton
-			members+=claseEventos.toField("instance", typeRef(it))[
+			members+=eventDefinitionClass.toField("instance", typeRef(it))[
 				static = true
 				initializer = '''new «co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName»()'''
 			]
 			
-			members+=claseEventos.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
+			members+=eventDefinitionClass.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
 				static = true
 			]
-			members+=claseEventos.toField("eventBroker", typeRef(EventBroker))[
+			members+=eventDefinitionClass.toField("eventBroker", typeRef(EventBroker))[
 				static = true
 			]
 			
-			members+=claseEventos.toConstructor[
+			members+=eventDefinitionClass.toConstructor[
 				visibility = JvmVisibility.PRIVATE
 				body = 
 				'''
 				brokerMessageHandler = new «typeRef(ReceiverMessageHandler)»();
-				eventBroker = new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler);
+				eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler);
 				'''
 			]
 			
-			members+=claseEventos.toMethod("getInstance", typeRef(it))[
+			members+=eventDefinitionClass.toMethod("getInstance", typeRef(it))[
 				static = true
 				body = '''
 				if(instance==null)
@@ -208,34 +222,45 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 			//Aquí termina la definición sintética del Sigleton
 			
+			//Close communication
+			members+=eventDefinitionClass.toMethod("closeCommunication", typeRef(void))[
+				body = '''
+				eventBroker.closeComunication();
+				eventBrokerHandler.closeComunication();
+				'''
+			]
+			//Close communication
+			
+			
 			//TODO en este es el mulsticasSync o el Async?
-			members+=claseEventos.toMethod("multicast", typeRef(void))[
-				parameters+=claseEventos.toParameter("evento", Event.typeRef)
-				parameters+=claseEventos.toParameter("map", Map.typeRef)
+			members+=eventDefinitionClass.toMethod("multicast", typeRef(void))[
+				parameters+=eventDefinitionClass.toParameter("evento", Event.typeRef)
+				parameters+=eventDefinitionClass.toParameter("map", Map.typeRef)
 				static = false
 				body='''
 					eventBroker.multicast(evento, map);
 				'''
 			]
 			//TODO Síncrono
-			members+=claseEventos.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
+			members+=eventDefinitionClass.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
 				static = true
 				initializer = '''new «typeRef(KetalMessageHandler)»()'''
 			]
-			members+=claseEventos.toField("eventBrokerHandler", typeRef(EventBroker))[
+			members+=eventDefinitionClass.toField("eventBrokerHandler", typeRef(EventBroker))[
 				static = true
-				initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
+				initializer = '''new «typeRef(JGroupsEventBroker)»("Eketal", ketalMessageHandler)'''
 			]
-			members+=claseEventos.toMethod("multicastSync", typeRef(void))[
-				parameters+=claseEventos.toParameter("evento", Event.typeRef)
-				parameters+=claseEventos.toParameter("map", Map.typeRef)
+			members+=eventDefinitionClass
+			.toMethod("multicastSync", typeRef(void))[
+				parameters+=eventDefinitionClass.toParameter("evento", Event.typeRef)
+				parameters+=eventDefinitionClass.toParameter("map", Map.typeRef)
 				static = false
 				body='''
 					eventBrokerHandler.multicastSync(evento, map);
 				'''
 			]
-			members+=claseEventos.toMethod("getEvents", typeRef(Vector))[
-				parameters+=claseEventos.toParameter("evento", Event.typeRef)
+			members+=eventDefinitionClass.toMethod("getEvents", typeRef(Vector))[
+				parameters+=eventDefinitionClass.toParameter("evento", Event.typeRef)
 				static = true
 				body='''
 					return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
@@ -247,7 +272,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	
 	def createGroupClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseGrupos) {
 		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl."+groupClassName)) [
-			//TODO Make it Singleton
 //			annotations+=annotationRef(Singleton)
 			members+=claseGrupos.toField("grupos", typeRef(Set))[
 				static = true
@@ -306,8 +330,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
+	//TODO (línea 359) Tener en cuenta que puede haber un estado que sea final y aún así tenga tarnsiciones
 	def AutomatonInit(co.edu.icesi.eketal.eketal.Automaton declaracion) {
-		val method = declaracion.toMethod("inicialize", typeRef(void))[
+		val method = declaracion.toMethod("initialize", typeRef(void))[
 		visibility = JvmVisibility::PRIVATE
 		body = '''
 		//Relación evento caracter
@@ -319,10 +344,12 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		//Conjunto de nombres y estados
 		«typeRef(Map)»<String, «typeRef(State)»> estados = new «typeRef(HashMap)»();
 		
-		//map de eventos con transiciones
-		«typeRef(Map)»<«typeRef(DefaultEqualsExpression)», «typeRef(Transition)»> eventos = new «typeRef(HashMap)»();
+		//conjunto de transiciones
+		«typeRef(HashSet)»<«typeRef(Transition)»> transitionSet = new «typeRef(HashSet)»();
+		//map de expresiones con caracteres
+		«typeRef(Hashtable)»<«typeRef(Expression)», «typeRef(Character)»> expressions = new «typeRef(Hashtable)»();
 		
-		int consecutivo = 0;
+		int consecutivo = 65;
 		Character caracter = (char)consecutivo;
 		String nombreEvento = "";
 		String estadoLlegada = "";
@@ -338,9 +365,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			«ENDIF»
 		«ENDFOR»
 		«FOR step : declaracion.steps»	
-			«IF !step.transitions.isEmpty && step.type!=StateType.END»
+			«IF !step.transitions.isEmpty»
 				«FOR transition : step.transitions»
-				//"Transiciones de " + «transition.event.name»+" -> "+«transition.target.name»
+					//Transicion de «transition.event.name» -> «transition.target.name»
 					estadoLlegada = "«transition.target.name»";
 					if(!estados.containsKey(estadoLlegada)){
 						estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
@@ -348,18 +375,22 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					caracter = (char)consecutivo;
 					consecutivo++;
 					nombreEvento = "«transition.event.name»";
-					mapping.put(nombreEvento, caracter);
-					co.edu.icesi.ketal.core.Transition «step.name»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.name.toFirstUpper»), estados.get(estadoLlegada), caracter);
-					eventos.put(new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), «step.name»«transition.event.name.toFirstUpper»);
+					if(!mapping.containsKey(nombreEvento)){
+						mapping.put(nombreEvento, caracter);
+						expressions.put(new «DefaultEqualsExpression»(new «NamedEvent»(nombreEvento)), mapping.get(nombreEvento));
+					}
+					«typeRef(Transition)» «step.name»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.name.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
+					transitionSet.add(«step.name»«transition.event.name.toFirstUpper»);
+					
 				«ENDFOR»
-			«ELSE»
+			«ENDIF»
+			«IF step.type==StateType.END»
 				//Estado final «step.name.toFirstUpper»
+				estados.get(estado«step.name.toFirstUpper»).setAccept(true);
 				estadosFinales.add(estados.get(estado«step.name.toFirstUpper»));
 			«ENDIF»
 		«ENDFOR»
-		«TreeSet.canonicalName» transitionSet = new «TreeSet.canonicalName»();
-		transitionSet.addAll(eventos.values());
-		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales);
+		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales, expressions);
 		automata.initializeAutomaton();
 		instance = automata;
 		'''

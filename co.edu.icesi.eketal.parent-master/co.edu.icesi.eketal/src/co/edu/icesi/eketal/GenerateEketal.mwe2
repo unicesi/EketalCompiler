@@ -2,15 +2,11 @@ module co.edu.icesi.eketal.GenerateEketal
 
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
-import org.eclipse.xtext.generator.*
-import org.eclipse.xtext.generator.model.project.*
-import org.eclipse.emf.mwe.utils.*
-import org.eclipse.xtext.ui.generator.*
 
 var rootPath = ".."
 
 Workflow {
-
+	
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
@@ -29,20 +25,14 @@ Workflow {
 		language = StandardLanguage {
 			name = "co.edu.icesi.eketal.Eketal"
 			fileExtensions = "eketal"
-			newProjectWizardForEclipse = {
+			newProjectWizardForEclipse={
 				generate = true
-				pluginProject = false
 			}
-			
-			generator = {
-		        generateJavaMain = true
-		    }
-			
 			serializer = {
 				generateStub = false
 			}
 			validator = {
-			// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
 			}
 		}
 	}

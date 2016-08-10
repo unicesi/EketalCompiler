@@ -3,7 +3,29 @@
  */
 package co.edu.icesi.eketal.validation;
 
+import co.edu.icesi.eketal.eketal.Automaton;
+import co.edu.icesi.eketal.eketal.EketalPackage;
+import co.edu.icesi.eketal.eketal.EvDecl;
+import co.edu.icesi.eketal.eketal.EventClass;
+import co.edu.icesi.eketal.eketal.Model;
+import co.edu.icesi.eketal.eketal.StateType;
+import co.edu.icesi.eketal.eketal.Step;
+import co.edu.icesi.eketal.eketal.TransDef;
 import co.edu.icesi.eketal.validation.AbstractEketalValidator;
+import com.google.common.base.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.MapExtensions;
 
 /**
  * This class contains custom validation rules.
@@ -12,4 +34,168 @@ import co.edu.icesi.eketal.validation.AbstractEketalValidator;
  */
 @SuppressWarnings("all")
 public class EketalValidator extends AbstractEketalValidator {
+  public final static String INVALID_FILE_NAME = "eketal.issue.invalidFileName";
+  
+  public final static String NON_CAPITAL_NAME = "eketal.issue.nonCapitalName";
+  
+  public final static String DETERMINIST_AUTOMATON_DEFINITION = "eketal.issue.deterministAutomatonDefinition";
+  
+  public final static String NO_INITIAL_STATE_FOUND = "eketal.issue.noInitialStateFound";
+  
+  public final static String MANY_INITIAL_STATES_FOUND = "eketal.issue.manyInitialStatesFound";
+  
+  public final static String NO_TRANSITIONS_FROM_INITIAL_STATE = "eketal.issue.noTransitionsFromInitialState";
+  
+  @Check
+  public void checkAutomatonDeterminism(final Step step) {
+    EList<TransDef> _transitions = step.getTransitions();
+    final Function1<TransDef, EvDecl> _function = (TransDef t) -> {
+      return t.getEvent();
+    };
+    Map<EvDecl, List<TransDef>> _groupBy = IterableExtensions.<EvDecl, TransDef>groupBy(_transitions, _function);
+    final Function2<EvDecl, List<TransDef>, Boolean> _function_1 = (EvDecl e, List<TransDef> l) -> {
+      int _size = l.size();
+      return Boolean.valueOf((_size > 1));
+    };
+    final Map<EvDecl, List<TransDef>> duplicate = MapExtensions.<EvDecl, List<TransDef>>filter(_groupBy, _function_1);
+    boolean _isEmpty = duplicate.isEmpty();
+    boolean _not = (!_isEmpty);
+    if (_not) {
+      Set<EvDecl> _keySet = duplicate.keySet();
+      for (final EvDecl event : _keySet) {
+        String _name = step.getName();
+        String _plus = ("The step \'" + _name);
+        String _plus_1 = (_plus + "\' cannot have another transition with the same event as \'");
+        String _name_1 = event.getName();
+        String _plus_2 = (_plus_1 + _name_1);
+        String _plus_3 = (_plus_2 + 
+          "\'");
+        this.error(_plus_3, EketalPackage.Literals.STEP__TRANSITIONS, EketalValidator.DETERMINIST_AUTOMATON_DEFINITION);
+      }
+    }
+  }
+  
+  @Check
+  public void checkInitialState(final Automaton automaton) {
+    EList<Step> _steps = automaton.getSteps();
+    final Function1<Step, Boolean> _function = (Step s) -> {
+      StateType _type = s.getType();
+      return Boolean.valueOf(Objects.equal(_type, StateType.START));
+    };
+    final Iterable<Step> initialState = IterableExtensions.<Step>filter(_steps, _function);
+    int _size = IterableExtensions.size(initialState);
+    boolean _equals = (_size == 0);
+    if (_equals) {
+      String _name = automaton.getName();
+      String _plus = ("The automaton \'" + _name);
+      String _plus_1 = (_plus + "\' must have an initial State \'");
+      String _plus_2 = (_plus_1 + 
+        "\'");
+      this.error(_plus_2, EketalPackage.Literals.AUTOMATON__STEPS, EketalValidator.NO_INITIAL_STATE_FOUND);
+    } else {
+      int _size_1 = IterableExtensions.size(initialState);
+      boolean _greaterThan = (_size_1 > 1);
+      if (_greaterThan) {
+        for (final Step state : initialState) {
+          String _name_1 = automaton.getName();
+          String _plus_3 = ("The automaton \'" + _name_1);
+          String _plus_4 = (_plus_3 + "\' can only have one initial state \'");
+          String _plus_5 = (_plus_4 + 
+            "\'");
+          this.error(_plus_5, EketalPackage.Literals.AUTOMATON__STEPS, EketalValidator.MANY_INITIAL_STATES_FOUND);
+        }
+      } else {
+        for (final Step state_1 : initialState) {
+          if ((Objects.equal(state_1.getTransitions(), null) || state_1.getTransitions().isEmpty())) {
+            String _name_2 = automaton.getName();
+            String _plus_6 = ("The automaton \'" + _name_2);
+            String _plus_7 = (_plus_6 + "\' must have at least one transition in his initial state \'");
+            String _name_3 = state_1.getName();
+            String _plus_8 = (_plus_7 + _name_3);
+            String _plus_9 = (_plus_8 + 
+              "\'");
+            this.error(_plus_9, EketalPackage.Literals.AUTOMATON__STEPS, EketalValidator.NO_TRANSITIONS_FROM_INITIAL_STATE);
+          }
+        }
+      }
+    }
+  }
+  
+  public String fromURItoFQN(final URI resourceURI) {
+    ArrayList<String> segments = new ArrayList<String>();
+    String[] _segments = resourceURI.segments();
+    int _size = ((List<String>)Conversions.doWrapArray(_segments)).size();
+    boolean _greaterThan = (_size > 1);
+    if (_greaterThan) {
+      List<String> _segmentsList = resourceURI.segmentsList();
+      String[] _segments_1 = resourceURI.segments();
+      int _size_1 = ((List<String>)Conversions.doWrapArray(_segments_1)).size();
+      int _minus = (_size_1 - 1);
+      List<String> _subList = _segmentsList.subList(3, _minus);
+      segments.addAll(_subList);
+      String _lastSegment = resourceURI.lastSegment();
+      String _lastSegment_1 = resourceURI.lastSegment();
+      int _lastIndexOf = _lastSegment_1.lastIndexOf(".");
+      String _substring = _lastSegment.substring(0, _lastIndexOf);
+      segments.add(_substring);
+    } else {
+      String _lastSegment_2 = resourceURI.lastSegment();
+      boolean _contains = _lastSegment_2.contains(".");
+      if (_contains) {
+        String _lastSegment_3 = resourceURI.lastSegment();
+        String _lastSegment_4 = resourceURI.lastSegment();
+        int _lastIndexOf_1 = _lastSegment_4.lastIndexOf(".");
+        String _substring_1 = _lastSegment_3.substring(0, _lastIndexOf_1);
+        segments.add(_substring_1);
+      } else {
+        String _lastSegment_5 = resourceURI.lastSegment();
+        segments.add(_lastSegment_5);
+      }
+    }
+    final Function2<String, String, String> _function = (String r, String t) -> {
+      String _xifexpression = null;
+      boolean _isEmpty = r.isEmpty();
+      if (_isEmpty) {
+        _xifexpression = t;
+      } else {
+        _xifexpression = ((r + ".") + t);
+      }
+      return _xifexpression;
+    };
+    return IterableExtensions.<String, String>fold(segments, "", _function);
+  }
+  
+  @Check
+  public void checkMonitorStartsWithCapital(final EventClass typeDecl) {
+    String _name = typeDecl.getName();
+    char _charAt = _name.charAt(0);
+    boolean _isUpperCase = Character.isUpperCase(_charAt);
+    boolean _not = (!_isUpperCase);
+    if (_not) {
+      this.warning("Name should start with a capital", EketalPackage.Literals.EVENT_CLASS__NAME, 
+        EketalValidator.NON_CAPITAL_NAME);
+    }
+  }
+  
+  @Check
+  public void checkTypeDeclarationNameMatchesPhysicalName(final EventClass typeDecl) {
+    Resource _eResource = typeDecl.eResource();
+    final URI URI = _eResource.getURI();
+    String _lastSegment = URI.lastSegment();
+    String _lastSegment_1 = URI.lastSegment();
+    String _fileExtension = URI.fileExtension();
+    int _indexOf = _lastSegment_1.indexOf(_fileExtension);
+    int _minus = (_indexOf - 1);
+    final String fileName = _lastSegment.substring(0, _minus);
+    final boolean isPublic = ((!Objects.equal(typeDecl.eContainer(), null)) && (typeDecl.eContainer() instanceof Model));
+    if ((isPublic && (!fileName.equals(typeDecl.getName())))) {
+      String _name = typeDecl.getName();
+      String _plus = ("The declared type \'" + _name);
+      String _plus_1 = (_plus + "\' does not match the corresponding file name \'");
+      String _plus_2 = (_plus_1 + fileName);
+      String _plus_3 = (_plus_2 + 
+        "\'");
+      this.error(_plus_3, EketalPackage.Literals.EVENT_CLASS__NAME, EketalValidator.INVALID_FILE_NAME);
+    }
+  }
 }
