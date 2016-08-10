@@ -74,9 +74,11 @@ class EketalNewProjectWizardInitialContents {
 			import core.HelloWorld;
 			
 			import static org.junit.Assert.*;
+			import org.junit.AfterClass;
 			import org.junit.Test;
 			
 			import co.edu.icesi.eketal.automaton.AutomatonConstructor;
+			import co.edu.icesi.eketal.handlercontrol.EventHandler;
 			import co.edu.icesi.ketal.core.Automaton;
 			import co.edu.icesi.ketal.core.Event;
 			import co.edu.icesi.ketal.core.NamedEvent;
@@ -109,6 +111,12 @@ class EketalNewProjectWizardInitialContents {
 					
 					System.out.println(instance.getCurrentState().toString());
 					assertFalse(instance.getCurrentState().getAccept());
+				}
+				
+				@AfterClass
+				public static void tearDown(){
+					EventHandler distribuidor = EventHandler.getInstance();
+					distribuidor.closeCommunication();
 				}
 			
 			}
