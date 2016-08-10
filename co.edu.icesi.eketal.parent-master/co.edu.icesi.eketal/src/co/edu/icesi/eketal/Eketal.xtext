@@ -105,7 +105,6 @@ Ip:
 //////////////////////////////////////
 //TODO Tiene que haber una verificación de si, es un estado inicial (contiene la palabra start)
 //debe tener transiciones, porque sino, no se puede llegar a ningún lado
-//TODO Validación de que debe haber uno y solo un estado inicial
 //TODO estado de finalización default
 //TODO Restricción de que solo puede haber un autómata
 Automaton:

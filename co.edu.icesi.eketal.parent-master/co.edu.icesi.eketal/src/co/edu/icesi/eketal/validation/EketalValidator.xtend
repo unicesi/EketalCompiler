@@ -12,6 +12,8 @@ import co.edu.icesi.eketal.eketal.EketalPackage
 import co.edu.icesi.eketal.eketal.EventClass
 import co.edu.icesi.eketal.eketal.Step
 import java.util.TreeSet
+import co.edu.icesi.eketal.eketal.Automaton
+import co.edu.icesi.eketal.eketal.StateType
 
 /**
  * This class contains custom validation rules. 
@@ -24,6 +26,9 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val INVALID_FILE_NAME = "eketal.issue.invalidFileName"
 	public static val NON_CAPITAL_NAME = "eketal.issue.nonCapitalName"
 	public static val DETERMINIST_AUTOMATON_DEFINITION = "eketal.issue.deterministAutomatonDefinition"
+	public static val NO_INITIAL_STATE_FOUND = "eketal.issue.noInitialStateFound"
+	public static val MANY_INITIAL_STATES_FOUND = "eketal.issue.manyInitialStatesFound"
+	public static val NO_TRANSITIONS_FROM_INITIAL_STATE = "eketal.issue.noTransitionsFromInitialState"
 	
 	@Check
 	def checkAutomatonDeterminism(Step step){
@@ -31,9 +36,28 @@ class EketalValidator extends AbstractEketalValidator {
 		if (!duplicate.empty) {
 			for(event:duplicate.keySet){
 				error("The step '" + step.name + "' cannot have another transition with the same event as '" + event.name +
-					"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)	
+					"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)
 				
 			}			
+		}
+	}
+	
+	@Check
+	def checkInitialState(Automaton automaton){
+		val initialState = automaton.steps.filter[s | s.type==StateType.START]
+		if(initialState.size==0){
+			error("The automaton '" + automaton.name + "' must have an initial State '"+
+					"'", EketalPackage.Literals.AUTOMATON__STEPS, NO_INITIAL_STATE_FOUND)
+		}else if(initialState.size>1){
+			for(state : initialState)
+				error("The automaton '" + automaton.name + "' can only have one initial state '"+
+					"'", EketalPackage.Literals.AUTOMATON__STEPS, MANY_INITIAL_STATES_FOUND)
+		}else{
+			for(state : initialState)
+				if(state.transitions==null || state.transitions.empty){
+					error("The automaton '" + automaton.name + "' must have at least one transition in his initial state '"+ state.name +
+							"'", EketalPackage.Literals.AUTOMATON__STEPS, NO_TRANSITIONS_FROM_INITIAL_STATE)
+				}			
 		}
 	}
 	
