@@ -1,7 +1,7 @@
 /*
  * This is an example model
  */
-package src.main.java.core;
+package core;
 eventclass Example{
 	/*
 	 * This automaton recognize the following event sequence:
