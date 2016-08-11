@@ -37,8 +37,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 			   "mcast_addr=228.8.8.8;mcast_recv_buf_size=64000;max_bundle_size=60000;" +
 			   "max_bundle_timeout=30;" +
 			   "ucast_send_buf_size=32000;ip_ttl=32;ignore_dont_bundle=false" +
-			   System.getProperty("bind.addr") + 
-			   System.getProperty("bind.port") + "):" +
+			   "):" +
 			   "PING(timeout=2000;num_initial_members=3):" +
 			   //Added to simulate lost messages
 			   "DISCARD(up=0.05;excludeItself=true):" +
