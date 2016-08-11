@@ -47,6 +47,23 @@ class EketalNewProjectWizardInitialContents {
 			'''
 		)
 		fsa.generateFile(
+			"src/core"+File.separator+"HelloWorld.java",
+			'''
+			package core;
+			
+			public class HelloWorld {
+				
+				public String helloMethod(){
+					return "Hello from " + this.getClass().getName();
+				}
+				
+				public String worldMethod(){
+					return "HelloWorld from " +  this.getClass().getName();
+				}
+			}
+			'''
+		)
+		fsa.generateFile(
 			"src/test"+File.separator+"TestAutomaton.java",
 			'''
 			/*
@@ -54,10 +71,14 @@ class EketalNewProjectWizardInitialContents {
 			 */
 			package test;
 			
+			import core.HelloWorld;
+			
 			import static org.junit.Assert.*;
+			import org.junit.AfterClass;
 			import org.junit.Test;
 			
 			import co.edu.icesi.eketal.automaton.AutomatonConstructor;
+			import co.edu.icesi.eketal.handlercontrol.EventHandler;
 			import co.edu.icesi.ketal.core.Automaton;
 			import co.edu.icesi.ketal.core.Event;
 			import co.edu.icesi.ketal.core.NamedEvent;
@@ -68,19 +89,39 @@ class EketalNewProjectWizardInitialContents {
 				
 				@Test
 				public void testCase(){
-					Event eventHello = new NamedEvent("eventHello");
-					Event eventWorld = new NamedEvent("eventWorld");
+					Event eventHello = new NamedEvent("eventoHello");
+					Event eventWorld = new NamedEvent("eventoWorld");
 					
+					HelloWorld hw = new HelloWorld();
+							
+					hw.helloMethod();
+					hw.worldMethod();
 					
 					System.out.println(instance.getCurrentState().toString());
+					String state = instance.getCurrentState().toString();
+					assertFalse(instance.evaluate(eventWorld));
+					
+					System.out.println(instance.getCurrentState().toString());
+					assertEquals(state, instance.getCurrentState().toString());
 					assertTrue(instance.evaluate(eventHello));
+					
 					System.out.println(instance.getCurrentState().toString());
+					assertNotEquals(state, instance.getCurrentState().toString());
 					assertTrue(instance.evaluate(eventWorld));
+					
 					System.out.println(instance.getCurrentState().toString());
+					assertFalse(instance.getCurrentState().getAccept());
+				}
+				
+				@AfterClass
+				public static void tearDown(){
+					EventHandler distribuidor = EventHandler.getInstance();
+					distribuidor.closeCommunication();
 				}
 			
 			}
-			'''
+			'''		
 		)
+		
 	}
 }

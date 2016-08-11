@@ -1,11 +1,17 @@
 package co.edu.icesi.ketal.core;
 
+import java.io.Serializable;
 import java.net.URL;
 
 import org.jgroups.protocols.TransportedVectorTime;
 
-public class NamedEvent implements Event{
+public class NamedEvent implements Event, Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 
 	private TransportedVectorTime tvt;

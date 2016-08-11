@@ -48,7 +48,7 @@ class EketalGenerator implements IGenerator{
 		'''
 		var String automatonName = null
 		var Set<String> importedLibraries = new TreeSet()
-		var pointcuts = new ArrayList<String>
+		var pointcuts = new TreeSet<String>
 		
 		if(modelo.declarations.containsAutomaton)			
 			importedLibraries+="co.edu.icesi.eketal.automaton.*"
@@ -90,11 +90,10 @@ class EketalGenerator implements IGenerator{
 						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
 						Map map = new HashMap<String, Object>();
-						map.put("Automata", automata);
+						//map.put("Automata", automata);
 						Event event = new NamedEvent("«event.name»");
 						distribuidor.multicast(event, map);
 						
-						//distribuidor.multicast(null, null);
 						System.out.println("Returned or threw an Exception");
 					}
 				«ENDIF»
@@ -136,7 +135,7 @@ class EketalGenerator implements IGenerator{
 		return importList
 	}
 	
-	def createPointCut(EvDecl decl, ArrayList<String> pointcuts) {
+	def createPointCut(EvDecl decl, TreeSet<String> pointcuts) {
 		var ArrayList<String> eventsDefinition = new ArrayList
 		for(event : decl.eventos){
 			eventsDefinition+=eventExpression(event as EventExpression, pointcuts)
@@ -148,7 +147,7 @@ class EketalGenerator implements IGenerator{
 	/*
 	 * El warnning es omitible, dado que no va a fallar bajo ninguna situación
 	 */
-	def eventExpression(EventExpression event, ArrayList<String> pointcuts) {
+	def eventExpression(EventExpression event, TreeSet<String> pointcuts) {
 			if(event.tipoEvento!=null){
 				var eventKind = event.tipoEvento
 				switch(eventKind){

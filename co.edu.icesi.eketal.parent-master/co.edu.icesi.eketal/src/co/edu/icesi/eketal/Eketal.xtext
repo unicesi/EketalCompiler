@@ -43,7 +43,6 @@ MSig:
 //Event Declaration
 //////////////////////////////////////
 
-//TODO Acomodar al estilo aspectj
 EvDecl:
 	'event' name=ID'(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')'":"eventos+=OrEvent*';'
 ;
@@ -75,17 +74,18 @@ EventPredicate:
 ;
 	
 KindAttribute:
-	'host' '('hostgroup=[Group]')' //TODO deberia ser unico
-	| 'on' '('ongroup=[Group]')' //TODO deberia ser unico
+	'host' '('hostgroup=[Group]')'
+	| 'on' '('ongroup=[Group]')'
 	| 'if' condition=XParenthesizedExpression
 //	| 'eq'"("JExp","JExp")"
 ;
 
+//TODO permitir que haya un tipo de dato antes del qualified name
 Trigger:
 	'call''('esig=QualifiedName'('(params+=JvmTypeReference 
 		(',' params+=JvmTypeReference)* )?')'')'//funciona 
 ;
-	
+
 Group:
 	'group' name=ID
 	'{' hosts+=Host* '}'
@@ -105,9 +105,7 @@ Ip:
 //////////////////////////////////////
 //TODO Tiene que haber una verificación de si, es un estado inicial (contiene la palabra start)
 //debe tener transiciones, porque sino, no se puede llegar a ningún lado
-//TODO Validación de que debe haber uno y solo un estado inicial
 //TODO estado de finalización default
-//TODO validacion: si es tipo estado end, no puede tener transiciones
 //TODO Restricción de que solo puede haber un autómata
 Automaton:
 	'automaton' name=ID '('(params+=FullJvmFormalParameter 
@@ -115,7 +113,7 @@ Automaton:
 ;
         
 Step:
-	(type=StateType)? name=ID ( ':' '('transitions+=TransDef')' ('||' '('transitions+=TransDef* ')')? )? ';'
+	(type=StateType)? name=ID ( ':' '('transitions+=TransDef')' ('||' '('transitions+=TransDef* ')')* )? ';'
 ;
 
 TransDef:
