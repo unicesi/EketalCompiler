@@ -36,8 +36,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	  private String props = "UDP(mcast_send_buf_size=32000;mcast_port=45566;ucast_recv_buf_size=64000;" +
 			   "mcast_addr=228.8.8.8;mcast_recv_buf_size=64000;max_bundle_size=60000;" +
 			   "max_bundle_timeout=30;" +
-			   "ucast_send_buf_size=32000;ip_ttl=32;ignore_dont_bundle=false" +
-			   "):" +
+			   "ucast_send_buf_size=32000;ip_ttl=32):" +
 			   "PING(timeout=2000;num_initial_members=3):" +
 			   //Added to simulate lost messages
 			   "DISCARD(up=0.05;excludeItself=true):" +

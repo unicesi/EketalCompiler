@@ -90,7 +90,7 @@ class EketalGenerator implements IGenerator{
 						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
 						Map map = new HashMap<String, Object>();
-						map.put("Automata", automata);
+						//map.put("Automata", automata);
 						Event event = new NamedEvent("«event.name»");
 						distribuidor.multicast(event, map);
 						
