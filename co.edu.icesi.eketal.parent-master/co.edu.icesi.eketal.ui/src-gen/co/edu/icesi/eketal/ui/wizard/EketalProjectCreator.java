@@ -5,9 +5,6 @@ package co.edu.icesi.eketal.ui.wizard;
 
 import org.eclipse.xtext.ui.wizard.AbstractPluginProjectCreator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;

@@ -9651,11 +9651,11 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                 {
                 int LA11_1 = input.LA(2);
 
-                if ( (LA11_1==13) ) {
-                    alt11=1;
-                }
-                else if ( (LA11_1==EOF||(LA11_1>=RULE_ID && LA11_1<=RULE_STRING)||(LA11_1>=14 && LA11_1<=15)||(LA11_1>=18 && LA11_1<=52)||LA11_1==60||(LA11_1>=62 && LA11_1<=64)||(LA11_1>=66 && LA11_1<=68)||LA11_1==72||(LA11_1>=79 && LA11_1<=99)||(LA11_1>=103 && LA11_1<=104)||(LA11_1>=106 && LA11_1<=107)) ) {
+                if ( (LA11_1==EOF||(LA11_1>=RULE_ID && LA11_1<=RULE_STRING)||(LA11_1>=14 && LA11_1<=15)||(LA11_1>=18 && LA11_1<=52)||LA11_1==60||(LA11_1>=62 && LA11_1<=64)||(LA11_1>=66 && LA11_1<=68)||LA11_1==72||(LA11_1>=79 && LA11_1<=99)||(LA11_1>=103 && LA11_1<=104)||(LA11_1>=106 && LA11_1<=107)) ) {
                     alt11=2;
+                }
+                else if ( (LA11_1==13) ) {
+                    alt11=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9670,11 +9670,11 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                 {
                 int LA11_2 = input.LA(2);
 
-                if ( (LA11_2==13) ) {
-                    alt11=1;
-                }
-                else if ( (LA11_2==EOF||(LA11_2>=RULE_ID && LA11_2<=RULE_STRING)||(LA11_2>=14 && LA11_2<=15)||(LA11_2>=18 && LA11_2<=52)||LA11_2==60||(LA11_2>=62 && LA11_2<=64)||(LA11_2>=66 && LA11_2<=68)||LA11_2==72||(LA11_2>=79 && LA11_2<=99)||(LA11_2>=103 && LA11_2<=104)||(LA11_2>=106 && LA11_2<=107)) ) {
+                if ( (LA11_2==EOF||(LA11_2>=RULE_ID && LA11_2<=RULE_STRING)||(LA11_2>=14 && LA11_2<=15)||(LA11_2>=18 && LA11_2<=52)||LA11_2==60||(LA11_2>=62 && LA11_2<=64)||(LA11_2>=66 && LA11_2<=68)||LA11_2==72||(LA11_2>=79 && LA11_2<=99)||(LA11_2>=103 && LA11_2<=104)||(LA11_2>=106 && LA11_2<=107)) ) {
                     alt11=2;
+                }
+                else if ( (LA11_2==13) ) {
+                    alt11=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9708,11 +9708,11 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                 {
                 int LA11_4 = input.LA(2);
 
-                if ( (LA11_4==13) ) {
-                    alt11=1;
-                }
-                else if ( (LA11_4==EOF||(LA11_4>=RULE_ID && LA11_4<=RULE_STRING)||(LA11_4>=14 && LA11_4<=15)||(LA11_4>=18 && LA11_4<=52)||LA11_4==60||(LA11_4>=62 && LA11_4<=64)||(LA11_4>=66 && LA11_4<=68)||LA11_4==72||(LA11_4>=79 && LA11_4<=99)||(LA11_4>=103 && LA11_4<=104)||(LA11_4>=106 && LA11_4<=107)) ) {
+                if ( (LA11_4==EOF||(LA11_4>=RULE_ID && LA11_4<=RULE_STRING)||(LA11_4>=14 && LA11_4<=15)||(LA11_4>=18 && LA11_4<=52)||LA11_4==60||(LA11_4>=62 && LA11_4<=64)||(LA11_4>=66 && LA11_4<=68)||LA11_4==72||(LA11_4>=79 && LA11_4<=99)||(LA11_4>=103 && LA11_4<=104)||(LA11_4>=106 && LA11_4<=107)) ) {
                     alt11=2;
+                }
+                else if ( (LA11_4==13) ) {
+                    alt11=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -10707,11 +10707,11 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
             if ( (LA17_0==28) ) {
                 int LA17_1 = input.LA(2);
 
-                if ( (LA17_1==28) ) {
-                    alt17=1;
-                }
-                else if ( (LA17_1==EOF||(LA17_1>=RULE_ID && LA17_1<=RULE_STRING)||LA17_1==29||(LA17_1>=36 && LA17_1<=37)||LA17_1==42||(LA17_1>=47 && LA17_1<=52)||LA17_1==62||LA17_1==66||LA17_1==72||(LA17_1>=81 && LA17_1<=82)||LA17_1==85||(LA17_1>=88 && LA17_1<=96)||LA17_1==98||LA17_1==107) ) {
+                if ( (LA17_1==EOF||(LA17_1>=RULE_ID && LA17_1<=RULE_STRING)||LA17_1==29||(LA17_1>=36 && LA17_1<=37)||LA17_1==42||(LA17_1>=47 && LA17_1<=52)||LA17_1==62||LA17_1==66||LA17_1==72||(LA17_1>=81 && LA17_1<=82)||LA17_1==85||(LA17_1>=88 && LA17_1<=96)||LA17_1==98||LA17_1==107) ) {
                     alt17=2;
+                }
+                else if ( (LA17_1==28) ) {
+                    alt17=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -23541,42 +23541,49 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Step__Group_2__4__Impl"
-    // InternalEketal.g:6717:1: rule__Step__Group_2__4__Impl : ( ( rule__Step__Group_2_4__0 )? ) ;
+    // InternalEketal.g:6717:1: rule__Step__Group_2__4__Impl : ( ( rule__Step__Group_2_4__0 )* ) ;
     public final void rule__Step__Group_2__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalEketal.g:6721:1: ( ( ( rule__Step__Group_2_4__0 )? ) )
-            // InternalEketal.g:6722:1: ( ( rule__Step__Group_2_4__0 )? )
+            // InternalEketal.g:6721:1: ( ( ( rule__Step__Group_2_4__0 )* ) )
+            // InternalEketal.g:6722:1: ( ( rule__Step__Group_2_4__0 )* )
             {
-            // InternalEketal.g:6722:1: ( ( rule__Step__Group_2_4__0 )? )
-            // InternalEketal.g:6723:2: ( rule__Step__Group_2_4__0 )?
+            // InternalEketal.g:6722:1: ( ( rule__Step__Group_2_4__0 )* )
+            // InternalEketal.g:6723:2: ( rule__Step__Group_2_4__0 )*
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getStepAccess().getGroup_2_4()); 
             }
-            // InternalEketal.g:6724:2: ( rule__Step__Group_2_4__0 )?
-            int alt73=2;
-            int LA73_0 = input.LA(1);
+            // InternalEketal.g:6724:2: ( rule__Step__Group_2_4__0 )*
+            loop73:
+            do {
+                int alt73=2;
+                int LA73_0 = input.LA(1);
 
-            if ( (LA73_0==14) ) {
-                alt73=1;
-            }
-            switch (alt73) {
-                case 1 :
-                    // InternalEketal.g:6724:3: rule__Step__Group_2_4__0
-                    {
-                    pushFollow(FOLLOW_2);
-                    rule__Step__Group_2_4__0();
+                if ( (LA73_0==14) ) {
+                    alt73=1;
+                }
 
-                    state._fsp--;
-                    if (state.failed) return ;
 
-                    }
-                    break;
+                switch (alt73) {
+            	case 1 :
+            	    // InternalEketal.g:6724:3: rule__Step__Group_2_4__0
+            	    {
+            	    pushFollow(FOLLOW_21);
+            	    rule__Step__Group_2_4__0();
 
-            }
+            	    state._fsp--;
+            	    if (state.failed) return ;
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop73;
+                }
+            } while (true);
 
             if ( state.backtracking==0 ) {
                after(grammarAccess.getStepAccess().getGroup_2_4()); 
@@ -63720,28 +63727,28 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Trigger__ParamsAssignment_4_0"
-    // InternalEketal.g:19396:1: rule__Trigger__ParamsAssignment_4_0 : ( ruleFullJvmFormalParameter ) ;
+    // InternalEketal.g:19396:1: rule__Trigger__ParamsAssignment_4_0 : ( ruleJvmTypeReference ) ;
     public final void rule__Trigger__ParamsAssignment_4_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalEketal.g:19400:1: ( ( ruleFullJvmFormalParameter ) )
-            // InternalEketal.g:19401:2: ( ruleFullJvmFormalParameter )
+            // InternalEketal.g:19400:1: ( ( ruleJvmTypeReference ) )
+            // InternalEketal.g:19401:2: ( ruleJvmTypeReference )
             {
-            // InternalEketal.g:19401:2: ( ruleFullJvmFormalParameter )
-            // InternalEketal.g:19402:3: ruleFullJvmFormalParameter
+            // InternalEketal.g:19401:2: ( ruleJvmTypeReference )
+            // InternalEketal.g:19402:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getTriggerAccess().getParamsFullJvmFormalParameterParserRuleCall_4_0_0()); 
+               before(grammarAccess.getTriggerAccess().getParamsJvmTypeReferenceParserRuleCall_4_0_0()); 
             }
             pushFollow(FOLLOW_2);
-            ruleFullJvmFormalParameter();
+            ruleJvmTypeReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getTriggerAccess().getParamsFullJvmFormalParameterParserRuleCall_4_0_0()); 
+               after(grammarAccess.getTriggerAccess().getParamsJvmTypeReferenceParserRuleCall_4_0_0()); 
             }
 
             }
@@ -63765,28 +63772,28 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Trigger__ParamsAssignment_4_1_1"
-    // InternalEketal.g:19411:1: rule__Trigger__ParamsAssignment_4_1_1 : ( ruleFullJvmFormalParameter ) ;
+    // InternalEketal.g:19411:1: rule__Trigger__ParamsAssignment_4_1_1 : ( ruleJvmTypeReference ) ;
     public final void rule__Trigger__ParamsAssignment_4_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalEketal.g:19415:1: ( ( ruleFullJvmFormalParameter ) )
-            // InternalEketal.g:19416:2: ( ruleFullJvmFormalParameter )
+            // InternalEketal.g:19415:1: ( ( ruleJvmTypeReference ) )
+            // InternalEketal.g:19416:2: ( ruleJvmTypeReference )
             {
-            // InternalEketal.g:19416:2: ( ruleFullJvmFormalParameter )
-            // InternalEketal.g:19417:3: ruleFullJvmFormalParameter
+            // InternalEketal.g:19416:2: ( ruleJvmTypeReference )
+            // InternalEketal.g:19417:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getTriggerAccess().getParamsFullJvmFormalParameterParserRuleCall_4_1_1_0()); 
+               before(grammarAccess.getTriggerAccess().getParamsJvmTypeReferenceParserRuleCall_4_1_1_0()); 
             }
             pushFollow(FOLLOW_2);
-            ruleFullJvmFormalParameter();
+            ruleJvmTypeReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getTriggerAccess().getParamsFullJvmFormalParameterParserRuleCall_4_1_1_0()); 
+               after(grammarAccess.getTriggerAccess().getParamsJvmTypeReferenceParserRuleCall_4_1_1_0()); 
             }
 
             }
@@ -73263,7 +73270,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
     static final String dfa_39s = "\1\4\7\0\2\uffff";
     static final String dfa_40s = "\1\153\7\0\2\uffff";
     static final String dfa_41s = "\10\uffff\1\2\1\1";
-    static final String dfa_42s = "\1\uffff\1\2\1\4\1\5\1\0\1\3\1\1\1\6\2\uffff}>";
+    static final String dfa_42s = "\1\uffff\1\0\1\3\1\4\1\6\1\1\1\2\1\5\2\uffff}>";
     static final String[] dfa_43s = {
             "\5\10\5\uffff\2\10\2\uffff\1\1\1\2\1\3\1\4\1\5\5\10\1\7\1\6\27\10\7\uffff\1\10\1\uffff\3\10\1\uffff\3\10\3\uffff\1\10\6\uffff\25\10\3\uffff\2\10\1\uffff\2\10",
             "\1\uffff",
@@ -73304,36 +73311,6 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA76_4 = input.LA(1);
-
-                         
-                        int index76_4 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalEketal()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index76_4);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA76_6 = input.LA(1);
-
-                         
-                        int index76_6 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalEketal()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index76_6);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
                         int LA76_1 = input.LA(1);
 
                          
@@ -73348,7 +73325,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         input.seek(index76_1);
                         if ( s>=0 ) return s;
                         break;
-                    case 3 : 
+                    case 1 : 
                         int LA76_5 = input.LA(1);
 
                          
@@ -73363,7 +73340,22 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         input.seek(index76_5);
                         if ( s>=0 ) return s;
                         break;
-                    case 4 : 
+                    case 2 : 
+                        int LA76_6 = input.LA(1);
+
+                         
+                        int index76_6 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalEketal()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index76_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
                         int LA76_2 = input.LA(1);
 
                          
@@ -73378,7 +73370,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         input.seek(index76_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
+                    case 4 : 
                         int LA76_3 = input.LA(1);
 
                          
@@ -73393,7 +73385,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         input.seek(index76_3);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
+                    case 5 : 
                         int LA76_7 = input.LA(1);
 
                          
@@ -73408,6 +73400,21 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         input.seek(index76_7);
                         if ( s>=0 ) return s;
                         break;
+                    case 6 : 
+                        int LA76_4 = input.LA(1);
+
+                         
+                        int index76_4 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalEketal()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index76_4);
+                        if ( s>=0 ) return s;
+                        break;
             }
             if (state.backtracking>0) {state.failed=true; return -1;}
             NoViableAltException nvae =
@@ -73420,7 +73427,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
     static final String dfa_45s = "\1\4\1\uffff\10\0\1\uffff";
     static final String dfa_46s = "\1\153\1\uffff\10\0\1\uffff";
     static final String dfa_47s = "\1\uffff\1\2\10\uffff\1\1";
-    static final String dfa_48s = "\2\uffff\1\5\1\2\1\4\1\0\1\7\1\3\1\6\1\1\1\uffff}>";
+    static final String dfa_48s = "\2\uffff\1\0\1\2\1\1\1\5\1\4\1\7\1\3\1\6\1\uffff}>";
     static final String[] dfa_49s = {
             "\5\1\5\uffff\2\1\2\uffff\12\1\1\3\1\2\1\4\1\5\1\6\1\7\1\10\1\11\21\1\7\uffff\1\1\1\uffff\3\1\1\uffff\3\1\3\uffff\1\1\6\uffff\25\1\3\uffff\2\1\1\uffff\2\1",
             "",
@@ -73462,10 +73469,10 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA82_5 = input.LA(1);
+                        int LA82_2 = input.LA(1);
 
                          
-                        int index82_5 = input.index();
+                        int index82_2 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred134_InternalEketal()) ) {s = 10;}
@@ -73473,14 +73480,14 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index82_5);
+                        input.seek(index82_2);
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA82_9 = input.LA(1);
+                        int LA82_4 = input.LA(1);
 
                          
-                        int index82_9 = input.index();
+                        int index82_4 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred134_InternalEketal()) ) {s = 10;}
@@ -73488,7 +73495,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index82_9);
+                        input.seek(index82_4);
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
@@ -73507,51 +73514,6 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         if ( s>=0 ) return s;
                         break;
                     case 3 : 
-                        int LA82_7 = input.LA(1);
-
-                         
-                        int index82_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred134_InternalEketal()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index82_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
-                        int LA82_4 = input.LA(1);
-
-                         
-                        int index82_4 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred134_InternalEketal()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index82_4);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 5 : 
-                        int LA82_2 = input.LA(1);
-
-                         
-                        int index82_2 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred134_InternalEketal()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index82_2);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 6 : 
                         int LA82_8 = input.LA(1);
 
                          
@@ -73566,7 +73528,7 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
                         input.seek(index82_8);
                         if ( s>=0 ) return s;
                         break;
-                    case 7 : 
+                    case 4 : 
                         int LA82_6 = input.LA(1);
 
                          
@@ -73579,6 +73541,51 @@ public class InternalEketalParser extends AbstractInternalContentAssistParser {
 
                          
                         input.seek(index82_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA82_5 = input.LA(1);
+
+                         
+                        int index82_5 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred134_InternalEketal()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index82_5);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
+                        int LA82_9 = input.LA(1);
+
+                         
+                        int index82_9 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred134_InternalEketal()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index82_9);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 7 : 
+                        int LA82_7 = input.LA(1);
+
+                         
+                        int index82_7 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred134_InternalEketal()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index82_7);
                         if ( s>=0 ) return s;
                         break;
             }

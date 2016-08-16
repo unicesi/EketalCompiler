@@ -1,0 +1,26 @@
+/*
+ * This is an example model
+ */
+package core;
+eventclass Example{
+	/*
+	 * This automaton recognize the following event sequence:
+	 * (eventoHello (eventoWorld eventoHello)* eventoHello) 
+	 */	
+	automaton automatonConstructor(){
+		start firstState : (eventoHello -> middleState);
+		middleState : (eventoHello -> finalState) || (eventoWorld -> firstState);
+		end finalState;
+	}
+	
+	/* 
+	 * Means that accept only the local calls
+	 */
+	group localGroup{
+		localhost
+	}
+	
+	event eventoHello():host(localGroup)&&call(core.HelloWorld.helloMethod());
+	
+	event eventoWorld(): call(core.HelloWorld.worldMethod());
+}
