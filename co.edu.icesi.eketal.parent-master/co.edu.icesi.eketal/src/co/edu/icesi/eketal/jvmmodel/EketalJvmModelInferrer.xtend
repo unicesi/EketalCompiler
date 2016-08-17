@@ -222,16 +222,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 			//Aquí termina la definición sintética del Sigleton
 			
-			//Close communication
-			members+=eventDefinitionClass.toMethod("closeCommunication", typeRef(void))[
-				body = '''
-				eventBroker.closeComunication();
-				eventBrokerHandler.closeComunication();
-				'''
-			]
-			//Close communication
-			
-			
 			//TODO en este es el mulsticasSync o el Async?
 			members+=eventDefinitionClass.toMethod("multicast", typeRef(void))[
 				parameters+=eventDefinitionClass.toParameter("evento", Event.typeRef)

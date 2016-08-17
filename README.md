@@ -37,7 +37,7 @@
    
    Add the update site repository and install.
 
-###Sample project
+##Sample project
   
    Once you have done this, you can create your own sample project of type Eketal in the "New Project" window, this project have a class with the .eketal extension and his own TestClass, all the other classes are generated.
    
@@ -93,8 +93,12 @@ Finally find "../co.edu.icesi.eketal.parent-master/co.edu.icesi.eketal.repositor
 
 ##Developers
   To contribute , this project can be clone to a local repository and you can work from there.
-  For deploy in your workspace, you must have Eclipse mars, with aspectj, maven and xtext as mentioned in the beggining. Then you can import as a maven project and import it. You must have Maven installed.
+  For deploy in your workspace, you must have Eclipse mars, with aspectj, maven and xtext as mentioned in the beggining. Then you can import it as a maven project. You must have Maven installed.
    
-   In case of having a build path problems with the following message "The project cannot be built until build path errors are resolved  co.edu.icesi.eketal.ide" in your eclipse, do the following: in the co.edu.icesi.eketal.ide project, you must add manually the missing folders as the following: Right click in the co.edu.icesi.eketal.ide project -> New -> Folder. Next, in the name put "src" and repeat the procces to create a "xtend-gen" folder. Finally, Right click in the in the parent project -> Maven -> Update Project.
+   In case of having a build path problems with the following message: "The project cannot be built until build path errors are resolved  co.edu.icesi.eketal.ide" in your eclipse, do the following: in the co.edu.icesi.eketal.ide project, you must add manually the missing folders as the following: 
+   >Right click in the co.edu.icesi.eketal.ide project -> New -> Folder.
+   
+   Next, in the name put "src" and repeat the procces to create a "xtend-gen" folder. Finally:
+   >Right click in the in the parent project -> Maven -> Update Project.
    
    In case of problems, please submit an issue.

@@ -89,6 +89,8 @@ class EketalNewProjectWizardInitialContents {
 				
 				@Test
 				public void testCase(){
+					System.setProperty("java.net.preferIPv4Stack" , "true");
+					
 					Event eventHello = new NamedEvent("eventoHello");
 					Event eventWorld = new NamedEvent("eventoWorld");
 					
@@ -111,12 +113,6 @@ class EketalNewProjectWizardInitialContents {
 					
 					System.out.println(instance.getCurrentState().toString());
 					assertFalse(instance.getCurrentState().getAccept());
-				}
-				
-				@AfterClass
-				public static void tearDown(){
-					EventHandler distribuidor = EventHandler.getInstance();
-					distribuidor.closeCommunication();
 				}
 			
 			}
