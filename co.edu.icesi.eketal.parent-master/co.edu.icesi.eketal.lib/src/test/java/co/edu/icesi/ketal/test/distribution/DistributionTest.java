@@ -23,36 +23,16 @@ import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker;
  */
 public class DistributionTest {
 
-	private BrokerMessageHandler brokerMessageHandler;
-	private BrokerMessageHandler brokerMessageHandler2;
-	EventBroker eventBroker1;
-	EventBroker eventBroker2;
 	private Automaton automaton;
 	
-	
 	@Before
-	public void setUp() throws Exception {
-		//Setup the properties for message handlers and the event brokers
-		brokerMessageHandler = new KetalMessageHandler();
-		brokerMessageHandler2 = new KetalMessageHandler();
-		eventBroker1 = new JGroupsEventBroker("UNO", brokerMessageHandler);
-		eventBroker2 = new JGroupsEventBroker("UNO", brokerMessageHandler2);
-			
-		//Set up the automaton and create the events to be recognized.
+	public void setUp() throws Exception {//Set up the automaton and create the events to be recognized.
 		automaton= new Automaton();
 		automaton.mapExpressionToAlphabet(new DefaultEqualsExpression(new TestEvent1Distributed('a')), new Character('A'));
 		automaton.mapExpressionToAlphabet(new DefaultEqualsExpression(new TestEvent1Distributed('b')), new Character('B'));
 		automaton.mapExpressionToAlphabet(new DefaultEqualsExpression(new TestEvent1Distributed('c')), new Character('C'));
 		automaton.setRegularExpression("ABB|CAAB");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-		eventBroker1.closeComunication();
-		eventBroker2.closeComunication();
-	}
-	
-	
 	
 	/**
 	 * This test just checks that messages are being send from one broker to the other.
@@ -63,6 +43,12 @@ public class DistributionTest {
 	 * */
 	@Test
 	public void testMessageSending() throws Exception {
+		//Setup the properties for message handlers and the event brokers
+		BrokerMessageHandler brokerMessageHandler = new KetalMessageHandler();
+		BrokerMessageHandler brokerMessageHandler2 = new KetalMessageHandler();
+		EventBroker eventBroker1 = new JGroupsEventBroker("UNO", brokerMessageHandler);
+		EventBroker eventBroker2 = new JGroupsEventBroker("UNO", brokerMessageHandler2);
+		
 		Event event1 = new TestEvent1Distributed('1');
 		Event event2 = new TestEvent1Distributed('2');
 
@@ -112,6 +98,12 @@ public class DistributionTest {
 	@Test
 	public void testAutomatonRecognizer() throws Exception
 	{
+		//Setup the properties for message handlers and the event brokers
+		BrokerMessageHandler brokerMessageHandler = new KetalMessageHandler();
+		BrokerMessageHandler brokerMessageHandler2 = new KetalMessageHandler();
+		EventBroker eventBroker1 = new JGroupsEventBroker("DOS", brokerMessageHandler);
+		EventBroker eventBroker2 = new JGroupsEventBroker("DOS", brokerMessageHandler2);
+		
 		Event event1 = new TestEvent1Distributed('a');
 		Event event2 = new TestEvent1Distributed('b');
 		Event event3 = new TestEvent1Distributed('c');
