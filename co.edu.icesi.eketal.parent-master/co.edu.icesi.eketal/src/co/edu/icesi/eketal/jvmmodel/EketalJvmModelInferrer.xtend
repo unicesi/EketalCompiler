@@ -122,6 +122,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					 * Creates the class with the singleton nature
 					 */
 					acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.automaton."+declaracion.name.toFirstUpper)) [
+					 	//superTypes+=entity.superType.cloneWithProxies
+//					 	superTypes+=typeRef(Automaton)
 						members+=declaracion.toField("instance", typeRef(Automaton))[static = true]
 						members+=declaracion.toMethod("getInstance", typeRef(Automaton))[
 							static = true

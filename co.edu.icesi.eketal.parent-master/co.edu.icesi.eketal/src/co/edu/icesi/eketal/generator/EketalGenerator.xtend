@@ -93,8 +93,16 @@ class EketalGenerator implements IGenerator{
 						//map.put("Automata", automata);
 						Event event = new NamedEvent("«event.name»");
 						distribuidor.multicast(event, map);
-						
-						System.out.println("Returned or threw an Exception");
+						if(!automata.evaluate(event)){
+							System.out.println("Evento no reconocido por el autómata");
+							//Debería parar
+						}else{
+							System.out.println("Returned or threw an Exception");							
+						}
+						//while(!automata.evaluate(event)){
+						//	wait(100);
+						//	
+						//}
 					}
 				«ENDIF»
 			«ENDFOR»
