@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="co.edu.icesi.eketal.lib-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="automaton.jar"/>
-	<classpathentry exported="true" kind="lib" path="jgroups-3.0.0.CR1.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgroups-3.6.9.Final.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
