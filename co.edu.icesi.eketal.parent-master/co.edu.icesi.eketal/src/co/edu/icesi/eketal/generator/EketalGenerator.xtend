@@ -226,12 +226,21 @@ class EketalGenerator implements IGenerator{
 		for(p : trigger.params){
 			parameters+=p.simpleName
 		}
+		
+		var String typeReturn = null
+		if(trigger.returndef.astk==null){
+			typeReturn=trigger.returndef.jvmRef.simpleName
+		}else{
+			typeReturn = "*"
+		}
+		
 		/*
 		 * La primera posición es el nombre del pointcut, la segunda es la definición del pointcut completo
 		 * En el pointcut completo se toma todos los parámetros y agrupan separados por ','
 		 */
+		 
 		var CharSequence[] returnCall = newArrayList('''point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»()''',
-			'''pointcut point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»(): call(* «trigger.esig»(«parameters.join(',')»))''')
+			'''pointcut point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»(): call(«typeReturn» «trigger.esig»(«parameters.join(',')»))''')
 		return returnCall
 	}
 	

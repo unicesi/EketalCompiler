@@ -14,7 +14,7 @@ generate eketal "http://www.icesi.edu.co/eketal/Eketal"
 Model:
 	('package' name = QualifiedName ->';'?)?
 	importSection = XImportSection?
-	typeDeclaration = EventClass?//TODO por qué está con el ?
+	typeDeclaration = EventClass?
 ;
 
 EventClass:
@@ -80,10 +80,17 @@ KindAttribute:
 //	| 'eq'"("JExp","JExp")"
 ;
 
-//TODO permitir que haya un tipo de dato antes del qualified name
 Trigger:
-	'call''('esig=QualifiedName'('(params+=JvmTypeReference 
-		(',' params+=JvmTypeReference)* )?')'')'//funciona 
+	'call' '(' returndef=TypeReturn esig=QualifiedName'('(params+=JvmTypeReference 
+		(',' params+=JvmTypeReference)* )?')'')'
+;
+
+TypeReturn returns JVMTYPE:
+	astk=ANY | jvmRef=JvmTypeReference
+;
+
+terminal ANY:
+	'*'
 ;
 
 Group:
@@ -103,8 +110,7 @@ Ip:
 //////////////////////////////////////
 ////Automata definicion
 //////////////////////////////////////
-//TODO Tiene que haber una verificación de si, es un estado inicial (contiene la palabra start)
-//debe tener transiciones, porque sino, no se puede llegar a ningún lado
+//TODO el estado inicial debe tener transiciones, porque sino, no se puede llegar a ningún lado
 //TODO estado de finalización default
 //TODO Restricción de que solo puede haber un autómata
 Automaton:
@@ -130,7 +136,16 @@ enum StateType:
 ////Reaction definition
 //////////////////////////////////////
 Rc:
-	(syncex="syncex")? 'reaction' pos=Pos name=ID '{' body=Body '}'
+	(syncex="syncex")? 'reaction' pos=Pos (state=[Step|QFN]) body=Body
+//	(syncex="syncex")? 'reaction' pos=Pos name=QFN body=Body //TODO Automaton.Step
+;
+
+//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/scoping/PascaniScopeProvider.xtend
+//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/runtime/PascaniQualifiedNameProvider.xtend
+//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/Pascani.xtext
+//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/PascaniRuntimeModule.xtend
+QFN:
+    ID ('.' ID)*
 ;
 
 enum Pos:
@@ -138,5 +153,6 @@ enum Pos:
 ;
 
 Body:
-	body=XBlockExpression | 'addGroup' '('grupo=[Group]')' | 'removeGroup' '('grupo=[Group]')'
+	body=XBlockExpression
+//	body=XBlockExpression | 'addGroup' '('grupo=[Group]')' | 'removeGroup' '('grupo=[Group]')'
 ;
