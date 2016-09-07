@@ -136,17 +136,13 @@ enum StateType:
 ////Reaction definition
 //////////////////////////////////////
 Rc:
-	(syncex="syncex")? 'reaction' pos=Pos (state=[Step|QFN]) body=Body
-//	(syncex="syncex")? 'reaction' pos=Pos name=QFN body=Body //TODO Automaton.Step
+	(syncex="syncex")? 'reaction' pos=Pos automaton=[Automaton]'.'state=[Step] body=Body
+//	(syncex="syncex")? 'reaction' pos=Pos (state=[Step|QFN]) body=Body//This implementations works with the fully qualifiedname, so the program suggested all the name (package.eventclass.automaton.step) instead of only automaton.step
 ;
 
-//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/scoping/PascaniScopeProvider.xtend
-//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/runtime/PascaniQualifiedNameProvider.xtend
-//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/Pascani.xtext
-//https://github.com/unicesi/pascani/blob/master/plugins/org.pascani.dsl/src/org/pascani/dsl/PascaniRuntimeModule.xtend
-QFN:
-    ID ('.' ID)*
-;
+//QFN:
+//    ID ('.' ID)*
+//;
 
 enum Pos:
 	before | around | after

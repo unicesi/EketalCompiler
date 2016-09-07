@@ -43,6 +43,12 @@ class EketalNewProjectWizardInitialContents {
 				event eventoHello():host(localGroup)&&call(core.HelloWorld.helloMethod());
 				
 				event eventoWorld(): call(core.HelloWorld.worldMethod());
+				
+				reaction before automatonConstructor.firstState{
+					
+					
+				}
+				
 			}
 			'''
 		)

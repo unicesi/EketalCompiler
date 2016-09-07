@@ -5,11 +5,12 @@ package co.edu.icesi.eketal.scoping
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.EketalPackage
 import org.eclipse.xtext.EcoreUtil2
 import co.edu.icesi.eketal.eketal.Step
 import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.IScope
+import co.edu.icesi.eketal.eketal.Rc
 
 /**
  * This class contains custom scoping description.
@@ -19,14 +20,18 @@ import org.eclipse.xtext.scoping.Scopes
  */
 class EketalScopeProvider extends AbstractEketalScopeProvider {
 	
-//	override getScope(EObject context, EReference reference) {
-//		if (context instanceof Rc) {
-//			if (reference == EketalPackage.Literals.AUTOMATON__STEPS && context.state != null) {
-//				val candidates = EcoreUtil2.getAllContentsOfType(context.state, Step);
-//				return Scopes.scopeFor(candidates)
-//			}
-//		}
-//		return super.getScope(context, reference);
+//	def IScope scopeReaction(Rc reaction, EReference ref){
+//		return Scopes.scopeFor(reaction.automaton.steps)
 //	}
+	
+	override getScope(EObject context, EReference reference) {
+		if (context instanceof Rc) {
+			if (reference == EketalPackage.Literals.RC__STATE) {
+				val candidates = context.automaton.steps
+				return Scopes.scopeFor(candidates)
+			}
+		}
+		return super.getScope(context, reference);
+	}
 	
 }
