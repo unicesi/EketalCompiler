@@ -2,15 +2,20 @@ package co.edu.icesi.eketal.generator;
 
 import co.edu.icesi.eketal.eketal.AndEvent;
 import co.edu.icesi.eketal.eketal.Automaton;
+import co.edu.icesi.eketal.eketal.Body;
 import co.edu.icesi.eketal.eketal.Decl;
 import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
 import co.edu.icesi.eketal.eketal.EventExpression;
 import co.edu.icesi.eketal.eketal.EventPredicate;
 import co.edu.icesi.eketal.eketal.Group;
+import co.edu.icesi.eketal.eketal.JVMTYPE;
 import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.KindAttribute;
+import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.OrEvent;
+import co.edu.icesi.eketal.eketal.Rc;
+import co.edu.icesi.eketal.eketal.Step;
 import co.edu.icesi.eketal.eketal.Trigger;
 import co.edu.icesi.eketal.eketal.UnaryEvent;
 import co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer;
@@ -22,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
@@ -30,6 +36,9 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.impl.XStringLiteralImpl;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -39,6 +48,8 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
+import org.eclipse.xtext.xtype.XImportDeclaration;
+import org.eclipse.xtext.xtype.XImportSection;
 
 @SuppressWarnings("all")
 public class EketalGenerator implements IGenerator {
@@ -46,19 +57,35 @@ public class EketalGenerator implements IGenerator {
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
     InputOutput.<String>println("IGenerator line 35");
     TreeIterator<EObject> _allContents = resource.getAllContents();
-    Iterator<EventClass> _filter = Iterators.<EventClass>filter(_allContents, EventClass.class);
-    final Procedure1<EventClass> _function = (EventClass it) -> {
-      this.generateAspect(it, fsa);
+    final Iterator<Model> listModel = Iterators.<Model>filter(_allContents, Model.class);
+    final Set<String> importedLibraries = new TreeSet<String>();
+    boolean _hasNext = listModel.hasNext();
+    if (_hasNext) {
+      final Model modelo = listModel.next();
+      if (((!Objects.equal(modelo.getImportSection(), null)) && (!modelo.getImportSection().getImportDeclarations().isEmpty()))) {
+        XImportSection _importSection = modelo.getImportSection();
+        EList<XImportDeclaration> _importDeclarations = _importSection.getImportDeclarations();
+        final Consumer<XImportDeclaration> _function = (XImportDeclaration it) -> {
+          String _importedTypeName = it.getImportedTypeName();
+          importedLibraries.add(_importedTypeName);
+        };
+        _importDeclarations.forEach(_function);
+      }
+    }
+    TreeIterator<EObject> _allContents_1 = resource.getAllContents();
+    Iterator<EventClass> _filter = Iterators.<EventClass>filter(_allContents_1, EventClass.class);
+    final Procedure1<EventClass> _function_1 = (EventClass it) -> {
+      this.generateAspect(it, fsa, importedLibraries);
     };
-    IteratorExtensions.<EventClass>forEach(_filter, _function);
+    IteratorExtensions.<EventClass>forEach(_filter, _function_1);
   }
   
-  public void generateAspect(final EventClass modelo, final IFileSystemAccess fsa) {
+  public void generateAspect(final EventClass modelo, final IFileSystemAccess fsa, final Set<String> importedLibraries) {
     String packageName = "co.edu.icesi.eketal.aspects";
     String _name = modelo.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);
     String _prepareFileName = this.prepareFileName(("./" + packageName), _firstUpper);
-    CharSequence _generate = this.generate(modelo, packageName);
+    CharSequence _generate = this.generate(modelo, packageName, importedLibraries);
     fsa.generateFile(_prepareFileName, IFileSystemAccess.DEFAULT_OUTPUT, _generate);
   }
   
@@ -67,7 +94,7 @@ public class EketalGenerator implements IGenerator {
     return (_replace + ".aj");
   }
   
-  public CharSequence generate(final EventClass modelo, final String packageName) {
+  public CharSequence generate(final EventClass modelo, final String packageName, final Set<String> libraries) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(packageName, "");
@@ -78,6 +105,7 @@ public class EketalGenerator implements IGenerator {
     String packageDefinition = _builder.toString();
     String automatonName = null;
     Set<String> importedLibraries = new TreeSet<String>();
+    Iterables.<String>addAll(importedLibraries, libraries);
     TreeSet<String> pointcuts = new TreeSet<String>();
     EList<Decl> _declarations = modelo.getDeclarations();
     boolean _containsAutomaton = this.containsAutomaton(_declarations);
@@ -236,7 +264,7 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t");
-            _builder_1.append("map.put(\"Automata\", automata);");
+            _builder_1.append("//map.put(\"Automata\", automata);");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t");
@@ -251,14 +279,65 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t");
+            _builder_1.append("if(!automata.evaluate(event)){");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t\t");
+            _builder_1.append("System.out.println(\"Evento no reconocido por el autómata\");");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t\t");
+            _builder_1.append("//Debería parar");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t");
-            _builder_1.append("System.out.println(\"Returned or threw an Exception\");");
+            _builder_1.append("}else{");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t\t");
+            _builder_1.append("System.out.println(\"Returned or threw an Exception\");\t\t\t\t\t\t\t");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("}");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("//while(!automata.evaluate(event)){");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("//\twait(100);");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("//\t");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("//}");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("}");
             _builder_1.newLine();
+          }
+        }
+        {
+          if ((event instanceof Rc)) {
+            _builder_1.append("\t");
+            _builder_1.append("public void reaction");
+            Automaton _automaton = ((Rc)event).getAutomaton();
+            String _name_11 = _automaton.getName();
+            _builder_1.append(_name_11, "\t");
+            Step _state = ((Rc)event).getState();
+            String _name_12 = _state.getName();
+            _builder_1.append(_name_12, "\t");
+            _builder_1.append("()");
+            Body _body = ((Rc)event).getBody();
+            XExpression _body_1 = _body.getBody();
+            String _printBody = this.printBody(((XBlockExpression) _body_1));
+            _builder_1.append(_printBody, "\t");
+            _builder_1.newLineIfNotEmpty();
           }
         }
       }
@@ -290,6 +369,11 @@ public class EketalGenerator implements IGenerator {
     _builder_2.newLine();
     String imports = _builder_2.toString();
     return ((packageDefinition + imports) + aspect);
+  }
+  
+  public String printBody(final XBlockExpression exp) {
+    final ICompositeNode body = NodeModelUtils.findActualNodeFor(exp);
+    return body.getText();
   }
   
   public boolean containsAutomaton(final EList<Decl> list) {
@@ -494,6 +578,18 @@ public class EketalGenerator implements IGenerator {
       String _simpleName = p.getSimpleName();
       parameters.add(_simpleName);
     }
+    String typeReturn = null;
+    JVMTYPE _returndef = trigger.getReturndef();
+    String _astk = _returndef.getAstk();
+    boolean _equals = Objects.equal(_astk, null);
+    if (_equals) {
+      JVMTYPE _returndef_1 = trigger.getReturndef();
+      JvmTypeReference _jvmRef = _returndef_1.getJvmRef();
+      String _simpleName_1 = _jvmRef.getSimpleName();
+      typeReturn = _simpleName_1;
+    } else {
+      typeReturn = "*";
+    }
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("point");
     String _esig = trigger.getEsig();
@@ -509,7 +605,9 @@ public class EketalGenerator implements IGenerator {
     String _replaceAll_1 = _string_1.replaceAll("\\.", "");
     String _firstUpper_1 = StringExtensions.toFirstUpper(_replaceAll_1);
     _builder_1.append(_firstUpper_1, "");
-    _builder_1.append("(): call(* ");
+    _builder_1.append("(): call(");
+    _builder_1.append(typeReturn, "");
+    _builder_1.append(" ");
     String _esig_2 = trigger.getEsig();
     _builder_1.append(_esig_2, "");
     _builder_1.append("(");

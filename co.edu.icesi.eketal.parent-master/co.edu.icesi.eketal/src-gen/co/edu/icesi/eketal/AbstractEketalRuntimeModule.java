@@ -16,6 +16,7 @@ import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import java.util.Properties;
+import jbase.DefaultJbaseRuntimeModule;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.common.types.xtext.TypesAwareDefaultGlobalScopeProvider;
@@ -47,7 +48,6 @@ import org.eclipse.xtext.serializer.sequencer.ISemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.IResourceValidator;
-import org.eclipse.xtext.xbase.DefaultXbaseRuntimeModule;
 import org.eclipse.xtext.xbase.annotations.validation.DerivedStateAwareResourceValidator;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.JvmLocationInFileProvider;
@@ -65,7 +65,7 @@ import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValida
  * Manual modifications go to {@link EketalRuntimeModule}.
  */
 @SuppressWarnings("all")
-public abstract class AbstractEketalRuntimeModule extends DefaultXbaseRuntimeModule {
+public abstract class AbstractEketalRuntimeModule extends DefaultJbaseRuntimeModule {
 
 	protected Properties properties = null;
 

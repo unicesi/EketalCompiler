@@ -76,6 +76,7 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
       case EketalPackage.EVENT_PREDICATE: return createEventPredicate();
       case EketalPackage.KIND_ATTRIBUTE: return createKindAttribute();
       case EketalPackage.TRIGGER: return createTrigger();
+      case EketalPackage.JVMTYPE: return createJVMTYPE();
       case EketalPackage.GROUP: return createGroup();
       case EketalPackage.HOST: return createHost();
       case EketalPackage.AUTOMATON: return createAutomaton();
@@ -237,6 +238,17 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     TriggerImpl trigger = new TriggerImpl();
     return trigger;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public JVMTYPE createJVMTYPE()
+  {
+    JVMTYPEImpl jvmtype = new JVMTYPEImpl();
+    return jvmtype;
   }
 
   /**

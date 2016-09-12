@@ -17,7 +17,6 @@ import org.eclipse.xtext.xbase.XExpression;
  * </p>
  * <ul>
  *   <li>{@link co.edu.icesi.eketal.eketal.Body#getBody <em>Body</em>}</li>
- *   <li>{@link co.edu.icesi.eketal.eketal.Body#getGrupo <em>Grupo</em>}</li>
  * </ul>
  *
  * @see co.edu.icesi.eketal.eketal.EketalPackage#getBody()
@@ -51,31 +50,5 @@ public interface Body extends EObject
    * @generated
    */
   void setBody(XExpression value);
-
-  /**
-   * Returns the value of the '<em><b>Grupo</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Grupo</em>' reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Grupo</em>' reference.
-   * @see #setGrupo(Group)
-   * @see co.edu.icesi.eketal.eketal.EketalPackage#getBody_Grupo()
-   * @model
-   * @generated
-   */
-  Group getGrupo();
-
-  /**
-   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.Body#getGrupo <em>Grupo</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Grupo</em>' reference.
-   * @see #getGrupo()
-   * @generated
-   */
-  void setGrupo(Group value);
 
 } // Body

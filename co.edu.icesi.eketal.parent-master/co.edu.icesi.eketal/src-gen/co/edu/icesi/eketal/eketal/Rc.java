@@ -15,6 +15,8 @@ package co.edu.icesi.eketal.eketal;
  * <ul>
  *   <li>{@link co.edu.icesi.eketal.eketal.Rc#getSyncex <em>Syncex</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.Rc#getPos <em>Pos</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.Rc#getAutomaton <em>Automaton</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.Rc#getState <em>State</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.Rc#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -78,6 +80,58 @@ public interface Rc extends Decl
    * @generated
    */
   void setPos(Pos value);
+
+  /**
+   * Returns the value of the '<em><b>Automaton</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Automaton</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Automaton</em>' reference.
+   * @see #setAutomaton(Automaton)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getRc_Automaton()
+   * @model
+   * @generated
+   */
+  Automaton getAutomaton();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.Rc#getAutomaton <em>Automaton</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Automaton</em>' reference.
+   * @see #getAutomaton()
+   * @generated
+   */
+  void setAutomaton(Automaton value);
+
+  /**
+   * Returns the value of the '<em><b>State</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>State</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>State</em>' reference.
+   * @see #setState(Step)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getRc_State()
+   * @model
+   * @generated
+   */
+  Step getState();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.Rc#getState <em>State</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>State</em>' reference.
+   * @see #getState()
+   * @generated
+   */
+  void setState(Step value);
 
   /**
    * Returns the value of the '<em><b>Body</b></em>' containment reference.

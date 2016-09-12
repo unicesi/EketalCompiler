@@ -3,9 +3,9 @@
  */
 package co.edu.icesi.eketal.eketal;
 
-import org.eclipse.emf.common.util.EList;
+import jbase.jbase.XJJvmFormalParameter;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,6 +16,7 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.EvDecl#getName <em>Name</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.EvDecl#getParams <em>Params</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.EvDecl#getEventos <em>Eventos</em>}</li>
  * </ul>
@@ -27,8 +28,34 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 public interface EvDecl extends Decl
 {
   /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getEvDecl_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.EvDecl#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
+  /**
    * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmFormalParameter}.
+   * The list contents are of type {@link jbase.jbase.XJJvmFormalParameter}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
@@ -40,7 +67,7 @@ public interface EvDecl extends Decl
    * @model containment="true"
    * @generated
    */
-  EList<JvmFormalParameter> getParams();
+  EList<XJJvmFormalParameter> getParams();
 
   /**
    * Returns the value of the '<em><b>Eventos</b></em>' containment reference list.

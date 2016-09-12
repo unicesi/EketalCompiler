@@ -126,6 +126,11 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
         return createTriggerAdapter();
       }
       @Override
+      public Adapter caseJVMTYPE(JVMTYPE object)
+      {
+        return createJVMTYPEAdapter();
+      }
+      @Override
       public Adapter caseGroup(Group object)
       {
         return createGroupAdapter();
@@ -343,6 +348,21 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTriggerAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.JVMTYPE <em>JVMTYPE</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.JVMTYPE
+   * @generated
+   */
+  public Adapter createJVMTYPEAdapter()
   {
     return null;
   }

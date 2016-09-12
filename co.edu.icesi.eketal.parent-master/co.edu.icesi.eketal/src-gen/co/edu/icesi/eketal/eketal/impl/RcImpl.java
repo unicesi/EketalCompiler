@@ -3,10 +3,12 @@
  */
 package co.edu.icesi.eketal.eketal.impl;
 
+import co.edu.icesi.eketal.eketal.Automaton;
 import co.edu.icesi.eketal.eketal.Body;
 import co.edu.icesi.eketal.eketal.EketalPackage;
 import co.edu.icesi.eketal.eketal.Pos;
 import co.edu.icesi.eketal.eketal.Rc;
+import co.edu.icesi.eketal.eketal.Step;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -26,6 +28,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.RcImpl#getSyncex <em>Syncex</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.RcImpl#getPos <em>Pos</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.RcImpl#getAutomaton <em>Automaton</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.RcImpl#getState <em>State</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.RcImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -72,6 +76,26 @@ public class RcImpl extends DeclImpl implements Rc
    * @ordered
    */
   protected Pos pos = POS_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getAutomaton() <em>Automaton</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAutomaton()
+   * @generated
+   * @ordered
+   */
+  protected Automaton automaton;
+
+  /**
+   * The cached value of the '{@link #getState() <em>State</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getState()
+   * @generated
+   * @ordered
+   */
+  protected Step state;
 
   /**
    * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -155,6 +179,92 @@ public class RcImpl extends DeclImpl implements Rc
    * <!-- end-user-doc -->
    * @generated
    */
+  public Automaton getAutomaton()
+  {
+    if (automaton != null && automaton.eIsProxy())
+    {
+      InternalEObject oldAutomaton = (InternalEObject)automaton;
+      automaton = (Automaton)eResolveProxy(oldAutomaton);
+      if (automaton != oldAutomaton)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, EketalPackage.RC__AUTOMATON, oldAutomaton, automaton));
+      }
+    }
+    return automaton;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Automaton basicGetAutomaton()
+  {
+    return automaton;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setAutomaton(Automaton newAutomaton)
+  {
+    Automaton oldAutomaton = automaton;
+    automaton = newAutomaton;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.RC__AUTOMATON, oldAutomaton, automaton));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Step getState()
+  {
+    if (state != null && state.eIsProxy())
+    {
+      InternalEObject oldState = (InternalEObject)state;
+      state = (Step)eResolveProxy(oldState);
+      if (state != oldState)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, EketalPackage.RC__STATE, oldState, state));
+      }
+    }
+    return state;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Step basicGetState()
+  {
+    return state;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setState(Step newState)
+  {
+    Step oldState = state;
+    state = newState;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.RC__STATE, oldState, state));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Body getBody()
   {
     return body;
@@ -228,6 +338,12 @@ public class RcImpl extends DeclImpl implements Rc
         return getSyncex();
       case EketalPackage.RC__POS:
         return getPos();
+      case EketalPackage.RC__AUTOMATON:
+        if (resolve) return getAutomaton();
+        return basicGetAutomaton();
+      case EketalPackage.RC__STATE:
+        if (resolve) return getState();
+        return basicGetState();
       case EketalPackage.RC__BODY:
         return getBody();
     }
@@ -249,6 +365,12 @@ public class RcImpl extends DeclImpl implements Rc
         return;
       case EketalPackage.RC__POS:
         setPos((Pos)newValue);
+        return;
+      case EketalPackage.RC__AUTOMATON:
+        setAutomaton((Automaton)newValue);
+        return;
+      case EketalPackage.RC__STATE:
+        setState((Step)newValue);
         return;
       case EketalPackage.RC__BODY:
         setBody((Body)newValue);
@@ -273,6 +395,12 @@ public class RcImpl extends DeclImpl implements Rc
       case EketalPackage.RC__POS:
         setPos(POS_EDEFAULT);
         return;
+      case EketalPackage.RC__AUTOMATON:
+        setAutomaton((Automaton)null);
+        return;
+      case EketalPackage.RC__STATE:
+        setState((Step)null);
+        return;
       case EketalPackage.RC__BODY:
         setBody((Body)null);
         return;
@@ -294,6 +422,10 @@ public class RcImpl extends DeclImpl implements Rc
         return SYNCEX_EDEFAULT == null ? syncex != null : !SYNCEX_EDEFAULT.equals(syncex);
       case EketalPackage.RC__POS:
         return pos != POS_EDEFAULT;
+      case EketalPackage.RC__AUTOMATON:
+        return automaton != null;
+      case EketalPackage.RC__STATE:
+        return state != null;
       case EketalPackage.RC__BODY:
         return body != null;
     }

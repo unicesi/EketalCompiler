@@ -16,6 +16,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.Trigger#getReturndef <em>Returndef</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.Trigger#getEsig <em>Esig</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.Trigger#getParams <em>Params</em>}</li>
  * </ul>
@@ -26,6 +27,32 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public interface Trigger extends EventPredicate
 {
+  /**
+   * Returns the value of the '<em><b>Returndef</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Returndef</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Returndef</em>' containment reference.
+   * @see #setReturndef(JVMTYPE)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getTrigger_Returndef()
+   * @model containment="true"
+   * @generated
+   */
+  JVMTYPE getReturndef();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.Trigger#getReturndef <em>Returndef</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Returndef</em>' containment reference.
+   * @see #getReturndef()
+   * @generated
+   */
+  void setReturndef(JVMTYPE value);
+
   /**
    * Returns the value of the '<em><b>Esig</b></em>' attribute.
    * <!-- begin-user-doc -->

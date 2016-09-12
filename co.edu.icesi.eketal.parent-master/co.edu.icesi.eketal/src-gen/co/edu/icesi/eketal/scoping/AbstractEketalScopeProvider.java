@@ -3,7 +3,7 @@
  */
 package co.edu.icesi.eketal.scoping;
 
-import org.eclipse.xtext.xbase.scoping.batch.XbaseBatchScopeProvider;
+import jbase.scoping.JbaseScopeProvider;
 
-public abstract class AbstractEketalScopeProvider extends XbaseBatchScopeProvider {
+public abstract class AbstractEketalScopeProvider extends JbaseScopeProvider {
 }

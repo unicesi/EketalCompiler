@@ -24,6 +24,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.JVarDImpl#getName <em>Name</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.JVarDImpl#getType <em>Type</em>}</li>
  * </ul>
  *
@@ -31,6 +32,26 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public class JVarDImpl extends DeclImpl implements JVarD
 {
+  /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -60,6 +81,29 @@ public class JVarDImpl extends DeclImpl implements JVarD
   protected EClass eStaticClass()
   {
     return EketalPackage.Literals.JVAR_D;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.JVAR_D__NAME, oldName, name));
   }
 
   /**
@@ -136,6 +180,8 @@ public class JVarDImpl extends DeclImpl implements JVarD
   {
     switch (featureID)
     {
+      case EketalPackage.JVAR_D__NAME:
+        return getName();
       case EketalPackage.JVAR_D__TYPE:
         return getType();
     }
@@ -152,6 +198,9 @@ public class JVarDImpl extends DeclImpl implements JVarD
   {
     switch (featureID)
     {
+      case EketalPackage.JVAR_D__NAME:
+        setName((String)newValue);
+        return;
       case EketalPackage.JVAR_D__TYPE:
         setType((JvmTypeReference)newValue);
         return;
@@ -169,6 +218,9 @@ public class JVarDImpl extends DeclImpl implements JVarD
   {
     switch (featureID)
     {
+      case EketalPackage.JVAR_D__NAME:
+        setName(NAME_EDEFAULT);
+        return;
       case EketalPackage.JVAR_D__TYPE:
         setType((JvmTypeReference)null);
         return;
@@ -186,10 +238,29 @@ public class JVarDImpl extends DeclImpl implements JVarD
   {
     switch (featureID)
     {
+      case EketalPackage.JVAR_D__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case EketalPackage.JVAR_D__TYPE:
         return type != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //JVarDImpl
