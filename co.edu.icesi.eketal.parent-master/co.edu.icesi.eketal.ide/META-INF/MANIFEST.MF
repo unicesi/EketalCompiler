@@ -7,7 +7,8 @@ Bundle-SymbolicName: co.edu.icesi.eketal.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: co.edu.icesi.eketal,
  org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide
+ org.eclipse.xtext.xbase.ide,
+ jbase
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: co.edu.icesi.eketal.ide.contentassist.antlr,
  co.edu.icesi.eketal.ide.contentassist.antlr.internal

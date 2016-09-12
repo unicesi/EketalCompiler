@@ -15,7 +15,9 @@ Require-Bundle: org.eclipse.xtext,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
  org.eclipse.xtext.util,
  org.eclipse.xtend.lib,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ jbase;bundle-version="0.3.1";visibility:=reexport,
+ jbase.mwe2;bundle-version="0.3.1";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: co.edu.icesi.eketal,
  co.edu.icesi.eketal.eketal,
