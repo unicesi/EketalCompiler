@@ -152,22 +152,13 @@ public interface EketalPackage extends EPackage
   int DECL = 2;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DECL__NAME = 0;
-
-  /**
    * The number of structural features of the '<em>Decl</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int DECL_FEATURE_COUNT = 1;
+  int DECL_FEATURE_COUNT = 0;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.JVarDImpl <em>JVar D</em>}' class.
@@ -186,7 +177,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int JVAR_D__NAME = DECL__NAME;
+  int JVAR_D__NAME = DECL_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -195,7 +186,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int JVAR_D__TYPE = DECL_FEATURE_COUNT + 0;
+  int JVAR_D__TYPE = DECL_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>JVar D</em>' class.
@@ -204,7 +195,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int JVAR_D_FEATURE_COUNT = DECL_FEATURE_COUNT + 1;
+  int JVAR_D_FEATURE_COUNT = DECL_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.MSigImpl <em>MSig</em>}' class.
@@ -223,7 +214,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MSIG__NAME = DECL__NAME;
+  int MSIG__NAME = DECL_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -232,7 +223,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MSIG__PARAMS = DECL_FEATURE_COUNT + 0;
+  int MSIG__PARAMS = DECL_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -241,7 +232,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MSIG__TYPE = DECL_FEATURE_COUNT + 1;
+  int MSIG__TYPE = DECL_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -250,7 +241,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MSIG__BODY = DECL_FEATURE_COUNT + 2;
+  int MSIG__BODY = DECL_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>MSig</em>' class.
@@ -259,7 +250,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MSIG_FEATURE_COUNT = DECL_FEATURE_COUNT + 3;
+  int MSIG_FEATURE_COUNT = DECL_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.EvDeclImpl <em>Ev Decl</em>}' class.
@@ -278,7 +269,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EV_DECL__NAME = DECL__NAME;
+  int EV_DECL__NAME = DECL_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -287,7 +278,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EV_DECL__PARAMS = DECL_FEATURE_COUNT + 0;
+  int EV_DECL__PARAMS = DECL_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Eventos</b></em>' containment reference list.
@@ -296,7 +287,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EV_DECL__EVENTOS = DECL_FEATURE_COUNT + 1;
+  int EV_DECL__EVENTOS = DECL_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Ev Decl</em>' class.
@@ -305,7 +296,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EV_DECL_FEATURE_COUNT = DECL_FEATURE_COUNT + 2;
+  int EV_DECL_FEATURE_COUNT = DECL_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.EventExpressionImpl <em>Event Expression</em>}' class.
@@ -420,13 +411,22 @@ public interface EketalPackage extends EPackage
   int TRIGGER = 9;
 
   /**
+   * The feature id for the '<em><b>Returndef</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TRIGGER__RETURNDEF = EVENT_PREDICATE_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Esig</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TRIGGER__ESIG = EVENT_PREDICATE_FEATURE_COUNT + 0;
+  int TRIGGER__ESIG = EVENT_PREDICATE_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -435,7 +435,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TRIGGER__PARAMS = EVENT_PREDICATE_FEATURE_COUNT + 1;
+  int TRIGGER__PARAMS = EVENT_PREDICATE_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Trigger</em>' class.
@@ -444,7 +444,44 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TRIGGER_FEATURE_COUNT = EVENT_PREDICATE_FEATURE_COUNT + 2;
+  int TRIGGER_FEATURE_COUNT = EVENT_PREDICATE_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.JVMTYPEImpl <em>JVMTYPE</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see co.edu.icesi.eketal.eketal.impl.JVMTYPEImpl
+   * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getJVMTYPE()
+   * @generated
+   */
+  int JVMTYPE = 10;
+
+  /**
+   * The feature id for the '<em><b>Astk</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int JVMTYPE__ASTK = 0;
+
+  /**
+   * The feature id for the '<em><b>Jvm Ref</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int JVMTYPE__JVM_REF = 1;
+
+  /**
+   * The number of structural features of the '<em>JVMTYPE</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int JVMTYPE_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.GroupImpl <em>Group</em>}' class.
@@ -454,7 +491,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getGroup()
    * @generated
    */
-  int GROUP = 10;
+  int GROUP = 11;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -463,7 +500,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GROUP__NAME = DECL__NAME;
+  int GROUP__NAME = DECL_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Hosts</b></em>' containment reference list.
@@ -472,7 +509,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GROUP__HOSTS = DECL_FEATURE_COUNT + 0;
+  int GROUP__HOSTS = DECL_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Group</em>' class.
@@ -481,7 +518,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GROUP_FEATURE_COUNT = DECL_FEATURE_COUNT + 1;
+  int GROUP_FEATURE_COUNT = DECL_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.HostImpl <em>Host</em>}' class.
@@ -491,7 +528,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getHost()
    * @generated
    */
-  int HOST = 11;
+  int HOST = 12;
 
   /**
    * The feature id for the '<em><b>Ip</b></em>' attribute.
@@ -528,7 +565,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getAutomaton()
    * @generated
    */
-  int AUTOMATON = 12;
+  int AUTOMATON = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -537,7 +574,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int AUTOMATON__NAME = DECL__NAME;
+  int AUTOMATON__NAME = DECL_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -546,7 +583,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int AUTOMATON__PARAMS = DECL_FEATURE_COUNT + 0;
+  int AUTOMATON__PARAMS = DECL_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Steps</b></em>' containment reference list.
@@ -555,7 +592,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int AUTOMATON__STEPS = DECL_FEATURE_COUNT + 1;
+  int AUTOMATON__STEPS = DECL_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Automaton</em>' class.
@@ -564,7 +601,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int AUTOMATON_FEATURE_COUNT = DECL_FEATURE_COUNT + 2;
+  int AUTOMATON_FEATURE_COUNT = DECL_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.StepImpl <em>Step</em>}' class.
@@ -574,7 +611,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getStep()
    * @generated
    */
-  int STEP = 13;
+  int STEP = 14;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -620,7 +657,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getTransDef()
    * @generated
    */
-  int TRANS_DEF = 14;
+  int TRANS_DEF = 15;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -657,16 +694,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getRc()
    * @generated
    */
-  int RC = 15;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int RC__NAME = DECL__NAME;
+  int RC = 16;
 
   /**
    * The feature id for the '<em><b>Syncex</b></em>' attribute.
@@ -687,13 +715,31 @@ public interface EketalPackage extends EPackage
   int RC__POS = DECL_FEATURE_COUNT + 1;
 
   /**
+   * The feature id for the '<em><b>Automaton</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RC__AUTOMATON = DECL_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>State</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RC__STATE = DECL_FEATURE_COUNT + 3;
+
+  /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RC__BODY = DECL_FEATURE_COUNT + 2;
+  int RC__BODY = DECL_FEATURE_COUNT + 4;
 
   /**
    * The number of structural features of the '<em>Rc</em>' class.
@@ -702,7 +748,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int RC_FEATURE_COUNT = DECL_FEATURE_COUNT + 3;
+  int RC_FEATURE_COUNT = DECL_FEATURE_COUNT + 5;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.BodyImpl <em>Body</em>}' class.
@@ -712,7 +758,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getBody()
    * @generated
    */
-  int BODY = 16;
+  int BODY = 17;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -724,22 +770,13 @@ public interface EketalPackage extends EPackage
   int BODY__BODY = 0;
 
   /**
-   * The feature id for the '<em><b>Grupo</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BODY__GRUPO = 1;
-
-  /**
    * The number of structural features of the '<em>Body</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BODY_FEATURE_COUNT = 2;
+  int BODY_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.OrEventImpl <em>Or Event</em>}' class.
@@ -749,7 +786,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getOrEvent()
    * @generated
    */
-  int OR_EVENT = 17;
+  int OR_EVENT = 18;
 
   /**
    * The feature id for the '<em><b>Tipo Evento</b></em>' containment reference.
@@ -804,7 +841,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getAndEvent()
    * @generated
    */
-  int AND_EVENT = 18;
+  int AND_EVENT = 19;
 
   /**
    * The feature id for the '<em><b>Tipo Evento</b></em>' containment reference.
@@ -859,7 +896,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getUnaryEvent()
    * @generated
    */
-  int UNARY_EVENT = 19;
+  int UNARY_EVENT = 20;
 
   /**
    * The feature id for the '<em><b>Tipo Evento</b></em>' containment reference.
@@ -905,7 +942,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getStateType()
    * @generated
    */
-  int STATE_TYPE = 20;
+  int STATE_TYPE = 21;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.Pos <em>Pos</em>}' enum.
@@ -915,7 +952,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getPos()
    * @generated
    */
-  int POS = 21;
+  int POS = 22;
 
 
   /**
@@ -1004,17 +1041,6 @@ public interface EketalPackage extends EPackage
   EClass getDecl();
 
   /**
-   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Decl#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see co.edu.icesi.eketal.eketal.Decl#getName()
-   * @see #getDecl()
-   * @generated
-   */
-  EAttribute getDecl_Name();
-
-  /**
    * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.JVarD <em>JVar D</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1023,6 +1049,17 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EClass getJVarD();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.JVarD#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see co.edu.icesi.eketal.eketal.JVarD#getName()
+   * @see #getJVarD()
+   * @generated
+   */
+  EAttribute getJVarD_Name();
 
   /**
    * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.JVarD#getType <em>Type</em>}'.
@@ -1044,6 +1081,17 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EClass getMSig();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.MSig#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see co.edu.icesi.eketal.eketal.MSig#getName()
+   * @see #getMSig()
+   * @generated
+   */
+  EAttribute getMSig_Name();
 
   /**
    * Returns the meta object for the containment reference list '{@link co.edu.icesi.eketal.eketal.MSig#getParams <em>Params</em>}'.
@@ -1087,6 +1135,17 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EClass getEvDecl();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.EvDecl#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see co.edu.icesi.eketal.eketal.EvDecl#getName()
+   * @see #getEvDecl()
+   * @generated
+   */
+  EAttribute getEvDecl_Name();
 
   /**
    * Returns the meta object for the containment reference list '{@link co.edu.icesi.eketal.eketal.EvDecl#getParams <em>Params</em>}'.
@@ -1206,6 +1265,17 @@ public interface EketalPackage extends EPackage
   EClass getTrigger();
 
   /**
+   * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.Trigger#getReturndef <em>Returndef</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Returndef</em>'.
+   * @see co.edu.icesi.eketal.eketal.Trigger#getReturndef()
+   * @see #getTrigger()
+   * @generated
+   */
+  EReference getTrigger_Returndef();
+
+  /**
    * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Trigger#getEsig <em>Esig</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1228,6 +1298,38 @@ public interface EketalPackage extends EPackage
   EReference getTrigger_Params();
 
   /**
+   * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.JVMTYPE <em>JVMTYPE</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>JVMTYPE</em>'.
+   * @see co.edu.icesi.eketal.eketal.JVMTYPE
+   * @generated
+   */
+  EClass getJVMTYPE();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.JVMTYPE#getAstk <em>Astk</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Astk</em>'.
+   * @see co.edu.icesi.eketal.eketal.JVMTYPE#getAstk()
+   * @see #getJVMTYPE()
+   * @generated
+   */
+  EAttribute getJVMTYPE_Astk();
+
+  /**
+   * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.JVMTYPE#getJvmRef <em>Jvm Ref</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Jvm Ref</em>'.
+   * @see co.edu.icesi.eketal.eketal.JVMTYPE#getJvmRef()
+   * @see #getJVMTYPE()
+   * @generated
+   */
+  EReference getJVMTYPE_JvmRef();
+
+  /**
    * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.Group <em>Group</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1236,6 +1338,17 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EClass getGroup();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Group#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see co.edu.icesi.eketal.eketal.Group#getName()
+   * @see #getGroup()
+   * @generated
+   */
+  EAttribute getGroup_Name();
 
   /**
    * Returns the meta object for the containment reference list '{@link co.edu.icesi.eketal.eketal.Group#getHosts <em>Hosts</em>}'.
@@ -1289,6 +1402,17 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EClass getAutomaton();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Automaton#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see co.edu.icesi.eketal.eketal.Automaton#getName()
+   * @see #getAutomaton()
+   * @generated
+   */
+  EAttribute getAutomaton_Name();
 
   /**
    * Returns the meta object for the containment reference list '{@link co.edu.icesi.eketal.eketal.Automaton#getParams <em>Params</em>}'.
@@ -1420,6 +1544,28 @@ public interface EketalPackage extends EPackage
   EAttribute getRc_Pos();
 
   /**
+   * Returns the meta object for the reference '{@link co.edu.icesi.eketal.eketal.Rc#getAutomaton <em>Automaton</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Automaton</em>'.
+   * @see co.edu.icesi.eketal.eketal.Rc#getAutomaton()
+   * @see #getRc()
+   * @generated
+   */
+  EReference getRc_Automaton();
+
+  /**
+   * Returns the meta object for the reference '{@link co.edu.icesi.eketal.eketal.Rc#getState <em>State</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>State</em>'.
+   * @see co.edu.icesi.eketal.eketal.Rc#getState()
+   * @see #getRc()
+   * @generated
+   */
+  EReference getRc_State();
+
+  /**
    * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.Rc#getBody <em>Body</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1450,17 +1596,6 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EReference getBody_Body();
-
-  /**
-   * Returns the meta object for the reference '{@link co.edu.icesi.eketal.eketal.Body#getGrupo <em>Grupo</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Grupo</em>'.
-   * @see co.edu.icesi.eketal.eketal.Body#getGrupo()
-   * @see #getBody()
-   * @generated
-   */
-  EReference getBody_Grupo();
 
   /**
    * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.OrEvent <em>Or Event</em>}'.
@@ -1661,14 +1796,6 @@ public interface EketalPackage extends EPackage
     EClass DECL = eINSTANCE.getDecl();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute DECL__NAME = eINSTANCE.getDecl_Name();
-
-    /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.JVarDImpl <em>JVar D</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1677,6 +1804,14 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EClass JVAR_D = eINSTANCE.getJVarD();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute JVAR_D__NAME = eINSTANCE.getJVarD_Name();
 
     /**
      * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
@@ -1695,6 +1830,14 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EClass MSIG = eINSTANCE.getMSig();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MSIG__NAME = eINSTANCE.getMSig_Name();
 
     /**
      * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
@@ -1729,6 +1872,14 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EClass EV_DECL = eINSTANCE.getEvDecl();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EV_DECL__NAME = eINSTANCE.getEvDecl_Name();
 
     /**
      * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
@@ -1827,6 +1978,14 @@ public interface EketalPackage extends EPackage
     EClass TRIGGER = eINSTANCE.getTrigger();
 
     /**
+     * The meta object literal for the '<em><b>Returndef</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TRIGGER__RETURNDEF = eINSTANCE.getTrigger_Returndef();
+
+    /**
      * The meta object literal for the '<em><b>Esig</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1843,6 +2002,32 @@ public interface EketalPackage extends EPackage
     EReference TRIGGER__PARAMS = eINSTANCE.getTrigger_Params();
 
     /**
+     * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.JVMTYPEImpl <em>JVMTYPE</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see co.edu.icesi.eketal.eketal.impl.JVMTYPEImpl
+     * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getJVMTYPE()
+     * @generated
+     */
+    EClass JVMTYPE = eINSTANCE.getJVMTYPE();
+
+    /**
+     * The meta object literal for the '<em><b>Astk</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute JVMTYPE__ASTK = eINSTANCE.getJVMTYPE_Astk();
+
+    /**
+     * The meta object literal for the '<em><b>Jvm Ref</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference JVMTYPE__JVM_REF = eINSTANCE.getJVMTYPE_JvmRef();
+
+    /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.GroupImpl <em>Group</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1851,6 +2036,14 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EClass GROUP = eINSTANCE.getGroup();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute GROUP__NAME = eINSTANCE.getGroup_Name();
 
     /**
      * The meta object literal for the '<em><b>Hosts</b></em>' containment reference list feature.
@@ -1895,6 +2088,14 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EClass AUTOMATON = eINSTANCE.getAutomaton();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute AUTOMATON__NAME = eINSTANCE.getAutomaton_Name();
 
     /**
      * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
@@ -1999,6 +2200,22 @@ public interface EketalPackage extends EPackage
     EAttribute RC__POS = eINSTANCE.getRc_Pos();
 
     /**
+     * The meta object literal for the '<em><b>Automaton</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RC__AUTOMATON = eINSTANCE.getRc_Automaton();
+
+    /**
+     * The meta object literal for the '<em><b>State</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RC__STATE = eINSTANCE.getRc_State();
+
+    /**
      * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2023,14 +2240,6 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EReference BODY__BODY = eINSTANCE.getBody_Body();
-
-    /**
-     * The meta object literal for the '<em><b>Grupo</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference BODY__GRUPO = eINSTANCE.getBody_Grupo();
 
     /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.OrEventImpl <em>Or Event</em>}' class.

@@ -9,12 +9,15 @@ import co.edu.icesi.eketal.eketal.Host;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -27,6 +30,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.GroupImpl#getName <em>Name</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.GroupImpl#getHosts <em>Hosts</em>}</li>
  * </ul>
  *
@@ -34,6 +38,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class GroupImpl extends DeclImpl implements Group
 {
+  /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getHosts() <em>Hosts</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -63,6 +87,29 @@ public class GroupImpl extends DeclImpl implements Group
   protected EClass eStaticClass()
   {
     return EketalPackage.Literals.GROUP;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.GROUP__NAME, oldName, name));
   }
 
   /**
@@ -105,6 +152,8 @@ public class GroupImpl extends DeclImpl implements Group
   {
     switch (featureID)
     {
+      case EketalPackage.GROUP__NAME:
+        return getName();
       case EketalPackage.GROUP__HOSTS:
         return getHosts();
     }
@@ -122,6 +171,9 @@ public class GroupImpl extends DeclImpl implements Group
   {
     switch (featureID)
     {
+      case EketalPackage.GROUP__NAME:
+        setName((String)newValue);
+        return;
       case EketalPackage.GROUP__HOSTS:
         getHosts().clear();
         getHosts().addAll((Collection<? extends Host>)newValue);
@@ -140,6 +192,9 @@ public class GroupImpl extends DeclImpl implements Group
   {
     switch (featureID)
     {
+      case EketalPackage.GROUP__NAME:
+        setName(NAME_EDEFAULT);
+        return;
       case EketalPackage.GROUP__HOSTS:
         getHosts().clear();
         return;
@@ -157,10 +212,29 @@ public class GroupImpl extends DeclImpl implements Group
   {
     switch (featureID)
     {
+      case EketalPackage.GROUP__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case EketalPackage.GROUP__HOSTS:
         return hosts != null && !hosts.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //GroupImpl

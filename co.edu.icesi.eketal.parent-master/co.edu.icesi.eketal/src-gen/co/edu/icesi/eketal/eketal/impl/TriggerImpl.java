@@ -4,6 +4,7 @@
 package co.edu.icesi.eketal.eketal.impl;
 
 import co.edu.icesi.eketal.eketal.EketalPackage;
+import co.edu.icesi.eketal.eketal.JVMTYPE;
 import co.edu.icesi.eketal.eketal.Trigger;
 
 import java.util.Collection;
@@ -31,6 +32,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getReturndef <em>Returndef</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getEsig <em>Esig</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getParams <em>Params</em>}</li>
  * </ul>
@@ -39,6 +41,16 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public class TriggerImpl extends EventPredicateImpl implements Trigger
 {
+  /**
+   * The cached value of the '{@link #getReturndef() <em>Returndef</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getReturndef()
+   * @generated
+   * @ordered
+   */
+  protected JVMTYPE returndef;
+
   /**
    * The default value of the '{@link #getEsig() <em>Esig</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -95,6 +107,54 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
    * <!-- end-user-doc -->
    * @generated
    */
+  public JVMTYPE getReturndef()
+  {
+    return returndef;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetReturndef(JVMTYPE newReturndef, NotificationChain msgs)
+  {
+    JVMTYPE oldReturndef = returndef;
+    returndef = newReturndef;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EketalPackage.TRIGGER__RETURNDEF, oldReturndef, newReturndef);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setReturndef(JVMTYPE newReturndef)
+  {
+    if (newReturndef != returndef)
+    {
+      NotificationChain msgs = null;
+      if (returndef != null)
+        msgs = ((InternalEObject)returndef).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EketalPackage.TRIGGER__RETURNDEF, null, msgs);
+      if (newReturndef != null)
+        msgs = ((InternalEObject)newReturndef).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EketalPackage.TRIGGER__RETURNDEF, null, msgs);
+      msgs = basicSetReturndef(newReturndef, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.TRIGGER__RETURNDEF, newReturndef, newReturndef));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public String getEsig()
   {
     return esig;
@@ -137,6 +197,8 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__RETURNDEF:
+        return basicSetReturndef(null, msgs);
       case EketalPackage.TRIGGER__PARAMS:
         return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
     }
@@ -153,6 +215,8 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__RETURNDEF:
+        return getReturndef();
       case EketalPackage.TRIGGER__ESIG:
         return getEsig();
       case EketalPackage.TRIGGER__PARAMS:
@@ -172,6 +236,9 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__RETURNDEF:
+        setReturndef((JVMTYPE)newValue);
+        return;
       case EketalPackage.TRIGGER__ESIG:
         setEsig((String)newValue);
         return;
@@ -193,6 +260,9 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__RETURNDEF:
+        setReturndef((JVMTYPE)null);
+        return;
       case EketalPackage.TRIGGER__ESIG:
         setEsig(ESIG_EDEFAULT);
         return;
@@ -213,6 +283,8 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__RETURNDEF:
+        return returndef != null;
       case EketalPackage.TRIGGER__ESIG:
         return ESIG_EDEFAULT == null ? esig != null : !ESIG_EDEFAULT.equals(esig);
       case EketalPackage.TRIGGER__PARAMS:

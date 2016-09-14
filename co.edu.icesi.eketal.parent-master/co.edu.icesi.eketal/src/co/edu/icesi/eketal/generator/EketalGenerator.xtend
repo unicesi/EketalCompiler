@@ -21,6 +21,11 @@ import org.eclipse.xtext.xbase.impl.XStringLiteralImpl
 import co.edu.icesi.eketal.eketal.Automaton
 import org.eclipse.emf.common.util.EList
 import co.edu.icesi.eketal.eketal.Decl
+import co.edu.icesi.eketal.eketal.Rc
+import org.eclipse.xtext.xbase.XBlockExpression
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import co.edu.icesi.eketal.eketal.Model
+
 //https://www.eclipse.org/forums/index.php/t/486215/
 
 class EketalGenerator implements IGenerator{
@@ -28,13 +33,26 @@ class EketalGenerator implements IGenerator{
 	override doGenerate(Resource resource, IFileSystemAccess fsa) {
 		println("IGenerator line 35")
 		
-		resource.allContents.filter(typeof(EventClass)).forEach[it.generateAspect(fsa)]
+		val listModel = resource.allContents.filter(typeof(Model))
+		val Set<String> importedLibraries = new TreeSet()
+		if(listModel.hasNext){
+			val modelo = listModel.next
+			if(modelo.importSection!=null && !modelo.importSection.importDeclarations.empty){
+				modelo.importSection.importDeclarations.forEach[
+					importedLibraries+=it.importedTypeName
+				]				
+			}
+		}
+		
+		resource.allContents.filter(typeof(EventClass)).forEach[
+			it.generateAspect(fsa, importedLibraries)
+		]
 	}
 	
-	def generateAspect(EventClass modelo, IFileSystemAccess fsa){
+	def generateAspect(EventClass modelo, IFileSystemAccess fsa, Set<String> importedLibraries){
 		var packageName = "co.edu.icesi.eketal.aspects"
 //		fsa.generateFile(prepareFileName("./"+packageName, modelo.name.toFirstUpper), EketalOutputConfigurationProvider::ASPECTJ_OUTPUT, modelo.generate(packageName))
-		fsa.generateFile(prepareFileName("./"+packageName, modelo.name.toFirstUpper), IFileSystemAccess.DEFAULT_OUTPUT, modelo.generate(packageName))
+		fsa.generateFile(prepareFileName("./"+packageName, modelo.name.toFirstUpper), IFileSystemAccess.DEFAULT_OUTPUT, modelo.generate(packageName, importedLibraries))
 	}
 	
 	
@@ -42,14 +60,14 @@ class EketalGenerator implements IGenerator{
 		return (packageName + "." + fileName).replace(".", File.separator) + ".aj"
 	}
 	
-	def CharSequence generate(EventClass modelo, String packageName){
+	def CharSequence generate(EventClass modelo, String packageName, Set<String> libraries){
 		var packageDefinition = '''package «packageName»;
 		
 		'''
 		var String automatonName = null
 		var Set<String> importedLibraries = new TreeSet()
+		importedLibraries+=libraries
 		var pointcuts = new TreeSet<String>
-		
 		if(modelo.declarations.containsAutomaton)			
 			importedLibraries+="co.edu.icesi.eketal.automaton.*"
 		importedLibraries+="co.edu.icesi.eketal.groupsimpl.*"
@@ -60,6 +78,7 @@ class EketalGenerator implements IGenerator{
 		importedLibraries+="java.util.Map"
 		importedLibraries+="java.util.HashMap"
 		//TODO línea 82, saber cómo se crea el evento
+		
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
 			
@@ -105,6 +124,9 @@ class EketalGenerator implements IGenerator{
 						//}
 					}
 				«ENDIF»
+				«IF event instanceof Rc»
+					public void reaction«event.automaton.name»«event.state.name»()«printBody(event.body.body as XBlockExpression)»
+				«ENDIF»
 			«ENDFOR»
 			
 			«FOR pointcut:pointcuts»
@@ -120,6 +142,11 @@ class EketalGenerator implements IGenerator{
 		
 		'''
 		return packageDefinition+imports+aspect
+	}
+	
+	def printBody(XBlockExpression exp){
+		val body = NodeModelUtils.findActualNodeFor(exp)
+		return body.text
 	}
 	
 	def boolean containsAutomaton(EList<Decl> list){

@@ -114,6 +114,15 @@ public interface EketalFactory extends EFactory
   Trigger createTrigger();
 
   /**
+   * Returns a new object of class '<em>JVMTYPE</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>JVMTYPE</em>'.
+   * @generated
+   */
+  JVMTYPE createJVMTYPE();
+
+  /**
    * Returns a new object of class '<em>Group</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

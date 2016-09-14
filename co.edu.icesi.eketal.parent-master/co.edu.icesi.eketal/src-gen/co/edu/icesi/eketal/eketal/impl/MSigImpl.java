@@ -8,6 +8,8 @@ import co.edu.icesi.eketal.eketal.MSig;
 
 import java.util.Collection;
 
+import jbase.jbase.XJJvmFormalParameter;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -21,7 +23,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 import org.eclipse.xtext.xbase.XExpression;
@@ -34,6 +35,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.MSigImpl#getName <em>Name</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.MSigImpl#getParams <em>Params</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.MSigImpl#getType <em>Type</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.MSigImpl#getBody <em>Body</em>}</li>
@@ -44,6 +46,26 @@ import org.eclipse.xtext.xbase.XExpression;
 public class MSigImpl extends DeclImpl implements MSig
 {
   /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
+  /**
    * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -51,7 +73,7 @@ public class MSigImpl extends DeclImpl implements MSig
    * @generated
    * @ordered
    */
-  protected EList<JvmFormalParameter> params;
+  protected EList<XJJvmFormalParameter> params;
 
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
@@ -99,11 +121,34 @@ public class MSigImpl extends DeclImpl implements MSig
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmFormalParameter> getParams()
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.MSIG__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<XJJvmFormalParameter> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<JvmFormalParameter>(JvmFormalParameter.class, this, EketalPackage.MSIG__PARAMS);
+      params = new EObjectContainmentEList<XJJvmFormalParameter>(XJJvmFormalParameter.class, this, EketalPackage.MSIG__PARAMS);
     }
     return params;
   }
@@ -234,6 +279,8 @@ public class MSigImpl extends DeclImpl implements MSig
   {
     switch (featureID)
     {
+      case EketalPackage.MSIG__NAME:
+        return getName();
       case EketalPackage.MSIG__PARAMS:
         return getParams();
       case EketalPackage.MSIG__TYPE:
@@ -255,9 +302,12 @@ public class MSigImpl extends DeclImpl implements MSig
   {
     switch (featureID)
     {
+      case EketalPackage.MSIG__NAME:
+        setName((String)newValue);
+        return;
       case EketalPackage.MSIG__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends JvmFormalParameter>)newValue);
+        getParams().addAll((Collection<? extends XJJvmFormalParameter>)newValue);
         return;
       case EketalPackage.MSIG__TYPE:
         setType((JvmTypeReference)newValue);
@@ -279,6 +329,9 @@ public class MSigImpl extends DeclImpl implements MSig
   {
     switch (featureID)
     {
+      case EketalPackage.MSIG__NAME:
+        setName(NAME_EDEFAULT);
+        return;
       case EketalPackage.MSIG__PARAMS:
         getParams().clear();
         return;
@@ -302,6 +355,8 @@ public class MSigImpl extends DeclImpl implements MSig
   {
     switch (featureID)
     {
+      case EketalPackage.MSIG__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case EketalPackage.MSIG__PARAMS:
         return params != null && !params.isEmpty();
       case EketalPackage.MSIG__TYPE:
@@ -310,6 +365,23 @@ public class MSigImpl extends DeclImpl implements MSig
         return body != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //MSigImpl

@@ -14,6 +14,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.JVarD#getName <em>Name</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.JVarD#getType <em>Type</em>}</li>
  * </ul>
  *
@@ -23,6 +24,32 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public interface JVarD extends Decl
 {
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getJVarD_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.JVarD#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference.
    * <!-- begin-user-doc -->

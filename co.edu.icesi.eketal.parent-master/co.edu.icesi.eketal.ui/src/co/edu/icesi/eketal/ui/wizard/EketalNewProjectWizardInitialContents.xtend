@@ -45,8 +45,7 @@ class EketalNewProjectWizardInitialContents {
 				event eventoWorld(): call(* core.HelloWorld.worldMethod());
 				
 				reaction before automatonConstructor.firstState{
-					
-					
+					System.out.println("estado");
 				}
 				
 			}

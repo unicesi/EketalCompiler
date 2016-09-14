@@ -28,6 +28,8 @@ import co.edu.icesi.eketal.eketal.TransDef;
 import co.edu.icesi.eketal.eketal.Trigger;
 import co.edu.icesi.eketal.eketal.UnaryEvent;
 
+import jbase.jbase.JbasePackage;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
@@ -119,6 +121,13 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * @generated
    */
   private EClass triggerEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass jvmtypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -253,7 +262,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     isInited = true;
 
     // Initialize simple dependencies
-    XbasePackage.eINSTANCE.eClass();
+    JbasePackage.eINSTANCE.eClass();
     XtypePackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
@@ -356,16 +365,6 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDecl_Name()
-  {
-    return (EAttribute)declEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getJVarD()
   {
     return jVarDEClass;
@@ -376,9 +375,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getJVarD_Name()
+  {
+    return (EAttribute)jVarDEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getJVarD_Type()
   {
-    return (EReference)jVarDEClass.getEStructuralFeatures().get(0);
+    return (EReference)jVarDEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -396,9 +405,9 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMSig_Params()
+  public EAttribute getMSig_Name()
   {
-    return (EReference)mSigEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)mSigEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -406,7 +415,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMSig_Type()
+  public EReference getMSig_Params()
   {
     return (EReference)mSigEClass.getEStructuralFeatures().get(1);
   }
@@ -416,9 +425,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMSig_Body()
+  public EReference getMSig_Type()
   {
     return (EReference)mSigEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getMSig_Body()
+  {
+    return (EReference)mSigEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -436,9 +455,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getEvDecl_Name()
+  {
+    return (EAttribute)evDeclEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getEvDecl_Params()
   {
-    return (EReference)evDeclEClass.getEStructuralFeatures().get(0);
+    return (EReference)evDeclEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -448,7 +477,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    */
   public EReference getEvDecl_Eventos()
   {
-    return (EReference)evDeclEClass.getEStructuralFeatures().get(1);
+    return (EReference)evDeclEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -546,9 +575,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getTrigger_Returndef()
+  {
+    return (EReference)triggerEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EAttribute getTrigger_Esig()
   {
-    return (EAttribute)triggerEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)triggerEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -558,7 +597,37 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    */
   public EReference getTrigger_Params()
   {
-    return (EReference)triggerEClass.getEStructuralFeatures().get(1);
+    return (EReference)triggerEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getJVMTYPE()
+  {
+    return jvmtypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getJVMTYPE_Astk()
+  {
+    return (EAttribute)jvmtypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getJVMTYPE_JvmRef()
+  {
+    return (EReference)jvmtypeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -576,9 +645,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getGroup_Name()
+  {
+    return (EAttribute)groupEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getGroup_Hosts()
   {
-    return (EReference)groupEClass.getEStructuralFeatures().get(0);
+    return (EReference)groupEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -626,9 +705,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getAutomaton_Name()
+  {
+    return (EAttribute)automatonEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getAutomaton_Params()
   {
-    return (EReference)automatonEClass.getEStructuralFeatures().get(0);
+    return (EReference)automatonEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -638,7 +727,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    */
   public EReference getAutomaton_Steps()
   {
-    return (EReference)automatonEClass.getEStructuralFeatures().get(1);
+    return (EReference)automatonEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -746,9 +835,29 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRc_Body()
+  public EReference getRc_Automaton()
   {
     return (EReference)rcEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRc_State()
+  {
+    return (EReference)rcEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRc_Body()
+  {
+    return (EReference)rcEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -769,16 +878,6 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
   public EReference getBody_Body()
   {
     return (EReference)bodyEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getBody_Grupo()
-  {
-    return (EReference)bodyEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -921,17 +1020,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(eventClassEClass, EVENT_CLASS__DECLARATIONS);
 
     declEClass = createEClass(DECL);
-    createEAttribute(declEClass, DECL__NAME);
 
     jVarDEClass = createEClass(JVAR_D);
+    createEAttribute(jVarDEClass, JVAR_D__NAME);
     createEReference(jVarDEClass, JVAR_D__TYPE);
 
     mSigEClass = createEClass(MSIG);
+    createEAttribute(mSigEClass, MSIG__NAME);
     createEReference(mSigEClass, MSIG__PARAMS);
     createEReference(mSigEClass, MSIG__TYPE);
     createEReference(mSigEClass, MSIG__BODY);
 
     evDeclEClass = createEClass(EV_DECL);
+    createEAttribute(evDeclEClass, EV_DECL__NAME);
     createEReference(evDeclEClass, EV_DECL__PARAMS);
     createEReference(evDeclEClass, EV_DECL__EVENTOS);
 
@@ -947,10 +1048,16 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(kindAttributeEClass, KIND_ATTRIBUTE__CONDITION);
 
     triggerEClass = createEClass(TRIGGER);
+    createEReference(triggerEClass, TRIGGER__RETURNDEF);
     createEAttribute(triggerEClass, TRIGGER__ESIG);
     createEReference(triggerEClass, TRIGGER__PARAMS);
 
+    jvmtypeEClass = createEClass(JVMTYPE);
+    createEAttribute(jvmtypeEClass, JVMTYPE__ASTK);
+    createEReference(jvmtypeEClass, JVMTYPE__JVM_REF);
+
     groupEClass = createEClass(GROUP);
+    createEAttribute(groupEClass, GROUP__NAME);
     createEReference(groupEClass, GROUP__HOSTS);
 
     hostEClass = createEClass(HOST);
@@ -958,6 +1065,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(hostEClass, HOST__GROUP_ID);
 
     automatonEClass = createEClass(AUTOMATON);
+    createEAttribute(automatonEClass, AUTOMATON__NAME);
     createEReference(automatonEClass, AUTOMATON__PARAMS);
     createEReference(automatonEClass, AUTOMATON__STEPS);
 
@@ -973,11 +1081,12 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     rcEClass = createEClass(RC);
     createEAttribute(rcEClass, RC__SYNCEX);
     createEAttribute(rcEClass, RC__POS);
+    createEReference(rcEClass, RC__AUTOMATON);
+    createEReference(rcEClass, RC__STATE);
     createEReference(rcEClass, RC__BODY);
 
     bodyEClass = createEClass(BODY);
     createEReference(bodyEClass, BODY__BODY);
-    createEReference(bodyEClass, BODY__GRUPO);
 
     orEventEClass = createEClass(OR_EVENT);
     createEReference(orEventEClass, OR_EVENT__LEFT);
@@ -1022,6 +1131,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     // Obtain other dependent packages
     XtypePackage theXtypePackage = (XtypePackage)EPackage.Registry.INSTANCE.getEPackage(XtypePackage.eNS_URI);
     TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
+    JbasePackage theJbasePackage = (JbasePackage)EPackage.Registry.INSTANCE.getEPackage(JbasePackage.eNS_URI);
     XbasePackage theXbasePackage = (XbasePackage)EPackage.Registry.INSTANCE.getEPackage(XbasePackage.eNS_URI);
 
     // Create type parameters
@@ -1052,18 +1162,20 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getEventClass_Declarations(), this.getDecl(), null, "declarations", null, 0, -1, EventClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(declEClass, Decl.class, "Decl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getDecl_Name(), ecorePackage.getEString(), "name", null, 0, 1, Decl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(jVarDEClass, JVarD.class, "JVarD", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getJVarD_Name(), ecorePackage.getEString(), "name", null, 0, 1, JVarD.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getJVarD_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, JVarD.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mSigEClass, MSig.class, "MSig", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMSig_Params(), theTypesPackage.getJvmFormalParameter(), null, "params", null, 0, -1, MSig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMSig_Name(), ecorePackage.getEString(), "name", null, 0, 1, MSig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMSig_Params(), theJbasePackage.getXJJvmFormalParameter(), null, "params", null, 0, -1, MSig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMSig_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, MSig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMSig_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, MSig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(evDeclEClass, EvDecl.class, "EvDecl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getEvDecl_Params(), theTypesPackage.getJvmFormalParameter(), null, "params", null, 0, -1, EvDecl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getEvDecl_Name(), ecorePackage.getEString(), "name", null, 0, 1, EvDecl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getEvDecl_Params(), theJbasePackage.getXJJvmFormalParameter(), null, "params", null, 0, -1, EvDecl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEvDecl_Eventos(), this.getEventExpression(), null, "eventos", null, 0, -1, EvDecl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(eventExpressionEClass, EventExpression.class, "EventExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1078,10 +1190,16 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getKindAttribute_Condition(), theXbasePackage.getXExpression(), null, "condition", null, 0, 1, KindAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(triggerEClass, Trigger.class, "Trigger", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTrigger_Returndef(), this.getJVMTYPE(), null, "returndef", null, 0, 1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTrigger_Esig(), ecorePackage.getEString(), "esig", null, 0, 1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTrigger_Params(), theTypesPackage.getJvmTypeReference(), null, "params", null, 0, -1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(jvmtypeEClass, co.edu.icesi.eketal.eketal.JVMTYPE.class, "JVMTYPE", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getJVMTYPE_Astk(), ecorePackage.getEString(), "astk", null, 0, 1, co.edu.icesi.eketal.eketal.JVMTYPE.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getJVMTYPE_JvmRef(), theTypesPackage.getJvmTypeReference(), null, "jvmRef", null, 0, 1, co.edu.icesi.eketal.eketal.JVMTYPE.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(groupEClass, Group.class, "Group", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getGroup_Name(), ecorePackage.getEString(), "name", null, 0, 1, Group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getGroup_Hosts(), this.getHost(), null, "hosts", null, 0, -1, Group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(hostEClass, Host.class, "Host", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1089,7 +1207,8 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getHost_GroupId(), this.getGroup(), null, "groupId", null, 0, 1, Host.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(automatonEClass, Automaton.class, "Automaton", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAutomaton_Params(), theTypesPackage.getJvmFormalParameter(), null, "params", null, 0, -1, Automaton.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAutomaton_Name(), ecorePackage.getEString(), "name", null, 0, 1, Automaton.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAutomaton_Params(), theJbasePackage.getXJJvmFormalParameter(), null, "params", null, 0, -1, Automaton.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAutomaton_Steps(), this.getStep(), null, "steps", null, 0, -1, Automaton.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(stepEClass, Step.class, "Step", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1104,11 +1223,12 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEClass(rcEClass, Rc.class, "Rc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRc_Syncex(), ecorePackage.getEString(), "syncex", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getRc_Pos(), this.getPos(), "pos", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRc_Automaton(), this.getAutomaton(), null, "automaton", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRc_State(), this.getStep(), null, "state", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRc_Body(), this.getBody(), null, "body", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(bodyEClass, Body.class, "Body", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBody_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Body.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBody_Grupo(), this.getGroup(), null, "grupo", null, 0, 1, Body.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(orEventEClass, OrEvent.class, "OrEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrEvent_Left(), this.getEventExpression(), null, "left", null, 0, 1, OrEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

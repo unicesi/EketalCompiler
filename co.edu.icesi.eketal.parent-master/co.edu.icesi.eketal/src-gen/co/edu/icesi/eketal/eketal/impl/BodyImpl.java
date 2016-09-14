@@ -5,7 +5,6 @@ package co.edu.icesi.eketal.eketal.impl;
 
 import co.edu.icesi.eketal.eketal.Body;
 import co.edu.icesi.eketal.eketal.EketalPackage;
-import co.edu.icesi.eketal.eketal.Group;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -27,7 +26,6 @@ import org.eclipse.xtext.xbase.XExpression;
  * </p>
  * <ul>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.BodyImpl#getBody <em>Body</em>}</li>
- *   <li>{@link co.edu.icesi.eketal.eketal.impl.BodyImpl#getGrupo <em>Grupo</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,16 +41,6 @@ public class BodyImpl extends MinimalEObjectImpl.Container implements Body
    * @ordered
    */
   protected XExpression body;
-
-  /**
-   * The cached value of the '{@link #getGrupo() <em>Grupo</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getGrupo()
-   * @generated
-   * @ordered
-   */
-  protected Group grupo;
 
   /**
    * <!-- begin-user-doc -->
@@ -128,49 +116,6 @@ public class BodyImpl extends MinimalEObjectImpl.Container implements Body
    * <!-- end-user-doc -->
    * @generated
    */
-  public Group getGrupo()
-  {
-    if (grupo != null && grupo.eIsProxy())
-    {
-      InternalEObject oldGrupo = (InternalEObject)grupo;
-      grupo = (Group)eResolveProxy(oldGrupo);
-      if (grupo != oldGrupo)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, EketalPackage.BODY__GRUPO, oldGrupo, grupo));
-      }
-    }
-    return grupo;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Group basicGetGrupo()
-  {
-    return grupo;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setGrupo(Group newGrupo)
-  {
-    Group oldGrupo = grupo;
-    grupo = newGrupo;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.BODY__GRUPO, oldGrupo, grupo));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -194,9 +139,6 @@ public class BodyImpl extends MinimalEObjectImpl.Container implements Body
     {
       case EketalPackage.BODY__BODY:
         return getBody();
-      case EketalPackage.BODY__GRUPO:
-        if (resolve) return getGrupo();
-        return basicGetGrupo();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -213,9 +155,6 @@ public class BodyImpl extends MinimalEObjectImpl.Container implements Body
     {
       case EketalPackage.BODY__BODY:
         setBody((XExpression)newValue);
-        return;
-      case EketalPackage.BODY__GRUPO:
-        setGrupo((Group)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -234,9 +173,6 @@ public class BodyImpl extends MinimalEObjectImpl.Container implements Body
       case EketalPackage.BODY__BODY:
         setBody((XExpression)null);
         return;
-      case EketalPackage.BODY__GRUPO:
-        setGrupo((Group)null);
-        return;
     }
     super.eUnset(featureID);
   }
@@ -253,8 +189,6 @@ public class BodyImpl extends MinimalEObjectImpl.Container implements Body
     {
       case EketalPackage.BODY__BODY:
         return body != null;
-      case EketalPackage.BODY__GRUPO:
-        return grupo != null;
     }
     return super.eIsSet(featureID);
   }
