@@ -1,11 +1,13 @@
 # Eketal
-  Eketal is a project based on xtext and uses aspectj for his purpose. For its deploy, you must have installed both tools mentioned before.
+  Eketal is a project based on xtext with jbase integration and uses aspectj for his purpose. For its deploy, you must have installed both tools mentioned before.
   You can find their releases, for eclipse mars, here:
 
 
   -Xtext http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
   
   -AspectJ http://download.eclipse.org/tools/ajdt/45/dev/update
+  
+  -[JBase](https://github.com/LorenzoBettini/jbase) https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.5/
 
   First we will explain how to test the Eketal software: (1) with maven, (2) installing in eclipse (remote and local installation). Second, (3) how to contribute to the project, and finally, we will explain the (4) sample project.
 
