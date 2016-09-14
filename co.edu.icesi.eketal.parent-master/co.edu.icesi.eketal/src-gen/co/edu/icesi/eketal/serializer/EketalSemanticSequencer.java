@@ -37,11 +37,14 @@ import jbase.jbase.XJBreakStatement;
 import jbase.jbase.XJCharLiteral;
 import jbase.jbase.XJClassObject;
 import jbase.jbase.XJConditionalExpression;
+import jbase.jbase.XJConstructorCall;
 import jbase.jbase.XJContinueStatement;
 import jbase.jbase.XJJvmFormalParameter;
 import jbase.jbase.XJPrefixOperation;
 import jbase.jbase.XJSemicolonStatement;
 import jbase.jbase.XJSwitchStatements;
+import jbase.jbase.XJTryWithResourcesStatement;
+import jbase.jbase.XJTryWithResourcesVariableDeclaration;
 import jbase.jbase.XJVariableDeclaration;
 import jbase.serializer.JbaseSemanticSequencer;
 import org.eclipse.emf.ecore.EObject;
@@ -70,7 +73,6 @@ import org.eclipse.xtext.xbase.XCasePart;
 import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XCatchClause;
 import org.eclipse.xtext.xbase.XClosure;
-import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XDoWhileExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
@@ -300,6 +302,9 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 			case JbasePackage.XJ_CONDITIONAL_EXPRESSION:
 				sequence_XAssignment(context, (XJConditionalExpression) semanticObject); 
 				return; 
+			case JbasePackage.XJ_CONSTRUCTOR_CALL:
+				sequence_XConstructorCall(context, (XJConstructorCall) semanticObject); 
+				return; 
 			case JbasePackage.XJ_CONTINUE_STATEMENT:
 				sequence_XJBranchingStatement(context, (XJContinueStatement) semanticObject); 
 				return; 
@@ -326,6 +331,12 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 				else break;
 			case JbasePackage.XJ_SWITCH_STATEMENTS:
 				sequence_XJSwitchStatements(context, (XJSwitchStatements) semanticObject); 
+				return; 
+			case JbasePackage.XJ_TRY_WITH_RESOURCES_STATEMENT:
+				sequence_XJTryWithResourcesStatement(context, (XJTryWithResourcesStatement) semanticObject); 
+				return; 
+			case JbasePackage.XJ_TRY_WITH_RESOURCES_VARIABLE_DECLARATION:
+				sequence_XJTryWithResourcesVariableDeclaration(context, (XJTryWithResourcesVariableDeclaration) semanticObject); 
 				return; 
 			case JbasePackage.XJ_VARIABLE_DECLARATION:
 				sequence_XVariableDeclaration(context, (XJVariableDeclaration) semanticObject); 
@@ -435,9 +446,6 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 					return; 
 				}
 				else break;
-			case XbasePackage.XCONSTRUCTOR_CALL:
-				sequence_XConstructorCall(context, (XConstructorCall) semanticObject); 
-				return; 
 			case XbasePackage.XDO_WHILE_EXPRESSION:
 				sequence_XDoWhileExpression(context, (XDoWhileExpression) semanticObject); 
 				return; 

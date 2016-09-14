@@ -51,6 +51,7 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXJBranchingStatementAccess().getAlternatives(), "rule__XJBranchingStatement__Alternatives");
 					put(grammarAccess.getXAssignmentAccess().getAlternatives(), "rule__XAssignment__Alternatives");
 					put(grammarAccess.getXAssignmentAccess().getAlternatives_2_1(), "rule__XAssignment__Alternatives_2_1");
+					put(grammarAccess.getOpMultiAssignAccess().getAlternatives(), "rule__OpMultiAssign__Alternatives");
 					put(grammarAccess.getXCastedExpressionAccess().getAlternatives(), "rule__XCastedExpression__Alternatives");
 					put(grammarAccess.getXPostfixOperationAccess().getAlternatives(), "rule__XPostfixOperation__Alternatives");
 					put(grammarAccess.getXPostfixOperationAccess().getAlternatives_1_1(), "rule__XPostfixOperation__Alternatives_1_1");
@@ -67,7 +68,6 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXAnnotationElementValueAccess().getAlternatives(), "rule__XAnnotationElementValue__Alternatives");
 					put(grammarAccess.getXAnnotationAccess().getAlternatives_3_1(), "rule__XAnnotation__Alternatives_3_1");
 					put(grammarAccess.getXAnnotationOrExpressionAccess().getAlternatives(), "rule__XAnnotationOrExpression__Alternatives");
-					put(grammarAccess.getOpMultiAssignAccess().getAlternatives(), "rule__OpMultiAssign__Alternatives");
 					put(grammarAccess.getXRelationalExpressionAccess().getAlternatives_1(), "rule__XRelationalExpression__Alternatives_1");
 					put(grammarAccess.getOpCompareAccess().getAlternatives(), "rule__OpCompare__Alternatives");
 					put(grammarAccess.getOpAddAccess().getAlternatives(), "rule__OpAdd__Alternatives");
@@ -150,6 +150,8 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXAssignmentAccess().getGroup_2_1_1(), "rule__XAssignment__Group_2_1_1__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_2_1_1_0(), "rule__XAssignment__Group_2_1_1_0__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_2_1_1_0_0(), "rule__XAssignment__Group_2_1_1_0_0__0");
+					put(grammarAccess.getOpMultiAssignAccess().getGroup_8(), "rule__OpMultiAssign__Group_8__0");
+					put(grammarAccess.getOpMultiAssignAccess().getGroup_9(), "rule__OpMultiAssign__Group_9__0");
 					put(grammarAccess.getXJFeatureCallWithArrayAccessAccess().getGroup(), "rule__XJFeatureCallWithArrayAccess__Group__0");
 					put(grammarAccess.getXJFeatureCallWithArrayAccessAccess().getGroup_1(), "rule__XJFeatureCallWithArrayAccess__Group_1__0");
 					put(grammarAccess.getXJFeatureCallWithArrayAccessAccess().getGroup_1_0(), "rule__XJFeatureCallWithArrayAccess__Group_1_0__0");
@@ -160,7 +162,8 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXFeatureCallAccess().getGroup_2_1_1(), "rule__XFeatureCall__Group_2_1_1__0");
 					put(grammarAccess.getXConstructorCallAccess().getGroup(), "rule__XConstructorCall__Group__0");
 					put(grammarAccess.getXConstructorCallAccess().getGroup_3(), "rule__XConstructorCall__Group_3__0");
-					put(grammarAccess.getXConstructorCallAccess().getGroup_3_2(), "rule__XConstructorCall__Group_3_2__0");
+					put(grammarAccess.getXConstructorCallAccess().getGroup_3_1(), "rule__XConstructorCall__Group_3_1__0");
+					put(grammarAccess.getXConstructorCallAccess().getGroup_3_1_1(), "rule__XConstructorCall__Group_3_1_1__0");
 					put(grammarAccess.getXConstructorCallAccess().getGroup_4(), "rule__XConstructorCall__Group_4__0");
 					put(grammarAccess.getXConstructorCallAccess().getGroup_4_1(), "rule__XConstructorCall__Group_4_1__0");
 					put(grammarAccess.getXConstructorCallAccess().getGroup_4_1_1(), "rule__XConstructorCall__Group_4_1_1__0");
@@ -208,6 +211,11 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXSwitchExpressionAccess().getGroup_7(), "rule__XSwitchExpression__Group_7__0");
 					put(grammarAccess.getXCasePartAccess().getGroup(), "rule__XCasePart__Group__0");
 					put(grammarAccess.getXJSwitchStatementsAccess().getGroup(), "rule__XJSwitchStatements__Group__0");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getGroup(), "rule__XJTryWithResourcesStatement__Group__0");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getGroup_0(), "rule__XJTryWithResourcesStatement__Group_0__0");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getGroup_0_0(), "rule__XJTryWithResourcesStatement__Group_0_0__0");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getGroup_5(), "rule__XJTryWithResourcesStatement__Group_5__0");
+					put(grammarAccess.getXJTryWithResourcesVariableDeclarationAccess().getGroup(), "rule__XJTryWithResourcesVariableDeclaration__Group__0");
 					put(grammarAccess.getXTryCatchFinallyExpressionAccess().getGroup(), "rule__XTryCatchFinallyExpression__Group__0");
 					put(grammarAccess.getXTryCatchFinallyExpressionAccess().getGroup_3_0(), "rule__XTryCatchFinallyExpression__Group_3_0__0");
 					put(grammarAccess.getXTryCatchFinallyExpressionAccess().getGroup_3_0_1(), "rule__XTryCatchFinallyExpression__Group_3_0_1__0");
@@ -257,8 +265,6 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXAnnotationElementValuePairAccess().getGroup(), "rule__XAnnotationElementValuePair__Group__0");
 					put(grammarAccess.getXAnnotationElementValuePairAccess().getGroup_0(), "rule__XAnnotationElementValuePair__Group_0__0");
 					put(grammarAccess.getXAnnotationElementValuePairAccess().getGroup_0_0(), "rule__XAnnotationElementValuePair__Group_0_0__0");
-					put(grammarAccess.getOpMultiAssignAccess().getGroup_5(), "rule__OpMultiAssign__Group_5__0");
-					put(grammarAccess.getOpMultiAssignAccess().getGroup_6(), "rule__OpMultiAssign__Group_6__0");
 					put(grammarAccess.getXOrExpressionAccess().getGroup(), "rule__XOrExpression__Group__0");
 					put(grammarAccess.getXOrExpressionAccess().getGroup_1(), "rule__XOrExpression__Group_1__0");
 					put(grammarAccess.getXOrExpressionAccess().getGroup_1_0(), "rule__XOrExpression__Group_1_0__0");
@@ -435,8 +441,9 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsAssignment_2_1_0(), "rule__XFeatureCall__FeatureCallArgumentsAssignment_2_1_0");
 					put(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsAssignment_2_1_1_1(), "rule__XFeatureCall__FeatureCallArgumentsAssignment_2_1_1_1");
 					put(grammarAccess.getXConstructorCallAccess().getConstructorAssignment_2(), "rule__XConstructorCall__ConstructorAssignment_2");
-					put(grammarAccess.getXConstructorCallAccess().getTypeArgumentsAssignment_3_1(), "rule__XConstructorCall__TypeArgumentsAssignment_3_1");
-					put(grammarAccess.getXConstructorCallAccess().getTypeArgumentsAssignment_3_2_1(), "rule__XConstructorCall__TypeArgumentsAssignment_3_2_1");
+					put(grammarAccess.getXConstructorCallAccess().getExplicitTypeArgumentsAssignment_3_0(), "rule__XConstructorCall__ExplicitTypeArgumentsAssignment_3_0");
+					put(grammarAccess.getXConstructorCallAccess().getTypeArgumentsAssignment_3_1_0(), "rule__XConstructorCall__TypeArgumentsAssignment_3_1_0");
+					put(grammarAccess.getXConstructorCallAccess().getTypeArgumentsAssignment_3_1_1_1(), "rule__XConstructorCall__TypeArgumentsAssignment_3_1_1_1");
 					put(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallAssignment_4_0(), "rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0");
 					put(grammarAccess.getXConstructorCallAccess().getArgumentsAssignment_4_1_0(), "rule__XConstructorCall__ArgumentsAssignment_4_1_0");
 					put(grammarAccess.getXConstructorCallAccess().getArgumentsAssignment_4_1_1_1(), "rule__XConstructorCall__ArgumentsAssignment_4_1_1_1");
@@ -482,6 +489,16 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXCasePartAccess().getCaseAssignment_2(), "rule__XCasePart__CaseAssignment_2");
 					put(grammarAccess.getXCasePartAccess().getThenAssignment_4(), "rule__XCasePart__ThenAssignment_4");
 					put(grammarAccess.getXJSwitchStatementsAccess().getExpressionsAssignment_1(), "rule__XJSwitchStatements__ExpressionsAssignment_1");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getOpenParenthesisAssignment_0_0_2(), "rule__XJTryWithResourcesStatement__OpenParenthesisAssignment_0_0_2");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getResourceDeclarationsAssignment_1(), "rule__XJTryWithResourcesStatement__ResourceDeclarationsAssignment_1");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getExpressionAssignment_3(), "rule__XJTryWithResourcesStatement__ExpressionAssignment_3");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getCatchClausesAssignment_4(), "rule__XJTryWithResourcesStatement__CatchClausesAssignment_4");
+					put(grammarAccess.getXJTryWithResourcesStatementAccess().getFinallyExpressionAssignment_5_1(), "rule__XJTryWithResourcesStatement__FinallyExpressionAssignment_5_1");
+					put(grammarAccess.getXJTryWithResourcesVariableDeclarationAccess().getFinalAssignment_1(), "rule__XJTryWithResourcesVariableDeclaration__FinalAssignment_1");
+					put(grammarAccess.getXJTryWithResourcesVariableDeclarationAccess().getTypeAssignment_2(), "rule__XJTryWithResourcesVariableDeclaration__TypeAssignment_2");
+					put(grammarAccess.getXJTryWithResourcesVariableDeclarationAccess().getNameAssignment_3(), "rule__XJTryWithResourcesVariableDeclaration__NameAssignment_3");
+					put(grammarAccess.getXJTryWithResourcesVariableDeclarationAccess().getRightAssignment_5(), "rule__XJTryWithResourcesVariableDeclaration__RightAssignment_5");
+					put(grammarAccess.getXJTryWithResourcesVariableDeclarationAccess().getSemicolonAssignment_6(), "rule__XJTryWithResourcesVariableDeclaration__SemicolonAssignment_6");
 					put(grammarAccess.getXTryCatchFinallyExpressionAccess().getExpressionAssignment_2(), "rule__XTryCatchFinallyExpression__ExpressionAssignment_2");
 					put(grammarAccess.getXTryCatchFinallyExpressionAccess().getCatchClausesAssignment_3_0_0(), "rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0");
 					put(grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyExpressionAssignment_3_0_1_1(), "rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1");

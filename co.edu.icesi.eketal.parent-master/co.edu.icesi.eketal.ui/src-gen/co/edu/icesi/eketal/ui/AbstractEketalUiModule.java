@@ -15,6 +15,7 @@ import co.edu.icesi.eketal.ui.wizard.EketalProjectCreator;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
+import jbase.ui.DefaultJbaseUiModule;
 import org.eclipse.compare.IViewerCreator;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -92,7 +93,6 @@ import org.eclipse.xtext.ui.resource.ResourceServiceDescriptionLabelProvider;
 import org.eclipse.xtext.ui.shared.Access;
 import org.eclipse.xtext.ui.wizard.IProjectCreator;
 import org.eclipse.xtext.xbase.imports.IUnresolvedTypeResolver;
-import org.eclipse.xtext.xbase.ui.DefaultXbaseUiModule;
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 import org.eclipse.xtext.xbase.ui.editor.XbaseDocumentProvider;
 import org.eclipse.xtext.xbase.ui.editor.XbaseEditor;
@@ -114,7 +114,7 @@ import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;
  * Manual modifications go to {@link EketalUiModule}.
  */
 @SuppressWarnings("all")
-public abstract class AbstractEketalUiModule extends DefaultXbaseUiModule {
+public abstract class AbstractEketalUiModule extends DefaultJbaseUiModule {
 
 	public AbstractEketalUiModule(AbstractUIPlugin plugin) {
 		super(plugin);

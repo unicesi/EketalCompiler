@@ -1668,7 +1668,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//XJSingleStatement XExpression:
 	//	XJSemicolonStatement | XSwitchExpression | XIfExpression | XForLoopExpression | XBasicForLoopExpression |
-	//	XWhileExpression | XTryCatchFinallyExpression | XSynchronizedExpression | XJEmptyStatement
+	//	XWhileExpression | XJTryWithResourcesStatement | XTryCatchFinallyExpression | XSynchronizedExpression |
+	//	XJEmptyStatement
 	public JbaseGrammarAccess.XJSingleStatementElements getXJSingleStatementAccess() {
 		return gaJbase.getXJSingleStatementAccess();
 	}
@@ -1780,6 +1781,19 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		return getXAssignmentAccess().getRule();
 	}
 	
+	//OpMultiAssign:
+	//	'+=' | '-=' | '*=' | '/=' | '%=' |
+	//	'&=' | '|=' | '^=' | // added in Jbase
+	//	'<' '<' '=' |
+	//	'>' '>'? '>=';
+	public JbaseGrammarAccess.OpMultiAssignElements getOpMultiAssignAccess() {
+		return gaJbase.getOpMultiAssignAccess();
+	}
+	
+	public ParserRule getOpMultiAssignRule() {
+		return getOpMultiAssignAccess().getRule();
+	}
+	
 	//XJFeatureCallWithArrayAccess XExpression:
 	//	XFeatureCall => ({XJArrayAccessExpression.array=current}
 	//	'[' indexes+=XExpression ']' (=> '[' indexes+=XExpression ']')*)?
@@ -1803,11 +1817,12 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		return getXFeatureCallAccess().getRule();
 	}
 	
+	//// also record '<' to tell whether it's a diamond operator
 	//XConstructorCall XExpression:
-	//	{XConstructorCall}
-	//	'new' constructor=[types::JvmConstructor|QualifiedName] (=> '<' typeArguments+=JvmArgumentTypeReference (','
-	//	typeArguments+=JvmArgumentTypeReference)* '>')? (=> explicitConstructorCall?='(' (arguments+=XExpression (','
-	//	arguments+=XExpression)*)?
+	//	{XJConstructorCall}
+	//	'new' constructor=[types::JvmConstructor|QualifiedName] (=> explicitTypeArguments?='<'
+	//	(typeArguments+=JvmArgumentTypeReference (',' typeArguments+=JvmArgumentTypeReference)*)? '>')? (=>
+	//	explicitConstructorCall?='(' (arguments+=XExpression (',' arguments+=XExpression)*)?
 	//	')')?
 	public JbaseGrammarAccess.XConstructorCallElements getXConstructorCallAccess() {
 		return gaJbase.getXConstructorCallAccess();
@@ -1992,6 +2007,37 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXJSwitchStatementsRule() {
 		return getXJSwitchStatementsAccess().getRule();
+	}
+	
+	/// **
+	// * Java 7 try-with-resources
+	// * / XJTryWithResourcesStatement XExpression:
+	//	=> ({XJTryWithResourcesStatement} 'try' openParenthesis?='(')
+	//	resourceDeclarations+=XJTryWithResourcesVariableDeclaration*
+	//	')'
+	//	expression=XBlockExpression
+	//	catchClauses+=XCatchClause* ('finally' finallyExpression=XBlockExpression)?
+	public JbaseGrammarAccess.XJTryWithResourcesStatementElements getXJTryWithResourcesStatementAccess() {
+		return gaJbase.getXJTryWithResourcesStatementAccess();
+	}
+	
+	public ParserRule getXJTryWithResourcesStatementRule() {
+		return getXJTryWithResourcesStatementAccess().getRule();
+	}
+	
+	/// *
+	// * The final ; is optional in the last variable declaration in a
+	// * try-with-resources
+	// * / XJTryWithResourcesVariableDeclaration:
+	//	{XJTryWithResourcesVariableDeclaration} final?='final'?
+	//	type=JvmTypeReference name=ValidID '=' right=XExpression
+	//	semicolon=';'?;
+	public JbaseGrammarAccess.XJTryWithResourcesVariableDeclarationElements getXJTryWithResourcesVariableDeclarationAccess() {
+		return gaJbase.getXJTryWithResourcesVariableDeclarationAccess();
+	}
+	
+	public ParserRule getXJTryWithResourcesVariableDeclarationRule() {
+		return getXJTryWithResourcesVariableDeclarationAccess().getRule();
 	}
 	
 	/// **
@@ -2293,18 +2339,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getOpSingleAssignRule() {
 		return getOpSingleAssignAccess().getRule();
-	}
-	
-	//OpMultiAssign:
-	//	'+=' | '-=' | '*=' | '/=' | '%=' |
-	//	'<' '<' '=' |
-	//	'>' '>'? '>=';
-	public XbaseGrammarAccess.OpMultiAssignElements getOpMultiAssignAccess() {
-		return gaXbase.getOpMultiAssignAccess();
-	}
-	
-	public ParserRule getOpMultiAssignRule() {
-		return getOpMultiAssignAccess().getRule();
 	}
 	
 	//XOrExpression XExpression:
