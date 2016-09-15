@@ -125,6 +125,12 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					 	//superTypes+=entity.superType.cloneWithProxies
 //					 	superTypes+=typeRef(Automaton)
 						members+=declaracion.toField("instance", typeRef(Automaton))[static = true]
+						members+=declaracion.toField("estados", typeRef(Map, typeRef(String), typeRef(State)))[
+							static = true
+							visibility = JvmVisibility::PUBLIC
+							initializer = '''new «typeRef(HashMap)»<String, «typeRef(State)»>()'''
+						]
+						
 						members+=declaracion.toMethod("getInstance", typeRef(Automaton))[
 							static = true
 							body = '''
@@ -322,7 +328,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
-	//TODO (línea 359) Tener en cuenta que puede haber un estado que sea final y aún así tenga tarnsiciones
 	def AutomatonInit(co.edu.icesi.eketal.eketal.Automaton declaracion) {
 		val method = declaracion.toMethod("initialize", typeRef(void))[
 		visibility = JvmVisibility::PRIVATE
@@ -333,8 +338,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		«typeRef(State)» inicial = null;
 		//lista de estados finales
 		«typeRef(Set)»<«typeRef(State)»> estadosFinales = new «typeRef(HashSet)»();
-		//Conjunto de nombres y estados
-		«typeRef(Map)»<String, «typeRef(State)»> estados = new «typeRef(HashMap)»();
 		
 		//conjunto de transiciones
 		«typeRef(HashSet)»<«typeRef(Transition)»> transitionSet = new «typeRef(HashSet)»();
@@ -380,6 +383,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				//Estado final «step.name.toFirstUpper»
 				estados.get(estado«step.name.toFirstUpper»).setAccept(true);
 				estadosFinales.add(estados.get(estado«step.name.toFirstUpper»));
+				
 			«ENDIF»
 		«ENDFOR»
 		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales, expressions);

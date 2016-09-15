@@ -25,6 +25,8 @@ import co.edu.icesi.eketal.eketal.Rc
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import co.edu.icesi.eketal.eketal.Model
+import co.edu.icesi.eketal.eketal.Pos
+import java.util.HashMap
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -37,9 +39,14 @@ class EketalGenerator implements IGenerator{
 		val Set<String> importedLibraries = new TreeSet()
 		if(listModel.hasNext){
 			val modelo = listModel.next
+			if(modelo.name!=null)
+				importedLibraries+=modelo.name+".*"
 			if(modelo.importSection!=null && !modelo.importSection.importDeclarations.empty){
 				modelo.importSection.importDeclarations.forEach[
-					importedLibraries+=it.importedTypeName
+					if(it.importedNamespace!=null)
+						importedLibraries+=it.importedNamespace
+					else
+						importedLibraries+=it.importedTypeName
 				]				
 			}
 		}
@@ -68,11 +75,16 @@ class EketalGenerator implements IGenerator{
 		var Set<String> importedLibraries = new TreeSet()
 		importedLibraries+=libraries
 		var pointcuts = new TreeSet<String>
+		
+		var after = new HashMap<String, String>()
+		var before = new HashMap<String, String>()
+		
 		if(modelo.declarations.containsAutomaton)			
 			importedLibraries+="co.edu.icesi.eketal.automaton.*"
 		importedLibraries+="co.edu.icesi.eketal.groupsimpl.*"
 		importedLibraries+="co.edu.icesi.eketal.handlercontrol.*"
 		importedLibraries+="co.edu.icesi.ketal.core.Automaton"
+		importedLibraries+="co.edu.icesi.ketal.core.State"
 		importedLibraries+="co.edu.icesi.ketal.core.NamedEvent"
 		importedLibraries+="co.edu.icesi.ketal.core.Event"
 		importedLibraries+="java.util.Map"
@@ -103,6 +115,8 @@ class EketalGenerator implements IGenerator{
 						System.out.println("Threw an exception: " + e);
 					}
 					after(): «event.name.toFirstLower»(){
+						Automaton automata = «automatonName.toFirstUpper».getInstance();
+						verifyAfter(automata);
 						System.out.println("Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
@@ -116,6 +130,7 @@ class EketalGenerator implements IGenerator{
 							System.out.println("Evento no reconocido por el autómata");
 							//Debería parar
 						}else{
+							verifyBefore(automata);
 							System.out.println("Returned or threw an Exception");							
 						}
 						//while(!automata.evaluate(event)){
@@ -126,6 +141,12 @@ class EketalGenerator implements IGenerator{
 				«ENDIF»
 				«IF event instanceof Rc»
 					public void reaction«event.automaton.name»«event.state.name»()«printBody(event.body.body as XBlockExpression)»
+					«IF event.pos==Pos.BEFORE»
+						//«before.put(event.state.name, "reaction"+event.automaton.name+event.state.name+"()")»
+					«ENDIF»
+					«IF event.pos==Pos.AFTER»
+						//«after.put(event.state.name, "reaction"+event.automaton.name+event.state.name+"()")»
+					«ENDIF»
 				«ENDIF»
 			«ENDFOR»
 			
@@ -133,6 +154,27 @@ class EketalGenerator implements IGenerator{
 				«pointcut»;
 			«ENDFOR»
 			
+			private void verifyBefore(Automaton automaton){
+				«IF !before.isEmpty»
+					State actual = automaton.getCurrentState();
+					«FOR state:before.keySet»
+					if(actual.equals(«automatonName.toFirstUpper».estados.get("«state»"))){
+						«before.get(state)»;
+					}
+					«ENDFOR»
+				«ENDIF»
+			}
+			
+			private void verifyAfter(Automaton automaton){
+				«IF !after.isEmpty»
+					State actual = automaton.getCurrentState();
+					«FOR state:before.keySet»
+					if(actual.equals(«automatonName.toFirstUpper».estados.get("«state»"))){
+						«after.get(state)»;
+					}
+					«ENDFOR»
+				«ENDIF»
+			}
 		}
 		'''
 		var imports = '''
