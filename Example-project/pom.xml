@@ -21,6 +21,12 @@
 			<artifactId>co.edu.icesi.eketal.lib</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+		<dependency>
+		    <groupId>org.powermock</groupId>
+		    <artifactId>powermock-module-junit4</artifactId>
+		    <version>1.6.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>

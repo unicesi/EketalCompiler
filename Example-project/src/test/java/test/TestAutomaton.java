@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import co.edu.icesi.eketal.automaton.AutomatonConstructor;
 import co.edu.icesi.eketal.handlercontrol.EventHandler;
@@ -17,6 +18,7 @@ public class TestAutomaton {
 	Automaton instance = AutomatonConstructor.getInstance();
 
     @Test
+    @PrepareForTest({AutomatonConstructor.class})
     public void testCase(){
     	System.setProperty("java.net.preferIPv4Stack" , "true");
     	
@@ -42,6 +44,7 @@ public class TestAutomaton {
 		
 		System.out.println(instance.getCurrentState().toString());
 		assertFalse(instance.getCurrentState().getAccept());
+		
     }
 
 }
