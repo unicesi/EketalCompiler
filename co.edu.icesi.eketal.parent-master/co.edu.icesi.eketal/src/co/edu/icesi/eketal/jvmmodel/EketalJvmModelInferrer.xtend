@@ -36,6 +36,8 @@ import co.edu.icesi.ketal.distribution.KetalMessageHandler
 import java.util.Vector
 import java.util.Hashtable
 import co.edu.icesi.ketal.core.Expression
+import org.eclipse.xtext.common.types.JvmTypeReference
+import java.util.Arrays
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -271,14 +273,31 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	def createGroupClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseGrupos) {
 		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl."+groupClassName)) [
 //			annotations+=annotationRef(Singleton)
-			members+=claseGrupos.toField("grupos", typeRef(Set))[
+			
+			val grupos = new TreeSet()
+			claseGrupos.declarations.filter(typeof(Group)).forEach[
+				grupos+="\""+it.name+"\""
+			]
+			
+			if(!grupos.isEmpty){
+				members+=claseGrupos.toField("SET_VALUES", typeRef("java.lang.String[]"))[
+					static = true
+					initializer = '''{«grupos.join(",")»}'''
+				]
+			}
+
+			members+=claseGrupos.toField("grupos", typeRef(Set, typeRef(String)))[
 				static = true
-				initializer = '''new «typeRef(TreeSet)»<«typeRef(String)»>()'''
+				initializer = '''new «typeRef(TreeSet)»<«typeRef(String)»>(
+				«IF !grupos.empty»
+					«typeRef(Arrays)».asList(SET_VALUES)
+				«ENDIF»
+				)'''
 			]
 			
 			members+=claseGrupos.toConstructor[
-				body='''agregarGrupos();'''
 			]
+			
 			members+=claseGrupos.toMethod("addGroup", typeRef(Boolean))[
 				parameters+=claseGrupos.toParameter("nuevoGrupo", String.typeRef)
 				static = true
@@ -295,16 +314,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 			
-			members+=claseGrupos.toMethod("agregarGrupos", typeRef(void))[
-				body='''
-				«FOR grupo:claseGrupos.declarations»
-					«IF grupo instanceof Group»
-						«var grupoTemp = grupo as Group»
-						addGroup("«grupoTemp.name»");
-					«ENDIF»
-				«ENDFOR»
-				'''
-			]
 			
 			//TODO realizar el llamado para ver
 			members+=claseGrupos.toMethod("on", typeRef(boolean))[
