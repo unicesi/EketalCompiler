@@ -19,16 +19,11 @@ public class TestAutomaton {
 
     @Test
     @PrepareForTest({AutomatonConstructor.class})
-    public void testCase(){
+    public void testAutomaton(){
     	System.setProperty("java.net.preferIPv4Stack" , "true");
     	
         Event eventHello = new NamedEvent("eventoHello");
         Event eventWorld = new NamedEvent("eventoWorld");
-        
-        HelloWorld hw = new HelloWorld();
-        
-        hw.helloMethod();
-		hw.worldMethod();
         
 		System.out.println(instance.getCurrentState().toString());
 		String state = instance.getCurrentState().toString();
@@ -45,6 +40,15 @@ public class TestAutomaton {
 		System.out.println(instance.getCurrentState().toString());
 		assertFalse(instance.getCurrentState().getAccept());
 		
+    }
+    
+    @Test
+    @PrepareForTest({AutomatonConstructor.class})
+    public void testCase(){
+    	HelloWorld hw = new HelloWorld();
+         
+        hw.helloMethod();
+ 		hw.worldMethod();
     }
 
 }
