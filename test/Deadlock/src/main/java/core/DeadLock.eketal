@@ -1,0 +1,30 @@
+package core;
+
+eventclass DeadLock{
+	/*
+	 * This automaton recognize the following event sequence:
+	 * (eventoHello (eventoWorld eventoHello)* eventoHello) 
+	 */	
+	automaton deadLockDetector(){
+		start init : (prepareEvent -> waitingCommit);
+		waitingCommit: (commitEvent -> deadlock);
+		end deadlock;
+	}
+	
+	/* 
+	 * Means that accept only the local calls
+	 */ 
+	group localGroup{
+		localhost
+	}
+	
+	event prepareEvent():host(localGroup)&&call(* TreeCache.prepare());
+	
+	event commitEvent(): call(* TreeCache.commit());
+	
+	reaction before deadLockDetector.deadlock{
+		System.out.println("----------------------------------------");
+		System.out.println("Deadlock detected");
+		System.out.println("----------------------------------------");
+	}
+}

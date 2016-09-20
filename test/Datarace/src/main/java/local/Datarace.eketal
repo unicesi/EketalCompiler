@@ -1,0 +1,37 @@
+package local;
+
+import remote.*;
+eventclass Datarace{
+
+	group localGroup{
+		localhost
+	}
+	
+	automaton dataraceDetector(){
+ 		start init: (request -> acquireLock);
+		acquireLock: (writeLock -> potentialDatarace);
+		potentialDatarace: (cacheLoader -> evictData) || (evictNode -> restart);
+ 		evictData: (evictNode -> datarace);
+ 		restart: (writeUnlock -> init);
+ 		end datarace;
+ 	}
+ 	
+	event request(): call(* CacheLoader.get()) && host(localGroup);
+	
+	event writeLock(): call(* Transaction.begin()) && host(localGroup);
+	
+	event cacheLoader(): call(* ExtendedTreeCacheListener.peek()) && host(localGroup);
+	
+	event evictNode(): call(* ExtendedTreeCacheListener.nodeEvict()) && 
+		host(localGroup);
+	
+	event writeUnlock(): call(* Transaction.commit()) && host(localGroup);
+	
+ 	reaction before dataraceDetector.datarace{
+		String msg = "DataRace detected!";
+		System.out.println("----------------------------------------");
+		System.out.println(msg);
+		System.out.println("----------------------------------------");
+	}
+	
+}
