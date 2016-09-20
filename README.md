@@ -18,7 +18,7 @@ You must have maven installed
 ### 1. Increase memory.
 
 ```
-   export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+  export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 ```
 
 ### 2. Build the language
@@ -26,6 +26,13 @@ You must have maven installed
 ```
  cd co.edu.icesi.eketal.parent-master/
  mvn clean install
+```
+
+You can skip the test as follow
+
+```
+ cd co.edu.icesi.eketal.parent-master/
+ mvn clean install -DskipTests=true
 ```
 
 ### 3. Build example projects
@@ -42,7 +49,7 @@ There are 3 example projects into the directory test, intructions to deploy are 
    
    Add the update site repository and install.
 
-### 2. Locally install
+### 2. Locally install in your eclipse
 ####Compiling from sources
   If you want to compile this project locally, you must do the following
   -Download or clone the project.
@@ -54,12 +61,12 @@ export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 ```
   -Where you downloaded your copy (inside the "co.edu.icesi.eketal.parent-master/" project):
 ```bash
-mvn install
+mvn clean install
 ```
 
 Or skipping the test from the compiler as follows:
 ```bash
-mvn install -DskipTests=true
+mvn clean install -DskipTests=true
 ```
 
 You can locally install the project in the following way:
