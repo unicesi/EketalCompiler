@@ -28,13 +28,9 @@ You must have maven installed
  mvn clean install
 ```
 
-### 3. Build the example projects
+### 3. Build example projects
 
-```
- cd ../Example-project/
- mvn clean test
-```
- Once it has finished, you can check the generated files in Example-project/src/main/generated-sources/ directory.
+There are 3 example projects into the directory test, intructions to deploy are inside the [directory](https://github.com/unicesi/eketal/new/master/test)
 
 ## 2. Try with eclipse:
 
@@ -61,6 +57,11 @@ export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 mvn install
 ```
 
+Or skipping the test from the compiler as follows:
+```bash
+mvn install -DskipTests=true
+```
+
 You can locally install the project in the following way:
 
   Go to Help -> Install new software.
@@ -78,38 +79,6 @@ Finally find "../co.edu.icesi.eketal.parent-master/co.edu.icesi.eketal.repositor
    
    Next, in the name put "src" and repeat the procces to create a "xtend-gen" folder. Finally:
    >Right click in the in the parent project -> Maven -> Update Project.
-
-## 4. Sample project
-  
-   Once you have installed this project in eclipse, you can create your own sample project of type Eketal in the "New Project" window, this project have a class with the .eketal extension and his own TestClass, all the other classes are generated.
-   
-   About the implementation: This example defines the declaration of an automaton, a working group and the events of interest. We will look toward the source code of the class to explain each of his statements.
-   
-   Event Declaration:
-   ```
-   event eventoHello():host(localGroup)&&call(core.HelloWorld.helloMethod());
-   event eventoWorld(): call(core.HelloWorld.worldMethod());
-   ```
-   Events are a set of formal clauses separated by '&&', '||' or just negated '!'. They can be the intercept of a method call and the group host where that called was received.
-
-   Automaton:
-   
-   ```
-   automaton automatonConstructor(){
-    start firstState : (eventoHello -> middleState);
-    middleState : (eventoHello -> finalState) || (eventoWorld -> firstState);
-    end finalState;
-   }
-   ```
-   This is a finite state automaton and is composed by three states: firstState, middleState, finalState; where the first is the initial state, and the last is the final state, it has two event triggers (eventHello and eventWorld) defined in the Event Declaration. As we can see, this automaton will recognize all the events sequences of the type: eventoHello (eventoWorld eventoHello)* eventoHello. Those events represents services in distributed application.
-   
-   Group:
-   ```
-   group localGroup{
-    localhost
-   }
-   ```
-   This declaration allows to create groups, composed by host's, that will filter the incoming and outcoming calls of the events. In other words, this is reflected in a validation for the received events, and verifies which machine (or node in the distributed application) triggered the event.
    
    
    In case of problems, please submit an issue.
