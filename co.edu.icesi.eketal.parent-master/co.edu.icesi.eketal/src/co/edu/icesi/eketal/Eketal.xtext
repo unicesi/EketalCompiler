@@ -110,7 +110,6 @@ Ip:
 //////////////////////////////////////
 ////Automata definicion
 //////////////////////////////////////
-//TODO el estado inicial debe tener transiciones, porque sino, no se puede llegar a ningún lado
 //TODO estado de finalización default
 //TODO Restricción de que solo puede haber un autómata
 Automaton:

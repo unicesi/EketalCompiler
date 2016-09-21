@@ -4,7 +4,7 @@
 
   You must have maven installed
 
-  Inside the parent project (../co.edu.icesi.eketal.parent-master/) run (with maven) the following command:
+  Inside the parent project (../co.edu.icesi.eketal.parent-master/) run the following commands from the bash:
 
 ```
 export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
@@ -87,5 +87,8 @@ reaction before dataraceDetector.datarace{
   System.out.println("----------------------------------------");
 }
 ```
+
+## 3. Deadlock
+  
 
 In case of problems, please submit an issue.

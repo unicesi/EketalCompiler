@@ -1,5 +1,5 @@
 # Eketal
-  Eketal is a project based on xtext with jbase integration and uses aspectj for his purpose. For its deploy, you must have installed both tools mentioned before.
+  Eketal is a project based on xtext with jbase integration and uses aspectj for his purpose. For its deploy, you must have installed the tools mentioned before.
   You can find their releases, for eclipse mars, here:
 
 
@@ -11,35 +11,49 @@
 
   First we will explain how to test the Eketal software: (1) with maven, (2) installing in eclipse (remote and local installation). Second, (3) how to contribute to the project, and finally, we will explain the (4) sample project.
 
-## 1. Try it with maven:
+## 1. Download:
 
-You must have maven installed
+### 1. From the page:
+
+Click in the button "Clone or Download" option "Download Zip"
+
+### 2. Using Git.
+
+You must have Git installed.
+In the command line:
+```
+  git clone https://github.com/unicesi/eketal.git
+```
+
+## 2. Try it with maven:
+
+You must have maven installed, and run the folllowing prompts in the command line or bash
 
 ### 1. Increase memory.
 
 ```
-  export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 ```
 
 ### 2. Build the language
 
 ```
- cd co.edu.icesi.eketal.parent-master/
- mvn clean install
+cd co.edu.icesi.eketal.parent-master/
+mvn clean install
 ```
 
-You can skip the test as follow
+You can skip the test of the kernel Ketal with this instruction
 
 ```
- cd co.edu.icesi.eketal.parent-master/
- mvn clean install -DskipTests=true
+cd co.edu.icesi.eketal.parent-master/
+mvn clean install -DskipTests=true
 ```
 
 ### 3. Build example projects
 
-There are 3 example projects into the directory test, intructions to deploy are inside the [directory](https://github.com/unicesi/eketal/new/master/test)
+There are 3 example projects into the directory test, intructions to deploy are inside the [directory](https://github.com/unicesi/eketal/tree/master/test)
 
-## 2. Try with eclipse:
+## 3. Try with eclipse:
 
 ### 1. Eclipse update site
   This is the eclipse update site repository: http://unicesi.github.io/eketal/repository/
@@ -77,7 +91,7 @@ You can locally install the project in the following way:
 
 Finally find "../co.edu.icesi.eketal.parent-master/co.edu.icesi.eketal.repository/target/repository" directory and accept.
 
-## 3. Developers
+## 4. Developers
   To contribute , this project can be clone to a local repository and you can work from there.
   For deploy in your workspace, you must have Eclipse mars, with aspectj, maven and xtext as mentioned in the beggining. Then you can import it as a maven project.
    

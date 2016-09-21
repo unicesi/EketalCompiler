@@ -8,8 +8,8 @@ eventclass Example{
 	 * (eventoHello (eventoWorld eventoHello)* eventoHello) 
 	 */	
 	automaton automatonConstructor(){
-		start firstState : (eventoHello -> middleState);
-		middleState : (eventoHello -> finalState) || (eventoWorld -> firstState);
+		start firstState : (eventHello -> middleState);
+		middleState : (eventHello -> finalState) || (eventWorld -> firstState);
 		end finalState;
 	}
 	
@@ -20,9 +20,9 @@ eventclass Example{
 		localhost
 	}
 	
-	event eventoHello():host(localGroup)&&call(* core.HelloWorld.helloMethod());
+	event eventHello():host(localGroup)&&call(* core.HelloWorld.helloMethod());
 	
-	event eventoWorld(): call(* core.HelloWorld.worldMethod());
+	event eventWorld(): call(* core.HelloWorld.worldMethod());
 	
 	reaction before automatonConstructor.firstState{
 		System.out.println("estado");
