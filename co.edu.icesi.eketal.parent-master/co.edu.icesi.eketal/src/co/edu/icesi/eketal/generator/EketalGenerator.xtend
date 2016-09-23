@@ -83,6 +83,7 @@ class EketalGenerator implements IGenerator{
 			importedLibraries+="co.edu.icesi.eketal.automaton.*"
 		importedLibraries+="co.edu.icesi.eketal.groupsimpl.*"
 		importedLibraries+="co.edu.icesi.eketal.handlercontrol.*"
+		importedLibraries+="co.edu.icesi.eketal.reaction.*"
 		importedLibraries+="co.edu.icesi.ketal.core.Automaton"
 		importedLibraries+="co.edu.icesi.ketal.core.State"
 		importedLibraries+="co.edu.icesi.ketal.core.NamedEvent"
@@ -116,7 +117,7 @@ class EketalGenerator implements IGenerator{
 					}
 					after(): «event.name.toFirstLower»(){
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
-						verifyAfter(automata);
+						Reaction.verifyAfter(automata);
 						System.out.println("Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
@@ -130,7 +131,7 @@ class EketalGenerator implements IGenerator{
 							System.out.println("Evento no reconocido por el autómata");
 							//Debería parar
 						}else{
-							verifyBefore(automata);
+							Reaction.verifyBefore(automata);
 							System.out.println("Returned or threw an Exception");							
 						}
 						//while(!automata.evaluate(event)){

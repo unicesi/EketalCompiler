@@ -38,6 +38,8 @@ import java.util.Hashtable
 import co.edu.icesi.ketal.core.Expression
 import org.eclipse.xtext.common.types.JvmTypeReference
 import java.util.Arrays
+import org.jgroups.Message
+import co.edu.icesi.eketal.eketal.Rc
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -102,103 +104,111 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		]
 		
 		/*
-		 * Creates the class that handles the control in the jgroups
-		 */
-		val handlerClass = element.typeDeclaration;
-		createHandlerClass(acceptor, handlerClass)
-		
-		/*
 		 * Creates a class that contains the groups declared
 		 */
 		val groupsClass = element.typeDeclaration
 		createGroupClass(acceptor, groupsClass)
 		
 		/*
-		 * Navigates for the declarations looking for automatons
+		 * Collects all the automatons and creates an automaton for each one
 		 */
-		var declarations = element.typeDeclaration.declarations
-		for(declaracion:declarations){
-			switch(declaracion){
-				co.edu.icesi.eketal.eketal.Automaton:{//Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
-					/*
-					 * Creates the class with the singleton nature
-					 */
-					acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.automaton."+declaracion.name.toFirstUpper)) [
-					 	//superTypes+=entity.superType.cloneWithProxies
-//					 	superTypes+=typeRef(Automaton)
-						members+=declaracion.toField("instance", typeRef(Automaton))[static = true]
-						members+=declaracion.toField("estados", typeRef(Map, typeRef(String), typeRef(State)))[
-							static = true
-							visibility = JvmVisibility::PUBLIC
-							initializer = '''new «typeRef(HashMap)»<String, «typeRef(State)»>()'''
-						]
-						
-						members+=declaracion.toMethod("getInstance", typeRef(Automaton))[
-							static = true
-							body = '''
-							if(instance==null)
-								new «declaracion.name.toFirstUpper»();
-							return instance;
-							'''
-						]
-						members+=declaracion.toConstructor[
-							visibility = JvmVisibility::PRIVATE
-							body = '''
-							initialize();
-							'''
-						]
-						/*
-						 * Creates the main method
-						 */
-						members += AutomatonInit(declaracion as co.edu.icesi.eketal.eketal.Automaton)
-					]	
-				}
-//				EvDecl:{
-//					acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.multicast."+declaracion.name.toFirstUpper)) [
-//						members+=declaracion.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
-//							static = true
-//							initializer = '''new «typeRef(ReceiverMessageHandler)»()'''
-//						]
-//						members+=declaracion.toField("eventBroker", typeRef(EventBroker))[
-//							static = true
-//							initializer = '''new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler)'''
-//						]
-//						
-//						//TODO en este es el mulsticasSync o el Async?
-//						members+=declaracion.toMethod("multicast", typeRef(void))[
-//							parameters+=declaracion.toParameter("evento", Event.typeRef)
-//							static = true
-//							body='''
-//								eventBroker.multicastSync(evento, null);
-//							'''
-//						]
-//						
-//						members+=declaracion.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
-//							static = true
-//							initializer = '''new «typeRef(KetalMessageHandler)»()'''
-//						]
-//						members+=declaracion.toField("eventBrokerHandler", typeRef(EventBroker))[
-//							static = true
-//							initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
-//						]
-//						members+=declaracion.toMethod("getEvents", typeRef(Vector))[
-//							parameters+=declaracion.toParameter("evento", Event.typeRef)
-//							static = true
-//							body='''
-//								return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
-//							'''
-//						]
-//					]
-//				}
-			}
-		}
+		var automatons = element.typeDeclaration.declarations.filter(typeof(co.edu.icesi.eketal.eketal.Automaton));
+		var String nameAutomaton;
+		for(declaracion : automatons){
+			//Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
+			/*
+			 * Creates the class with the singleton nature
+			 */
+			nameAutomaton = "co.edu.icesi.eketal.automaton."+declaracion.name.toFirstUpper
+			acceptor.accept(declaracion.toClass(nameAutomaton)) [
+			 	//superTypes+=entity.superType.cloneWithProxies
+	//					 	superTypes+=typeRef(Automaton)
+				members+=declaracion.toField("instance", typeRef(Automaton))[static = true]
+				members+=declaracion.toField("estados", typeRef(Map, typeRef(String), typeRef(State)))[
+					static = true
+					visibility = JvmVisibility::PUBLIC
+					initializer = '''new «typeRef(HashMap)»<String, «typeRef(State)»>()'''
+				]
+				
+				members+=declaracion.toMethod("getInstance", typeRef(Automaton))[
+					static = true
+					body = '''
+					if(instance==null)
+						new «declaracion.name.toFirstUpper»();
+					return instance;
+					'''
+				]
+				members+=declaracion.toConstructor[
+					visibility = JvmVisibility::PRIVATE
+					body = '''
+					initialize();
+					'''
+				]
+				/*
+				 * Creates the main method
+				 */
+				members += AutomatonInit(declaracion as co.edu.icesi.eketal.eketal.Automaton)
+			]
+			
+		} 
+		
+		/*
+		 * Creates the class that contains the required reactions
+		 */
+		var reactions = element.typeDeclaration.declarations.filter(typeof(Rc));
+		
+		
+		/*
+		 * Creates the class that handles the control in the jgroups
+		 */
+		val handlerClass = element.typeDeclaration;
+		createHandlerClass(acceptor, handlerClass, nameAutomaton)
+		
+		
+//		EvDecl:{
+//			acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.multicast."+declaracion.name.toFirstUpper)) [
+//				members+=declaracion.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
+//					static = true
+//					initializer = '''new «typeRef(ReceiverMessageHandler)»()'''
+//				]
+//				members+=declaracion.toField("eventBroker", typeRef(EventBroker))[
+//					static = true
+//					initializer = '''new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler)'''
+//				]
+//				
+//				//TODO en este es el mulsticasSync o el Async?
+//				members+=declaracion.toMethod("multicast", typeRef(void))[
+//					parameters+=declaracion.toParameter("evento", Event.typeRef)
+//					static = true
+//					body='''
+//						eventBroker.multicastSync(evento, null);
+//					'''
+//				]
+//				
+//				members+=declaracion.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
+//					static = true
+//					initializer = '''new «typeRef(KetalMessageHandler)»()'''
+//				]
+//				members+=declaracion.toField("eventBrokerHandler", typeRef(EventBroker))[
+//					static = true
+//					initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
+//				]
+//				members+=declaracion.toMethod("getEvents", typeRef(Vector))[
+//					parameters+=declaracion.toParameter("evento", Event.typeRef)
+//					static = true
+//					body='''
+//						return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
+//					'''
+//				]
+//			]
+//		}
 		
 	}
 	
 	/*
 	 * Also adds the Singleton nature
 	 */
-	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass) {
+	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass, String nameAutomaton) {
 		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol."+handlerClassName)) [
 			//Implementación de la simulación Singleton
 			members+=eventDefinitionClass.toField("instance", typeRef(it))[
@@ -217,9 +227,22 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				visibility = JvmVisibility.PRIVATE
 				body = 
 				'''
-				brokerMessageHandler = new «typeRef(ReceiverMessageHandler)»();
+				brokerMessageHandler = new «typeRef(ReceiverMessageHandler)»(){
+					@Override
+					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
+					    			«typeof(int)» typeOfMsgSent){
+					Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
+					«IF false»
+						Automaton automaton = «nameAutomaton».getInstance();
+						Reaction.verifyBefore(automaton);					
+						Reaction.verifyAfter(automaton);					
+					«ENDIF»
+					return handle;
+				};
 				eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler);
 				'''
+				//TODO automaton name
+				//TODO if
 			]
 			
 			members+=eventDefinitionClass.toMethod("getInstance", typeRef(it))[
