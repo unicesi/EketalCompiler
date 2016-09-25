@@ -40,6 +40,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import java.util.Arrays
 import org.jgroups.Message
 import co.edu.icesi.eketal.eketal.Rc
+import co.edu.icesi.eketal.eketal.Pos
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -58,6 +59,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		
 	public static String groupClassName = "GroupsControl"
 	public static String handlerClassName = "EventHandler"
+	public static String reaction = "Reaction"
 		
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -155,8 +157,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		/*
 		 * Creates the class that contains the required reactions
 		 */
-		var reactions = element.typeDeclaration.declarations.filter(typeof(Rc));
-		
+		var reactions = element.typeDeclaration;
+		createReactionClass(acceptor, reactions, nameAutomaton)
 		
 		/*
 		 * Creates the class that handles the control in the jgroups
@@ -164,45 +166,62 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val handlerClass = element.typeDeclaration;
 		createHandlerClass(acceptor, handlerClass, nameAutomaton)
 		
-		
-//		EvDecl:{
-//			acceptor.accept(declaracion.toClass("co.edu.icesi.eketal.multicast."+declaracion.name.toFirstUpper)) [
-//				members+=declaracion.toField("brokerMessageHandler", typeRef(BrokerMessageHandler))[
-//					static = true
-//					initializer = '''new «typeRef(ReceiverMessageHandler)»()'''
-//				]
-//				members+=declaracion.toField("eventBroker", typeRef(EventBroker))[
-//					static = true
-//					initializer = '''new «typeRef(JGroupsEventBroker)»("", brokerMessageHandler)'''
-//				]
-//				
-//				//TODO en este es el mulsticasSync o el Async?
-//				members+=declaracion.toMethod("multicast", typeRef(void))[
-//					parameters+=declaracion.toParameter("evento", Event.typeRef)
-//					static = true
-//					body='''
-//						eventBroker.multicastSync(evento, null);
-//					'''
-//				]
-//				
-//				members+=declaracion.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
-//					static = true
-//					initializer = '''new «typeRef(KetalMessageHandler)»()'''
-//				]
-//				members+=declaracion.toField("eventBrokerHandler", typeRef(EventBroker))[
-//					static = true
-//					initializer = '''new «typeRef(JGroupsEventBroker)»("", ketalMessageHandler)'''
-//				]
-//				members+=declaracion.toMethod("getEvents", typeRef(Vector))[
-//					parameters+=declaracion.toParameter("evento", Event.typeRef)
-//					static = true
-//					body='''
-//						return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
-//					'''
-//				]
-//			]
-//		}
-		
+	}
+	
+	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, String automatonName) {
+		acceptor.accept(reactions.toClass("co.edu.icesi.eketal.reaction."+reaction)) [
+			val set = reactions.declarations.filter(typeof(Rc))
+			val after = new HashMap<String, String>()
+			val before = new HashMap<String, String>()
+			for(rc:set){
+				var name = "reaction"+rc.automaton.name+rc.state.name
+				members+=reactions.toMethod(name, typeRef(void))[
+					static = true
+					body=rc.body.body
+//					printBody(event.body.body as XBlockExpression)
+//						def printBody(XBlockExpression exp){
+//						val body = NodeModelUtils.findActualNodeFor(exp)
+//						return body.text
+//					}
+				]
+				if(rc.pos==Pos.BEFORE){
+					before.put(rc.state.name, name+"()")
+				}else if(rc.pos==Pos.BEFORE){
+					after.put(rc.state.name, name+"()")
+				}
+			}
+			
+			members+=reactions.toMethod("verifyBefore", typeRef(void))[
+				parameters+=reactions.toParameter("automaton", typeRef(Automaton))
+				static = true
+				body='''
+					«IF !before.isEmpty»
+						«typeRef(State)» actual = automaton.getCurrentState();
+						«FOR state:before.keySet»
+						if(actual.equals(«automatonName».estados.get("«state»"))){
+							«before.get(state)»;
+						}
+						«ENDFOR»
+					«ENDIF»
+				'''
+			]
+			
+			members+=reactions.toMethod("verifyAfter", typeRef(void))[
+				static = true
+				parameters+=reactions.toParameter("automaton", typeRef(Automaton))
+				body='''
+					«IF !after.isEmpty»
+						«typeRef(State)» actual = automaton.getCurrentState();
+						«FOR state:after.keySet»
+							if(actual.equals(«automatonName.toFirstUpper».estados.get("«state»"))){
+								«after.get(state)»;
+							}
+						«ENDFOR»
+					«ENDIF»
+				'''
+			]
+			
+		]
 	}
 	
 	/*
@@ -231,13 +250,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					@Override
 					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
 					    			«typeof(int)» typeOfMsgSent){
-					Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
-					«IF false»
-						Automaton automaton = «nameAutomaton».getInstance();
-						Reaction.verifyBefore(automaton);					
-						Reaction.verifyAfter(automaton);					
-					«ENDIF»
-					return handle;
+						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
+						«IF false»
+							Automaton automaton = «nameAutomaton».getInstance();
+							Reaction.verifyBefore(automaton);					
+							Reaction.verifyAfter(automaton);					
+						«ENDIF»
+						return handle;
+					}
 				};
 				eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler);
 				'''
