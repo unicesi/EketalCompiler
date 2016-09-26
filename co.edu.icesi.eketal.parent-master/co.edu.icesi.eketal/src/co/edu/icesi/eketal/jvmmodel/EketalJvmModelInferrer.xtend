@@ -438,7 +438,15 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				
 			«ENDIF»
 		«ENDFOR»
-		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales, expressions);
+		«typeRef(Automaton)» automata = new Automaton(transitionSet, inicial, estadosFinales, expressions){
+			@Override
+	    	public boolean evaluate(«typeRef(Event)» event){
+	    		if(event instanceof NamedEvent){
+	    			return super.evaluate(event);
+	    		}
+	    		return false;
+	    	}
+		};
 		automata.initializeAutomaton();
 		instance = automata;
 		'''
