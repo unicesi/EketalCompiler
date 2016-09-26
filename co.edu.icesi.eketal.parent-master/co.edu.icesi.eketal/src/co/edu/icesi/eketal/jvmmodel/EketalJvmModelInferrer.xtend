@@ -174,6 +174,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			val after = new HashMap<String, String>()
 			val before = new HashMap<String, String>()
 			for(rc:set){
+				if(rc.automaton==null || rc.state==null)
+					return
 				var name = "reaction"+rc.automaton.name+rc.state.name
 				members+=reactions.toMethod(name, typeRef(void))[
 					static = true
@@ -186,7 +188,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				]
 				if(rc.pos==Pos.BEFORE){
 					before.put(rc.state.name, name+"()")
-				}else if(rc.pos==Pos.BEFORE){
+				}else if(rc.pos==Pos.AFTER){
 					after.put(rc.state.name, name+"()")
 				}
 			}
@@ -198,9 +200,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					«IF !before.isEmpty»
 						«typeRef(State)» actual = automaton.getCurrentState();
 						«FOR state:before.keySet»
-						if(actual.equals(«automatonName».estados.get("«state»"))){
-							«before.get(state)»;
-						}
+							if(actual.equals(«automatonName».estados.get("«state»"))){
+								«before.get(state)»;
+							}
 						«ENDFOR»
 					«ENDIF»
 				'''
@@ -213,7 +215,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					«IF !after.isEmpty»
 						«typeRef(State)» actual = automaton.getCurrentState();
 						«FOR state:after.keySet»
-							if(actual.equals(«automatonName.toFirstUpper».estados.get("«state»"))){
+							if(actual.equals(«automatonName».estados.get("«state»"))){
 								«after.get(state)»;
 							}
 						«ENDFOR»
