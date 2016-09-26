@@ -192,7 +192,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					after.put(rc.state.name, name+"()")
 				}
 			}
-			
 			members+=reactions.toMethod("verifyBefore", typeRef(void))[
 				parameters+=reactions.toParameter("automaton", typeRef(Automaton))
 				static = true
@@ -253,11 +252,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
 					    			«typeof(int)» typeOfMsgSent){
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
-						«IF false»
-							Automaton automaton = «nameAutomaton».getInstance();
-							Reaction.verifyBefore(automaton);					
-							Reaction.verifyAfter(automaton);					
-						«ENDIF»
+						«typeRef(Automaton)» automaton = «nameAutomaton».getInstance();
+						co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
+						co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
 						return handle;
 					}
 				};
