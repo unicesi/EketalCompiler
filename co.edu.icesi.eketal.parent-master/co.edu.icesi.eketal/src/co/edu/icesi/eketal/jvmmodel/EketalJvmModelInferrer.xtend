@@ -253,6 +253,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					    			«typeof(int)» typeOfMsgSent){
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
 						«typeRef(Automaton)» automaton = «nameAutomaton».getInstance();
+						automaton.evaluate(event);
 						co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
 						co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
 						return handle;
