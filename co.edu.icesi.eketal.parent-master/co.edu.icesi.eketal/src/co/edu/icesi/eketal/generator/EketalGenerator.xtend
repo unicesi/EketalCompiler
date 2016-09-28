@@ -109,15 +109,15 @@ class EketalGenerator implements IGenerator{
 						«createPointCut(event as EvDecl, pointcuts)»;
 						
 					after() returning (Object o): «event.name.toFirstLower»() {
-						System.out.println("Returned normally with " + o);
+						System.out.println("[Aspectj] Returned normally with " + o);
 					}
 					after() throwing (Exception e): «event.name.toFirstLower»() {
-						System.out.println("Threw an exception: " + e);
+						System.out.println("[Aspectj] Threw an exception: " + e);
 					}
 					after(): «event.name.toFirstLower»(){
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
 						Reaction.verifyAfter(automata);
-						System.out.println("Returned or threw an Exception");
+						System.out.println("[Aspectj] Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
 						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
@@ -127,11 +127,11 @@ class EketalGenerator implements IGenerator{
 						Event event = new NamedEvent("«event.name»");
 						distribuidor.multicast(event, map);
 						if(!automata.evaluate(event)){
-							System.out.println("Evento no reconocido por el autómata");
+							System.out.println("[Aspectj] Evento no reconocido por el autómata");
 							//Debería parar
 						}else{
 							Reaction.verifyBefore(automata);
-							System.out.println("Returned or threw an Exception");							
+							System.out.println("[Aspectj] Returned or threw an Exception");							
 						}
 						//while(!automata.evaluate(event)){
 						//	wait(100);
