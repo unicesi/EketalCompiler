@@ -131,9 +131,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-		</plugins>
-	<pluginManagement>
-		<plugins>		
 			<plugin>
 			    <groupId>org.codehaus.mojo</groupId>
 			    <artifactId>aspectj-maven-plugin</artifactId>
@@ -163,6 +160,5 @@
 					</dependencies>
 			</plugin>
 		</plugins>
-	</pluginManagement>	
 	</build>
 </project>
