@@ -260,8 +260,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			    			co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
 			    			co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
 			    		}
-						co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
-						co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
 						return handle;
 					}
 				};
@@ -291,6 +289,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 			//TODO Síncrono
+			/* 
 			members+=eventDefinitionClass.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
 				static = true
 				initializer = '''new «typeRef(KetalMessageHandler)»()'''
@@ -315,7 +314,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
 				'''
 			]		
-			
+			*/
 		]
 	}
 	
