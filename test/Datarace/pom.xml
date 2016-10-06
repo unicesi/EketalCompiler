@@ -8,6 +8,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<xtext-version>2.10.0</xtext-version>
 		<jre-version>1.8</jre-version>
+		<aspectj.version>1.8.9</aspectj.version>
 	</properties>
 
 	<dependencies>

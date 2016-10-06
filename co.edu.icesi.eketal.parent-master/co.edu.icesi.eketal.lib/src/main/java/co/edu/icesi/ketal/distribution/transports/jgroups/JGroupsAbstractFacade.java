@@ -178,4 +178,10 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	public void setSignal(Object signal) {
 		this.signal = signal;
 	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		closeComunication();
+		super.finalize();
+	}
 }

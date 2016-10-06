@@ -108,12 +108,12 @@ class EketalGenerator implements IGenerator{
 					pointcut «event.name.toFirstLower»():
 						«createPointCut(event as EvDecl, pointcuts)»;
 						
-					after() returning (Object o): «event.name.toFirstLower»() {
-						System.out.println("[Aspectj] Returned normally with " + o);
-					}
-					after() throwing (Exception e): «event.name.toFirstLower»() {
-						System.out.println("[Aspectj] Threw an exception: " + e);
-					}
+					//after() returning (Object o): «event.name.toFirstLower»() {
+					//	System.out.println("[Aspectj] Returned normally with " + o);
+					//}
+					//after() throwing (Exception e): «event.name.toFirstLower»() {
+					//	System.out.println("[Aspectj] Threw an exception: " + e);
+					//}
 					after(): «event.name.toFirstLower»(){
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
 						Reaction.verifyAfter(automata);
