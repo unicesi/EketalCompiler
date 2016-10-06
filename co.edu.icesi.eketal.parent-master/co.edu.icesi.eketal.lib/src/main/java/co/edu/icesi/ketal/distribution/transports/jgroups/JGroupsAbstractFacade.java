@@ -81,8 +81,10 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	public void closeComunication(){
 		if(channel==null)
 			return;
-		channel.disconnect();
-		channel.close();
+		if(channel.isConnected())
+			channel.disconnect();
+		if(channel.isOpen())
+			channel.close();
 	}
 	
 	/**
