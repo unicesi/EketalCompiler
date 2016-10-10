@@ -117,7 +117,7 @@ class EketalGenerator implements IGenerator{
 					after(): «event.name.toFirstLower»(){
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
 						Reaction.verifyAfter(automata);
-						System.out.println("[Aspectj] Returned or threw an Exception");
+						System.out.println("[Aspectj] After: Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
 						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
@@ -127,11 +127,11 @@ class EketalGenerator implements IGenerator{
 						Event event = new NamedEvent("«event.name»");
 						distribuidor.multicast(event, map);
 						if(!automata.evaluate(event)){
-							System.out.println("[Aspectj] Evento no reconocido por el autómata");
+							System.out.println("[Aspectj] Event not recognized by the automaton");
 							//Debería parar
 						}else{
 							Reaction.verifyBefore(automata);
-							System.out.println("[Aspectj] Returned or threw an Exception");							
+							System.out.println("[Aspectj] Before: Returned or threw an Exception");							
 						}
 						//while(!automata.evaluate(event)){
 						//	wait(100);
