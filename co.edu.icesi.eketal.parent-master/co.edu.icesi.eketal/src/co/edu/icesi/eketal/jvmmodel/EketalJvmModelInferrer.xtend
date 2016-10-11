@@ -252,7 +252,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					@Override
 					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
 					    			«typeof(int)» typeOfMsgSent){
-					    if(event.getLocalization().toString().equals(eventBroker.getAsyncAddress())){
+					    if(event.getLocalization().equals(eventBroker.getAsyncAddress())){
 					    	return null;
 					    }
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
@@ -297,6 +297,15 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				static = false
 				body='''
 					return eventBroker.getAsyncAddress();
+				'''
+			]
+			
+			members+=eventDefinitionClass.toMethod("close", typeRef(void))[
+				static = false
+				body='''
+					if(eventBroker!=null){
+						eventBroker.closeComunication();
+					}
 				'''
 			]
 			//TODO Síncrono

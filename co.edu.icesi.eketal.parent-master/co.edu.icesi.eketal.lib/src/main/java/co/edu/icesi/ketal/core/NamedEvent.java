@@ -2,6 +2,7 @@ package co.edu.icesi.ketal.core;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jgroups.Address;
@@ -50,26 +51,32 @@ public class NamedEvent implements Event, Serializable{
 	
 	@Override
 	public Address getLocalization() {
-		//No need this method
-		return null;
+		return local;
 	}
 
 	@Override
 	public boolean setLocalization(Address url) {
-		//No need this method
-		return false;
+		local = url;
+		return true;
 	}
 
 	@Override
 	public List<Address> getTargetLocalization() {
-		//No need this method
-		return null;
+		return target;
 	}
 
 	@Override
 	public boolean setTargetLocalization(List<Address> url) {
-		//No need this method
-		return false;
+		if(target==null){
+			target = new ArrayList<>();
+		}
+		if(url==null){
+			return false;
+		}
+		if(target.isEmpty()){
+			target = url;
+		}
+		return true;
 	}
 
 	@Override
