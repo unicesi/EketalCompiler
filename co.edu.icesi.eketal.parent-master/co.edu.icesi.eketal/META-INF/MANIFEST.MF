@@ -36,5 +36,6 @@ Import-Package: co.edu.icesi.ketal.core,
  co.edu.icesi.ketal.distribution.transports.jgroups,
  dk.brics.automaton,
  org.apache.log4j,
+ org.jgroups,
  org.jgroups.util
 Bundle-ClassPath: .

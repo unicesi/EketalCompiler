@@ -1,41 +1,38 @@
 # Eketal
-  Eketal is a project based on xtext with jbase integration and uses aspectj for his purpose. For its deploy, you must have installed the tools mentioned before.
-  You can find their releases, for eclipse mars, here:
-
-
-  -Xtext http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
-  
-  -AspectJ http://download.eclipse.org/tools/ajdt/45/dev/update
-  
-  -[JBase](https://github.com/LorenzoBettini/jbase) https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.5/
-
-  First we will explain how to test the Eketal software: (1) with maven, (2) installing in eclipse (remote and local installation). Second, (3) how to contribute to the project, and finally, we will explain the (4) sample project.
+  Eketal is an event based programming model and language for runtime for detencting and monitoring of distributed and concurrent applications.
+   
+  This project uses xtext to develop the programming language, and a compatible library named Jbase, its purpose is to allow the use of pure java expressions and statements into the xtext framework. Also, Eketal uses Aspectj to detect and react events.
 
 ## 1. Download:
 
 ### 1. From the page:
 
-Click in the button "Clone or Download" option "Download Zip"
+Click in the button "Clone or Download" and press the "Download Zip" option
 
 ### 2. Using Git.
 
 You must have Git installed.
-In the command line:
+Type into the git bash:
+
 ```
   git clone https://github.com/unicesi/eketal.git
 ```
 
-## 2. Try it with maven:
+## 2. Installation:
 
-You must have maven installed, and run the folllowing prompts in the command line or bash
+There are several ways to install this software: (1) With maven (binaries) (2) With eclipse
 
-### 1. Increase memory.
+### 1. Using maven.
+
+Once you have downloaded the sources, run the folllowing prompts in the command (with maven installed) line
+
+#### 1. Increase memory.
 
 ```
 export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 ```
 
-### 2. Build the language
+#### 2. Build the language
 
 ```
 cd co.edu.icesi.eketal.parent-master/
@@ -49,41 +46,31 @@ cd co.edu.icesi.eketal.parent-master/
 mvn clean install -DskipTests=true
 ```
 
-### 3. Build example projects
+#### 3. Build example projects
 
-There are 3 example projects into the directory test, intructions to deploy are inside the [directory](https://github.com/unicesi/eketal/tree/master/test)
+There are 3 example projects into the test directory, intructions to deploy are inside that [folder](https://github.com/unicesi/eketal/tree/master/test)
 
-## 3. Try with eclipse:
+### 2. Try it with eclipse:
 
-### 1. Eclipse update site
+ First, it is necessary to install the tools mencioned at the beginning, here are their update sites repositories, add them to your eclipse as explained next in the "Eclipse update site" tittle.
+
+-Xtext http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
+
+-AspectJ http://download.eclipse.org/tools/ajdt/45/dev/update
+
+-JBase https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.5/
+
+#### 1. Eclipse update site
   This is the eclipse update site repository: http://unicesi.github.io/eketal/repository/
   You can install in your eclipse as follows:
 
    Go to Help -> Install new software.
    
-   Add the update site repository and install.
+   Add the update site repository and install all the packages.
 
-### 2. Locally install in your eclipse
-####Compiling from sources
-  If you want to compile this project locally, you must do the following
-  -Download or clone the project.
-  -Install maven.
-  -Increase memory.
-  
-```bash
-export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
-```
-  -Where you downloaded your copy (inside the "co.edu.icesi.eketal.parent-master/" project):
-```bash
-mvn clean install
-```
-
-Or skipping the test from the compiler as follows:
-```bash
-mvn clean install -DskipTests=true
-```
-
-You can locally install the project in the following way:
+#### 2. Locally install in your eclipse
+#####Compiling from sources
+  If you want to compile this project locally, follow the installation instructions using maven, and install it as follow:
 
   Go to Help -> Install new software.
 
@@ -91,7 +78,7 @@ You can locally install the project in the following way:
 
 Finally find "../co.edu.icesi.eketal.parent-master/co.edu.icesi.eketal.repository/target/repository" directory and accept.
 
-## 4. Developers
+## 3. Developers
   To contribute , this project can be clone to a local repository and you can work from there.
   For deploy in your workspace, you must have Eclipse mars, with aspectj, maven and xtext as mentioned in the beggining. Then you can import it as a maven project.
    

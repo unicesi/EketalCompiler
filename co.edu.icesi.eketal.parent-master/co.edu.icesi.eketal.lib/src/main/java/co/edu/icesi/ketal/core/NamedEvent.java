@@ -2,7 +2,10 @@ package co.edu.icesi.ketal.core;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 public class NamedEvent implements Event, Serializable{
@@ -15,6 +18,10 @@ public class NamedEvent implements Event, Serializable{
 	private String name;
 
 	private TransportedVectorTime tvt;
+	
+	private Address local;
+	
+	private List<Address> target;
 	/*
 	 * Constructor.
 	 */
@@ -43,27 +50,33 @@ public class NamedEvent implements Event, Serializable{
 	}
 	
 	@Override
-	public URL getLocalization() {
-		//No need this method
-		return null;
+	public Address getLocalization() {
+		return local;
 	}
 
 	@Override
-	public boolean setLocalization(URL url) {
-		//No need this method
-		return false;
+	public boolean setLocalization(Address url) {
+		local = url;
+		return true;
 	}
 
 	@Override
-	public URL getTargetLocalization() {
-		//No need this method
-		return null;
+	public List<Address> getTargetLocalization() {
+		return target;
 	}
 
 	@Override
-	public boolean setTargetLocalization(URL url) {
-		//No need this method
-		return false;
+	public boolean setTargetLocalization(List<Address> url) {
+		if(target==null){
+			target = new ArrayList<>();
+		}
+		if(url==null){
+			return false;
+		}
+		if(target.isEmpty()){
+			target = url;
+		}
+		return true;
 	}
 
 	@Override

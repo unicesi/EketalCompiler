@@ -2,6 +2,9 @@ package co.edu.icesi.ketal.core;
 
 
 import java.net.URL;
+import java.util.List;
+
+import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 
@@ -23,20 +26,20 @@ public interface Event
 	 * Method to get the localization of the event in form of a class URL
 	 * @return URL
 	 */
-	public URL getLocalization();
+	public Address getLocalization();
 	
 	/**
 	 * Method to set the localization of the event
 	 * @param url Representing the localization
 	 */
-	public boolean setLocalization(URL url);
+	public boolean setLocalization(Address url);
 	
 	/**
 	 * Method to get the localization of a specific target if it is necessary.
 	 * It means, if the event must be executed in a specific target.
 	 * @return
 	 */
-	public URL getTargetLocalization();
+	public List<Address> getTargetLocalization();
 	
 	/**
 	 * Sets the localization of the target of the event, it means if the event must be executed in a specific 
@@ -44,7 +47,7 @@ public interface Event
 	 * @param url
 	 * @return
 	 */
-	public boolean setTargetLocalization(URL url);
+	public boolean setTargetLocalization(List<Address> url);
 
 
 	/**
@@ -65,11 +68,11 @@ public interface Event
 	//todo: documentar
 		//public Character getCharacterOfAlphabet();
 		
-		//todo: documentar (determinar si el caracter es el que est‡ asociado con el evento).
-		//todo: modificar lo necesario, se cambi— el nombre incluyendo el "is" y se adicion— el par‡metro.
+		//todo: documentar (determinar si el caracter es el que estï¿½ asociado con el evento).
+		//todo: modificar lo necesario, se cambiï¿½ el nombre incluyendo el "is" y se adicionï¿½ el parï¿½metro.
 		//public boolean isCharacterOfAlphabet(Character myChar);
 		
 		//todo: documentar
-		//todo: eliminar este mŽtodo
+		//todo: eliminar este mï¿½todo
 		//public int hashCode();
 }

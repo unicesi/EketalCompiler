@@ -10,5 +10,6 @@ Export-Package: co.edu.icesi.ketal.core,
  co.edu.icesi.ketal.distribution,
  co.edu.icesi.ketal.distribution.transports.jgroups,
  dk.brics.automaton,
+ org.jgroups,
  org.jgroups.protocols,
  org.jgroups.util

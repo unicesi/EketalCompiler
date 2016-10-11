@@ -79,7 +79,12 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	}
 
 	public void closeComunication(){
-		channel.close();
+		if(channel==null)
+			return;
+		if(channel.isConnected())
+			channel.disconnect();
+		if(channel.isOpen())
+			channel.close();
 	}
 	
 	/**
@@ -174,5 +179,11 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 
 	public void setSignal(Object signal) {
 		this.signal = signal;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		closeComunication();
+		super.finalize();
 	}
 }

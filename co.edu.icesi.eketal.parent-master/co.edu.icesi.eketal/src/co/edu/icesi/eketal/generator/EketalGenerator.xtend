@@ -83,8 +83,8 @@ class EketalGenerator implements IGenerator{
 			importedLibraries+="co.edu.icesi.eketal.automaton.*"
 		importedLibraries+="co.edu.icesi.eketal.groupsimpl.*"
 		importedLibraries+="co.edu.icesi.eketal.handlercontrol.*"
+		importedLibraries+="co.edu.icesi.eketal.reaction.*"
 		importedLibraries+="co.edu.icesi.ketal.core.Automaton"
-		importedLibraries+="co.edu.icesi.ketal.core.State"
 		importedLibraries+="co.edu.icesi.ketal.core.NamedEvent"
 		importedLibraries+="co.edu.icesi.ketal.core.Event"
 		importedLibraries+="java.util.Map"
@@ -108,16 +108,16 @@ class EketalGenerator implements IGenerator{
 					pointcut «event.name.toFirstLower»():
 						«createPointCut(event as EvDecl, pointcuts)»;
 						
-					after() returning (Object o): «event.name.toFirstLower»() {
-						System.out.println("Returned normally with " + o);
-					}
-					after() throwing (Exception e): «event.name.toFirstLower»() {
-						System.out.println("Threw an exception: " + e);
-					}
+					//after() returning (Object o): «event.name.toFirstLower»() {
+					//	System.out.println("[Aspectj] Returned normally with " + o);
+					//}
+					//after() throwing (Exception e): «event.name.toFirstLower»() {
+					//	System.out.println("[Aspectj] Threw an exception: " + e);
+					//}
 					after(): «event.name.toFirstLower»(){
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
-						verifyAfter(automata);
-						System.out.println("Returned or threw an Exception");
+						Reaction.verifyAfter(automata);
+						System.out.println("[Aspectj] After: Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
 						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
@@ -125,13 +125,14 @@ class EketalGenerator implements IGenerator{
 						Map map = new HashMap<String, Object>();
 						//map.put("Automata", automata);
 						Event event = new NamedEvent("«event.name»");
+						event.setLocalization(distribuidor.getAsyncAddress());
 						distribuidor.multicast(event, map);
 						if(!automata.evaluate(event)){
-							System.out.println("Evento no reconocido por el autómata");
+							System.out.println("[Aspectj] Before: Event not recognized by the automaton");
 							//Debería parar
 						}else{
-							verifyBefore(automata);
-							System.out.println("Returned or threw an Exception");							
+							Reaction.verifyBefore(automata);
+							System.out.println("[Aspectj] Before: Returned or threw an Exception");							
 						}
 						//while(!automata.evaluate(event)){
 						//	wait(100);
@@ -139,42 +140,11 @@ class EketalGenerator implements IGenerator{
 						//}
 					}
 				«ENDIF»
-				«IF event instanceof Rc»
-					public void reaction«event.automaton.name»«event.state.name»()«printBody(event.body.body as XBlockExpression)»
-					«IF event.pos==Pos.BEFORE»
-						//«before.put(event.state.name, "reaction"+event.automaton.name+event.state.name+"()")»
-					«ENDIF»
-					«IF event.pos==Pos.AFTER»
-						//«after.put(event.state.name, "reaction"+event.automaton.name+event.state.name+"()")»
-					«ENDIF»
-				«ENDIF»
 			«ENDFOR»
 			
 			«FOR pointcut:pointcuts»
 				«pointcut»;
 			«ENDFOR»
-			
-			private void verifyBefore(Automaton automaton){
-				«IF !before.isEmpty»
-					State actual = automaton.getCurrentState();
-					«FOR state:before.keySet»
-					if(actual.equals(«automatonName.toFirstUpper».estados.get("«state»"))){
-						«before.get(state)»;
-					}
-					«ENDFOR»
-				«ENDIF»
-			}
-			
-			private void verifyAfter(Automaton automaton){
-				«IF !after.isEmpty»
-					State actual = automaton.getCurrentState();
-					«FOR state:before.keySet»
-					if(actual.equals(«automatonName.toFirstUpper».estados.get("«state»"))){
-						«after.get(state)»;
-					}
-					«ENDFOR»
-				«ENDIF»
-			}
 		}
 		'''
 		var imports = '''
@@ -184,11 +154,6 @@ class EketalGenerator implements IGenerator{
 		
 		'''
 		return packageDefinition+imports+aspect
-	}
-	
-	def printBody(XBlockExpression exp){
-		val body = NodeModelUtils.findActualNodeFor(exp)
-		return body.text
 	}
 	
 	def boolean containsAutomaton(EList<Decl> list){

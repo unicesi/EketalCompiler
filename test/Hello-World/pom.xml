@@ -9,13 +9,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<xtext-version>2.10.0</xtext-version>
 		<jre-version>1.8</jre-version>
+		<aspectj.version>1.8.9</aspectj.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 	      <groupId>org.aspectj</groupId>
 	      <artifactId>aspectjrt</artifactId>
-	      <version>1.8.7</version>
+	      <version>${aspectj.version}</version>
 	    </dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -37,6 +38,31 @@
 
 	<build>
 		<plugins>
+			<plugin>
+			    <artifactId>maven-assembly-plugin</artifactId>
+			    <version>2.5.5</version>
+			    <configuration>
+			        <appendAssemblyId>false</appendAssemblyId>
+			        <descriptorRefs>
+			            <descriptorRef>jar-with-dependencies</descriptorRef>
+			        </descriptorRefs>
+			        <archive>
+			            <manifest>
+			                <mainClass>local.Main</mainClass>
+			            </manifest>
+			        </archive>
+			    </configuration>
+			    <executions>
+			        <execution>
+			            <id>a-make-assembly</id>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>single</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
+		
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
@@ -121,10 +147,10 @@
 				    <source>${jre-version}</source>
 				    <target>${jre-version}</target>
 				    <complianceLevel>${jre-version}</complianceLevel>
-				    <verbose>true</verbose>
 			    </configuration>
 			    <executions>
 			        <execution>
+			        	<phase>process-sources</phase>
 			            <goals>
 			                <goal>compile</goal>
 			                <!-- use this goal to weave all your main classes -->
@@ -133,17 +159,14 @@
 			            </goals>
 			        </execution>
 			    </executions>
+			    	<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjtools</artifactId>
+							<version>${aspectj.version}</version>
+						</dependency>
+					</dependencies>
 			</plugin>
-			<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
-          <source>${jre-version}</source>
-          <target>${jre-version}</target>
-        </configuration>
-      </plugin>
 		</plugins>
 	</build>
 

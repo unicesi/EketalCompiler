@@ -7,7 +7,7 @@ eventclass DeadLock{
 	 */	
 	automaton deadLockDetector(){
 		start init : (prepareEvent -> waitingCommit);
-		waitingCommit: (commitEvent -> deadlock);
+		waitingCommit: (commitEvent -> deadlock) || (prepareEvent -> waitingCommit);
 		end deadlock;
 	}
 	
