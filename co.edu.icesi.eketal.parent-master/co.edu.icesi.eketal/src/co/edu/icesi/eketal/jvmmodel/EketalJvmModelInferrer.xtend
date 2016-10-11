@@ -41,6 +41,7 @@ import java.util.Arrays
 import org.jgroups.Message
 import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.Pos
+import org.jgroups.Address
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -251,6 +252,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					@Override
 					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
 					    			«typeof(int)» typeOfMsgSent){
+					    if(event.getLocalization().toString().equals(eventBroker.getAsyncAddress())){
+					    	return null;
+					    }
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
 						«typeRef(Automaton)» automaton = «nameAutomaton».getInstance();
 						if(!automaton.evaluate(event)){
@@ -286,6 +290,13 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				static = false
 				body='''
 					eventBroker.multicast(evento, map);
+				'''
+			]
+
+			members+=eventDefinitionClass.toMethod("getAsyncAddress", typeRef(Address))[
+				static = false
+				body='''
+					return eventBroker.getAsyncAddress();
 				'''
 			]
 			//TODO Síncrono

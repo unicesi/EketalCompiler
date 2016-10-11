@@ -2,9 +2,11 @@ package co.edu.icesi.ketal.test.distribution;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.List;
 
 import co.edu.icesi.ketal.core.Event;
 
+import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 
@@ -50,22 +52,22 @@ public class TestEvent1Distributed  implements Event, Serializable{
 		}
 
 		@Override
-		public URL getLocalization() {
+		public Address getLocalization() {
 			return null;
 		}
 
 		@Override
-		public boolean setLocalization(URL url) {
+		public boolean setLocalization(Address url) {
 			return false;
 		}
 
 		@Override
-		public URL getTargetLocalization() {
+		public List<Address> getTargetLocalization() {
 			return null;
 		}
 
 		@Override
-		public boolean setTargetLocalization(URL url) {
+		public boolean setTargetLocalization(List<Address> url) {
 			return false;
 		}
 

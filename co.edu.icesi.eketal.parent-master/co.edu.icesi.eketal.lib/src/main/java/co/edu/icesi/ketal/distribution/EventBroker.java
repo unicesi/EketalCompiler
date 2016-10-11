@@ -55,9 +55,9 @@ public interface EventBroker {
 			String class_name, String method_name, Object... parameters);
 
 	// Written by Andr�s Barrera
-	public String getAsyncAddress();
+	public Address getAsyncAddress();
 	
-	public String getSyncAddress();
+	public Address getSyncAddress();
 	
 	//Written by Camilo Pimienta: This method allows to close the channel where the communication is stored
 	public void closeComunication();

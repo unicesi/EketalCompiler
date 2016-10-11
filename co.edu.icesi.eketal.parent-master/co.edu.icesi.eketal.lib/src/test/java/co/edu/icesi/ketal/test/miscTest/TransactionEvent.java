@@ -1,6 +1,8 @@
 package co.edu.icesi.ketal.test.miscTest;
 import java.net.URL;
+import java.util.List;
 
+import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 import co.edu.icesi.ketal.core.Event;
@@ -22,25 +24,25 @@ public class TransactionEvent implements Event {
 	}
 
 	@Override
-	public URL getLocalization() {
+	public Address getLocalization() {
 		// No need this method
 		return null;
 	}
 
 	@Override
-	public boolean setLocalization(URL url) {
+	public boolean setLocalization(Address url) {
 		// No need this method
 		return false;
 	}
 
 	@Override
-	public URL getTargetLocalization() {
+	public List<Address> getTargetLocalization() {
 		// No need this method
 		return null;
 	}
 
 	@Override
-	public boolean setTargetLocalization(URL url) {
+	public boolean setTargetLocalization(List<Address> url) {
 		// No need this method
 		return false;
 	}

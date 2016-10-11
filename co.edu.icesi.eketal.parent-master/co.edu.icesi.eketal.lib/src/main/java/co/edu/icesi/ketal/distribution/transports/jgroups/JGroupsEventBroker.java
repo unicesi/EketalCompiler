@@ -3,6 +3,7 @@ package co.edu.icesi.ketal.distribution.transports.jgroups;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.jgroups.Address;
 import org.jgroups.Message;
 import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
@@ -51,13 +52,13 @@ public class JGroupsEventBroker implements EventBroker {
 	 */
 
 	@Override
-	public String getAsyncAddress() {
-		return asyncMonitor.getChannel().getAddress().toString();
+	public Address getAsyncAddress() {
+		return asyncMonitor.getChannel().getAddress();
 	}
 
 	@Override
-	public String getSyncAddress() {
-		return syncMonitor.getChannel().getAddress().toString();
+	public Address getSyncAddress() {
+		return syncMonitor.getChannel().getAddress();
 	}
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous

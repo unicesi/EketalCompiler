@@ -125,9 +125,10 @@ class EketalGenerator implements IGenerator{
 						Map map = new HashMap<String, Object>();
 						//map.put("Automata", automata);
 						Event event = new NamedEvent("«event.name»");
+						event.setLocalization(distribuidor.getAsyncAddress());
 						distribuidor.multicast(event, map);
 						if(!automata.evaluate(event)){
-							System.out.println("[Aspectj] Event not recognized by the automaton");
+							System.out.println("[Aspectj] Before: Event not recognized by the automaton");
 							//Debería parar
 						}else{
 							Reaction.verifyBefore(automata);
