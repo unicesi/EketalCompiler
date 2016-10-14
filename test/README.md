@@ -90,5 +90,7 @@ reaction before dataraceDetector.datarace{
 
 ## 3. Deadlock
   
+  To probe the DeadLock detector, you must import this test into your favorite IDE, and run two instance of the Executor class in differents consoles View, the application interacts with the user, so there are three reserved words to use this example, and they are: prepare, commit and stop. 
+  Start both consoles with the command "prepare" to begin the JGroups channels, then, in one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. Finally, use the stop command in both consoles to stop their channels.
 
 In case of problems, please submit an issue.
