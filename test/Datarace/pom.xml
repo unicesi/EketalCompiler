@@ -12,12 +12,7 @@
 	</properties>
 
 	<dependencies>
-<!-- https://mvnrepository.com/artifact/org.jboss.cache/jbosscache-core -->
-<dependency>
-    <groupId>org.jboss.cache</groupId>
-    <artifactId>jbosscache-core</artifactId>
-    <version>3.2.7.GA</version>
-</dependency>
+
 	
 		<dependency>
 	      <groupId>org.aspectj</groupId>
@@ -33,6 +28,11 @@
 			<groupId>co.edu.icesi.eketal</groupId>
 			<artifactId>co.edu.icesi.eketal.lib</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.cache</groupId>
+			<artifactId>jbosscache-core</artifactId>
+			<version>3.2.7.GA</version>
 		</dependency>
 	</dependencies>
 
@@ -169,4 +169,10 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		 <repository>
+	    <id>jboss-releases</id>
+	    <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+  </repository>
+	</repositories>
 </project>
