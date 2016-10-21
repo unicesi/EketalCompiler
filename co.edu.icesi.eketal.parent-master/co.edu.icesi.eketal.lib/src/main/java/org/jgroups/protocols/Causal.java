@@ -1,8 +1,7 @@
 package org.jgroups.protocols;
 
 import org.jgroups.*;
-import org.jgroups.annotations.Experimental;
-import org.jgroups.annotations.Property;
+//import org.jgroups.annotations.Property;
 import org.jgroups.conf.ClassConfigurator;
 import org.jgroups.stack.Protocol;
 import org.jgroups.util.Streamable;
@@ -79,8 +78,8 @@ public class Causal extends Protocol
 		
 /*--------------------------------Properties-------------------------------------------*/
 	
-	@Property(description="This property modidfies the protocol behavior. True, if the protocol has to order the message through " +
-			"causal protocol. False, if you are interested in the vector instead of the order of the messages. Default is True")
+//	@Property(description="This property modidfies the protocol behavior. True, if the protocol has to order the message through " +
+//			"causal protocol. False, if you are interested in the vector instead of the order of the messages. Default is True")//TODO togggleado por cambio en jgroups
 	protected boolean causal_order_prot_interest=true;
 	
 	public void set_type_causal(boolean causal_order_prot){
@@ -90,9 +89,9 @@ public class Causal extends Protocol
 
 	static
 	{
-		ClassConfigurator.add((short)1900, CausalHeader.class);
-		ClassConfigurator.add((short)1985, CausalNewViewHeader.class);
-		ClassConfigurator.addProtocol((short)1901, Causal.class);
+//		ClassConfigurator.add((short)1900, CausalHeader.class);
+//		ClassConfigurator.add((short)1985, CausalNewViewHeader.class);
+//		ClassConfigurator.addProtocol((short)1901, Causal.class);//TODO togggleado por cambio en jgroups
 	}
 
     public static final class CausalHeader extends Header implements Streamable {
@@ -157,8 +156,7 @@ public class Causal extends Protocol
             t = (TransportedVectorTime) in.readObject();
         }
         
-        @Override
-        public void writeTo(DataOutput out) throws IOException {
+        public void writeTo(DataOutputStream out) throws IOException {
         	if(t == null)
         	{
         		out.writeBoolean(false);
@@ -175,8 +173,7 @@ public class Causal extends Protocol
         	for(int i=0;i<len;i++) out.writeInt(values[i]);
         }
         
-        @Override
-        public void readFrom(DataInput in) throws IOException,
+        public void readFrom(DataInputStream in) throws IOException,
         		IllegalAccessException, InstantiationException {
         		if(in.readBoolean() == false)
         			return;
@@ -272,18 +269,16 @@ public class Causal extends Protocol
             complete=in.readBoolean();
         }
         
-        @Override
-        public void writeTo(DataOutput out) throws IOException, Exception {
-        	newViewId.writeTo(out);
+        public void writeTo(DataOutputStream out) throws IOException {
+        	newViewId.writeTo((DataOutputStream) out);
         	out.writeInt(localTime);
         	out.writeBoolean(complete);
         }
         
-        @Override
-        public void readFrom(DataInput in) throws IOException,
-				IllegalAccessException, InstantiationException, Exception {
+        public void readFrom(DataInputStream in) throws IOException,
+				IllegalAccessException, InstantiationException {
         	newViewId=new ViewId();
-        	newViewId.readFrom(in);
+        	newViewId.readFrom((DataInputStream)in);
         	localTime=in.readInt();
         	complete=in.readBoolean();
         }
@@ -360,14 +355,12 @@ public class Causal extends Protocol
             missingCompletionIndexes=readIntArray(in);
         }
         
-        @Override
-        public void writeTo(DataOutput out) throws IOException {
+        public void writeTo(DataOutputStream out) throws IOException {
         	writeIntArray(out, missingTimeIndexes);
         	writeIntArray(out, missingCompletionIndexes);
         }
 
-        @Override
-        public void readFrom(DataInput in) throws IOException,
+        public void readFrom(DataInputStream in) throws IOException,
         		IllegalAccessException, InstantiationException {
         	missingTimeIndexes=readIntArray(in);
         	missingCompletionIndexes=readIntArray(in);
@@ -503,10 +496,10 @@ public class Causal extends Protocol
             
             if (missingTimes.isEmpty()) {
                 if (active!=null) active.setFinalTimeVector(view, timeVector);                        
-                if (log.isTraceEnabled()) log.trace(this+" has all the times");
+//                if (log.isTraceEnabled()) log.trace(this+" has all the times"); //TODO togggleado por cambio en jgroups
             }
             else {
-                if (log.isTraceEnabled()) log.trace(this+" missing times: "+missingTimes);
+//                if (log.isTraceEnabled()) log.trace(this+" missing times: "+missingTimes);//TODO togggleado por cambio en jgroups
             }
         }
         
@@ -518,9 +511,9 @@ public class Causal extends Protocol
             missingCompletions.remove(new Integer(index));
             
             if (missingCompletions.isEmpty()) {
-                if (log.isTraceEnabled()) log.trace(this+" has all the completions");
+//                if (log.isTraceEnabled()) log.trace(this+" has all the completions");//TODO togggleado por cambio en jgroups
             } else {
-                if (log.isTraceEnabled()) log.trace(this+" missing completions: "+missingCompletions);
+//                if (log.isTraceEnabled()) log.trace(this+" missing completions: "+missingCompletions);//TODO togggleado por cambio en jgroups
             }
         }
         
@@ -617,9 +610,9 @@ public class Causal extends Protocol
             int[] otherTimeVector = vector.getValues();
 
             if (otherTimeVector.length!=timeVector.length) {
-                if(log.isWarnEnabled())
-                    log.warn("isCausallyNext: got message with wrong time vector length: "+otherTimeVector.length+
-                            ", expected: "+timeVector.length);
+//                if(log.isWarnEnabled())//TODO togggleado por cambio en jgroups
+//                    log.warn("isCausallyNext: got message with wrong time vector length: "+otherTimeVector.length+
+//                            ", expected: "+timeVector.length);
                 return true;
             }
             
@@ -642,9 +635,9 @@ public class Causal extends Protocol
             int otherTimeVector[]=vector.getValues();
             
             if (otherTimeVector.length!=timeVector.length) {
-                if(log.isWarnEnabled())
-                    log.warn("max: got message with wrong time vector length: "+otherTimeVector.length+", expected: "+
-                            timeVector.length);
+//                if(log.isWarnEnabled())//TODO togggleado por cambio en jgroups
+//                    log.warn("max: got message with wrong time vector length: "+otherTimeVector.length+", expected: "+
+//                            timeVector.length);
                 return;
             }
             
@@ -664,8 +657,8 @@ public class Causal extends Protocol
                 finalTimeVector[i]=startTimeVector[startIndex]; // update the final time vector.
             }
             
-            if (log.isTraceEnabled())
-                log.trace(this+": final vector time set @ "+timeVectorString());
+//            if (log.isTraceEnabled())//TODO togggleado por cambio en jgroups
+//                log.trace(this+": final vector time set @ "+timeVectorString());
         }
         
         public synchronized void clearFinalTimeVector() {
@@ -733,8 +726,8 @@ public class Causal extends Protocol
                         complete=true;
                         newView.setMemberCompleted(localAddress);
 
-                        if(log.isTraceEnabled())
-                            log.trace("Set up new active view: " + currentView + " @ " + currentView.timeVectorString());
+//                        if(log.isTraceEnabled())//TODO togggleado por cambio en jgroups
+//                            log.trace("Set up new active view: " + currentView + " @ " + currentView.timeVectorString());
                     }
 
                     if(newView.hasMissingCompletions()) {
@@ -746,23 +739,23 @@ public class Causal extends Protocol
                         flush=(LinkedList)downwardWaitingQueue.clone();
                         downwardWaitingQueue.clear();
 
-                        if(log.isTraceEnabled())
-                            log.trace("Done synchronizing, enabled view: " + currentView + " @ " + currentView.timeVectorString());
+//                        if(log.isTraceEnabled())//TODO togggleado por cambio en jgroups
+//                            log.trace("Done synchronizing, enabled view: " + currentView + " @ " + currentView.timeVectorString());
 
                         break;
                     }
 
                     if(sendUpdate) {
                         update=new Message(null, localAddress, null);
-                        update.putHeader((short)CausalNewViewHeader.serialVersionUID
-                                , new CausalNewViewHeader(newView.getViewId(), newView.getLocalTime(), complete));
+//                        update.putHeader((short)CausalNewViewHeader.serialVersionUID//TODO togggleado por cambio en jgroups
+//                                , new CausalNewViewHeader(newView.getViewId(), newView.getLocalTime(), complete));
                         update.setObject(new MissingIndexesMessage(newView.getMissingTimes(), newView.getMissingCompletions()));
                     }
                 }
 
                 if(update != null) {
-                    if(log.isTraceEnabled())
-                        log.trace("Sending sync update");
+//                    if(log.isTraceEnabled())//TODO togggleado por cambio en jgroups
+//                        log.trace("Sending sync update");
                     down_prot.down(new Event(Event.MSG, update));
                 }
 
@@ -774,7 +767,7 @@ public class Causal extends Protocol
                     catch(InterruptedException e) {
                         Thread.currentThread().interrupt(); // set interrupt flag again
                         // Ignore
-                        log.warn("Interrupted?!?", e);
+//                        log.warn("Interrupted?!?", e);//TODO togggleado por cambio en jgroups
                     }
 
                     sendUpdate=updateRequested;
@@ -784,14 +777,14 @@ public class Causal extends Protocol
             
             if (flush!=null) {
                 int n=flush.size();
-                if (log.isDebugEnabled()) log.debug("Flushing "+n+" messages down...");
+//                if (log.isDebugEnabled()) log.debug("Flushing "+n+" messages down...");//TODO togggleado por cambio en jgroups
                 
                 while(!flush.isEmpty()) {
                     Event evt=(Event)flush.removeFirst();
                     down(evt);
                 }
                 
-                if (log.isDebugEnabled()) log.debug("Done flushing "+n+" messages down...");
+//                if (log.isDebugEnabled()) log.debug("Done flushing "+n+" messages down...");//TODO togggleado por cambio en jgroups
             }
         }
         
@@ -830,7 +823,7 @@ public class Causal extends Protocol
     
     private NewViewThread newViewThread;
     
-    @Property
+//    @Property //TODO togggleado por cambio en jgroups
     private boolean debug=false;
     
     /**
@@ -923,9 +916,9 @@ public class Causal extends Protocol
                 
                 	currentView.increment();                    
                     tvt=currentView.getTransportedVectorTime();
-                    if (log.isTraceEnabled()) log.trace("Sent 1 down message @ "+currentView.timeVectorString());
+//                    if (log.isTraceEnabled()) log.trace("Sent 1 down message @ "+currentView.timeVectorString());//TODO togggleado por cambio en jgroups
                 } else {
-                	if (log.isTraceEnabled()) log.trace("Enqueued 1 down message...");
+//                	if (log.isTraceEnabled()) log.trace("Enqueued 1 down message...");//TODO togggleado por cambio en jgroups
                     downwardWaitingQueue.add(evt);
                 }
             }
@@ -935,11 +928,11 @@ public class Causal extends Protocol
             	//PROOF the TVT is added to the waiting messages.
             	
             	waitingMessages.add(tvt);
-            	msg.putHeader(this.id, new CausalHeader(tvt));
+//            	msg.putHeader(this.id, new CausalHeader(tvt));//TODO togggleado por cambio en jgroups
                 return down_prot.down(evt);
             }
         } catch (RuntimeException e) {
-            if (debug) log.error("*** down: "+e.getMessage(), e);
+//            if (debug) log.error("*** down: "+e.getMessage(), e);//TODO togggleado por cambio en jgroups
             throw e;
         }
 
@@ -963,7 +956,7 @@ public class Causal extends Protocol
                 	return up_prot.up(evt);
             }
         } catch (RuntimeException e) {
-            if (debug) log.error("*** up: "+e.getMessage(), e);
+//            if (debug) log.error("*** up: "+e.getMessage(), e);//TODO togggleado por cambio en jgroups
             throw e;
         }
         return null;
@@ -978,8 +971,8 @@ public class Causal extends Protocol
     {
         View view=(View)evt.getArg();      
         InternalView iView=new InternalView(view.getVid(), view.getMembers(), localAddress);
-        if(log.isDebugEnabled())
-            log.debug("New view: "+view);
+//        if(log.isDebugEnabled())//TODO togggleado por cambio en jgroups
+//            log.debug("New view: "+view);
         
         synchronized(lock) {
             // Disable sending
@@ -994,7 +987,7 @@ public class Causal extends Protocol
                 newView.setMemberLocalTime(localAddress, 0);
             }
             
-            if (log.isTraceEnabled()) log.trace("Starting synchronization thread for "+newView);
+//            if (log.isTraceEnabled()) log.trace("Starting synchronization thread for "+newView);
             
             newViewThread=new NewViewThread(newView);
             newViewThread.start();
@@ -1012,125 +1005,126 @@ public class Causal extends Protocol
      */
     private Object upMsg(Event evt) {
     	
+    	return null;
     	
-        Message msg = (Message) evt.getArg();
-        Address src=msg.getSrc();
-       
-        //	Check for a causal new view header
-        Object obj = msg.getHeader((short)CausalNewViewHeader.serialVersionUID);
-
-        if (obj instanceof CausalNewViewHeader) {
-            processNewViewSynchronization(src, (CausalNewViewHeader)obj, msg.getObject());           
-            return null;
-        }
-        
-        obj = msg.getHeader(this.id);
-
-        if (!(obj instanceof CausalHeader)) {
-            if((msg.getDest() == null) 
-                    && log.isErrorEnabled()) log.error("NO CAUSAL.Header found");
-            return up_prot.up(evt);
-        }
-        
-        /**
-         * PROOF vector print
-         */
-        //////////////////////////////////////////////////////////////////////////
-        System.err.print("Upwarding: "+upwardWaitingQueue);
-        System.err.println("Downwarding: "+downwardWaitingQueue);
-        TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
-        System.out.print("app Vector");
-        printValues(currentView.timeVector);
-        System.out.println("");
-        System.out.print("new Vector: "+messageVector.getAssociatedMessage());
-        printValues(messageVector.getValues());
-        System.out.println("");
-      ///////////////////////////////////////////////////////////////////////////
-        
-        
-        synchronized (lock) {
-        	
-        	/**
-        	 * If the msg encapsulates a Ketal Event, this protocol 
-        	 * modifies the TransportedVectorTime of that Event.
-        	 * In other case, the message is passed up. 
-        	 */      
-        	System.err.print("Colocando un vector en el Evento");
-        	if (msg.getObject() instanceof BrokerMessage) {
-    			BrokerMessage bm = (BrokerMessage) msg.getObject();
-    			if (bm != null) {
-    				if (bm.getEvent() instanceof co.edu.icesi.ketal.core.Event) {
-    	            	System.err.print("Sin ordenamiento: ----");
-    	        		co.edu.icesi.ketal.core.Event ketalEvent= bm.getEvent();
-    	        		ketalEvent.setTransportedVectorTime(messageVector);
-    	        		bm.setEvent(ketalEvent);
-    	        		msg.setObject(bm);			
-    				}
-    			}
-        	}
-        	
-        	if(!causal_order_prot_interest)
-        	{
-        		return up_prot.up(new Event(Event.MSG, msg));	
-        	}else{	
-
-        		if(!waitingMessages.isEmpty())
-        		{
-        			System.err.print("Upwarding: "+upwardWaitingQueue);
-        			System.err.println("Downwarding: "+downwardWaitingQueue);
-        			System.err.println("Cola de espera: "+waitingMessages);
-        			//PROOF
-        			if(waitingMessages.contains(messageVector))
-        			{
-        				waitingMessages.remove(messageVector);
-        				if (log.isTraceEnabled()) log.trace("queuing message "+msg+", headers are "+msg.printHeaders());
-        				messageVector.setAssociatedMessage(msg);
-
-        				boolean thereIsAFirstMessageWaiting=false;
-
-        				for(TransportedVectorTime waitingVector : waitingMessages)
-        				{
-        					if(waitingVector.isCausallyNext(messageVector))
-        					{
-        						thereIsAFirstMessageWaiting=true;
-        					}
-        				}
-        				/**
-        				 * PROOF This is under the suppose there is no more messages that are first (causally) that vectorMessage
-        				 * and in the queue this vector cause the first one.
-        				 */
-        				if(!thereIsAFirstMessageWaiting&&(upwardWaitingQueue.size()>0))
-        				{
-        					if(messageVector.isCausallyNext((TransportedVectorTime)upwardWaitingQueue.get(0)))
-        					{
-        						delegateUpMsg(evt);
-        					}else
-        					{
-        						addToDelayQueue(messageVector);	
-        					}
-
-        				}else
-        				{
-        					addToDelayQueue(messageVector);	
-        				}
-
-        				if(waitingMessages.isEmpty())
-        				{
-        					flushUpwardingQueue();
-        				}
-        			}else{
-        				if (log.isTraceEnabled()) log.trace("queuing message "+msg+", headers are "+msg.printHeaders());
-        				messageVector.setAssociatedMessage(msg);
-        				addToDelayQueue(messageVector);
-        			}
-
-
-        		}else{
-        			delegateUpMsg(evt);
-        		}
-        	}
-        	return null;	        
-        }
+//        Message msg = (Message) evt.getArg();
+//        Address src=msg.getSrc();
+//       
+//        //	Check for a causal new view header
+//        Object obj = msg.getHeader((short)CausalNewViewHeader.serialVersionUID);
+//
+//        if (obj instanceof CausalNewViewHeader) {
+//            processNewViewSynchronization(src, (CausalNewViewHeader)obj, msg.getObject());           
+//            return null;
+//        }
+//        
+//        obj = msg.getHeader(this.id);
+//
+//        if (!(obj instanceof CausalHeader)) {
+//            if((msg.getDest() == null) 
+//                    && log.isErrorEnabled()) log.error("NO CAUSAL.Header found");
+//            return up_prot.up(evt);
+//        }
+//        
+//        /**
+//         * PROOF vector print
+//         */
+//        //////////////////////////////////////////////////////////////////////////
+//        System.err.print("Upwarding: "+upwardWaitingQueue);
+//        System.err.println("Downwarding: "+downwardWaitingQueue);
+//        TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
+//        System.out.print("app Vector");
+//        printValues(currentView.timeVector);
+//        System.out.println("");
+//        System.out.print("new Vector: "+messageVector.getAssociatedMessage());
+//        printValues(messageVector.getValues());
+//        System.out.println("");
+//      ///////////////////////////////////////////////////////////////////////////
+//        
+//        
+//        synchronized (lock) {
+//        	
+//        	/**
+//        	 * If the msg encapsulates a Ketal Event, this protocol 
+//        	 * modifies the TransportedVectorTime of that Event.
+//        	 * In other case, the message is passed up. 
+//        	 */      
+//        	System.err.print("Colocando un vector en el Evento");
+//        	if (msg.getObject() instanceof BrokerMessage) {
+//    			BrokerMessage bm = (BrokerMessage) msg.getObject();
+//    			if (bm != null) {
+//    				if (bm.getEvent() instanceof co.edu.icesi.ketal.core.Event) {
+//    	            	System.err.print("Sin ordenamiento: ----");
+//    	        		co.edu.icesi.ketal.core.Event ketalEvent= bm.getEvent();
+//    	        		ketalEvent.setTransportedVectorTime(messageVector);
+//    	        		bm.setEvent(ketalEvent);
+//    	        		msg.setObject(bm);			
+//    				}
+//    			}
+//        	}
+//        	
+//        	if(!causal_order_prot_interest)
+//        	{
+//        		return up_prot.up(new Event(Event.MSG, msg));	
+//        	}else{	
+//
+//        		if(!waitingMessages.isEmpty())
+//        		{
+//        			System.err.print("Upwarding: "+upwardWaitingQueue);
+//        			System.err.println("Downwarding: "+downwardWaitingQueue);
+//        			System.err.println("Cola de espera: "+waitingMessages);
+//        			//PROOF
+//        			if(waitingMessages.contains(messageVector))
+//        			{
+//        				waitingMessages.remove(messageVector);
+//        				if (log.isTraceEnabled()) log.trace("queuing message "+msg+", headers are "+msg.printHeaders());
+//        				messageVector.setAssociatedMessage(msg);
+//
+//        				boolean thereIsAFirstMessageWaiting=false;
+//
+//        				for(TransportedVectorTime waitingVector : waitingMessages)
+//        				{
+//        					if(waitingVector.isCausallyNext(messageVector))
+//        					{
+//        						thereIsAFirstMessageWaiting=true;
+//        					}
+//        				}
+//        				/**
+//        				 * PROOF This is under the suppose there is no more messages that are first (causally) that vectorMessage
+//        				 * and in the queue this vector cause the first one.
+//        				 */
+//        				if(!thereIsAFirstMessageWaiting&&(upwardWaitingQueue.size()>0))
+//        				{
+//        					if(messageVector.isCausallyNext((TransportedVectorTime)upwardWaitingQueue.get(0)))
+//        					{
+//        						delegateUpMsg(evt);
+//        					}else
+//        					{
+//        						addToDelayQueue(messageVector);	
+//        					}
+//
+//        				}else
+//        				{
+//        					addToDelayQueue(messageVector);	
+//        				}
+//
+//        				if(waitingMessages.isEmpty())
+//        				{
+//        					flushUpwardingQueue();
+//        				}
+//        			}else{
+//        				if (log.isTraceEnabled()) log.trace("queuing message "+msg+", headers are "+msg.printHeaders());
+//        				messageVector.setAssociatedMessage(msg);
+//        				addToDelayQueue(messageVector);
+//        			}
+//
+//
+//        		}else{
+//        			delegateUpMsg(evt);
+//        		}
+//        	}
+//        	return null;	        
+//        }
     }
     
     /**
@@ -1150,7 +1144,7 @@ public class Causal extends Protocol
             	
             	upwardWaitingQueue.remove(queuedVector);
             	Message tmp=queuedVector.getAssociatedMessage();
-                if (log.isTraceEnabled()) log.trace("released message "+tmp+", headers are "+tmp.printHeaders());
+//                if (log.isTraceEnabled()) log.trace("released message "+tmp+", headers are "+tmp.printHeaders());//TODO togggleado por cambio en jgroups
                 up_prot.up(new Event(Event.MSG, tmp));
                 currentView.max(queuedVector);
             }
@@ -1166,32 +1160,33 @@ public class Causal extends Protocol
      */
     private Object delegateUpMsg(Event evt)
     {
-    	synchronized (lock) {
-    	Message msg = (Message) evt.getArg();
-        Address src=msg.getSrc();
-        Object obj = msg.getHeader(this.id);
-        TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
-    	
-        if (currentView==null||currentView.getView().getIndex(src)<0) {
-            if (log.isDebugEnabled()) log.debug("Discarding "+obj+" from "+msg.getSrc());
-            return null;
-        }
-        
-        if (currentView.isCausallyNext(messageVector)) {
-            if (log.isTraceEnabled()) log.trace("passing up message "+msg+", headers are "+msg.printHeaders()+", local vector is "+currentView.timeVectorString());
-            up_prot.up(evt);
-            currentView.max(messageVector);
-        } else  {
-            if (log.isTraceEnabled()) log.trace("queuing message "+msg+", headers are "+msg.printHeaders());
-            messageVector.setAssociatedMessage(msg);
-            addToDelayQueue(messageVector);
-        }            
+    	//TODO togggleado por cambio en jgroups
+//    	synchronized (lock) {
+//    	Message msg = (Message) evt.getArg();
+//        Address src=msg.getSrc();
+//        Object obj = msg.getHeader(this.id);
+//        TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
+//    	
+//        if (currentView==null||currentView.getView().getIndex(src)<0) {
+//            if (log.isDebugEnabled()) log.debug("Discarding "+obj+" from "+msg.getSrc());
+//            return null;
+//        }
+//        
+//        if (currentView.isCausallyNext(messageVector)) {
+//            if (log.isTraceEnabled()) log.trace("passing up message "+msg+", headers are "+msg.printHeaders()+", local vector is "+currentView.timeVectorString());
+//            up_prot.up(evt);
+//            currentView.max(messageVector);
+//        } else  {
+//            if (log.isTraceEnabled()) log.trace("queuing message "+msg+", headers are "+msg.printHeaders());
+//            messageVector.setAssociatedMessage(msg);
+//            addToDelayQueue(messageVector);
+//        }            
         /** Flush and compares if the incoming message could cause others 
          *  that are queued.
          * PROOF
          */
-       flushUpwardingQueue();
-    	}
+//       flushUpwardingQueue();
+//    	}
     
     	return null;
     }
@@ -1205,8 +1200,8 @@ public class Causal extends Protocol
         
         MissingIndexesMessage content=(MissingIndexesMessage)object;
 
-        if(log.isTraceEnabled())
-            log.trace("Got sync update from "+src);
+//        if(log.isTraceEnabled())//TODO togggleado por cambio en jgroups
+//            log.trace("Got sync update from "+src);
         
         synchronized(lock) {
             if (newViewThread==null) {
@@ -1216,8 +1211,8 @@ public class Causal extends Protocol
                     
                     if (Arrays.binarySearch(content.getMissingCompletionIndexes(), localIndex)>=0) {
                         Message update=new Message(null, localAddress, null);
-                        update.putHeader((short)CausalNewViewHeader.serialVersionUID
-                                , new CausalNewViewHeader(currentView.getView().getViewId(), 0, true)); // It has the time already
+//                        update.putHeader((short)CausalNewViewHeader.serialVersionUID //TODO togggleado por cambio en jgroups
+//                                , new CausalNewViewHeader(currentView.getView().getViewId(), 0, true)); // It has the time already
                         update.setObject(new MissingIndexesMessage(Collections.EMPTY_LIST, Collections.EMPTY_LIST));
                         
                         down_prot.down(new Event(Event.MSG, update));
@@ -1235,7 +1230,7 @@ public class Causal extends Protocol
             
             if (!newViewThread.getCausalView().getViewId().equals(header.newViewId)) return;
         
-            if (log.isTraceEnabled()) log.trace("From "+src+": "+header);
+//            if (log.isTraceEnabled()) log.trace("From "+src+": "+header);//TODO togggleado por cambio en jgroups
 
             // Update the local time and completion status for the source.
             newViewThread.getCausalView().setMemberLocalTime(src, header.localTime);
@@ -1260,5 +1255,11 @@ public class Causal extends Protocol
     	System.out.print("]");
     	System.out.println();
     }
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
      
 }

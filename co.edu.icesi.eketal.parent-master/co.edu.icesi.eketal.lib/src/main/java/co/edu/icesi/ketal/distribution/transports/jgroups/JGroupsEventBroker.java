@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.jgroups.Address;
 import org.jgroups.Message;
-import org.jgroups.util.NotifyingFuture;
+//import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.core.Event;
@@ -53,12 +53,12 @@ public class JGroupsEventBroker implements EventBroker {
 
 	@Override
 	public Address getAsyncAddress() {
-		return asyncMonitor.getChannel().getAddress();
+		return asyncMonitor.getChannel().getLocalAddress();
 	}
 
 	@Override
 	public Address getSyncAddress() {
-		return syncMonitor.getChannel().getAddress();
+		return syncMonitor.getChannel().getLocalAddress();
 	}
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous
@@ -79,16 +79,16 @@ public class JGroupsEventBroker implements EventBroker {
 
 	//Created by David Dur�n
 	@Override
-	public RspList<Object> multicastSync(String class_name, String method_name, Object... parameters) {
+	public RspList multicastSync(String class_name, String method_name, Object... parameters) {
 		return syncMonitor.broadcastMessageSync(class_name, method_name, parameters);
 	}
 	
 	//Created by David Dur�n	
-	@Override
-	public NotifyingFuture<RspList<Object>> multicastWithFutures(String class_name,
-			String method_name, Object... parameters) {
-		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
-	}
+//	@Override
+//	public NotifyingFuture<RspList<Object>> multicastWithFutures(String class_name,
+//			String method_name, Object... parameters) {
+//		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
+//	}
 
 	@Override
 	public void closeComunication() {

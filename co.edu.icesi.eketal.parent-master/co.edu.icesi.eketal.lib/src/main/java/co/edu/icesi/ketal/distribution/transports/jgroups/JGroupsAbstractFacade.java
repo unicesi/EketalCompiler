@@ -3,7 +3,7 @@ package co.edu.icesi.ketal.distribution.transports.jgroups;
 import org.jgroups.Channel;
 import org.jgroups.JChannel;
 import org.jgroups.ReceiverAdapter;
-import org.jgroups.blocks.RequestOptions;
+//import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
 import org.jgroups.util.RspList;
 
@@ -26,8 +26,8 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	Channel channel;
 	RpcDispatcher disp;
 	RspList rsp_list;
-	RequestOptions opts;
-	// RequestHandler disp;
+//	RequestOptions opts;
+//	 RequestHandler disp;
 
 	// The properties configuring the Jgroups communication stack
 	// Properties are managed by class DistributionProperties
@@ -133,13 +133,13 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.rsp_list = rsp_list;
 	}
 
-	public RequestOptions getOpts() {
-		return opts;
-	}
-
-	public void setOpts(RequestOptions opts) {
-		this.opts = opts;
-	}
+//	public RequestOptions getOpts() {
+//		return opts;
+//	}
+//
+//	public void setOpts(RequestOptions opts) {
+//		this.opts = opts;
+//	}
 
 	public String getProps() {
 		return props;
