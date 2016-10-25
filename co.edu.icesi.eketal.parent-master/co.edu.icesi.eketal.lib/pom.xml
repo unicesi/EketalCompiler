@@ -70,6 +70,14 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		
+<!-- 		Descomentando esta dependencia se puede solucionar el problema del LogFactory -->
+<!-- 		<dependency> -->
+<!--         <groupId>commons-logging</groupId> -->
+<!-- 	        <artifactId>commons-logging</artifactId> -->
+<!-- 	        <version>1.1.1</version> -->
+<!-- 		</dependency> -->
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
