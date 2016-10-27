@@ -27,6 +27,16 @@
 			<artifactId>co.edu.icesi.eketal.lib</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.cache</groupId>
+			<artifactId>jbosscache-core</artifactId>
+			<version>3.2.7.GA</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-all</artifactId>
+		    <version>1.9.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -162,4 +172,10 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		 <repository>
+	    <id>jboss-releases</id>
+	    <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+  </repository>
+	</repositories>
 </project>
