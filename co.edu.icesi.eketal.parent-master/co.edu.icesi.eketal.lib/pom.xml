@@ -72,17 +72,37 @@
 		</dependency>
 		
 <!-- 		Descomentando esta dependencia se puede solucionar el problema del LogFactory -->
-<!-- 		<dependency> -->
-<!--         <groupId>commons-logging</groupId> -->
-<!-- 	        <artifactId>commons-logging</artifactId> -->
-<!-- 	        <version>1.1.1</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		    <version>2.0</version>
+		</dependency> -->
+		
+		<!-- <dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-jcl</artifactId>
+		    <version>2.0</version>
+		</dependency> -->
 		
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>1.2</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <version>2.0</version>
+		</dependency>
+		
+		<!-- System.setProperty("java.net.preferIPv4Stack" , "true");
+		System.setProperty("-Dsun.lang.ClassLoader.allowArraySyntax" , "true");
+		cambiar el jp-magic-map.xml del jgroups "and remove all array definitions, e.g. Ljava.lang.Object&;"
+		-->
+		
+
 		<dependency>
 			<groupId>jgroups</groupId>
 			<artifactId>jgroups</artifactId>

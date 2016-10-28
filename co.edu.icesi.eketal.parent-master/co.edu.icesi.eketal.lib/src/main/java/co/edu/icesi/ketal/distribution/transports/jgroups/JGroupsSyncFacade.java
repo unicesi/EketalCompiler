@@ -77,7 +77,7 @@ public class JGroupsSyncFacade extends JGroupsAbstractFacade {
 
 			// logger.debug(channel.getView().toString());
 		} catch (Exception e) {
-			logger.debug(e);
+			logger.debug(e.toString());
 		}
 	}
 

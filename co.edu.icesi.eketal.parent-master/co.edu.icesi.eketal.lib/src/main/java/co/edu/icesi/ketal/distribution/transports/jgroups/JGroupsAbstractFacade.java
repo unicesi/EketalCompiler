@@ -1,10 +1,13 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import org.apache.logging.log4j.core.Logger;
 import org.jgroups.Channel;
 import org.jgroups.JChannel;
 import org.jgroups.ReceiverAdapter;
 //import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
+import org.jgroups.logging.Log;
+import org.jgroups.logging.LogFactory;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.distribution.EventBroker;
@@ -17,11 +20,9 @@ import co.edu.icesi.ketal.distribution.EventBroker;
  * 
  */
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
-
+	
 	// Default logger
-	static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-			.getLogger(JGroupsAbstractFacade.class);
-
+	static Log logger = LogFactory.getLog(JGroupsAbstractFacade.class); 
 	// Channel object, this is part of Jgroups API
 	Channel channel;
 	RpcDispatcher disp;
@@ -101,11 +102,11 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		}
 	}
 
-	public static org.apache.log4j.Logger getLogger() {
+	public static Log getLogger() {
 		return logger;
 	}
 
-	public static void setLogger(org.apache.log4j.Logger logger) {
+	public static void setLogger(Log logger) {
 		JGroupsAbstractFacade.logger = logger;
 	}
 
