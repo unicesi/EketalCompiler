@@ -1,13 +1,14 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
-import org.apache.logging.log4j.core.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Channel;
+import org.jgroups.ChannelException;
 import org.jgroups.JChannel;
 import org.jgroups.ReceiverAdapter;
 //import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
-import org.jgroups.logging.Log;
-import org.jgroups.logging.LogFactory;
+import org.jgroups.conf.ClassConfigurator;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.distribution.EventBroker;
@@ -22,7 +23,7 @@ import co.edu.icesi.ketal.distribution.EventBroker;
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	
 	// Default logger
-	static Log logger = LogFactory.getLog(JGroupsAbstractFacade.class); 
+	protected static Log logger = LogFactory.getLog(JGroupsAbstractFacade.class); 
 	// Channel object, this is part of Jgroups API
 	Channel channel;
 	RpcDispatcher disp;
@@ -69,6 +70,8 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	 * @param jeb
 	 */
 	public JGroupsAbstractFacade(String groupName, EventBroker jeb) {
+//		configuratormagicmap();
+		
 		this.groupName = groupName;
 		this.jeb = jeb;
 		try {
@@ -77,6 +80,29 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void configuratormagicmap() {
+		try {
+//			ClassConfigurator.getInstance().add(new Short("1"), org.jgroups.stack.IpAddress.class);
+			ClassConfigurator.getInstance().add((short) 2, org.jgroups.protocols.Causal.class);
+//			ClassConfigurator.getInstance().add((short) 3, org.jgroups.stack.IpAddress.class);
+			ClassConfigurator.getInstance().add((short) 7, org.jgroups.protocols.FragHeader.class);
+			ClassConfigurator.getInstance().add((short) 13, org.jgroups.protocols.PingHeader.class);
+			ClassConfigurator.getInstance().add((short) 14, org.jgroups.protocols.TcpHeader.class);
+			ClassConfigurator.getInstance().add((short) 19, org.jgroups.protocols.TunnelHeader.class);
+			ClassConfigurator.getInstance().add((short) 20, org.jgroups.protocols.UdpHeader.class);
+			ClassConfigurator.getInstance().add((short) 21, org.jgroups.protocols.pbcast.NakAckHeader.class);
+//			ClassConfigurator.getInstance().add((short) 22, org.jgroups.stack.IpAddress.class);
+//			ClassConfigurator.getInstance().add((short) 24, org.jgroups.stack.IpAddress.class);
+//			ClassConfigurator.getInstance().add((short) 25, org.jgroups.stack.IpAddress.class);
+//			ClassConfigurator.getInstance().add((short) 27, org.jgroups.stack.IpAddress.class);
+		} catch (IllegalArgumentException | ChannelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	public void closeComunication(){
