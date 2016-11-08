@@ -75,34 +75,12 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.groupName = groupName;
 		this.jeb = jeb;
 		try {
-			channel = new JChannel(props);
+			channel = new JChannel();
+//			channel = new JChannel(total.xml);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void configuratormagicmap() {
-		try {
-//			ClassConfigurator.getInstance().add(new Short("1"), org.jgroups.stack.IpAddress.class);
-			ClassConfigurator.getInstance().add((short) 2, org.jgroups.protocols.Causal.class);
-//			ClassConfigurator.getInstance().add((short) 3, org.jgroups.stack.IpAddress.class);
-			ClassConfigurator.getInstance().add((short) 7, org.jgroups.protocols.FragHeader.class);
-			ClassConfigurator.getInstance().add((short) 13, org.jgroups.protocols.PingHeader.class);
-			ClassConfigurator.getInstance().add((short) 14, org.jgroups.protocols.TcpHeader.class);
-			ClassConfigurator.getInstance().add((short) 19, org.jgroups.protocols.TunnelHeader.class);
-			ClassConfigurator.getInstance().add((short) 20, org.jgroups.protocols.UdpHeader.class);
-			ClassConfigurator.getInstance().add((short) 21, org.jgroups.protocols.pbcast.NakAckHeader.class);
-//			ClassConfigurator.getInstance().add((short) 22, org.jgroups.stack.IpAddress.class);
-//			ClassConfigurator.getInstance().add((short) 24, org.jgroups.stack.IpAddress.class);
-//			ClassConfigurator.getInstance().add((short) 25, org.jgroups.stack.IpAddress.class);
-//			ClassConfigurator.getInstance().add((short) 27, org.jgroups.stack.IpAddress.class);
-		} catch (IllegalArgumentException | ChannelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 	}
 
 	public void closeComunication(){
