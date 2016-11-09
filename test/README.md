@@ -90,7 +90,7 @@ reaction before dataraceDetector.datarace{
 
 ## 3. Deadlock
   
-  ### 3.1. Import project
+### 3.1. Import project
 First, import this example as a Maven project.
 #### 3.1.1. Go to "File" -> "Import…"
 #### 3.1.2. Then "Maven" -> "Existing Maven Projects"
