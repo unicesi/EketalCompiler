@@ -90,7 +90,28 @@ reaction before dataraceDetector.datarace{
 
 ## 3. Deadlock
   
-  To probe the DeadLock detector, you must import this test into your favorite IDE, and run two instance of the Executor class in differents consoles View, the application interacts with the user, so there are three reserved words to use this example, and they are: prepare, commit and stop. 
-  Start both consoles with the command "prepare" to begin the JGroups channels, then, in one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. Finally, use the stop command in both consoles to stop their channels.
+  ### 3.1. Import project
+First, import this example as a Maven project.
+#### 3.1.1. Go to "File" -> "Import…"
+#### 3.1.2. Then "Maven" -> "Existing Maven Projects"
+#### 3.1.3. Select the folder where you downloaded the sources, select the "Deadlock" test project and click on "Finish".
 
-In case of problems, please submit an issue.
+### 3.2. Compile sources
+The required classes to launch this project have to be generated, to do this, follow the instructions bellow
+#### 3.2.1. Right click on the project ->  ->
+#### 3.2.2. Then "Maven" -> "Existing Maven Projects"
+
+To generate the required classes, once you have
+#### 3.2.3. Right click on the project -> "Maven" -> "Update Project..." and press "OK"
+#### 3.2.4. Right click on the project -> "Run As" -> "Maven Build..."
+#### 3.2.5. In the Goals field write "clean compile" and press the "Run" button
+
+### 3.3. Run the test
+
+#### 3.3.1 Open two console views in eclipse. Go to "Window" -> "Show View" -> "Console". (recommended in the Console view to uncheck the "Show Console When Standard Out Changes" and "Show Console When Standard Errors Changes")
+#### 3.3.2 Run the project twice.
+The application interacts with the user, so there are three reserved words to use this example, and they are: prepare, commit and stop.
+#### 3.3.3 Start both consoles with the command "prepare" to begin the JGroups channels.
+#### 3.3.4 In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
+#### 3.3.5 Finally, use the stop command in both consoles to stop their channels.
+  
