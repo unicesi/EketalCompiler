@@ -64,7 +64,7 @@ public class FuturesTest {
 	 * and process the message, but it will be waiting in background for the
 	 * Futures to be ready to trigger its listener.
 	 * */
-	@Test
+//	@Test
 	/*
 	public void testMessageSending() throws Exception {
 
@@ -109,15 +109,15 @@ public class FuturesTest {
 	}
 	*/
 	
-	/**
-	 * This is the method that will be executed remotely by ever node in the
-	 * group
-	 * 
-	 * @param numberA
-	 * @param numberB
-	 * @return multiplication of numberA and numberB
-	 */
-	public static int print(Integer numberA, Integer numberB) {
-		return numberA * numberB;
-	}
+//	/**
+//	 * This is the method that will be executed remotely by ever node in the
+//	 * group
+//	 * 
+//	 * @param numberA
+//	 * @param numberB
+//	 * @return multiplication of numberA and numberB
+//	 */
+//	public static int print(Integer numberA, Integer numberB) {
+//		return numberA * numberB;
+//	}
 }

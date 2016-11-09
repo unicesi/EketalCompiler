@@ -3,8 +3,8 @@ package local;
 import java.util.Set;
 
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
-import org.apache.log4j.*;
 import org.jboss.cache.Cache;
 import org.jboss.cache.CacheFactory;
 import org.jboss.cache.DefaultCacheFactory;
@@ -13,11 +13,8 @@ import org.jboss.cache.Node;
 
 public class Executor {
 
-	private static Logger log = Logger.getLogger(Executor.class);
 	
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
-		log.info("Starting cache");
 		CacheFactory<String, Persona> factory = new DefaultCacheFactory<String, Persona>();
 		Cache<String, Persona> cache = factory.createCache();
 		cache.create();
@@ -43,9 +40,6 @@ public class Executor {
 			Node<String, Persona> nodo = raiz.addChild(fqn);			
 		}
 		
-		
-		
-		log.info("Stopping cache");
 		
 	}
 
