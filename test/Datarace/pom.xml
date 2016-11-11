@@ -12,8 +12,6 @@
 	</properties>
 
 	<dependencies>
-
-	
 		<dependency>
 	      <groupId>org.aspectj</groupId>
 	      <artifactId>aspectjrt</artifactId>
@@ -33,6 +31,16 @@
 			<groupId>org.jboss.cache</groupId>
 			<artifactId>jbosscache-core</artifactId>
 			<version>3.2.7.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-all</artifactId>
+		    <version>1.9.5</version>
 		</dependency>
 	</dependencies>
 
