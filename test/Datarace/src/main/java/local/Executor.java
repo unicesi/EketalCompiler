@@ -109,34 +109,3 @@ public class Executor {
 	}
 
 }
-// http://docs.jboss.org/jbosscache/3.2.1.GA/userguide_en/pdf/userguide_en.pdf
-
-/*
- * // Let's get a hold of the root node. Node rootNode = cache.getRoot(); //
- * Remember, JBoss Cache stores data in a tree structure. // All nodes in the
- * tree structure are identified by Fqn objects. Fqn peterGriffinFqn =
- * Fqn.fromString("/griffin/peter"); // Create a new Node Node peterGriffin =
- * rootNode.addChild(peterGriffinFqn); // let's store some data in the node
- * peterGriffin.put("isCartoonCharacter", Boolean.TRUE);
- * peterGriffin.put("favoriteDrink", new Beer()); // some tests (just assume
- * this code is in a JUnit test case)
- * assertTrue(peterGriffin.get("isCartoonCharacter"));
- * assertEquals(peterGriffinFqn, peterGriffin.getFqn());
- * assertTrue(rootNode.hasChild(peterGriffinFqn)); Set keys = new HashSet();
- * keys.add("isCartoonCharacter"); keys.add("favoriteDrink"); assertEquals(keys,
- * peterGriffin.getKeys()); // let's remove some data from the node
- * peterGriffin.remove("favoriteDrink");
- * assertNull(peterGriffin.get("favoriteDrink"); // let's remove the node
- * altogether rootNode.removeChild(peterGriffinFqn);
- * assertFalse(rootNode.hasChild(peterGriffinFqn));
- * 
- * Fqn peterGriffinFqn = Fqn.fromString("/griffin/peter");
- * cache.put(peterGriffinFqn, "isCartoonCharacter", Boolean.TRUE);
- * cache.put(peterGriffinFqn, "favoriteDrink", new Beer());
- * assertTrue(peterGriffin.get(peterGriffinFqn, "isCartoonCharacter"));
- * assertTrue(cache.getRootNode().hasChild(peterGriffinFqn));
- * cache.remove(peterGriffinFqn, "favoriteDrink");
- * assertNull(cache.get(peterGriffinFqn, "favoriteDrink");
- * cache.removeNode(peterGriffinFqn);
- * assertFalse(cache.getRootNode().hasChild(peterGriffinFqn));
- */

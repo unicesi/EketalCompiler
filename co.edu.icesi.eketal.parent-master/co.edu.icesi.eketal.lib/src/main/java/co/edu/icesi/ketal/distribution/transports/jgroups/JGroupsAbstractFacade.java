@@ -70,14 +70,10 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	 * @param jeb
 	 */
 	public JGroupsAbstractFacade(String groupName, EventBroker jeb) {
-//		configuratormagicmap();
-		
 		this.groupName = groupName;
 		this.jeb = jeb;
 		try {
-			channel = new JChannel();
-//			channel = new JChannel(total.xml);
-			
+			channel = new JChannel();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

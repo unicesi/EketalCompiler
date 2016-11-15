@@ -9,14 +9,14 @@ eventclass Datarace{
 	}
 	
 	automaton dataraceDetector(){
- 		start init: (poner -> middle)||(obtener -> datarace);
- 		middle:  (poner -> middle)||(obtener -> middle);
+ 		start init: (consult -> middle)||(insert -> datarace);
+ 		middle: (consult -> middle)||(insert -> middle);
  		end datarace;
  	}
  	
-	event poner(): call(* Cache.get(Fqn, Object)) && host(localGroup);
+	event consult(): call(* Cache.get(Fqn, Object)) && host(localGroup);
 	
-	event obtener(): call(* Cache.put(Fqn, Object, Object)) && host(localGroup);
+	event insert(): call(* Cache.put(Fqn, Object, Object)) && host(localGroup);
 	
  	reaction before dataraceDetector.datarace{
 		String msg = "DataRace detected!";
