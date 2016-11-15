@@ -3,8 +3,8 @@ package co.edu.icesi.ketal.test.distribution;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.jgroups.util.FutureListener;
-import org.jgroups.util.NotifyingFuture;
+//import org.jgroups.util.FutureListener;
+//import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
 import org.junit.After;
 import org.junit.Assert;
@@ -64,7 +64,8 @@ public class FuturesTest {
 	 * and process the message, but it will be waiting in background for the
 	 * Futures to be ready to trigger its listener.
 	 * */
-	@Test
+//	@Test
+	/*
 	public void testMessageSending() throws Exception {
 
 		System.out.println();
@@ -106,16 +107,17 @@ public class FuturesTest {
 		Assert.assertTrue(true);
 
 	}
-
-	/**
-	 * This is the method that will be executed remotely by ever node in the
-	 * group
-	 * 
-	 * @param numberA
-	 * @param numberB
-	 * @return multiplication of numberA and numberB
-	 */
-	public static int print(Integer numberA, Integer numberB) {
-		return numberA * numberB;
-	}
+	*/
+	
+//	/**
+//	 * This is the method that will be executed remotely by ever node in the
+//	 * group
+//	 * 
+//	 * @param numberA
+//	 * @param numberB
+//	 * @return multiplication of numberA and numberB
+//	 */
+//	public static int print(Integer numberA, Integer numberB) {
+//		return numberA * numberB;
+//	}
 }

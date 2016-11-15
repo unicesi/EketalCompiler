@@ -6,7 +6,7 @@ import org.jgroups.Message;
 
 import co.edu.icesi.ketal.core.Event;
 
-//Created by David Durán
+//Created by David Durï¿½n
 public class ReceiverMessageHandler implements BrokerMessageHandler {
 
 	
@@ -32,7 +32,7 @@ public class ReceiverMessageHandler implements BrokerMessageHandler {
 			 * .split(" ")[1]);
 			 */
 			return "["
-					+ msg.getHeader(Short.parseShort("15")).toString()
+					+ msg.getHeader(Short.parseShort("15")+"").toString()
 							.split(" ")[1];
 			
 		}

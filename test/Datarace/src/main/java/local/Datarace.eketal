@@ -1,6 +1,7 @@
 package local;
 
-import remote.*;
+import org.jboss.cache.Fqn;
+import org.jboss.cache.Cache;
 eventclass Datarace{
 
 	group localGroup{
@@ -8,24 +9,14 @@ eventclass Datarace{
 	}
 	
 	automaton dataraceDetector(){
- 		start init: (request -> acquireLock);
-		acquireLock: (writeLock -> potentialDatarace);
-		potentialDatarace: (cacheLoader -> evictData) || (evictNode -> restart);
- 		evictData: (evictNode -> datarace);
- 		restart: (writeUnlock -> init);
+ 		start init: (consult -> middle)||(insert -> datarace);
+ 		middle: (consult -> middle)||(insert -> middle);
  		end datarace;
  	}
  	
-	event request(): call(* CacheLoader.get()) && host(localGroup);
+	event consult(): call(* Cache.get(Fqn, Object)) && host(localGroup);
 	
-	event writeLock(): call(* Transaction.begin()) && host(localGroup);
-	
-	event cacheLoader(): call(* ExtendedTreeCacheListener.peek()) && host(localGroup);
-	
-	event evictNode(): call(* ExtendedTreeCacheListener.nodeEvict()) && 
-		host(localGroup);
-	
-	event writeUnlock(): call(* Transaction.commit()) && host(localGroup);
+	event insert(): call(* Cache.put(Fqn, Object, Object)) && host(localGroup);
 	
  	reaction before dataraceDetector.datarace{
 		String msg = "DataRace detected!";

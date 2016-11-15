@@ -66,14 +66,10 @@ group localGroup{
 ## 2. Datarace
   This example was proposed to work in a real case, that consist in issue that occurs when various threads want to access the same memmory location concurrently, and can cause problems or bugs in the program. So, as can be seen in the Datarace.eketal file, There are some events, and one of them take place in a non-controled situation that ends up with a datarace if the incorrect sequence of methods calls is executed.
 
-  The automaton recognize the event sequence follow by: request writeLock (cacheLoader writeUnlock init request writeLock)* cacheLoader evictNode
 ```
 automaton dataraceDetector(){
-  start init: (request -> acquireLock);
-  acquireLock: (writeLock -> potentialDatarace);
-  potentialDatarace: (cacheLoader -> evictData) || (evictNode -> restart);
-  evictData: (evictNode -> datarace);
-  restart: (writeUnlock -> init);
+  start init: (consult -> middle)||(insert -> datarace);
+  middle: (consult -> middle)||(insert -> middle);
   end datarace;
 }
 ```
@@ -87,6 +83,8 @@ reaction before dataraceDetector.datarace{
   System.out.println("----------------------------------------");
 }
 ```
+
+To run this example, follow this instructions:
 
 ## 3. Deadlock
 

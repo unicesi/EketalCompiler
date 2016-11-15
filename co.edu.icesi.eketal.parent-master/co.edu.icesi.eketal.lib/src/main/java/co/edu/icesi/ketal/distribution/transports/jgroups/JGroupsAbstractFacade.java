@@ -1,10 +1,14 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Channel;
+import org.jgroups.ChannelException;
 import org.jgroups.JChannel;
 import org.jgroups.ReceiverAdapter;
-import org.jgroups.blocks.RequestOptions;
+//import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
+import org.jgroups.conf.ClassConfigurator;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.distribution.EventBroker;
@@ -17,17 +21,15 @@ import co.edu.icesi.ketal.distribution.EventBroker;
  * 
  */
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
-
+	
 	// Default logger
-	static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-			.getLogger(JGroupsAbstractFacade.class);
-
+	protected static Log logger = LogFactory.getLog(JGroupsAbstractFacade.class); 
 	// Channel object, this is part of Jgroups API
 	Channel channel;
 	RpcDispatcher disp;
 	RspList rsp_list;
-	RequestOptions opts;
-	// RequestHandler disp;
+//	RequestOptions opts;
+//	 RequestHandler disp;
 
 	// The properties configuring the Jgroups communication stack
 	// Properties are managed by class DistributionProperties
@@ -71,8 +73,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.groupName = groupName;
 		this.jeb = jeb;
 		try {
-			channel = new JChannel(props);
-			
+			channel = new JChannel();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,11 +102,11 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		}
 	}
 
-	public static org.apache.log4j.Logger getLogger() {
+	public static Log getLogger() {
 		return logger;
 	}
 
-	public static void setLogger(org.apache.log4j.Logger logger) {
+	public static void setLogger(Log logger) {
 		JGroupsAbstractFacade.logger = logger;
 	}
 
@@ -133,13 +134,13 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.rsp_list = rsp_list;
 	}
 
-	public RequestOptions getOpts() {
-		return opts;
-	}
-
-	public void setOpts(RequestOptions opts) {
-		this.opts = opts;
-	}
+//	public RequestOptions getOpts() {
+//		return opts;
+//	}
+//
+//	public void setOpts(RequestOptions opts) {
+//		this.opts = opts;
+//	}
 
 	public String getProps() {
 		return props;
