@@ -12,9 +12,9 @@
 ## 1. Installing EKETAL's development environment using MAVEN
 ### 1.1. Download the sources
   You can download the sources in two ways: directly from github and using git.
- #### From Github
+#### From Github
  Click in the button "Clone or Download" and press the "Download Zip" option.
- #### Using Git
+#### Using Git
   You must have Git installed.
   Type into the git bash:
 
@@ -32,6 +32,14 @@ export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 
 ### 1.3. Build the language
 
+Before start installing, please use java SE 8 as the JAVA_HOME to avoid this [issue](https://github.com/unicesi/eketal/issues/3).
+
+To change the environment variables in IOS/linux
+```
+export JAVA_HOME=</your/java/path>
+```
+In windows, change it in environment variables
+
 You can skip the test of the kernel Ketal with this instruction
 
 ```
@@ -48,27 +56,24 @@ mvn clean install
 
 ### 1.4. Build sample projects
 Inside the [test folder](https://github.com/unicesi/eketal/tree/master/test) are three deployable test's and how to use them, the main example is the Deadlock and will be describe next:
-#### 1.4.1. Import project
-First, import this example as a Maven project.
-##### 1.4.1.1. Go to "File" -> "Import…"
-##### 1.4.1.2. Then "Maven" -> "Existing Maven Projects"
-##### 1.4.1.3. Select the folder where you downloaded the sources, select the "Deadlock" test project and click on "Finish".
+```
+cd ..
+cd test/Deadlock
+```
+This will compile and generate the sources
+```
+mvn clean compile
+```
+Finally, run the generated application
+```
+mvn exec:java
+```
+Now you can open another prompt (make sure to also set the JAVA_HOME with Java SE 8) and run the previous command inside the test/Deadlock directory.
 
-#### 1.4.2. Compile sources
-The required classes to launch this project have to be generated, to do this, follow the instructions bellow
-##### 1.4.2.1. Right click on the project ->  ->
-##### 1.4.2.2. Then "Maven" -> "Existing Maven Projects"
-
-To generate the required classes, once you have
-##### 1.4.2.1. Right click on the project -> "Maven" -> "Update Project..." and press "OK"
-##### 1.4.2.2. Right click on the project -> "Run As" -> "Maven Build..."
-##### 1.4.2.3. In the Goals field write "clean compile" and press the "Run" button
-##### 1.4.2.4. Open two console views in eclipse. Go to "Window" -> "Show View" -> "Console". (recommended in the Console view to uncheck the "Show Console When Standard Out Changes" and "Show Console When Standard Errors Changes")
-##### 1.4.2.5. Run the project twice.
-The application interacts with the user, so there are three reserved words to use this example, and they are: prepare, commit and stop.
-##### 1.4.2.6. Start both consoles with the command "prepare" to begin the JGroups channels.
-##### 1.4.2.7. In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
-##### 1.4.2.8. Finally, use the stop command in both consoles to stop their channels.
+The application interacts with the user, so there are three reserved words to use this example, and they are: **prepare**, **commit** and **stop**.
+Start both consoles with the command "prepare" to begin the JGroups channels.
+In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
+Finally, use the stop command in both consoles to stop their channels.
 
 Explore the other examples [here](https://github.com/unicesi/eketal/tree/master/test)
 

@@ -89,7 +89,30 @@ reaction before dataraceDetector.datarace{
 ```
 
 ## 3. Deadlock
-  
+
+**Run it via Maven**
+
+```
+cd ..
+cd test/Deadlock
+```
+This will compile and generate the sources
+```
+mvn clean compile
+```
+Finally, run the generated application
+```
+mvn exec:java
+```
+Now you can open another prompt (make sure to also set the JAVA_HOME with Java SE 8) and run the previous command inside the test/Deadlock directory.
+
+The application interacts with the user, so there are three reserved words to use this example, and they are: **prepare**, **commit** and **stop**.
+Start both consoles with the command "prepare" to begin the JGroups channels.
+In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
+Finally, use the stop command in both consoles to stop their channels.
+
+**Run it with Eclipse**
+
 ### 3.1. Import project
 First, import this example as a Maven project.
 #### 3.1.1. Go to "File" -> "Import…"

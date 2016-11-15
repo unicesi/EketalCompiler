@@ -184,6 +184,17 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			
+			<plugin>
+<!-- 			With this plugin you can run this test with the command "mvn exec:java" instead of "mvn exec:java -Dexec.mainClass="core.Executor"" -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <mainClass>core.Executor</mainClass>
+                </configuration>
+            </plugin>
+			
 		</plugins>
 	</build>
 </project>
