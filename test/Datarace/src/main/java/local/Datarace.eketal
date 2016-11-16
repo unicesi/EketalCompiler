@@ -8,18 +8,19 @@ eventclass Datarace{
 		localhost
 	}
 	
-	automaton dataraceDetector(){
- 		start init: (consult -> middle)||(insert -> datarace);
- 		middle: (consult -> middle)||(insert -> middle);
- 		end datarace;
+	automaton seqEventDetector(){
+ 		start initialState: (consult -> firtsState)||(insert -> initialState);
+ 		firtsState: (consult -> initialState)||(insert -> secondState);
+ 		secondState: (consult -> initialState)||(insert -> finalState);
+ 		end finalState: (consult -> finalState)||(insert -> finalState);
  	}
  	
 	event consult(): call(* Cache.get(Fqn, Object)) && host(localGroup);
 	
 	event insert(): call(* Cache.put(Fqn, Object, Object)) && host(localGroup);
 	
- 	reaction before dataraceDetector.datarace{
-		String msg = "DataRace detected!";
+ 	reaction before seqEventDetector.finalState{
+		String msg = "Reaction detected";
 		System.out.println("----------------------------------------");
 		System.out.println(msg);
 		System.out.println("----------------------------------------");

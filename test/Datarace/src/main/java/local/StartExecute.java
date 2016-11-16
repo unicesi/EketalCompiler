@@ -21,9 +21,9 @@ import org.jboss.cache.transaction.GenericTransactionManagerLookup;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 
-public class Executor {
+public class StartExecute {
 
-	private static Logger log = Logger.getLogger(Executor.class);
+	private static Logger log = Logger.getLogger(StartExecute.class);
 
 	public static void main(String[] args) throws IOException {
 		BasicConfigurator.configure();
@@ -32,45 +32,62 @@ public class Executor {
 		
 		String r = "";
 		boolean bool = false;
-		
-		int tInicial = 0;
-		int numDatos = 10000;
-		
 		while (!bool) {
 			System.out.println("Please write a command");
 			r = bf.readLine();
 			if (r.equals("start")) {
 				bool = true;
-			}else if(r.equals("cambiar")){
-				tInicial = 10000;
 			}
 		}
-
+				
 		log.info("Starting cache");
 		
-
-
-//		CacheFactory factory = Mockito.mock(CacheFactory.class);
-//		when(factory.createCache(anyString())).thenReturn(Mockito.mock(Cache.class));
-		
 		CacheFactory factory = new DefaultCacheFactory();
-		
 		Cache cache = factory.createCache("etc/config/total-replication.xml");
-		
 		cache.create();
 		cache.start();
-
-		System.out.println(cache.toString());
 		
 		Fqn fqn = Fqn.fromString("/datarace/example");
 		
+		Thread thrd = new SleepThread(10000); 
+		thrd.run();
+		
+		cache.put(fqn, "value1", "value1");
+		
+		thrd = new SleepThread(); 
+		thrd.run();
+		
+		cache.put(fqn, "value2", "value2");
+		
+		thrd = new SleepThread(); 
+		thrd.run();
+		
+		cache.get(fqn, "value1");
+		
+		thrd = new SleepThread(10000); 
+		thrd.run();
+		
+		cache.stop();
+		cache.destroy();
+		
+		
+		/*
+		 * 		
+		int tInicial = 0;
+		int numDatos = 10000;
+
+		
+//		CacheFactory factory = Mockito.mock(CacheFactory.class);
+//		when(factory.createCache(anyString())).thenReturn(Mockito.mock(Cache.class));
+
+		System.out.println(cache.toString());
 		
 		long inicial = System.currentTimeMillis();
 		ponerDatos(tInicial, cache, fqn, numDatos, "Nuevo");
 		double t1 = (double)(System.currentTimeMillis()-inicial)/1000;
 		
 		inicial = System.currentTimeMillis();
-//		leerDatos(cache, numDatos, "Nuevo", fqn);
+		leerDatos(cache, numDatos, "Nuevo", fqn);
 		double t2 = (double)(System.currentTimeMillis()-inicial)/1000;
 		
 		System.out.println("Tiempo: "+t1);
@@ -89,9 +106,8 @@ public class Executor {
 			}
 				
 		}
-		cache.stop();
-		cache.destroy();
 		
+		 */
 		bf.close();
 	}
 
