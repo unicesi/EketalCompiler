@@ -66,12 +66,13 @@ group localGroup{
 ## 2. Datarace
   This example was proposed to work in a real case, that consist in issue that occurs when various threads want to access the same memmory location concurrently, and can cause problems or bugs in the program. So, as can be seen in the Datarace.eketal file, There are some events, and one of them take place in a non-controled situation that ends up with a datarace if the incorrect sequence of methods calls is executed. To simulate this problem, there will be two programs that interact with the JBossCache, that is used to save and read some data
 
-The automaton recognize the following sequence of events: consult -> insert -> insert. Each node make a different interact in the cache, but their individual interacts are not recognized by the automaton, so both programs must be running at the time to accomplish the expected event sequence.
+The automaton looks for the following sequence of events: **consult** -> **insert** -> **insert**; when it finds it, triggers a reaction. Each node make a different interact in the cache, but their individual interacts are not recognized by the automaton to perform the reaction, so both programs must be running at the time to accomplish the expected event sequence.
 ```
 automaton seqEventDetector(){
   start initialState: (consult -> firtsState)||(insert -> initialState);
   firtsState: (consult -> initialState)||(insert -> secondState);
-  secondState: (consult -> initialState)||(insert -> finalState);
+  secondState: (consult -> initialState)||(insert -> findSequenceState);
+  findSequenceState: (consult -> finalState)||(insert -> finalState);
   end finalState: (consult -> finalState)||(insert -> finalState);
 }
 ```
@@ -107,7 +108,7 @@ Now, open a new command line and run the following:
 mvn exec:java -Dexec.mainClass="local.RunExecute"
 ```
 
-This example shows how Eketal detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **Initial**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
+This example shows how Eketal detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
 
 ## 3. Deadlock
 

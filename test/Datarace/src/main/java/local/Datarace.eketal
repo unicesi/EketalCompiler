@@ -11,7 +11,8 @@ eventclass Datarace{
 	automaton seqEventDetector(){
  		start initialState: (consult -> firtsState)||(insert -> initialState);
  		firtsState: (consult -> initialState)||(insert -> secondState);
- 		secondState: (consult -> initialState)||(insert -> finalState);
+ 		secondState: (consult -> initialState)||(insert -> findSequenceState);
+ 		findSequenceState: (consult -> finalState)||(insert -> finalState);
  		end finalState: (consult -> finalState)||(insert -> finalState);
  	}
  	
@@ -19,7 +20,7 @@ eventclass Datarace{
 	
 	event insert(): call(* Cache.put(Fqn, Object, Object)) && host(localGroup);
 	
- 	reaction before seqEventDetector.finalState{
+ 	reaction before seqEventDetector.findSequenceState{
 		String msg = "Reaction detected";
 		System.out.println("----------------------------------------");
 		System.out.println(msg);

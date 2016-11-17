@@ -11,6 +11,8 @@ import org.jboss.cache.CacheFactory;
 import org.jboss.cache.DefaultCacheFactory;
 import org.jboss.cache.Fqn;
 
+import co.edu.icesi.eketal.handlercontrol.EventHandler;
+
 public class RunExecute {
 	
 	private static Logger log = Logger.getLogger(RunExecute.class);
@@ -30,7 +32,7 @@ public class RunExecute {
 			}
 		}
 				
-		log.info("Starting cache");
+		System.out.println("[INFO] Starting cache");
 		
 		CacheFactory factory = new DefaultCacheFactory();
 		Cache cache = factory.createCache("etc/config/total-replication.xml");
@@ -39,16 +41,18 @@ public class RunExecute {
 		
 		Fqn fqn = Fqn.fromString("/datarace/example");
 		
+		System.out.println("[INFO] Preparing to read a value");
 		Thread thrd = new SleepThread(10000); 
 		thrd.run();
 		cache.get(fqn, "value1");
 		
+		System.out.println("[INFO] Preparing to put a value");
 		thrd = new SleepThread(); 
 		thrd.run();
 		
 		cache.put(fqn, "value3", "value3");
 		
-		
+		System.out.println("[INFO] Preparing to read a value");
 		thrd = new SleepThread(); 
 		thrd.run();
 		
@@ -60,8 +64,11 @@ public class RunExecute {
 		cache.stop();
 		cache.destroy();
 		
-
 		bf.close();
+		
+		EventHandler.getInstance().close();
+		
+		System.out.println("[INFO] Stopped transation");
 	}
 	
 }
