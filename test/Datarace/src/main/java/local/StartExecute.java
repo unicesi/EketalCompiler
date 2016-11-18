@@ -19,7 +19,7 @@ import org.jboss.cache.transaction.GenericTransactionManagerLookup;
 
 import org.mockito.Mockito;
 
-//import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol.EventHandler;
 
 import static org.mockito.Mockito.*;
 
@@ -76,7 +76,7 @@ public class StartExecute {
 
 		bf.close();
 		
-//		EventHandler.getInstance().close();
+		EventHandler.getInstance().close();
 		
 		System.out.println("[INFO] Stopped transation");
 	}

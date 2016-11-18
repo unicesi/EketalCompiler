@@ -10,7 +10,7 @@ import org.jboss.cache.Fqn;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 
-//import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol.EventHandler;
 
 public class RunExecute {
 	
@@ -65,7 +65,7 @@ public class RunExecute {
 		
 		bf.close();
 		
-//		EventHandler.getInstance().close();
+		EventHandler.getInstance().close();
 		
 		System.out.println("[INFO] Stopped transation");
 	}
