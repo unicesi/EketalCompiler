@@ -1,34 +1,27 @@
 package local;
 
-import remote.*;
+import org.jboss.cache.Fqn;
+import org.jboss.cache.Cache;
 eventclass Datarace{
 
 	group localGroup{
 		localhost
 	}
 	
-	automaton dataraceDetector(){
- 		start init: (request -> acquireLock);
-		acquireLock: (writeLock -> potentialDatarace);
-		potentialDatarace: (cacheLoader -> evictData) || (evictNode -> restart);
- 		evictData: (evictNode -> datarace);
- 		restart: (writeUnlock -> init);
- 		end datarace;
+	automaton seqEventDetector(){
+ 		start initialState: (consult -> firtsState)||(insert -> initialState);
+ 		firtsState: (consult -> initialState)||(insert -> secondState);
+ 		secondState: (consult -> initialState)||(insert -> findSequenceState);
+ 		findSequenceState: (consult -> finalState)||(insert -> finalState);
+ 		end finalState: (consult -> finalState)||(insert -> finalState);
  	}
  	
-	event request(): call(* CacheLoader.get()) && host(localGroup);
+	event consult(): call(* Cache.get(Fqn, Object)) && host(localGroup);
 	
-	event writeLock(): call(* Transaction.begin()) && host(localGroup);
+	event insert(): call(* Cache.put(Fqn, Object, Object)) && host(localGroup);
 	
-	event cacheLoader(): call(* ExtendedTreeCacheListener.peek()) && host(localGroup);
-	
-	event evictNode(): call(* ExtendedTreeCacheListener.nodeEvict()) && 
-		host(localGroup);
-	
-	event writeUnlock(): call(* Transaction.commit()) && host(localGroup);
-	
- 	reaction before dataraceDetector.datarace{
-		String msg = "DataRace detected!";
+ 	reaction before seqEventDetector.findSequenceState{
+		String msg = "Reaction detected";
 		System.out.println("----------------------------------------");
 		System.out.println(msg);
 		System.out.println("----------------------------------------");

@@ -41,30 +41,30 @@
 
 	<build>
 		<plugins>
-			<plugin>
-			    <artifactId>maven-assembly-plugin</artifactId>
-			    <version>2.5.5</version>
-			    <configuration>
-			        <appendAssemblyId>false</appendAssemblyId>
-			        <descriptorRefs>
-			            <descriptorRef>jar-with-dependencies</descriptorRef>
-			        </descriptorRefs>
-			        <archive>
-			            <manifest>
-			                <mainClass>local.Main</mainClass>
-			            </manifest>
-			        </archive>
-			    </configuration>
-			    <executions>
-			        <execution>
-			            <id>a-make-assembly</id>
-			            <phase>package</phase>
-			            <goals>
-			                <goal>single</goal>
-			            </goals>
-			        </execution>
-			    </executions>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 			    <artifactId>maven-assembly-plugin</artifactId> -->
+<!-- 			    <version>2.5.5</version> -->
+<!-- 			    <configuration> -->
+<!-- 			        <appendAssemblyId>false</appendAssemblyId> -->
+<!-- 			        <descriptorRefs> -->
+<!-- 			            <descriptorRef>jar-with-dependencies</descriptorRef> -->
+<!-- 			        </descriptorRefs> -->
+<!-- 			        <archive> -->
+<!-- 			            <manifest> -->
+<!-- 			                <mainClass>local.Main</mainClass> -->
+<!-- 			            </manifest> -->
+<!-- 			        </archive> -->
+<!-- 			    </configuration> -->
+<!-- 			    <executions> -->
+<!-- 			        <execution> -->
+<!-- 			            <id>a-make-assembly</id> -->
+<!-- 			            <phase>package</phase> -->
+<!-- 			            <goals> -->
+<!-- 			                <goal>single</goal> -->
+<!-- 			            </goals> -->
+<!-- 			        </execution> -->
+<!-- 			    </executions> -->
+<!-- 			</plugin> -->
 		
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
