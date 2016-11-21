@@ -71,7 +71,19 @@
 <!-- 			        </execution> -->
 <!-- 			    </executions> -->
 <!-- 			</plugin> -->
-		
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${jre-version}</source>
+                    <target>${jre-version}</target>
+                    <!-- IMPORTANT -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>
+            </plugin>
+			
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
@@ -176,12 +188,49 @@
 						</dependency>
 					</dependencies>
 			</plugin>
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+            </plugin>
+			
+			<plugin>
+		    <groupId>com.jolira</groupId>
+		    <artifactId>onejar-maven-plugin</artifactId>
+		    <version>1.4.4</version>
+		    <executions>
+		      <execution>
+		        <id>build-first</id>
+		          <configuration>
+		            <mainClass>local.RunExecute</mainClass>
+		            <attachToBuild>true</attachToBuild>
+		            <classifier>onejar</classifier>
+		            <filename>RunExecute.jar</filename>
+		          </configuration>
+		          <goals>
+		            <goal>one-jar</goal>
+		          </goals>
+		        </execution>
+		      <execution>
+		        <id>build-second</id>
+		          <configuration>
+		            <mainClass>local.StartExecute</mainClass>
+		            <attachToBuild>true</attachToBuild>
+		            <classifier>onejar</classifier>
+		            <filename>StartExecute.jar</filename>
+		          </configuration>
+		          <goals>
+		            <goal>one-jar</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
 		</plugins>
 	</build>
 	<repositories>
-		 <repository>
-	    <id>jboss-releases</id>
-	    <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
-  </repository>
+		<repository>
+	    	<id>jboss-releases</id>
+	    	<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+  		</repository>
 	</repositories>
 </project>
