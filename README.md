@@ -55,10 +55,10 @@ mvn clean install
 ```
 
 ### 1.4. Build sample projects
-Inside the [test folder](https://github.com/unicesi/eketal/tree/master/test) are three deployable test's and how to use them, the main example is the Deadlock and will be describe next:
+Inside the [test folder](https://github.com/unicesi/eketal/tree/master/test) are three deployable test's and how to use them, the main example is the Datarace and will be describe how to deploy next:
 ```
 cd ..
-cd test/Deadlock
+cd test/Datarace
 ```
 This will compile and generate the sources
 ```
@@ -66,16 +66,16 @@ mvn clean compile
 ```
 Finally, run the generated application
 ```
-mvn exec:java
+mvn exec:java -Dexec.mainClass="local.StartExecute"
 ```
-Now you can open another prompt (make sure to also set the JAVA_HOME with Java SE 8) and run the previous command inside the test/Deadlock directory.
+Now, open a new command line and run the following:
+```
+mvn exec:java -Dexec.mainClass="local.RunExecute"
+```
 
-The application interacts with the user, so there are three reserved words to use this example, and they are: **prepare**, **commit** and **stop**.
-Start both consoles with the command "prepare" to begin the JGroups channels.
-In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
-Finally, use the stop command in both consoles to stop their channels.
+This example shows how Eketal detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
 
-Explore the other examples [here](https://github.com/unicesi/eketal/tree/master/test)
+Explore more about this example and the other examples [here](https://github.com/unicesi/eketal/tree/master/test)
 
 ## 2. Installing the IDE as an Eclipse's plugin
 #### 1. Open the eclipse IDE
