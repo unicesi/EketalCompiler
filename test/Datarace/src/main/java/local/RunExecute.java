@@ -14,8 +14,6 @@ import co.edu.icesi.eketal.handlercontrol.EventHandler;
 
 public class RunExecute {
 	
-=======
-	
 	public static void main(String[] args)throws IOException {
 
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
