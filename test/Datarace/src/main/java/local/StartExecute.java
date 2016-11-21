@@ -8,7 +8,6 @@ import java.util.Set;
 
 import java.util.TreeSet;
 
-import org.apache.log4j.*;
 import org.jboss.cache.Cache;
 import org.jboss.cache.CacheFactory;
 import org.jboss.cache.DefaultCacheFactory;
@@ -26,10 +25,7 @@ import static org.mockito.Mockito.*;
 
 public class StartExecute {
 
-	private static Logger log = Logger.getLogger(StartExecute.class);
-
 	public static void main(String[] args) throws IOException {
-		BasicConfigurator.configure();
 
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -45,7 +41,9 @@ public class StartExecute {
 				
 		System.out.println("[INFO] Starting cache");
 		
-		CacheFactory factory = new DefaultCacheFactory();
+		CacheFactory factory = Mockito.mock(CacheFactory.class);
+		when(factory.createCache(anyString())).thenReturn(Mockito.mock(Cache.class));
+		
 		Cache cache = factory.createCache("etc/config/total-replication.xml");
 		cache.create();
 		cache.start();
