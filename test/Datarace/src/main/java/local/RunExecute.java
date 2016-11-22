@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jboss.cache.Cache;
 import org.jboss.cache.CacheFactory;
 import org.jboss.cache.DefaultCacheFactory;
@@ -15,11 +15,9 @@ import co.edu.icesi.eketal.handlercontrol.EventHandler;
 
 public class RunExecute {
 	
-	private static Logger log = Logger.getLogger(RunExecute.class);
+	private static Log log = LogFactory.getLog(RunExecute.class);
 	
-	public static void main(String[] args)throws IOException {
-		BasicConfigurator.configure();
-
+	public static void main(String[] args) throws IOException  {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		
 		String r = "";
@@ -34,8 +32,9 @@ public class RunExecute {
 				
 		System.out.println("[INFO] Starting cache");
 		
+		
 		CacheFactory factory = new DefaultCacheFactory();
-		Cache cache = factory.createCache("etc/config/total-replication.xml");
+		Cache cache = factory.createCache("config/total-replication.xml");
 		cache.create();
 		cache.start();
 		
