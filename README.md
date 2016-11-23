@@ -23,7 +23,7 @@
   git clone -b "master" https://github.com/unicesi/eketal.git
 ```
 
-	The mock example can be download as follows:
+The mock example can be download as follows:
 
 ```
   git clone -b "JGroups-3.6.9-Final" https://github.com/unicesi/eketal.git
