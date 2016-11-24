@@ -10,11 +10,13 @@
   If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using MAVEN. Then we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
 
 ## 1. Installing EKETAL's development environment using MAVEN
+
+This section describes how to download the project, how to build and install the language, and how to build a sample project. This is an example using JBossCache, to run an example using a mock of JBossCache and a recent version of JGroups, use the second git clone command. Finally, in this [video](https://dl.dropboxusercontent.com/u/37542543/Eketal.mp4) you can see all the steps described next.
+
 ### 1.1. Download the sources
-  You can download the sources in two ways: directly from github and using git.
-  This is an example using JBossCache, to run an example using a mock of JBossCache and a recent version of JGroups, use the second git clone command
+  You can download the sources in two ways: directly from github or using git.
 #### From Github
- Click in the button "Clone or Download" and press the "Download Zip" option.
+ Click in the button "Clone or Download" and press the "Download Zip" option and uncompress the files.
 #### Using Git
   You must have Git installed.
   Type into the git bash:
@@ -45,7 +47,7 @@ To change the environment variables in IOS/linux
 ```
 export JAVA_HOME=</your/java/path>
 ```
-In windows, change it in environment variables
+In windows, change it in environment variables.
 
 You can skip the test of the kernel Ketal with this instruction
 
@@ -71,7 +73,7 @@ This will compile and generate the sources
 ```
 mvn clean package
 ```
-Finally, run the generated application
+Finally, run the generated application. **Make sure to have access to internet and you can 'ping www.google.com' from your machine**
 ```
 mvn exec:java -Dexec.mainClass="local.StartExecute"
 ```
