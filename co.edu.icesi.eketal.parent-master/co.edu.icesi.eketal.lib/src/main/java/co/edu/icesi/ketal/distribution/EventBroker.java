@@ -1,9 +1,9 @@
 package co.edu.icesi.ketal.distribution;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.jgroups.Address;
 import org.jgroups.Message;
 import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
@@ -55,9 +55,9 @@ public interface EventBroker {
 			String class_name, String method_name, Object... parameters);
 
 	// Written by Andr�s Barrera
-	public Address getAsyncAddress();
+	public URL getAsyncAddress();
 	
-	public Address getSyncAddress();
+	public URL getSyncAddress();
 	
 	//Written by Camilo Pimienta: This method allows to close the channel where the communication is stored
 	public void closeComunication();

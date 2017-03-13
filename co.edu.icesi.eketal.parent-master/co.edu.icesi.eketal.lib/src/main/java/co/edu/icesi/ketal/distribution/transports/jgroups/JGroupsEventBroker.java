@@ -1,10 +1,16 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
 import org.jgroups.Address;
+import org.jgroups.Channel;
 import org.jgroups.Message;
+import org.jgroups.PhysicalAddress;
+import org.jgroups.stack.IpAddress;
 import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
 
@@ -52,13 +58,54 @@ public class JGroupsEventBroker implements EventBroker {
 	 */
 
 	@Override
-	public Address getAsyncAddress() {
-		return asyncMonitor.getChannel().getAddress();
+	public URL getAsyncAddress() {
+		
+		String srcIp = "";   
+	    
+	    Channel channel = asyncMonitor.channel;
+	    
+	    PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
+
+	    if(physicalAddr instanceof IpAddress) {
+	        IpAddress ipAddr = (IpAddress)physicalAddr;
+	        InetAddress inetAddr = ipAddr.getIpAddress();
+	        srcIp = inetAddr.getHostAddress();
+	    }
+		
+	    URL retorno = null;
+		try {
+			retorno = new URL(srcIp);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		return retorno;
 	}
 
 	@Override
-	public Address getSyncAddress() {
-		return syncMonitor.getChannel().getAddress();
+	public URL getSyncAddress() {
+		String srcIp = "";   
+	    
+	    Channel channel = syncMonitor.channel;
+	    
+	    PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
+
+	    if(physicalAddr instanceof IpAddress) {
+	        IpAddress ipAddr = (IpAddress)physicalAddr;
+	        InetAddress inetAddr = ipAddr.getIpAddress();
+	        srcIp = inetAddr.getHostAddress();
+	    }
+		
+	    URL retorno = null;
+		try {
+			retorno = new URL(srcIp);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		return retorno;
 	}
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous

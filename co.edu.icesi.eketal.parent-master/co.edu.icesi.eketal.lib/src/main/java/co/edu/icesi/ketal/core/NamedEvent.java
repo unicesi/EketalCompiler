@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 public class NamedEvent implements Event, Serializable{
@@ -19,9 +18,9 @@ public class NamedEvent implements Event, Serializable{
 
 	private TransportedVectorTime tvt;
 	
-	private Address local;
+	private URL local;
 	
-	private List<Address> target;
+	private List<URL> target;
 	/*
 	 * Constructor.
 	 */
@@ -50,23 +49,23 @@ public class NamedEvent implements Event, Serializable{
 	}
 	
 	@Override
-	public Address getLocalization() {
+	public URL getLocalization() {
 		return local;
 	}
 
 	@Override
-	public boolean setLocalization(Address url) {
+	public boolean setLocalization(URL url) {
 		local = url;
 		return true;
 	}
 
 	@Override
-	public List<Address> getTargetLocalization() {
+	public List<URL> getTargetLocalization() {
 		return target;
 	}
 
 	@Override
-	public boolean setTargetLocalization(List<Address> url) {
+	public boolean setTargetLocalization(List<URL> url) {
 		if(target==null){
 			target = new ArrayList<>();
 		}

@@ -40,23 +40,23 @@ public class TestEvent1 implements Event{
    }
 
 	@Override
-	public Address getLocalization() {
+	public URL getLocalization() {
 		return null;
 	}
 
 	@Override
-	public boolean setLocalization(Address url) {
+	public boolean setLocalization(URL url) {
 		return false;
 		
 	}
 
 	@Override
-	public List<Address> getTargetLocalization() {
+	public List<URL> getTargetLocalization() {
 		return null;
 	}
 
 	@Override
-	public boolean setTargetLocalization(List<Address> url) {
+	public boolean setTargetLocalization(List<URL> url) {
 		return false;
 	}
 

@@ -310,25 +310,25 @@ class CausalMessage implements Serializable, co.edu.icesi.ketal.core.Event
 	}
 
 	@Override
-	public Address getLocalization() {
+	public URL getLocalization() {
 		//No need this method
 		return null;
 	}
 
 	@Override
-	public boolean setLocalization(Address url) {
+	public boolean setLocalization(URL url) {
 		//No need this method
 		return false;
 	}
 
 	@Override
-	public List<Address> getTargetLocalization() {
+	public List<URL> getTargetLocalization() {
 		//No need this method
 		return null;
 	}
 
 	@Override
-	public boolean setTargetLocalization(List<Address> url) {
+	public boolean setTargetLocalization(List<URL> url) {
 		//No need this method
 		return false;
 	}
