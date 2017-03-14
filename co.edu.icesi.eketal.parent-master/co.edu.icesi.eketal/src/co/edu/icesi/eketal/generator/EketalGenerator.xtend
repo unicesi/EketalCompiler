@@ -27,6 +27,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import co.edu.icesi.eketal.eketal.Model
 import co.edu.icesi.eketal.eketal.Pos
 import java.util.HashMap
+import co.edu.icesi.eketal.eketal.TPrefix
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -272,9 +273,16 @@ class EketalGenerator implements IGenerator{
 		 * La primera posición es el nombre del pointcut, la segunda es la definición del pointcut completo
 		 * En el pointcut completo se toma todos los parámetros y agrupan separados por ','
 		 */
+		 var triggerType = ""
+		 switch (trigger.triggerType){
+			 case TPrefix.CALL:
+			 	triggerType="call"
+			 case TPrefix.EXECUTION:
+			 	triggerType="execution"
+		 }
 		 
 		var CharSequence[] returnCall = newArrayList('''point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»()''',
-			'''pointcut point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»(): call(«typeReturn» «trigger.esig»(«parameters.join(',')»))''')
+			'''pointcut point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»(): «triggerType»(«typeReturn» «trigger.esig»(«parameters.join(',')»))''')
 		return returnCall
 	}
 	

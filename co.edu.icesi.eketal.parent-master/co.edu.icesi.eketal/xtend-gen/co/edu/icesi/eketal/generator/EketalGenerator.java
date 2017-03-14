@@ -2,7 +2,6 @@ package co.edu.icesi.eketal.generator;
 
 import co.edu.icesi.eketal.eketal.AndEvent;
 import co.edu.icesi.eketal.eketal.Automaton;
-import co.edu.icesi.eketal.eketal.Body;
 import co.edu.icesi.eketal.eketal.Decl;
 import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
@@ -14,8 +13,7 @@ import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.KindAttribute;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.OrEvent;
-import co.edu.icesi.eketal.eketal.Rc;
-import co.edu.icesi.eketal.eketal.Step;
+import co.edu.icesi.eketal.eketal.TPrefix;
 import co.edu.icesi.eketal.eketal.Trigger;
 import co.edu.icesi.eketal.eketal.UnaryEvent;
 import co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer;
@@ -24,6 +22,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -36,9 +35,6 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.impl.XStringLiteralImpl;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -62,12 +58,26 @@ public class EketalGenerator implements IGenerator {
     boolean _hasNext = listModel.hasNext();
     if (_hasNext) {
       final Model modelo = listModel.next();
+      String _name = modelo.getName();
+      boolean _notEquals = (!Objects.equal(_name, null));
+      if (_notEquals) {
+        String _name_1 = modelo.getName();
+        String _plus = (_name_1 + ".*");
+        importedLibraries.add(_plus);
+      }
       if (((!Objects.equal(modelo.getImportSection(), null)) && (!modelo.getImportSection().getImportDeclarations().isEmpty()))) {
         XImportSection _importSection = modelo.getImportSection();
         EList<XImportDeclaration> _importDeclarations = _importSection.getImportDeclarations();
         final Consumer<XImportDeclaration> _function = (XImportDeclaration it) -> {
-          String _importedTypeName = it.getImportedTypeName();
-          importedLibraries.add(_importedTypeName);
+          String _importedNamespace = it.getImportedNamespace();
+          boolean _notEquals_1 = (!Objects.equal(_importedNamespace, null));
+          if (_notEquals_1) {
+            String _importedNamespace_1 = it.getImportedNamespace();
+            importedLibraries.add(_importedNamespace_1);
+          } else {
+            String _importedTypeName = it.getImportedTypeName();
+            importedLibraries.add(_importedTypeName);
+          }
         };
         _importDeclarations.forEach(_function);
       }
@@ -107,6 +117,8 @@ public class EketalGenerator implements IGenerator {
     Set<String> importedLibraries = new TreeSet<String>();
     Iterables.<String>addAll(importedLibraries, libraries);
     TreeSet<String> pointcuts = new TreeSet<String>();
+    HashMap<String, String> after = new HashMap<String, String>();
+    HashMap<String, String> before = new HashMap<String, String>();
     EList<Decl> _declarations = modelo.getDeclarations();
     boolean _containsAutomaton = this.containsAutomaton(_declarations);
     if (_containsAutomaton) {
@@ -114,6 +126,7 @@ public class EketalGenerator implements IGenerator {
     }
     importedLibraries.add("co.edu.icesi.eketal.groupsimpl.*");
     importedLibraries.add("co.edu.icesi.eketal.handlercontrol.*");
+    importedLibraries.add("co.edu.icesi.eketal.reaction.*");
     importedLibraries.add("co.edu.icesi.ketal.core.Automaton");
     importedLibraries.add("co.edu.icesi.ketal.core.NamedEvent");
     importedLibraries.add("co.edu.icesi.ketal.core.Event");
@@ -197,32 +210,30 @@ public class EketalGenerator implements IGenerator {
             _builder_1.append("\t");
             _builder_1.newLine();
             _builder_1.append("\t");
-            _builder_1.append("after() returning (Object o): ");
+            _builder_1.append("//after() returning (Object o): ");
             String _name_6 = ((EvDecl)event).getName();
             String _firstLower_2 = StringExtensions.toFirstLower(_name_6);
             _builder_1.append(_firstLower_2, "\t");
             _builder_1.append("() {");
             _builder_1.newLineIfNotEmpty();
             _builder_1.append("\t");
-            _builder_1.append("\t");
-            _builder_1.append("System.out.println(\"Returned normally with \" + o);");
+            _builder_1.append("//\tSystem.out.println(\"[Aspectj] Returned normally with \" + o);");
             _builder_1.newLine();
             _builder_1.append("\t");
-            _builder_1.append("}");
+            _builder_1.append("//}");
             _builder_1.newLine();
             _builder_1.append("\t");
-            _builder_1.append("after() throwing (Exception e): ");
+            _builder_1.append("//after() throwing (Exception e): ");
             String _name_7 = ((EvDecl)event).getName();
             String _firstLower_3 = StringExtensions.toFirstLower(_name_7);
             _builder_1.append(_firstLower_3, "\t");
             _builder_1.append("() {");
             _builder_1.newLineIfNotEmpty();
             _builder_1.append("\t");
-            _builder_1.append("\t");
-            _builder_1.append("System.out.println(\"Threw an exception: \" + e);");
+            _builder_1.append("//\tSystem.out.println(\"[Aspectj] Threw an exception: \" + e);");
             _builder_1.newLine();
             _builder_1.append("\t");
-            _builder_1.append("}");
+            _builder_1.append("//}");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("after(): ");
@@ -233,7 +244,18 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLineIfNotEmpty();
             _builder_1.append("\t");
             _builder_1.append("\t");
-            _builder_1.append("System.out.println(\"Returned or threw an Exception\");");
+            _builder_1.append("Automaton automata = ");
+            String _firstUpper_1 = StringExtensions.toFirstUpper(automatonName);
+            _builder_1.append(_firstUpper_1, "\t\t");
+            _builder_1.append(".getInstance();");
+            _builder_1.newLineIfNotEmpty();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("Reaction.verifyAfter(automata);");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
+            _builder_1.append("System.out.println(\"[Aspectj] After: Returned or threw an Exception\");");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("}");
@@ -254,8 +276,8 @@ public class EketalGenerator implements IGenerator {
             _builder_1.append("\t");
             _builder_1.append("\t");
             _builder_1.append("Automaton automata = ");
-            String _firstUpper_1 = StringExtensions.toFirstUpper(automatonName);
-            _builder_1.append(_firstUpper_1, "\t\t");
+            String _firstUpper_2 = StringExtensions.toFirstUpper(automatonName);
+            _builder_1.append(_firstUpper_2, "\t\t");
             _builder_1.append(".getInstance();");
             _builder_1.newLineIfNotEmpty();
             _builder_1.append("\t");
@@ -275,6 +297,10 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLineIfNotEmpty();
             _builder_1.append("\t");
             _builder_1.append("\t");
+            _builder_1.append("event.setLocalization(distribuidor.getAsyncAddress());");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t");
             _builder_1.append("distribuidor.multicast(event, map);");
             _builder_1.newLine();
             _builder_1.append("\t");
@@ -283,7 +309,7 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t\t");
-            _builder_1.append("System.out.println(\"Evento no reconocido por el autómata\");");
+            _builder_1.append("System.out.println(\"[Aspectj] Before: Event not recognized by the automaton\");");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t\t");
@@ -295,7 +321,11 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t\t");
-            _builder_1.append("System.out.println(\"Returned or threw an Exception\");\t\t\t\t\t\t\t");
+            _builder_1.append("Reaction.verifyBefore(automata);");
+            _builder_1.newLine();
+            _builder_1.append("\t");
+            _builder_1.append("\t\t");
+            _builder_1.append("System.out.println(\"[Aspectj] Before: Returned or threw an Exception\");\t\t\t\t\t\t\t");
             _builder_1.newLine();
             _builder_1.append("\t");
             _builder_1.append("\t");
@@ -322,24 +352,6 @@ public class EketalGenerator implements IGenerator {
             _builder_1.newLine();
           }
         }
-        {
-          if ((event instanceof Rc)) {
-            _builder_1.append("\t");
-            _builder_1.append("public void reaction");
-            Automaton _automaton = ((Rc)event).getAutomaton();
-            String _name_11 = _automaton.getName();
-            _builder_1.append(_name_11, "\t");
-            Step _state = ((Rc)event).getState();
-            String _name_12 = _state.getName();
-            _builder_1.append(_name_12, "\t");
-            _builder_1.append("()");
-            Body _body = ((Rc)event).getBody();
-            XExpression _body_1 = _body.getBody();
-            String _printBody = this.printBody(((XBlockExpression) _body_1));
-            _builder_1.append(_printBody, "\t");
-            _builder_1.newLineIfNotEmpty();
-          }
-        }
       }
     }
     _builder_1.append("\t");
@@ -352,8 +364,6 @@ public class EketalGenerator implements IGenerator {
         _builder_1.newLineIfNotEmpty();
       }
     }
-    _builder_1.append("\t");
-    _builder_1.newLine();
     _builder_1.append("}");
     _builder_1.newLine();
     String aspect = _builder_1.toString();
@@ -369,11 +379,6 @@ public class EketalGenerator implements IGenerator {
     _builder_2.newLine();
     String imports = _builder_2.toString();
     return ((packageDefinition + imports) + aspect);
-  }
-  
-  public String printBody(final XBlockExpression exp) {
-    final ICompositeNode body = NodeModelUtils.findActualNodeFor(exp);
-    return body.getText();
   }
   
   public boolean containsAutomaton(final EList<Decl> list) {
@@ -590,6 +595,20 @@ public class EketalGenerator implements IGenerator {
     } else {
       typeReturn = "*";
     }
+    String triggerType = "";
+    TPrefix _triggerType = trigger.getTriggerType();
+    if (_triggerType != null) {
+      switch (_triggerType) {
+        case CALL:
+          triggerType = "call";
+          break;
+        case EXECUTION:
+          triggerType = "execution";
+          break;
+        default:
+          break;
+      }
+    }
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("point");
     String _esig = trigger.getEsig();
@@ -605,7 +624,9 @@ public class EketalGenerator implements IGenerator {
     String _replaceAll_1 = _string_1.replaceAll("\\.", "");
     String _firstUpper_1 = StringExtensions.toFirstUpper(_replaceAll_1);
     _builder_1.append(_firstUpper_1, "");
-    _builder_1.append("(): call(");
+    _builder_1.append("(): ");
+    _builder_1.append(triggerType, "");
+    _builder_1.append("(");
     _builder_1.append(typeReturn, "");
     _builder_1.append(" ");
     String _esig_2 = trigger.getEsig();

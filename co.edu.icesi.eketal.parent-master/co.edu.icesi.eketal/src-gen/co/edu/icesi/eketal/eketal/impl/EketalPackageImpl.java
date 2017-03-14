@@ -24,6 +24,7 @@ import co.edu.icesi.eketal.eketal.Pos;
 import co.edu.icesi.eketal.eketal.Rc;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
+import co.edu.icesi.eketal.eketal.TPrefix;
 import co.edu.icesi.eketal.eketal.TransDef;
 import co.edu.icesi.eketal.eketal.Trigger;
 import co.edu.icesi.eketal.eketal.UnaryEvent;
@@ -198,6 +199,13 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * @generated
    */
   private EClass unaryEventEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum tPrefixEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -575,9 +583,19 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getTrigger_TriggerType()
+  {
+    return (EAttribute)triggerEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getTrigger_Returndef()
   {
-    return (EReference)triggerEClass.getEStructuralFeatures().get(0);
+    return (EReference)triggerEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -587,7 +605,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    */
   public EAttribute getTrigger_Esig()
   {
-    return (EAttribute)triggerEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)triggerEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -597,7 +615,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    */
   public EReference getTrigger_Params()
   {
-    return (EReference)triggerEClass.getEStructuralFeatures().get(2);
+    return (EReference)triggerEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -965,6 +983,16 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getTPrefix()
+  {
+    return tPrefixEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getStateType()
   {
     return stateTypeEEnum;
@@ -1048,6 +1076,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(kindAttributeEClass, KIND_ATTRIBUTE__CONDITION);
 
     triggerEClass = createEClass(TRIGGER);
+    createEAttribute(triggerEClass, TRIGGER__TRIGGER_TYPE);
     createEReference(triggerEClass, TRIGGER__RETURNDEF);
     createEAttribute(triggerEClass, TRIGGER__ESIG);
     createEReference(triggerEClass, TRIGGER__PARAMS);
@@ -1100,6 +1129,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(unaryEventEClass, UNARY_EVENT__EXPR);
 
     // Create enums
+    tPrefixEEnum = createEEnum(TPREFIX);
     stateTypeEEnum = createEEnum(STATE_TYPE);
     posEEnum = createEEnum(POS);
   }
@@ -1190,6 +1220,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getKindAttribute_Condition(), theXbasePackage.getXExpression(), null, "condition", null, 0, 1, KindAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(triggerEClass, Trigger.class, "Trigger", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getTrigger_TriggerType(), this.getTPrefix(), "triggerType", null, 0, 1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTrigger_Returndef(), this.getJVMTYPE(), null, "returndef", null, 0, 1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTrigger_Esig(), ecorePackage.getEString(), "esig", null, 0, 1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTrigger_Params(), theTypesPackage.getJvmTypeReference(), null, "params", null, 0, -1, Trigger.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1242,6 +1273,10 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getUnaryEvent_Expr(), this.getEventExpression(), null, "expr", null, 0, 1, UnaryEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
+    initEEnum(tPrefixEEnum, TPrefix.class, "TPrefix");
+    addEEnumLiteral(tPrefixEEnum, TPrefix.CALL);
+    addEEnumLiteral(tPrefixEEnum, TPrefix.EXECUTION);
+
     initEEnum(stateTypeEEnum, StateType.class, "StateType");
     addEEnumLiteral(stateTypeEEnum, StateType.STATE);
     addEEnumLiteral(stateTypeEEnum, StateType.START);

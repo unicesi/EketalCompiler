@@ -801,7 +801,7 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	 *     Trigger returns Trigger
 	 *
 	 * Constraint:
-	 *     (returndef=TypeReturn esig=QualifiedName (params+=JvmTypeReference params+=JvmTypeReference*)?)
+	 *     (triggerType=TPrefix returndef=TypeReturn esig=QualifiedName (params+=JvmTypeReference params+=JvmTypeReference*)?)
 	 */
 	protected void sequence_Trigger(ISerializationContext context, Trigger semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
