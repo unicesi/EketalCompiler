@@ -36,6 +36,7 @@ public class JGroupsEventBroker implements EventBroker {
 	private BrokerMessageHandler messageHandler;
 
 	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh) {
+		System.setProperty("java.net.preferIPv4Stack" , "true");
 		this.groupName = groupName;
 		this.messageHandler = bmh;
 		this.asyncMonitor = new JGroupsAsyncFacade(groupName, this);
@@ -74,7 +75,7 @@ public class JGroupsEventBroker implements EventBroker {
 		
 	    URL retorno = null;
 		try {
-			retorno = new URL(srcIp);
+			retorno = new URL("http://"+srcIp);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
