@@ -411,13 +411,22 @@ public interface EketalPackage extends EPackage
   int TRIGGER = 9;
 
   /**
+   * The feature id for the '<em><b>Trigger Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TRIGGER__TRIGGER_TYPE = EVENT_PREDICATE_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Returndef</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TRIGGER__RETURNDEF = EVENT_PREDICATE_FEATURE_COUNT + 0;
+  int TRIGGER__RETURNDEF = EVENT_PREDICATE_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Esig</b></em>' attribute.
@@ -426,7 +435,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TRIGGER__ESIG = EVENT_PREDICATE_FEATURE_COUNT + 1;
+  int TRIGGER__ESIG = EVENT_PREDICATE_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -435,7 +444,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TRIGGER__PARAMS = EVENT_PREDICATE_FEATURE_COUNT + 2;
+  int TRIGGER__PARAMS = EVENT_PREDICATE_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Trigger</em>' class.
@@ -444,7 +453,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TRIGGER_FEATURE_COUNT = EVENT_PREDICATE_FEATURE_COUNT + 3;
+  int TRIGGER_FEATURE_COUNT = EVENT_PREDICATE_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.JVMTYPEImpl <em>JVMTYPE</em>}' class.
@@ -935,6 +944,16 @@ public interface EketalPackage extends EPackage
   int UNARY_EVENT_FEATURE_COUNT = EVENT_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see co.edu.icesi.eketal.eketal.TPrefix
+   * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getTPrefix()
+   * @generated
+   */
+  int TPREFIX = 21;
+
+  /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.StateType <em>State Type</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -942,7 +961,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getStateType()
    * @generated
    */
-  int STATE_TYPE = 21;
+  int STATE_TYPE = 22;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.Pos <em>Pos</em>}' enum.
@@ -952,7 +971,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getPos()
    * @generated
    */
-  int POS = 22;
+  int POS = 23;
 
 
   /**
@@ -1263,6 +1282,17 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EClass getTrigger();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Trigger#getTriggerType <em>Trigger Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Trigger Type</em>'.
+   * @see co.edu.icesi.eketal.eketal.Trigger#getTriggerType()
+   * @see #getTrigger()
+   * @generated
+   */
+  EAttribute getTrigger_TriggerType();
 
   /**
    * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.Trigger#getReturndef <em>Returndef</em>}'.
@@ -1683,6 +1713,16 @@ public interface EketalPackage extends EPackage
   EReference getUnaryEvent_Expr();
 
   /**
+   * Returns the meta object for enum '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>TPrefix</em>'.
+   * @see co.edu.icesi.eketal.eketal.TPrefix
+   * @generated
+   */
+  EEnum getTPrefix();
+
+  /**
    * Returns the meta object for enum '{@link co.edu.icesi.eketal.eketal.StateType <em>State Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1976,6 +2016,14 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EClass TRIGGER = eINSTANCE.getTrigger();
+
+    /**
+     * The meta object literal for the '<em><b>Trigger Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TRIGGER__TRIGGER_TYPE = eINSTANCE.getTrigger_TriggerType();
 
     /**
      * The meta object literal for the '<em><b>Returndef</b></em>' containment reference feature.
@@ -2310,6 +2358,16 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EReference UNARY_EVENT__EXPR = eINSTANCE.getUnaryEvent_Expr();
+
+    /**
+     * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see co.edu.icesi.eketal.eketal.TPrefix
+     * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getTPrefix()
+     * @generated
+     */
+    EEnum TPREFIX = eINSTANCE.getTPrefix();
 
     /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.StateType <em>State Type</em>}' enum.

@@ -1055,10 +1055,25 @@ ruleTrigger returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='call'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getTriggerAccess().getCallKeyword_0());
-		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getTriggerAccess().getTriggerTypeTPrefixEnumRuleCall_0_0());
+				}
+				lv_triggerType_0_0=ruleTPrefix
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getTriggerRule());
+					}
+					set(
+						$current,
+						"triggerType",
+						lv_triggerType_0_0,
+						"co.edu.icesi.eketal.Eketal.TPrefix");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
 		otherlv_1='('
 		{
 			newLeafNode(otherlv_1, grammarAccess.getTriggerAccess().getLeftParenthesisKeyword_1());
@@ -9453,6 +9468,33 @@ ruleQualifiedNameInStaticImport returns [AntlrDatatypeRuleToken current=new Antl
 			newLeafNode(kw, grammarAccess.getQualifiedNameInStaticImportAccess().getFullStopKeyword_1());
 		}
 	)+
+;
+
+// Rule TPrefix
+ruleTPrefix returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='call'
+			{
+				$current = grammarAccess.getTPrefixAccess().getCallEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getTPrefixAccess().getCallEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='execution'
+			{
+				$current = grammarAccess.getTPrefixAccess().getExecutionEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getTPrefixAccess().getExecutionEnumLiteralDeclaration_1());
+			}
+		)
+	)
 ;
 
 // Rule StateType

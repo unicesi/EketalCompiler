@@ -5,6 +5,7 @@ package co.edu.icesi.eketal.eketal.impl;
 
 import co.edu.icesi.eketal.eketal.EketalPackage;
 import co.edu.icesi.eketal.eketal.JVMTYPE;
+import co.edu.icesi.eketal.eketal.TPrefix;
 import co.edu.icesi.eketal.eketal.Trigger;
 
 import java.util.Collection;
@@ -32,6 +33,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getTriggerType <em>Trigger Type</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getReturndef <em>Returndef</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getEsig <em>Esig</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.TriggerImpl#getParams <em>Params</em>}</li>
@@ -41,6 +43,26 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public class TriggerImpl extends EventPredicateImpl implements Trigger
 {
+  /**
+   * The default value of the '{@link #getTriggerType() <em>Trigger Type</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTriggerType()
+   * @generated
+   * @ordered
+   */
+  protected static final TPrefix TRIGGER_TYPE_EDEFAULT = TPrefix.CALL;
+
+  /**
+   * The cached value of the '{@link #getTriggerType() <em>Trigger Type</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTriggerType()
+   * @generated
+   * @ordered
+   */
+  protected TPrefix triggerType = TRIGGER_TYPE_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getReturndef() <em>Returndef</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -100,6 +122,29 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   protected EClass eStaticClass()
   {
     return EketalPackage.Literals.TRIGGER;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public TPrefix getTriggerType()
+  {
+    return triggerType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTriggerType(TPrefix newTriggerType)
+  {
+    TPrefix oldTriggerType = triggerType;
+    triggerType = newTriggerType == null ? TRIGGER_TYPE_EDEFAULT : newTriggerType;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.TRIGGER__TRIGGER_TYPE, oldTriggerType, triggerType));
   }
 
   /**
@@ -215,6 +260,8 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__TRIGGER_TYPE:
+        return getTriggerType();
       case EketalPackage.TRIGGER__RETURNDEF:
         return getReturndef();
       case EketalPackage.TRIGGER__ESIG:
@@ -236,6 +283,9 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__TRIGGER_TYPE:
+        setTriggerType((TPrefix)newValue);
+        return;
       case EketalPackage.TRIGGER__RETURNDEF:
         setReturndef((JVMTYPE)newValue);
         return;
@@ -260,6 +310,9 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__TRIGGER_TYPE:
+        setTriggerType(TRIGGER_TYPE_EDEFAULT);
+        return;
       case EketalPackage.TRIGGER__RETURNDEF:
         setReturndef((JVMTYPE)null);
         return;
@@ -283,6 +336,8 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
   {
     switch (featureID)
     {
+      case EketalPackage.TRIGGER__TRIGGER_TYPE:
+        return triggerType != TRIGGER_TYPE_EDEFAULT;
       case EketalPackage.TRIGGER__RETURNDEF:
         return returndef != null;
       case EketalPackage.TRIGGER__ESIG:
@@ -304,7 +359,9 @@ public class TriggerImpl extends EventPredicateImpl implements Trigger
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (esig: ");
+    result.append(" (triggerType: ");
+    result.append(triggerType);
+    result.append(", esig: ");
     result.append(esig);
     result.append(')');
     return result.toString();

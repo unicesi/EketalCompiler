@@ -632,7 +632,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	public class TriggerElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Trigger");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCallKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cTriggerTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cTriggerTypeTPrefixEnumRuleCall_0_0 = (RuleCall)cTriggerTypeAssignment_0.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cReturndefAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cReturndefTypeReturnParserRuleCall_2_0 = (RuleCall)cReturndefAssignment_2.eContents().get(0);
@@ -650,16 +651,19 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//Trigger:
-		//	'call' '(' returndef=TypeReturn esig=QualifiedName '(' (params+=JvmTypeReference (',' params+=JvmTypeReference)*)? ')'
-		//	')';
+		//	triggerType=TPrefix '(' returndef=TypeReturn esig=QualifiedName '(' (params+=JvmTypeReference (','
+		//	params+=JvmTypeReference)*)? ')' ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'call' '(' returndef=TypeReturn esig=QualifiedName '(' (params+=JvmTypeReference (',' params+=JvmTypeReference)*)? ')'
-		//')'
+		//triggerType=TPrefix '(' returndef=TypeReturn esig=QualifiedName '(' (params+=JvmTypeReference (','
+		//params+=JvmTypeReference)*)? ')' ')'
 		public Group getGroup() { return cGroup; }
 		
-		//'call'
-		public Keyword getCallKeyword_0() { return cCallKeyword_0; }
+		//triggerType=TPrefix
+		public Assignment getTriggerTypeAssignment_0() { return cTriggerTypeAssignment_0; }
+		
+		//TPrefix
+		public RuleCall getTriggerTypeTPrefixEnumRuleCall_0_0() { return cTriggerTypeTPrefixEnumRuleCall_0_0; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
@@ -863,7 +867,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		////////////////////////////////////////
 		//////Automata definicion
 		////////////////////////////////////////
-		////TODO el estado inicial debe tener transiciones, porque sino, no se puede llegar a ningún lado
 		////TODO estado de finalización default
 		////TODO Restricción de que solo puede haber un autómata
 		//Automaton:
@@ -1130,6 +1133,33 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getBodyXBlockExpressionParserRuleCall_0() { return cBodyXBlockExpressionParserRuleCall_0; }
 	}
 	
+	public class TPrefixElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.TPrefix");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cCallEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cCallCallKeyword_0_0 = (Keyword)cCallEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cExecutionEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cExecutionExecutionKeyword_1_0 = (Keyword)cExecutionEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum TPrefix:
+		//	call | execution;
+		public EnumRule getRule() { return rule; }
+		
+		//call | execution
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//call
+		public EnumLiteralDeclaration getCallEnumLiteralDeclaration_0() { return cCallEnumLiteralDeclaration_0; }
+		
+		//"call"
+		public Keyword getCallCallKeyword_0_0() { return cCallCallKeyword_0_0; }
+		
+		//execution
+		public EnumLiteralDeclaration getExecutionEnumLiteralDeclaration_1() { return cExecutionEnumLiteralDeclaration_1; }
+		
+		//"execution"
+		public Keyword getExecutionExecutionKeyword_1_0() { return cExecutionExecutionKeyword_1_0; }
+	}
 	public class StateTypeElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.StateType");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1217,6 +1247,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	private final EventPredicateElements pEventPredicate;
 	private final KindAttributeElements pKindAttribute;
 	private final TriggerElements pTrigger;
+	private final TPrefixElements eTPrefix;
 	private final TypeReturnElements pTypeReturn;
 	private final TerminalRule tANY;
 	private final GroupElements pGroup;
@@ -1265,6 +1296,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		this.pEventPredicate = new EventPredicateElements();
 		this.pKindAttribute = new KindAttributeElements();
 		this.pTrigger = new TriggerElements();
+		this.eTPrefix = new TPrefixElements();
 		this.pTypeReturn = new TypeReturnElements();
 		this.tANY = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.ANY");
 		this.pGroup = new GroupElements();
@@ -1471,14 +1503,24 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Trigger:
-	//	'call' '(' returndef=TypeReturn esig=QualifiedName '(' (params+=JvmTypeReference (',' params+=JvmTypeReference)*)? ')'
-	//	')';
+	//	triggerType=TPrefix '(' returndef=TypeReturn esig=QualifiedName '(' (params+=JvmTypeReference (','
+	//	params+=JvmTypeReference)*)? ')' ')';
 	public TriggerElements getTriggerAccess() {
 		return pTrigger;
 	}
 	
 	public ParserRule getTriggerRule() {
 		return getTriggerAccess().getRule();
+	}
+	
+	//enum TPrefix:
+	//	call | execution;
+	public TPrefixElements getTPrefixAccess() {
+		return eTPrefix;
+	}
+	
+	public EnumRule getTPrefixRule() {
+		return getTPrefixAccess().getRule();
 	}
 	
 	//TypeReturn JVMTYPE:
@@ -1532,7 +1574,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	////////////////////////////////////////
 	//////Automata definicion
 	////////////////////////////////////////
-	////TODO el estado inicial debe tener transiciones, porque sino, no se puede llegar a ningún lado
 	////TODO estado de finalización default
 	////TODO Restricción de que solo puede haber un autómata
 	//Automaton:

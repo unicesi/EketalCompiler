@@ -81,8 +81,12 @@ KindAttribute:
 ;
 
 Trigger:
-	'call' '(' returndef=TypeReturn esig=QualifiedName'('(params+=JvmTypeReference 
+	triggerType=TPrefix '(' returndef=TypeReturn esig=QualifiedName'('(params+=JvmTypeReference 
 		(',' params+=JvmTypeReference)* )?')'')'
+;
+
+enum TPrefix:
+	call | execution
 ;
 
 TypeReturn returns JVMTYPE:

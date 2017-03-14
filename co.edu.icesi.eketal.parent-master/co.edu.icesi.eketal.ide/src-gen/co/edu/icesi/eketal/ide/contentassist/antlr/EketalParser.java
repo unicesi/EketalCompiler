@@ -83,6 +83,7 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNumberAccess().getAlternatives_1_1_1(), "rule__Number__Alternatives_1_1_1");
 					put(grammarAccess.getJvmArgumentTypeReferenceAccess().getAlternatives(), "rule__JvmArgumentTypeReference__Alternatives");
 					put(grammarAccess.getJvmWildcardTypeReferenceAccess().getAlternatives_2(), "rule__JvmWildcardTypeReference__Alternatives_2");
+					put(grammarAccess.getTPrefixAccess().getAlternatives(), "rule__TPrefix__Alternatives");
 					put(grammarAccess.getStateTypeAccess().getAlternatives(), "rule__StateType__Alternatives");
 					put(grammarAccess.getPosAccess().getAlternatives(), "rule__Pos__Alternatives");
 					put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
@@ -377,6 +378,7 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKindAttributeAccess().getHostgroupAssignment_0_2(), "rule__KindAttribute__HostgroupAssignment_0_2");
 					put(grammarAccess.getKindAttributeAccess().getOngroupAssignment_1_2(), "rule__KindAttribute__OngroupAssignment_1_2");
 					put(grammarAccess.getKindAttributeAccess().getConditionAssignment_2_1(), "rule__KindAttribute__ConditionAssignment_2_1");
+					put(grammarAccess.getTriggerAccess().getTriggerTypeAssignment_0(), "rule__Trigger__TriggerTypeAssignment_0");
 					put(grammarAccess.getTriggerAccess().getReturndefAssignment_2(), "rule__Trigger__ReturndefAssignment_2");
 					put(grammarAccess.getTriggerAccess().getEsigAssignment_3(), "rule__Trigger__EsigAssignment_3");
 					put(grammarAccess.getTriggerAccess().getParamsAssignment_5_0(), "rule__Trigger__ParamsAssignment_5_0");

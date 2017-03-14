@@ -102,6 +102,8 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case EketalPackage.TPREFIX:
+        return createTPrefixFromString(eDataType, initialValue);
       case EketalPackage.STATE_TYPE:
         return createStateTypeFromString(eDataType, initialValue);
       case EketalPackage.POS:
@@ -121,6 +123,8 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case EketalPackage.TPREFIX:
+        return convertTPrefixToString(eDataType, instanceValue);
       case EketalPackage.STATE_TYPE:
         return convertStateTypeToString(eDataType, instanceValue);
       case EketalPackage.POS:
@@ -359,6 +363,28 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     UnaryEventImpl unaryEvent = new UnaryEventImpl();
     return unaryEvent;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public TPrefix createTPrefixFromString(EDataType eDataType, String initialValue)
+  {
+    TPrefix result = TPrefix.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertTPrefixToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
   }
 
   /**
