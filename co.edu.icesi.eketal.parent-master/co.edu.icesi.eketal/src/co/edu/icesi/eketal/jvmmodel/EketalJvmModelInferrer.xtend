@@ -12,7 +12,6 @@ import java.util.TreeMap
 import java.util.Set
 import org.eclipse.xtext.common.types.JvmVisibility
 import co.edu.icesi.eketal.eketal.Group
-import org.eclipse.xtext.common.types.JvmField
 import java.util.HashSet
 import co.edu.icesi.eketal.eketal.StateType
 import co.edu.icesi.ketal.core.State
@@ -32,16 +31,13 @@ import co.edu.icesi.ketal.distribution.BrokerMessageHandler
 import co.edu.icesi.ketal.distribution.ReceiverMessageHandler
 import co.edu.icesi.ketal.distribution.EventBroker
 import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker
-import co.edu.icesi.ketal.distribution.KetalMessageHandler
-import java.util.Vector
 import java.util.Hashtable
 import co.edu.icesi.ketal.core.Expression
-import org.eclipse.xtext.common.types.JvmTypeReference
 import java.util.Arrays
 import org.jgroups.Message
 import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.Pos
-import org.jgroups.Address
+import java.net.URL
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -293,7 +289,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 
-			members+=eventDefinitionClass.toMethod("getAsyncAddress", typeRef(Address))[
+			members+=eventDefinitionClass.toMethod("getAsyncAddress", typeRef(URL))[
 				static = false
 				body='''
 					return eventBroker.getAsyncAddress();

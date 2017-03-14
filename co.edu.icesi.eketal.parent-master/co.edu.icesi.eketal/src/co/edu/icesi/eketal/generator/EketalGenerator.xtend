@@ -258,8 +258,11 @@ class EketalGenerator implements IGenerator{
 		 * Toma todos los parmámetros del evento y los añade a una lista
 		 */
 		var parameters = newArrayList()
-		for(p : trigger.params){
-			parameters+=p.simpleName
+		for(p : trigger.params){			
+			if(!p.qualifiedName.contains('$'))
+				parameters+=p.simpleName
+			else
+				parameters+=p.qualifiedName.split("\\.").last.replace('$','.')//p.getQualifiedName('.')
 		}
 		
 		var String typeReturn = null
