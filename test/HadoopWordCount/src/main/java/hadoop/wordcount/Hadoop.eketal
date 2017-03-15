@@ -1,0 +1,24 @@
+package hadoop.wordcount;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.*;
+
+eventclass Hadoop{
+	automaton mapReduce(){
+		start init: (mapEvent -> init) || (reduceEvent -> reduced);
+		end reduced: (reduceEvent -> reduced);
+	}
+	
+	group localGroup{
+		localhost
+	}
+	
+	event mapEvent(): execution(* WordCount2.TokenizerMapper.map(Object, Text, Mapper.Context));
+	
+	event reduceEvent(): execution(* WordCount2.IntSumReducer.reduce(Text, Iterable, Reducer.Context));
+	
+	reaction before mapReduce.reduced{
+		System.out.println("----------------------------------------");
+		System.out.println("Second reduce");
+		System.out.println("----------------------------------------");
+	}
+}
