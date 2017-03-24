@@ -6,10 +6,16 @@ import org.jgroups.Message;
 
 import co.edu.icesi.ketal.core.Event;
 
-//Created by David Durán
+//Created by David Durï¿½n
 public class ReceiverMessageHandler implements BrokerMessageHandler {
-
 	
+	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
+			.getLogger(ReceiverMessageHandler.class);
+	
+	public static org.apache.logging.log4j.Logger getLogger() {
+		return logger;
+	}
+
 	// The msg and typeOfMsgSent parameters are needed to manipulate the
 	// synchronous messages
 	@Override
@@ -17,10 +23,14 @@ public class ReceiverMessageHandler implements BrokerMessageHandler {
 			int typeOfMsgSent) {
 		// This is how the message should be handled if it is asynchronous
 		if (typeOfMsgSent == 0) {
-			System.out.println(this.hashCode() + "- KetalHandler! Event: "
+			logger.debug(this.hashCode() + "- KetalHandler! Event: "
 					+ event + " Metadata: " + metadata);
-			System.err.println(this.hashCode() + "- Processing: "
-					+ event.toString());
+//			System.out.println(this.hashCode() + "- KetalHandler! Event: "
+//					+ event + " Metadata: " + metadata);
+			logger.error(this.hashCode() + "- Processing: "
+			+ event.toString());
+//			System.err.println(this.hashCode() + "- Processing: "
+//					+ event.toString());
 			return event;
 		}
 		// This is how the message should be handled if it is synchronous

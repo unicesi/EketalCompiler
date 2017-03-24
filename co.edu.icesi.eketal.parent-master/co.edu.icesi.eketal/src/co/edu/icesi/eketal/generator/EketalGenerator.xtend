@@ -90,11 +90,14 @@ class EketalGenerator implements IGenerator{
 		importedLibraries+="co.edu.icesi.ketal.core.Event"
 		importedLibraries+="java.util.Map"
 		importedLibraries+="java.util.HashMap"
+		importedLibraries+="org.apache.logging.log4j.LogManager";
+		importedLibraries+="org.apache.logging.log4j.Logger";
 		//TODO línea 82, saber cómo se crea el evento
 		
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
 			
+			final static Logger logger = LogManager.getLogger(«modelo.name.toFirstUpper».class);
 			«FOR event:modelo.declarations»
 				«IF event instanceof JVarD»
 					//«importedLibraries+=agregarImports((event as JVarD).type.qualifiedName)»
@@ -118,7 +121,8 @@ class EketalGenerator implements IGenerator{
 					after(): «event.name.toFirstLower»(){
 						Automaton automata = «automatonName.toFirstUpper».getInstance();
 						Reaction.verifyAfter(automata);
-						System.out.println("[Aspectj] After: Returned or threw an Exception");
+						//System.out.println("[Aspectj] After: Returned or threw an Exception");
+						logger.debug("[Aspectj] After: Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
 						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
@@ -129,11 +133,13 @@ class EketalGenerator implements IGenerator{
 						event.setLocalization(distribuidor.getAsyncAddress());
 						distribuidor.multicast(event, map);
 						if(!automata.evaluate(event)){
-							System.out.println("[Aspectj] Before: Event not recognized by the automaton");
+							//System.out.println("[Aspectj] Before: Event not recognized by the automaton");
+							logger.debug("[Aspectj] Before: Event not recognized by the automaton");
 							//Debería parar
 						}else{
 							Reaction.verifyBefore(automata);
-							System.out.println("[Aspectj] Before: Returned or threw an Exception");							
+							//System.out.println("[Aspectj] Before: Returned or threw an Exception");
+							logger.debug("[Aspectj] Before: Returned or threw an Exception");
 						}
 						//while(!automata.evaluate(event)){
 						//	wait(100);

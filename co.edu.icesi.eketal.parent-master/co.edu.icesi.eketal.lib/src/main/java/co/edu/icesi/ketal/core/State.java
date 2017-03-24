@@ -4,6 +4,10 @@ package co.edu.icesi.ketal.core;
  * Facade State of the dk.brics.automaton.State
  */
 public class State implements Cloneable{
+	
+	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
+			.getLogger(State.class);
+	
 	private dk.brics.automaton.State state;
 	
 	// This Event is saved to show what event happened to stay in this State
@@ -111,7 +115,8 @@ public class State implements Cloneable{
         try{
             obj=super.clone();
         }catch(CloneNotSupportedException ex){
-            System.out.println("Error al Clonar");
+        	logger.error("Error al Clonar");
+//            System.out.println("Error al Clonar");
         }
         return obj;
     }

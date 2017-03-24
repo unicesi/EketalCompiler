@@ -254,9 +254,11 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
 						«typeRef(Automaton)» automaton = «nameAutomaton».getInstance();
 						if(!automaton.evaluate(event)){
-			    			System.out.println("[Handle] Evento no reconocido por el autómata");
+							«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Evento no reconocido por el autómata");
+			    			//System.out.println("[Handle] Evento no reconocido por el autómata");
 			    		}else{
-			    			System.out.println("[Handle] Returned or threw an Exception");							
+			    			«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Returned or threw an Exception")
+			    			//System.out.println("[Handle] Returned or threw an Exception");							
 			    			co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
 			    			co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
 			    		}

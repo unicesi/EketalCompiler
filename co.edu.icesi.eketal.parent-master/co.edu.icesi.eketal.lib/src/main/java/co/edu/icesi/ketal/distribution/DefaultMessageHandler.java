@@ -6,9 +6,13 @@ import java.util.Vector;
 import org.jgroups.Message;
 
 import co.edu.icesi.ketal.core.Event;
+import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsAbstractFacade;
 
 public class DefaultMessageHandler implements BrokerMessageHandler {
-
+	
+	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
+			.getLogger(DefaultMessageHandler.class);
+	
 	public DefaultMessageHandler() {
 
 	}
@@ -24,9 +28,12 @@ public class DefaultMessageHandler implements BrokerMessageHandler {
 	public Object handle(Event event, Map metadata, Message msg,
 			int typeOfMsgSent) {
 		if (typeOfMsgSent == 0) {
-			System.out.println("DefaultHandler! Event: " + event
-					+ " Metadata: " + metadata);
-			System.err.println("Processing: " + event.toString());
+			logger.debug("DefaultHandler! Event: " + event
+			+ " Metadata: " + metadata);
+//			System.out.println("DefaultHandler! Event: " + event
+//					+ " Metadata: " + metadata);
+			logger.error("Processing: " + event.toString());
+//			System.err.println("Processing: " + event.toString());
 		}
 		return event;
 	}

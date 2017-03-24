@@ -98,7 +98,7 @@ public class JGroupsAsyncFacade extends JGroupsAbstractFacade {
 	public void broadcastMessageAsync(BrokerMessage m) {
 		try {
 			// channel.send(null, null, m);
-			// Modified by Oscar Kiyoshige Garcés.
+			// Modified by Oscar Kiyoshige Garcï¿½s.
 			channel.send(null, m);
 			typeOfMsgSent = 0;
 		} catch (Exception ex) {
@@ -107,7 +107,8 @@ public class JGroupsAsyncFacade extends JGroupsAbstractFacade {
 	}
 
 	public void viewAccepted(View new_view) {
-		System.out.println("** view: " + new_view);
+		logger.debug("** view: " + new_view);
+//		System.out.println("** view: " + new_view);
 	}
 
 	// Modified by Jhonny

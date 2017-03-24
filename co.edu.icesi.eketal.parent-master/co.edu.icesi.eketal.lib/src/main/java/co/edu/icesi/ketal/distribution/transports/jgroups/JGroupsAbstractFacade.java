@@ -19,7 +19,7 @@ import co.edu.icesi.ketal.distribution.EventBroker;
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 
 	// Default logger
-	static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
 			.getLogger(JGroupsAbstractFacade.class);
 
 	// Channel object, this is part of Jgroups API
@@ -74,7 +74,8 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 			channel = new JChannel(props);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			getLogger().error(e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
@@ -97,16 +98,13 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		try {
 			channel = new JChannel();
 		} catch (Exception e) {
-			e.printStackTrace();
+			getLogger().error(e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
-	public static org.apache.log4j.Logger getLogger() {
+	public static org.apache.logging.log4j.Logger getLogger() {
 		return logger;
-	}
-
-	public static void setLogger(org.apache.log4j.Logger logger) {
-		JGroupsAbstractFacade.logger = logger;
 	}
 
 	public Channel getChannel() {

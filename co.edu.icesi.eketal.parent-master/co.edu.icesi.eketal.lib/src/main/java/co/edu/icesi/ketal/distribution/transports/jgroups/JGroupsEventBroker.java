@@ -34,7 +34,10 @@ public class JGroupsEventBroker implements EventBroker {
 	private JGroupsSyncFacade syncMonitor;
 	private String groupName;
 	private BrokerMessageHandler messageHandler;
-
+	
+	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
+			.getLogger(JGroupsAbstractFacade.class);
+	
 	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh) {
 		System.setProperty("java.net.preferIPv4Stack" , "true");
 		this.groupName = groupName;
@@ -59,13 +62,20 @@ public class JGroupsEventBroker implements EventBroker {
 	 */
 
 	@Override
-	public URL getAsyncAddress() {
-		
-		String srcIp = "";   
-	    
+	public URL getAsyncAddress() {	    
 	    Channel channel = asyncMonitor.channel;
-	    
-	    PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
+		return getAddressFromChannel(channel);
+	}
+
+	@Override
+	public URL getSyncAddress() {  
+	    Channel channel = syncMonitor.channel;
+	    return getAddressFromChannel(channel);
+	}
+	
+	public URL getAddressFromChannel(Channel myChannel){
+		String srcIp = ""; 
+		PhysicalAddress physicalAddr = (PhysicalAddress)myChannel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, myChannel.getAddress()));
 
 	    if(physicalAddr instanceof IpAddress) {
 	        IpAddress ipAddr = (IpAddress)physicalAddr;
@@ -77,37 +87,12 @@ public class JGroupsEventBroker implements EventBroker {
 		try {
 			retorno = new URL("http://"+srcIp);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
 		return retorno;
 	}
-
-	@Override
-	public URL getSyncAddress() {
-		String srcIp = "";   
-	    
-	    Channel channel = syncMonitor.channel;
-	    
-	    PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
-
-	    if(physicalAddr instanceof IpAddress) {
-	        IpAddress ipAddr = (IpAddress)physicalAddr;
-	        InetAddress inetAddr = ipAddr.getIpAddress();
-	        srcIp = inetAddr.getHostAddress();
-	    }
-		
-	    URL retorno = null;
-		try {
-			retorno = new URL(srcIp);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-		return retorno;
-	}
+	
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous
 	// messages

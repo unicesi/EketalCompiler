@@ -8,7 +8,10 @@ import org.jgroups.Message;
 import co.edu.icesi.ketal.core.Event;
 
 public class KetalMessageHandler implements BrokerMessageHandler {
-
+	
+	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
+			.getLogger(KetalMessageHandler.class);
+	
 	private Vector<Event> vector;
 
 	public KetalMessageHandler() {
@@ -20,10 +23,15 @@ public class KetalMessageHandler implements BrokerMessageHandler {
 	public Event handle(Event event, Map metadata, Message msg,
 			int typeOfMsgSent) {
 		if (typeOfMsgSent == 0) {
-			System.out.println(this.hashCode() + "- KetalHandler! Event: "
+			logger.debug(this.hashCode() + "- KetalHandler! Event: "
 					+ event + " Metadata: " + metadata);
-			System.err.println(this.hashCode() + "- Processing: "
-					+ event.toString());
+//			System.out.println(this.hashCode() + "- KetalHandler! Event: "
+//					+ event + " Metadata: " + metadata);
+			
+			logger.error(this.hashCode() + "- Processing: "
+			+ event.toString());
+//			System.err.println(this.hashCode() + "- Processing: "
+//					+ event.toString());
 			vector.add(event);
 		}
 		return event;
