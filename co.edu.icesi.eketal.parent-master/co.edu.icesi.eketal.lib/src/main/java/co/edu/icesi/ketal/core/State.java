@@ -1,12 +1,15 @@
 package co.edu.icesi.ketal.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Facade State of the dk.brics.automaton.State
  */
 public class State implements Cloneable{
 	
-	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
-			.getLogger(State.class);
+	private static final Log logger = LogFactory
+			.getLog(State.class);
 	
 	private dk.brics.automaton.State state;
 	

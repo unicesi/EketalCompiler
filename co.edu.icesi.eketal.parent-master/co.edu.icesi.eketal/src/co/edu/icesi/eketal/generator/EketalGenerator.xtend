@@ -90,14 +90,14 @@ class EketalGenerator implements IGenerator{
 		importedLibraries+="co.edu.icesi.ketal.core.Event"
 		importedLibraries+="java.util.Map"
 		importedLibraries+="java.util.HashMap"
-		importedLibraries+="org.apache.logging.log4j.LogManager";
-		importedLibraries+="org.apache.logging.log4j.Logger";
+		importedLibraries+="org.apache.commons.logging.Log";
+		importedLibraries+="org.apache.commons.logging.LogFactory";
 		//TODO línea 82, saber cómo se crea el evento
 		
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
 			
-			final static Logger logger = LogManager.getLogger(«modelo.name.toFirstUpper».class);
+			final static Log logger = LogFactory.getLog(«modelo.name.toFirstUpper».class);
 			«FOR event:modelo.declarations»
 				«IF event instanceof JVarD»
 					//«importedLibraries+=agregarImports((event as JVarD).type.qualifiedName)»

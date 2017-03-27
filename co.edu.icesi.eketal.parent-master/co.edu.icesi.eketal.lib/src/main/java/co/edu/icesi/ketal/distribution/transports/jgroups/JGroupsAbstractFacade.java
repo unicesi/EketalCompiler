@@ -1,5 +1,7 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Channel;
 import org.jgroups.JChannel;
 import org.jgroups.ReceiverAdapter;
@@ -19,8 +21,8 @@ import co.edu.icesi.ketal.distribution.EventBroker;
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 
 	// Default logger
-	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
-			.getLogger(JGroupsAbstractFacade.class);
+	protected static final Log logger = LogFactory
+			.getLog(JGroupsAbstractFacade.class);
 
 	// Channel object, this is part of Jgroups API
 	Channel channel;
@@ -103,7 +105,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		}
 	}
 
-	public static org.apache.logging.log4j.Logger getLogger() {
+	public static Log getLogger() {
 		return logger;
 	}
 

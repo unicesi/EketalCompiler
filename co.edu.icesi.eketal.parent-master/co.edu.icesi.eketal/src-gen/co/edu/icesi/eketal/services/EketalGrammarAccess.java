@@ -44,12 +44,12 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cTypeDeclarationEventClassParserRuleCall_2_0 = (RuleCall)cTypeDeclarationAssignment_2.eContents().get(0);
 		
 		////////////////////////////////////////////////////////////////////////////
+		//
 		///////////////////////////////Event Class//////////////////////////////////
+		//
 		////////////////////////////////////////////////////////////////////////////
-		//Model:
-		//	('package' name=QualifiedName -> ';'?)?
-		//	importSection=XImportSection?
-		//	typeDeclaration=EventClass?;
+		// Model:
+		//	('package' name=QualifiedName -> ';'?)? importSection=XImportSection? typeDeclaration=EventClass?;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//('package' name=QualifiedName -> ';'?)? importSection=XImportSection? typeDeclaration=EventClass?
@@ -132,12 +132,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEvDeclParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		
 		//Decl:
-		//	Automaton
-		//	| Rc
-		//	| MSig
-		//	| JVarD
-		//	| Group
-		//	| EvDecl;
+		//	Automaton | Rc | MSig | JVarD | Group | EvDecl;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//Automaton | Rc | MSig | JVarD | Group | EvDecl
@@ -217,8 +212,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//MSig:
 		//	'op' name=ValidID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' (':'
-		//	type=JvmTypeReference)?
-		//	body=XBlockExpression;
+		//	type=JvmTypeReference)? body=XBlockExpression;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'op' name=ValidID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' (':'
@@ -300,9 +294,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		////////////////////////////////////////
-		////Event Declaration
-		////////////////////////////////////////
-		//EvDecl:
+		// //Event Declaration
+		// //////////////////////////////////////
+		// EvDecl:
 		//	'event' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' ":" eventos+=OrEvent*
 		//	';';
 		@Override public ParserRule getRule() { return rule; }
@@ -529,8 +523,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cTriggerParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		//EventPredicate:
-		//	KindAttribute
-		//	| Trigger;
+		//	KindAttribute | Trigger;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//KindAttribute | Trigger
@@ -565,9 +558,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cConditionXParenthesizedExpressionParserRuleCall_2_1_0 = (RuleCall)cConditionAssignment_2_1.eContents().get(0);
 		
 		//KindAttribute:
-		//	'host' '(' hostgroup=[Group] ')'
-		//	| 'on' '(' ongroup=[Group] ')'
-		//	| 'if' condition=XParenthesizedExpression
+		//	'host' '(' hostgroup=[Group] ')' | 'on' '(' ongroup=[Group] ')' | 'if' condition=XParenthesizedExpression
 		//	//	| 'eq'"("JExp","JExp")"
 		//;
 		@Override public ParserRule getRule() { return rule; }
@@ -749,8 +740,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Group:
-		//	'group' name=ID
-		//	'{' hosts+=Host* '}';
+		//	'group' name=ID '{' hosts+=Host* '}';
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'group' name=ID '{' hosts+=Host* '}'
@@ -787,8 +777,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cGroupIdGroupIDTerminalRuleCall_1_0_1 = (RuleCall)cGroupIdGroupCrossReference_1_0.eContents().get(1);
 		
 		//Host:
-		//	ip=Ip
-		//	| groupId=[Group];
+		//	ip=Ip | groupId=[Group];
 		@Override public ParserRule getRule() { return rule; }
 		
 		//ip=Ip | groupId=[Group]
@@ -865,11 +854,12 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		////////////////////////////////////////
-		//////Automata definicion
-		////////////////////////////////////////
-		////TODO estado de finalización default
-		////TODO Restricción de que solo puede haber un autómata
-		//Automaton:
+		// ////Automata definicion
+		// //////////////////////////////////////
+		//
+		////TODO estado de finalizaciÃ³n default
+		// //TODO RestricciÃ³n de que solo puede haber un autÃ³mata
+		// Automaton:
 		//	'automaton' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' steps+=Step*
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
@@ -1062,9 +1052,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBodyBodyParserRuleCall_6_0 = (RuleCall)cBodyAssignment_6.eContents().get(0);
 		
 		////////////////////////////////////////
-		//////Reaction definition
-		////////////////////////////////////////
-		//Rc:
+		// ////Reaction definition
+		// //////////////////////////////////////
+		// Rc:
 		//	syncex="syncex"? 'reaction' pos=Pos automaton=[Automaton] '.' state=[Step] body=Body
 		//	//	(syncex="syncex")? 'reaction' pos=Pos (state=[Step|QFN]) body=Body//This implementations works with the fully qualifiedname, so the program suggested all the name (package.eventclass.automaton.step) instead of only automaton.step
 		//;
@@ -1121,8 +1111,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBodyXBlockExpressionParserRuleCall_0 = (RuleCall)cBodyAssignment.eContents().get(0);
 		
 		//Body:
-		//	body=XBlockExpression
-		//	//	body=XBlockExpression | 'addGroup' '('grupo=[Group]')' | 'removeGroup' '('grupo=[Group]')'
+		//	body=XBlockExpression //	body=XBlockExpression | 'addGroup' '('grupo=[Group]')' | 'removeGroup' '('grupo=[Group]')'
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1171,9 +1160,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEndEndKeyword_2_0 = (Keyword)cEndEnumLiteralDeclaration_2.eContents().get(0);
 		
 		//enum StateType:
-		//	state |
-		//	start |
-		//	end;
+		//	state | start | end;
 		public EnumRule getRule() { return rule; }
 		
 		//state | start | end
@@ -1351,12 +1338,12 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	////////////////////////////////////////////////////////////////////////////
+	//
 	///////////////////////////////Event Class//////////////////////////////////
+	//
 	////////////////////////////////////////////////////////////////////////////
-	//Model:
-	//	('package' name=QualifiedName -> ';'?)?
-	//	importSection=XImportSection?
-	//	typeDeclaration=EventClass?;
+	// Model:
+	//	('package' name=QualifiedName -> ';'?)? importSection=XImportSection? typeDeclaration=EventClass?;
 	public ModelElements getModelAccess() {
 		return pModel;
 	}
@@ -1376,12 +1363,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Decl:
-	//	Automaton
-	//	| Rc
-	//	| MSig
-	//	| JVarD
-	//	| Group
-	//	| EvDecl;
+	//	Automaton | Rc | MSig | JVarD | Group | EvDecl;
 	public DeclElements getDeclAccess() {
 		return pDecl;
 	}
@@ -1403,8 +1385,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//MSig:
 	//	'op' name=ValidID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' (':'
-	//	type=JvmTypeReference)?
-	//	body=XBlockExpression;
+	//	type=JvmTypeReference)? body=XBlockExpression;
 	public MSigElements getMSigAccess() {
 		return pMSig;
 	}
@@ -1414,9 +1395,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	////////////////////////////////////////
-	////Event Declaration
-	////////////////////////////////////////
-	//EvDecl:
+	// //Event Declaration
+	// //////////////////////////////////////
+	// EvDecl:
 	//	'event' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' ":" eventos+=OrEvent*
 	//	';';
 	public EvDeclElements getEvDeclAccess() {
@@ -1478,8 +1459,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//EventPredicate:
-	//	KindAttribute
-	//	| Trigger;
+	//	KindAttribute | Trigger;
 	public EventPredicateElements getEventPredicateAccess() {
 		return pEventPredicate;
 	}
@@ -1489,9 +1469,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//KindAttribute:
-	//	'host' '(' hostgroup=[Group] ')'
-	//	| 'on' '(' ongroup=[Group] ')'
-	//	| 'if' condition=XParenthesizedExpression
+	//	'host' '(' hostgroup=[Group] ')' | 'on' '(' ongroup=[Group] ')' | 'if' condition=XParenthesizedExpression
 	//	//	| 'eq'"("JExp","JExp")"
 	//;
 	public KindAttributeElements getKindAttributeAccess() {
@@ -1540,8 +1518,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Group:
-	//	'group' name=ID
-	//	'{' hosts+=Host* '}';
+	//	'group' name=ID '{' hosts+=Host* '}';
 	public GroupElements getGroupAccess() {
 		return pGroup;
 	}
@@ -1551,8 +1528,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Host:
-	//	ip=Ip
-	//	| groupId=[Group];
+	//	ip=Ip | groupId=[Group];
 	public HostElements getHostAccess() {
 		return pHost;
 	}
@@ -1572,11 +1548,12 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	////////////////////////////////////////
-	//////Automata definicion
-	////////////////////////////////////////
-	////TODO estado de finalización default
-	////TODO Restricción de que solo puede haber un autómata
-	//Automaton:
+	// ////Automata definicion
+	// //////////////////////////////////////
+	//
+	////TODO estado de finalizaciÃ³n default
+	// //TODO RestricciÃ³n de que solo puede haber un autÃ³mata
+	// Automaton:
 	//	'automaton' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' steps+=Step*
 	//	'}';
 	public AutomatonElements getAutomatonAccess() {
@@ -1608,9 +1585,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//enum StateType:
-	//	state |
-	//	start |
-	//	end;
+	//	state | start | end;
 	public StateTypeElements getStateTypeAccess() {
 		return eStateType;
 	}
@@ -1620,9 +1595,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	////////////////////////////////////////
-	//////Reaction definition
-	////////////////////////////////////////
-	//Rc:
+	// ////Reaction definition
+	// //////////////////////////////////////
+	// Rc:
 	//	syncex="syncex"? 'reaction' pos=Pos automaton=[Automaton] '.' state=[Step] body=Body
 	//	//	(syncex="syncex")? 'reaction' pos=Pos (state=[Step|QFN]) body=Body//This implementations works with the fully qualifiedname, so the program suggested all the name (package.eventclass.automaton.step) instead of only automaton.step
 	//;
@@ -1645,8 +1620,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Body:
-	//	body=XBlockExpression
-	//	//	body=XBlockExpression | 'addGroup' '('grupo=[Group]')' | 'removeGroup' '('grupo=[Group]')'
+	//	body=XBlockExpression //	body=XBlockExpression | 'addGroup' '('grupo=[Group]')' | 'removeGroup' '('grupo=[Group]')'
 	//;
 	public BodyElements getBodyAccess() {
 		return pBody;
@@ -1662,8 +1636,10 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	// * be able to parse both while(...) {} and while(...) st; for example.
 	// * If we put the predicate on single statement, then it does not seem to
 	// * be possible to parse incomplete member feature call.
-	// * / XJStatementOrBlock XExpression: //	XJArrayConstructorCall | not a valid statement
-	//	=> XBlockExpression | XJSingleStatement
+	// * /
+	//XJStatementOrBlock XExpression: //	XJArrayConstructorCall | not a valid statement
+	// => XBlockExpression |
+	//	XJSingleStatement
 	public JbaseGrammarAccess.XJStatementOrBlockElements getXJStatementOrBlockAccess() {
 		return gaJbase.getXJStatementOrBlockAccess();
 	}
@@ -1674,7 +1650,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	/// **
 	// * Customize to reflect Java imports (e.g., no 'extension' keyword and mandatory ';' but many occurrences accepted)
-	// * / XImportDeclaration xtype::XImportDeclaration:
+	// * /
+	//XImportDeclaration xtype::XImportDeclaration:
 	//	=> 'import' (static?='static' importedType=[types::JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' |
 	//	memberName=ValidID) | importedType=[types::JvmDeclaredType|QualifiedName] |
 	//	importedNamespace=QualifiedNameWithWildcard) -> ';'*
@@ -1697,7 +1674,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// customized with 'final' specification and varargs
-	//FullJvmFormalParameter XJJvmFormalParameter:
+	// FullJvmFormalParameter XJJvmFormalParameter:
 	//	{XJJvmFormalParameter} final?='final'? parameterType=JvmTypeReference varArgs?='...'? name=ValidID
 	public JbaseGrammarAccess.FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
 		return gaJbase.getFullJvmFormalParameterAccess();
@@ -1725,10 +1702,10 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	// * The final ; is optional in order to be able to parse incomplete
 	// * expressions, provide nicer error messages and give better content assist.
 	// * The presence of ';' is checked by the validator
-	// * / XJSemicolonStatement XExpression:
+	// * /
+	//XJSemicolonStatement XExpression:
 	//	{XJSemicolonStatement} expression=(XJBranchingStatement | XExpressionOrVarDeclaration | XDoWhileExpression |
-	//	XReturnExpression | XThrowExpression)
-	//	-> semicolon=';'?
+	//	XReturnExpression | XThrowExpression) -> semicolon=';'?
 	public JbaseGrammarAccess.XJSemicolonStatementElements getXJSemicolonStatementAccess() {
 		return gaJbase.getXJSemicolonStatementAccess();
 	}
@@ -1760,10 +1737,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	/// * 
 	// * The semicolons ';' are handled by the XJSemicolonStatement rule
 	// * / XBlockExpression XExpression:
-	//	{XBlockExpression}
-	//	'{'
-	//	expressions+=XJStatementOrBlock*
-	//	'}'
+	//	{XBlockExpression} '{' expressions+=XJStatementOrBlock* '}'
 	public JbaseGrammarAccess.XBlockExpressionElements getXBlockExpressionAccess() {
 		return gaJbase.getXBlockExpressionAccess();
 	}
@@ -1773,15 +1747,18 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// Don't put the predicate in the rule for XExpressionOrVarDeclaration:
-	//// it would break partial parsing:
+	// // it would break partial parsing:
+	//
 	//// "int i =" would not be parsed as an incomplete variable declaration 
+	//
 	//// put the predicate in XVariableDeclaration rule directly
-	////XExpressionOrVarDeclaration returns XExpression:
+	// //XExpressionOrVarDeclaration returns XExpression:
+	//
 	////	=>XVariableDeclaration | XExpression;
-	//// Use the predicate to avoid ambiguities with XExpression
+	// // Use the predicate to avoid ambiguities with XExpression
+	//
 	//XVariableDeclaration:
-	//	=> ({XJVariableDeclaration} final?='final'?
-	//	type=JvmTypeReference name=ValidID) ('=' right=XExpression)? (=> ','
+	//	=> ({XJVariableDeclaration} final?='final'? type=JvmTypeReference name=ValidID) ('=' right=XExpression)? (=> ','
 	//	additionalVariables+=XJAdditionalXVariableDeclaration)*;
 	public JbaseGrammarAccess.XVariableDeclarationElements getXVariableDeclarationAccess() {
 		return gaJbase.getXVariableDeclarationAccess();
@@ -1792,10 +1769,13 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// the second predicate is to avoid ambiguities with for loops
-	//// that already consider several variable declarations
+	// // that already consider several variable declarations
+	//
 	//// in our case we always parse them as several variable declarations
+	//
 	//// since we allow them also as standard variable declarations as in Java
-	//XJAdditionalXVariableDeclaration XVariableDeclaration:
+	// XJAdditionalXVariableDeclaration
+	//XVariableDeclaration:
 	//	{XJAdditionalXVariableDeclaration} name=ValidID ('=' right=XExpression)?
 	public JbaseGrammarAccess.XJAdditionalXVariableDeclarationElements getXJAdditionalXVariableDeclarationAccess() {
 		return gaJbase.getXJAdditionalXVariableDeclarationAccess();
@@ -1806,13 +1786,11 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XAssignment XExpression:
-	//	=> ({XJAssignment} feature=[types::JvmIdentifiableElement|FeatureCallID]
-	//	'[' indexes+=XExpression ']' ('[' indexes+=XExpression ']')*
-	//	OpSingleAssign) value=XAssignment |
-	//	=> ({XAssignment} feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment |
-	//	XOrExpression (=> ({XJConditionalExpression.if=current} '?') then=XExpression ':' else=XExpression
-	//	|
-	//	=> ({XBinaryOperation.leftOperand=current} feature=[types::JvmIdentifiableElement|OpMultiAssign])
+	//	=> ({XJAssignment} feature=[types::JvmIdentifiableElement|FeatureCallID] '[' indexes+=XExpression ']' ('['
+	//	indexes+=XExpression ']')* OpSingleAssign) value=XAssignment | => ({XAssignment}
+	//	feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment | XOrExpression (=>
+	//	({XJConditionalExpression.if=current} '?') then=XExpression ':' else=XExpression | =>
+	//	({XBinaryOperation.leftOperand=current} feature=[types::JvmIdentifiableElement|OpMultiAssign])
 	//	rightOperand=XAssignment)?
 	public JbaseGrammarAccess.XAssignmentElements getXAssignmentAccess() {
 		return gaJbase.getXAssignmentAccess();
@@ -1823,10 +1801,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//OpMultiAssign:
-	//	'+=' | '-=' | '*=' | '/=' | '%=' |
-	//	'&=' | '|=' | '^=' | // added in Jbase
-	//	'<' '<' '=' |
-	//	'>' '>'? '>=';
+	//	'+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | // added in Jbase
+	// '<' '<' '=' | '>' '>'? '>=';
 	public JbaseGrammarAccess.OpMultiAssignElements getOpMultiAssignAccess() {
 		return gaJbase.getOpMultiAssignAccess();
 	}
@@ -1836,8 +1812,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XJFeatureCallWithArrayAccess XExpression:
-	//	XFeatureCall => ({XJArrayAccessExpression.array=current}
-	//	'[' indexes+=XExpression ']' (=> '[' indexes+=XExpression ']')*)?
+	//	XFeatureCall => ({XJArrayAccessExpression.array=current} '[' indexes+=XExpression ']' (=> '[' indexes+=XExpression
+	//	']')*)?
 	public JbaseGrammarAccess.XJFeatureCallWithArrayAccessElements getXJFeatureCallWithArrayAccessAccess() {
 		return gaJbase.getXJFeatureCallWithArrayAccessAccess();
 	}
@@ -1848,8 +1824,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//XFeatureCall XExpression:
 	//	{XFeatureCall} feature=[types::JvmIdentifiableElement|IdOrSuper] (=> explicitOperationCall?='('
-	//	(featureCallArguments+=XExpression (',' featureCallArguments+=XExpression)*)?
-	//	')')?
+	//	(featureCallArguments+=XExpression (',' featureCallArguments+=XExpression)*)? ')')?
 	public JbaseGrammarAccess.XFeatureCallElements getXFeatureCallAccess() {
 		return gaJbase.getXFeatureCallAccess();
 	}
@@ -1859,12 +1834,10 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// also record '<' to tell whether it's a diamond operator
-	//XConstructorCall XExpression:
-	//	{XJConstructorCall}
-	//	'new' constructor=[types::JvmConstructor|QualifiedName] (=> explicitTypeArguments?='<'
+	// XConstructorCall XExpression:
+	//	{XJConstructorCall} 'new' constructor=[types::JvmConstructor|QualifiedName] (=> explicitTypeArguments?='<'
 	//	(typeArguments+=JvmArgumentTypeReference (',' typeArguments+=JvmArgumentTypeReference)*)? '>')? (=>
-	//	explicitConstructorCall?='(' (arguments+=XExpression (',' arguments+=XExpression)*)?
-	//	')')?
+	//	explicitConstructorCall?='(' (arguments+=XExpression (',' arguments+=XExpression)*)? ')')?
 	public JbaseGrammarAccess.XConstructorCallElements getXConstructorCallAccess() {
 		return gaJbase.getXConstructorCallAccess();
 	}
@@ -1874,16 +1847,18 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// dimensions and dimension expressions (feature indexes) are not associated during parsing,
+	//
 	//// the association, i.e., knowing whether a dimension expression comes after
+	//
 	//// an empty dimension (which is not legal), will be retrieved by
+	//
 	//// JbaseModelUtil.arrayDimensionIndexAssociations(XJArrayConstructorCall)
+	//
 	//// based on the offset of the [ and the array dimension XEpression
-	//XJArrayConstructorCall XExpression:
-	//	=> ({XJArrayConstructorCall}
-	//	'new'
-	//	type=[types::JvmType|QualifiedName] dimensions+=XJArrayDimension) indexes+=XExpression? ']' (=>
-	//	dimensions+=XJArrayDimension indexes+=XExpression? ']')*
-	//	=> arrayLiteral=XJArrayLiteral?
+	// XJArrayConstructorCall XExpression:
+	//	=> ({XJArrayConstructorCall} 'new' type=[types::JvmType|QualifiedName] dimensions+=XJArrayDimension)
+	//	indexes+=XExpression? ']' (=> dimensions+=XJArrayDimension indexes+=XExpression? ']')* =>
+	//	arrayLiteral=XJArrayLiteral?
 	public JbaseGrammarAccess.XJArrayConstructorCallElements getXJArrayConstructorCallAccess() {
 		return gaJbase.getXJArrayConstructorCallAccess();
 	}
@@ -1893,9 +1868,11 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// We need an EObject instead of a simple String since we then
+	//
 	//// need to find the corresponding node (and offset) with NodeModelUtils
+	//
 	//// in order to associate dimensions with indexes
-	//XJArrayDimension:
+	// XJArrayDimension:
 	//	{XJArrayDimension} '[';
 	public JbaseGrammarAccess.XJArrayDimensionElements getXJArrayDimensionAccess() {
 		return gaJbase.getXJArrayDimensionAccess();
@@ -1916,9 +1893,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XPostfixOperation XExpression:
-	//	=> ({XJPrefixOperation} feature=[types::JvmIdentifiableElement|OpPostfix]) operand=XMemberFeatureCall
-	//	| XMemberFeatureCall (=> ({XPostfixOperation.operand=current} feature=[types::JvmIdentifiableElement|OpPostfix]) |
-	//	=> ({XJArrayAccessExpression.array=current} '[' indexes+=XExpression ']' (=> '[' indexes+=XExpression ']')*))?
+	//	=> ({XJPrefixOperation} feature=[types::JvmIdentifiableElement|OpPostfix]) operand=XMemberFeatureCall |
+	//	XMemberFeatureCall (=> ({XPostfixOperation.operand=current} feature=[types::JvmIdentifiableElement|OpPostfix]) | =>
+	//	({XJArrayAccessExpression.array=current} '[' indexes+=XExpression ']' (=> '[' indexes+=XExpression ']')*))?
 	public JbaseGrammarAccess.XPostfixOperationElements getXPostfixOperationAccess() {
 		return gaJbase.getXPostfixOperationAccess();
 	}
@@ -1928,20 +1905,20 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XMemberFeatureCall XExpression:
-	//	XPrimaryExpression (
-	//	// we don't need this at the moment
+	//	XPrimaryExpression ( // we don't need this at the moment
+	//
 	//	//		=>({XJAssignment.assignable=current} ('.'|explicitStatic?="::") 
+	//
 	//	//			feature=[types::JvmIdentifiableElement|FeatureCallID]
-	//	//			'[' index=XExpression ']'
+	// //			'[' index=XExpression ']'
+	//
 	//	//			OpSingleAssign) value=XAssignment
-	//	//	|
-	//	=> ({XJClassObject.typeExpression=current} arrayDimensions+=ArrayBrackets* '.' 'class') |
-	//	=> ({XAssignment.assignable=current} '.'
-	//	feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment
-	//	|
-	//	=> ({XMemberFeatureCall.memberCallTarget=current} ".") feature=[types::JvmIdentifiableElement|IdOrSuper] (=>
-	//	explicitOperationCall?='(' (memberCallArguments+=XExpression (',' memberCallArguments+=XExpression)*)?
-	//	')')?)*
+	// //	|
+	// => ({XJClassObject.typeExpression=current}
+	//	arrayDimensions+=ArrayBrackets* '.' 'class') | => ({XAssignment.assignable=current} '.'
+	//	feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment | =>
+	//	({XMemberFeatureCall.memberCallTarget=current} ".") feature=[types::JvmIdentifiableElement|IdOrSuper] (=>
+	//	explicitOperationCall?='(' (memberCallArguments+=XExpression (',' memberCallArguments+=XExpression)*)? ')')?)*
 	public JbaseGrammarAccess.XMemberFeatureCallElements getXMemberFeatureCallAccess() {
 		return gaJbase.getXMemberFeatureCallAccess();
 	}
@@ -1951,9 +1928,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// in Java the type must be specified so we must use FullJvmFormalParameter instead of JvmFormalParameter
+	//
 	//XForLoopExpression XExpression:
-	//	=> ({XForLoopExpression}
-	//	'for' '(' declaredParam=FullJvmFormalParameter ':') forExpression=XExpression ')'
+	//	=> ({XForLoopExpression} 'for' '(' declaredParam=FullJvmFormalParameter ':') forExpression=XExpression ')'
 	//	eachExpression=XJStatementOrBlock
 	public JbaseGrammarAccess.XForLoopExpressionElements getXForLoopExpressionAccess() {
 		return gaJbase.getXForLoopExpressionAccess();
@@ -1964,10 +1941,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XBasicForLoopExpression XExpression:
-	//	{XBasicForLoopExpression}
-	//	'for' '(' (initExpressions+=XExpressionOrVarDeclaration (',' initExpressions+=XExpressionOrVarDeclaration)*)? ';'
-	//	expression=XExpression? ';' (updateExpressions+=XExpression (',' updateExpressions+=XExpression)*)? ')'
-	//	eachExpression=XJStatementOrBlock
+	//	{XBasicForLoopExpression} 'for' '(' (initExpressions+=XExpressionOrVarDeclaration (','
+	//	initExpressions+=XExpressionOrVarDeclaration)*)? ';' expression=XExpression? ';' (updateExpressions+=XExpression (','
+	//	updateExpressions+=XExpression)*)? ')' eachExpression=XJStatementOrBlock
 	public JbaseGrammarAccess.XBasicForLoopExpressionElements getXBasicForLoopExpressionAccess() {
 		return gaJbase.getXBasicForLoopExpressionAccess();
 	}
@@ -1977,9 +1953,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XIfExpression XExpression:
-	//	{XIfExpression}
-	//	'if' '(' if=XExpression ')'
-	//	then=XJStatementOrBlock (=> 'else' else=XJStatementOrBlock)?
+	//	{XIfExpression} 'if' '(' if=XExpression ')' then=XJStatementOrBlock (=> 'else' else=XJStatementOrBlock)?
 	public JbaseGrammarAccess.XIfExpressionElements getXIfExpressionAccess() {
 		return gaJbase.getXIfExpressionAccess();
 	}
@@ -1989,9 +1963,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XWhileExpression XExpression:
-	//	{XWhileExpression}
-	//	'while' '(' predicate=XExpression ')'
-	//	body=XJStatementOrBlock
+	//	{XWhileExpression} 'while' '(' predicate=XExpression ')' body=XJStatementOrBlock
 	public JbaseGrammarAccess.XWhileExpressionElements getXWhileExpressionAccess() {
 		return gaJbase.getXWhileExpressionAccess();
 	}
@@ -2001,10 +1973,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XDoWhileExpression XExpression:
-	//	{XDoWhileExpression}
-	//	'do'
-	//	body=XJStatementOrBlock
-	//	'while' '(' predicate=XExpression ')'
+	//	{XDoWhileExpression} 'do' body=XJStatementOrBlock 'while' '(' predicate=XExpression ')'
 	public JbaseGrammarAccess.XDoWhileExpressionElements getXDoWhileExpressionAccess() {
 		return gaJbase.getXDoWhileExpressionAccess();
 	}
@@ -2014,10 +1983,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XSwitchExpression XExpression:
-	//	{XSwitchExpression}
-	//	'switch' '(' switch=XExpression ')' '{'
-	//	cases+=XCasePart* ('default' ':' default=XJSwitchStatements)?
-	//	'}'
+	//	{XSwitchExpression} 'switch' '(' switch=XExpression ')' '{' cases+=XCasePart* ('default' ':'
+	//	default=XJSwitchStatements)? '}'
 	public JbaseGrammarAccess.XSwitchExpressionElements getXSwitchExpressionAccess() {
 		return gaJbase.getXSwitchExpressionAccess();
 	}
@@ -2027,9 +1994,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XCasePart:
-	//	{XCasePart}
-	//	'case' case=XExpression
-	//	':' then=XJSwitchStatements;
+	//	{XCasePart} 'case' case=XExpression ':' then=XJSwitchStatements;
 	public JbaseGrammarAccess.XCasePartElements getXCasePartAccess() {
 		return gaJbase.getXCasePartAccess();
 	}
@@ -2054,9 +2019,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	// * Java 7 try-with-resources
 	// * / XJTryWithResourcesStatement XExpression:
 	//	=> ({XJTryWithResourcesStatement} 'try' openParenthesis?='(')
-	//	resourceDeclarations+=XJTryWithResourcesVariableDeclaration*
-	//	')'
-	//	expression=XBlockExpression
+	//	resourceDeclarations+=XJTryWithResourcesVariableDeclaration* ')' expression=XBlockExpression
 	//	catchClauses+=XCatchClause* ('finally' finallyExpression=XBlockExpression)?
 	public JbaseGrammarAccess.XJTryWithResourcesStatementElements getXJTryWithResourcesStatementAccess() {
 		return gaJbase.getXJTryWithResourcesStatementAccess();
@@ -2069,9 +2032,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	/// *
 	// * The final ; is optional in the last variable declaration in a
 	// * try-with-resources
-	// * / XJTryWithResourcesVariableDeclaration:
-	//	{XJTryWithResourcesVariableDeclaration} final?='final'?
-	//	type=JvmTypeReference name=ValidID '=' right=XExpression
+	// * /
+	//XJTryWithResourcesVariableDeclaration:
+	//	{XJTryWithResourcesVariableDeclaration} final?='final'? type=JvmTypeReference name=ValidID '=' right=XExpression
 	//	semicolon=';'?;
 	public JbaseGrammarAccess.XJTryWithResourcesVariableDeclarationElements getXJTryWithResourcesVariableDeclarationAccess() {
 		return gaJbase.getXJTryWithResourcesVariableDeclarationAccess();
@@ -2084,10 +2047,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	/// **
 	// * Java needs blocks for try, catch, finally
 	// * / XTryCatchFinallyExpression XExpression:
-	//	{XTryCatchFinallyExpression}
-	//	'try'
-	//	expression=XBlockExpression (catchClauses+=XCatchClause+ (=> 'finally' finallyExpression=XBlockExpression)?
-	//	| 'finally' finallyExpression=XBlockExpression)
+	//	{XTryCatchFinallyExpression} 'try' expression=XBlockExpression (catchClauses+=XCatchClause+ (=> 'finally'
+	//	finallyExpression=XBlockExpression)? | 'finally' finallyExpression=XBlockExpression)
 	public JbaseGrammarAccess.XTryCatchFinallyExpressionElements getXTryCatchFinallyExpressionAccess() {
 		return gaJbase.getXTryCatchFinallyExpressionAccess();
 	}
@@ -2097,7 +2058,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// the explicit {XCatchClause} is required to make formatting work
-	//XCatchClause:
+	// XCatchClause:
 	//	{XCatchClause} => 'catch' '(' declaredParam=FullJvmFormalParameter ')' expression=XBlockExpression;
 	public JbaseGrammarAccess.XCatchClauseElements getXCatchClauseAccess() {
 		return gaJbase.getXCatchClauseAccess();
@@ -2110,8 +2071,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	/// **
 	// * Java needs block for synchronized
 	// * / XSynchronizedExpression XExpression:
-	//	=> ({XSynchronizedExpression}
-	//	'synchronized' '(') param=XExpression ')' expression=XBlockExpression
+	//	=> ({XSynchronizedExpression} 'synchronized' '(') param=XExpression ')' expression=XBlockExpression
 	public JbaseGrammarAccess.XSynchronizedExpressionElements getXSynchronizedExpressionAccess() {
 		return gaJbase.getXSynchronizedExpressionAccess();
 	}
@@ -2141,8 +2101,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// it is a subclass of XListLiteral, so that we will reuse
-	//// type computation and compiler from Xbase
-	//XJArrayLiteral:
+	// // type computation and compiler from Xbase
+	// XJArrayLiteral:
 	//	{XJArrayLiteral} '{' (elements+=XExpression (',' elements+=XExpression)*)? '}';
 	public JbaseGrammarAccess.XJArrayLiteralElements getXJArrayLiteralAccess() {
 		return gaJbase.getXJArrayLiteralAccess();
@@ -2155,7 +2115,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	/// *
 	// * We want to tell between string and char literals since we'll treat them
 	// * differently from the type computation point of view.
-	// * / XCharLiteral XExpression:
+	// * /
+	//XCharLiteral XExpression:
 	//	{XJCharLiteral} value=CHARACTER
 	public JbaseGrammarAccess.XCharLiteralElements getXCharLiteralAccess() {
 		return gaJbase.getXCharLiteralAccess();
@@ -2198,7 +2159,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// '**' is not valid in Java
-	//OpMulti:
+	// OpMulti:
 	//	'*' | '/' | '%';
 	public JbaseGrammarAccess.OpMultiElements getOpMultiAccess() {
 		return gaJbase.getOpMultiAccess();
@@ -2209,7 +2170,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// only valid Java operators
-	//OpOther:
+	// OpOther:
 	//	'>' (=> ('>' '>') | '>') | '<<';
 	public JbaseGrammarAccess.OpOtherElements getOpOtherAccess() {
 		return gaJbase.getOpOtherAccess();
@@ -2220,7 +2181,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// add bitwise operators with their precedence
-	//XAndExpression XExpression:
+	// XAndExpression XExpression:
 	//	XBitwiseInclusiveOrExpression (=> ({XBinaryOperation.leftOperand=current}
 	//	feature=[types::JvmIdentifiableElement|OpAnd]) rightOperand=XBitwiseInclusiveOrExpression)*
 	public JbaseGrammarAccess.XAndExpressionElements getXAndExpressionAccess() {
@@ -2295,7 +2256,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// add bitwise not ~
-	//OpUnary:
+	// OpUnary:
 	//	"!" | "-" | "+" | "~";
 	public JbaseGrammarAccess.OpUnaryElements getOpUnaryAccess() {
 		return gaJbase.getOpUnaryAccess();
@@ -2306,9 +2267,10 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//// customization of multiple values for annotations to use the Java array literal syntax
+	//
 	//XAnnotationElementValueOrCommaList XExpression:
-	//	=> ({XJArrayLiteral} '{') (elements+=XAnnotationOrExpression (',' elements+=XAnnotationOrExpression)*)? '}'
-	//	| XAnnotationOrExpression
+	//	=> ({XJArrayLiteral} '{') (elements+=XAnnotationOrExpression (',' elements+=XAnnotationOrExpression)*)? '}' |
+	//	XAnnotationOrExpression
 	public JbaseGrammarAccess.XAnnotationElementValueOrCommaListElements getXAnnotationElementValueOrCommaListAccess() {
 		return gaJbase.getXAnnotationElementValueOrCommaListAccess();
 	}
@@ -2318,8 +2280,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XAnnotationElementValue XExpression:
-	//	=> ({XJArrayLiteral} '{') (elements+=XAnnotationOrExpression (',' elements+=XAnnotationOrExpression)*)? '}'
-	//	| XAnnotationOrExpression
+	//	=> ({XJArrayLiteral} '{') (elements+=XAnnotationOrExpression (',' elements+=XAnnotationOrExpression)*)? '}' |
+	//	XAnnotationOrExpression
 	public JbaseGrammarAccess.XAnnotationElementValueElements getXAnnotationElementValueAccess() {
 		return gaJbase.getXAnnotationElementValueAccess();
 	}
@@ -2329,11 +2291,9 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XAnnotation:
-	//	{XAnnotation}
-	//	'@' annotationType=[types::JvmAnnotationType|QualifiedName] (=> '(' (elementValuePairs+=XAnnotationElementValuePair
-	//	(',' elementValuePairs+=XAnnotationElementValuePair)*
-	//	| value=super::XAnnotationElementValueOrCommaList)?
-	//	')')?;
+	//	{XAnnotation} '@' annotationType=[types::JvmAnnotationType|QualifiedName] (=> '('
+	//	(elementValuePairs+=XAnnotationElementValuePair (',' elementValuePairs+=XAnnotationElementValuePair)* |
+	//	value=super::XAnnotationElementValueOrCommaList)? ')')?;
 	public XbaseWithAnnotationsGrammarAccess.XAnnotationElements getXAnnotationAccess() {
 		return gaXbaseWithAnnotations.getXAnnotationAccess();
 	}
@@ -2490,8 +2450,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XUnaryOperation XExpression:
-	//	{XUnaryOperation} feature=[types::JvmIdentifiableElement|super::OpUnary] operand=XUnaryOperation
-	//	| super::XCastedExpression
+	//	{XUnaryOperation} feature=[types::JvmIdentifiableElement|super::OpUnary] operand=XUnaryOperation |
+	//	super::XCastedExpression
 	public XbaseGrammarAccess.XUnaryOperationElements getXUnaryOperationAccess() {
 		return gaXbase.getXUnaryOperationAccess();
 	}
@@ -2541,12 +2501,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XClosure XExpression:
-	//	=> ({XClosure}
-	//	'[')
-	//	=> ((declaredFormalParameters+=JvmFormalParameter (',' declaredFormalParameters+=JvmFormalParameter)*)?
-	//	explicitSyntax?='|')?
-	//	expression=XExpressionInClosure
-	//	']'
+	//	=> ({XClosure} '[') => ((declaredFormalParameters+=JvmFormalParameter (','
+	//	declaredFormalParameters+=JvmFormalParameter)*)? explicitSyntax?='|')? expression=XExpressionInClosure ']'
 	public XbaseGrammarAccess.XClosureElements getXClosureAccess() {
 		return gaXbase.getXClosureAccess();
 	}
@@ -2709,7 +2665,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	/// **
 	// * Dummy rule, for "better" downwards compatibility, since GrammarAccess generates non-static inner classes, 
 	// * which makes downstream grammars break on classloading, when a rule is removed.
-	// * / StaticQualifier:
+	// * /
+	//StaticQualifier:
 	//	(ValidID '::')+;
 	public XbaseGrammarAccess.StaticQualifierElements getStaticQualifierAccess() {
 		return gaXbase.getStaticQualifierAccess();
@@ -2781,8 +2738,8 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//JvmWildcardTypeReference:
-	//	{JvmWildcardTypeReference} '?' (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded*
-	//	| constraints+=JvmLowerBound constraints+=JvmLowerBoundAnded*)?;
+	//	{JvmWildcardTypeReference} '?' (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* |
+	//	constraints+=JvmLowerBound constraints+=JvmLowerBoundAnded*)?;
 	public XtypeGrammarAccess.JvmWildcardTypeReferenceElements getJvmWildcardTypeReferenceAccess() {
 		return gaXtype.getJvmWildcardTypeReferenceAccess();
 	}

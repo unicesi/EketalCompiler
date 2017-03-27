@@ -3,14 +3,16 @@ package co.edu.icesi.ketal.distribution;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Message;
 
 import co.edu.icesi.ketal.core.Event;
 
 public class KetalMessageHandler implements BrokerMessageHandler {
 	
-	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
-			.getLogger(KetalMessageHandler.class);
+	private static final Log logger = LogFactory
+			.getLog(KetalMessageHandler.class);
 	
 	private Vector<Event> vector;
 

@@ -29,6 +29,7 @@ import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,7 +63,6 @@ import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
-import org.jgroups.Address;
 import org.jgroups.Message;
 
 /**
@@ -451,14 +451,24 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("\t\t");
             _builder.append("if(!automaton.evaluate(event)){");
             _builder.newLine();
+            _builder.append("\t\t\t");
+            JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
+            _builder.append(_typeRef_2, "\t\t\t");
+            _builder.append(".getLogger().info(\"[Handle] Evento no reconocido por el autómata\");");
+            _builder.newLineIfNotEmpty();
             _builder.append("\t\t\t    \t\t\t");
-            _builder.append("System.out.println(\"[Handle] Evento no reconocido por el autómata\");");
+            _builder.append("//System.out.println(\"[Handle] Evento no reconocido por el autómata\");");
             _builder.newLine();
             _builder.append("\t\t\t    \t\t");
             _builder.append("}else{");
             _builder.newLine();
             _builder.append("\t\t\t    \t\t\t");
-            _builder.append("System.out.println(\"[Handle] Returned or threw an Exception\");\t\t\t\t\t\t\t");
+            JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
+            _builder.append(_typeRef_3, "\t\t\t    \t\t\t");
+            _builder.append(".getLogger().info(\"[Handle] Returned or threw an Exception\");");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t    \t\t\t");
+            _builder.append("//System.out.println(\"[Handle] Returned or threw an Exception\");\t\t\t\t\t\t\t");
             _builder.newLine();
             _builder.append("\t\t\t    \t\t\t");
             _builder.append("co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);\t\t\t\t\t");
@@ -478,8 +488,8 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("};");
             _builder.newLine();
             _builder.append("eventBroker = new ");
-            JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(JGroupsEventBroker.class);
-            _builder.append(_typeRef_2, "");
+            JvmTypeReference _typeRef_4 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(JGroupsEventBroker.class);
+            _builder.append(_typeRef_4, "");
             _builder.append("(\"Eketal\", brokerMessageHandler);");
             _builder.newLineIfNotEmpty();
           }
@@ -534,7 +544,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
       JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "multicast", _typeRef_4, _function_6);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_1);
       EList<JvmMember> _members_6 = it.getMembers();
-      JvmTypeReference _typeRef_5 = this._typeReferenceBuilder.typeRef(Address.class);
+      JvmTypeReference _typeRef_5 = this._typeReferenceBuilder.typeRef(URL.class);
       final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
         it_1.setStatic(false);
         StringConcatenationClient _client = new StringConcatenationClient() {

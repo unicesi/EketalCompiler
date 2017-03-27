@@ -1,5 +1,8 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * This class is a singleton class that serves as central point
  * for Distribution configuration parameters.
@@ -25,8 +28,8 @@ public class DistributionProperties {
 	private boolean usingCausalSupport;
 	
 	// Default logger
-	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
-			.getLogger(DistributionProperties.class);
+	private static final Log logger = LogFactory
+			.getLog(DistributionProperties.class);
 	
 	private DistributionProperties() {
 		initializeParameters();

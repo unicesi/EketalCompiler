@@ -2,6 +2,8 @@ package co.edu.icesi.ketal.distribution;
 
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Message;
 
 import co.edu.icesi.ketal.core.Event;
@@ -9,10 +11,10 @@ import co.edu.icesi.ketal.core.Event;
 //Created by David Dur�n
 public class ReceiverMessageHandler implements BrokerMessageHandler {
 	
-	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
-			.getLogger(ReceiverMessageHandler.class);
+	private static final Log logger = LogFactory
+			.getLog(ReceiverMessageHandler.class);
 	
-	public static org.apache.logging.log4j.Logger getLogger() {
+	public static Log getLogger() {
 		return logger;
 	}
 

@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Address;
 import org.jgroups.Channel;
 import org.jgroups.Message;
@@ -35,8 +37,8 @@ public class JGroupsEventBroker implements EventBroker {
 	private String groupName;
 	private BrokerMessageHandler messageHandler;
 	
-	final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager
-			.getLogger(JGroupsAbstractFacade.class);
+	protected static final Log logger = LogFactory
+			.getLog(JGroupsAbstractFacade.class);
 	
 	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh) {
 		System.setProperty("java.net.preferIPv4Stack" , "true");
@@ -87,6 +89,7 @@ public class JGroupsEventBroker implements EventBroker {
 		try {
 			retorno = new URL("http://"+srcIp);
 		} catch (MalformedURLException e) {
+			logger.error(e.getStackTrace());
 			e.printStackTrace();
 		}
 	    
