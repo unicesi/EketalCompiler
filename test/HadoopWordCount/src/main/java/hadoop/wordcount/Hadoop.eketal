@@ -17,8 +17,8 @@ eventclass Hadoop{
 	event reduceEvent(): execution(* WordCount2.IntSumReducer.reduce(Text, Iterable, Reducer.Context));
 	
 	reaction before mapReduce.reduced{
-		System.out.println("----------------------------------------");
-		System.out.println("Second reduce");
-		System.out.println("----------------------------------------");
+		//System.out.println("----------------------------------------");
+		//System.out.println("Second reduce");
+		//System.out.println("----------------------------------------");
 	}
 }
