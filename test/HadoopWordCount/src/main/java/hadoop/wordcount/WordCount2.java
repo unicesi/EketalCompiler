@@ -30,7 +30,7 @@ import org.apache.hadoop.util.StringUtils;
 public class WordCount2 {
 
 	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
-		
+		sun.security.jgss.krb5.Krb5InitCredential temp;
 		static enum CountersEnum {
 			INPUT_WORDS
 		}
@@ -103,6 +103,11 @@ public class WordCount2 {
 
 	public static void main(String[] args) throws Exception {
 		
+		int termino = executeHadoop(args);
+		System.exit(termino);		
+	}
+
+	public static int executeHadoop(String[] args) throws Exception{
 		Configuration conf = new Configuration();
 		GenericOptionsParser optionParser = new GenericOptionsParser(conf, args);
 		
@@ -142,7 +147,7 @@ public class WordCount2 {
 		int termino = job.waitForCompletion(true) ? 0 : 1;
 		long time = System.currentTimeMillis() - initial;
 		System.out.println(time);
-		System.exit(termino);
+		return termino;
 	}
 	
 }

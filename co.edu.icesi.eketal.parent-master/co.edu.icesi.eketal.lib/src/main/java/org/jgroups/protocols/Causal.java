@@ -1272,7 +1272,7 @@ public class Causal extends Protocol
 //    	System.out.print("[");
     	for(int con=0; con<val.length; con++){
     		log.debug(""+val[con]+",");
-    		System.out.print(""+val[con]+",");
+    		//System.out.print(""+val[con]+",");
     	}
     	log.debug("]");
     	log.debug("\n");

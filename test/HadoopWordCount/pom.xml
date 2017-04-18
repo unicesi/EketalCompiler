@@ -13,6 +13,8 @@
 		<xtext-version>2.10.0</xtext-version>
 		<jre-version>1.8</jre-version>
 		<aspectj.version>1.8.9</aspectj.version>
+		<hadoop-version>2.7.3</hadoop-version>
+		<log4j-version>2.8.1</log4j-version>
 	</properties>
 
 	<build>
@@ -183,12 +185,12 @@
                     </dependency>
                     <dependency>
                         <groupId>co.edu.icesi.eketal</groupId>
-                        <artifactId>co.edu.icesi.eketal</artifactId>
+                        <artifactId>co.edu.icesi.eketal.lib</artifactId>
                         <version>1.0.0-SNAPSHOT</version>
                     </dependency>
                     <dependency>
                         <groupId>co.edu.icesi.eketal</groupId>
-                        <artifactId>co.edu.icesi.eketal.lib</artifactId>
+                        <artifactId>co.edu.icesi.eketal</artifactId>
                         <version>1.0.0-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
@@ -200,13 +202,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
-			<artifactId>co.edu.icesi.eketal</artifactId>
+			<artifactId>co.edu.icesi.eketal.lib</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
-			<artifactId>co.edu.icesi.eketal.lib</artifactId>
+			<artifactId>co.edu.icesi.eketal</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
@@ -218,18 +220,17 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.8.1</version>
+			<version>${log4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.8.1</version>
+			<version>${log4j-version}</version>
 		</dependency>
-		
 		<dependency>
 		   	<groupId>org.apache.logging.log4j</groupId>
 		   	<artifactId>log4j-jcl</artifactId>
-		   	<version>2.8.1</version>
+		   	<version>${log4j-version}</version>
 		</dependency>
 		
 		<dependency>
@@ -242,34 +243,35 @@
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-common</artifactId>
-			<version>2.7.3</version>
+			<version>${hadoop-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-mapreduce-client-core -->
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-mapreduce-client-core</artifactId>
-			<version>2.7.3</version>
+			<version>${hadoop-version}</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-mapreduce-client-common -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>org.apache.hadoop</groupId> -->
-<!-- 		    <artifactId>hadoop-mapreduce-client-common</artifactId> -->
-<!-- 		    <version>2.7.3</version> -->
-<!-- 		</dependency> -->
+ 		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-mapreduce-client-common -->
+		<dependency>
+		    <groupId>org.apache.hadoop</groupId>
+		    <artifactId>hadoop-mapreduce-client-common</artifactId>
+		    <version>${hadoop-version}</version>
+		    <scope>test</scope>
+		</dependency>
 				
-<!-- 				https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-yarn-common -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>org.apache.hadoop</groupId> -->
-<!-- 		    <artifactId>hadoop-yarn-common</artifactId> -->
-<!-- 		    <version>2.7.3</version> -->
-<!-- 		</dependency> -->
-				
+		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-yarn-common -->
+		<dependency>
+		    <groupId>org.apache.hadoop</groupId>
+		    <artifactId>hadoop-yarn-common</artifactId>
+		    <version>${hadoop-version}</version>
+		    <scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.8.9</version>
+			<version>${aspectj.version}</version>
 		</dependency>
 
 		<dependency>
