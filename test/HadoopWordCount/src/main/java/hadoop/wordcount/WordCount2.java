@@ -30,7 +30,7 @@ import org.apache.hadoop.util.StringUtils;
 public class WordCount2 {
 
 	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
-		sun.security.jgss.krb5.Krb5InitCredential temp;
+		
 		static enum CountersEnum {
 			INPUT_WORDS
 		}
