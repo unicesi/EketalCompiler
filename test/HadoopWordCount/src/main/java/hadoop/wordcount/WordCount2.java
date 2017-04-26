@@ -21,6 +21,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.Counter;
@@ -30,7 +31,7 @@ import org.apache.hadoop.util.StringUtils;
 public class WordCount2 {
 
 	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
-		
+		//sun.security.jgss.krb5.Krb5InitCredential temp;
 		static enum CountersEnum {
 			INPUT_WORDS
 		}
@@ -85,6 +86,11 @@ public class WordCount2 {
 				counter.increment(1);
 			}
 		}
+		@Override
+		  public void cleanup(Context context
+		                         ) throws IOException, InterruptedException {
+		    // NOTHING
+		  }
 	}
 
 	public static class IntSumReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
@@ -102,7 +108,6 @@ public class WordCount2 {
 	}
 
 	public static void main(String[] args) throws Exception {
-		
 		int termino = executeHadoop(args);
 		System.exit(termino);		
 	}
@@ -122,7 +127,7 @@ public class WordCount2 {
 			System.exit(2);
 		}
 
-		long initial = System.currentTimeMillis();
+//		long initial = System.currentTimeMillis();
 
 		Job job = Job.getInstance(conf, "word count");
 		job.setJarByClass(WordCount2.class);
@@ -131,7 +136,7 @@ public class WordCount2 {
 		job.setReducerClass(IntSumReducer.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
-
+		
 		List<String> otherArgs = new ArrayList<String>();
 		for (int i = 0; i < remainingArgs.length; ++i) {
 			if ("-skip".equals(remainingArgs[i])) {
@@ -145,8 +150,11 @@ public class WordCount2 {
 		FileOutputFormat.setOutputPath(job, new Path(otherArgs.get(1)));
 
 		int termino = job.waitForCompletion(true) ? 0 : 1;
-		long time = System.currentTimeMillis() - initial;
-		System.out.println(time);
+		SingletonTime singleton = SingletonTime.getInstance();
+		singleton.setTiempoFinal(System.currentTimeMillis());
+		System.out.println("Tiempo total:"+singleton.calcularTiempo());
+//		long time = System.currentTimeMillis() - initial;
+//		System.out.println(time);
 		return termino;
 	}
 	
