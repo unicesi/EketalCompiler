@@ -38,6 +38,7 @@ import org.jgroups.Message
 import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.Pos
 import java.net.URL
+import co.edu.icesi.eketal.eketal.JVarD
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -168,6 +169,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, String automatonName) {
 		acceptor.accept(reactions.toClass("co.edu.icesi.eketal.reaction."+reaction)) [
 			val set = reactions.declarations.filter(typeof(Rc))
+			val variables = reactions.declarations.filter(typeof(JVarD))
+			if(!variables.isEmpty){
+				for(variable:variables){
+					members+=reactions.toField(variable.name.toFirstLower, variable.type)[
+						static = true
+					]
+				}
+			}
 			val after = new HashMap<String, String>()
 			val before = new HashMap<String, String>()
 			for(rc:set){
@@ -298,14 +307,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 			
-			members+=eventDefinitionClass.toMethod("close", typeRef(void))[
-				static = false
-				body='''
-					if(eventBroker!=null){
-						eventBroker.closeComunication();
-					}
-				'''
-			]
 			//TODO Síncrono
 			/* 
 			members+=eventDefinitionClass.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
