@@ -80,15 +80,6 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 //			e.printStackTrace();
 		}
 	}
-
-	public void closeComunication(){
-		if(channel==null)
-			return;
-		if(channel.isConnected())
-			channel.disconnect();
-		if(channel.isOpen())
-			channel.close();
-	}
 	
 	/**
 	 * Initializes the channel and receives the base group name as a parameter
@@ -179,11 +170,5 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 
 	public void setSignal(Object signal) {
 		this.signal = signal;
-	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		closeComunication();
-		super.finalize();
 	}
 }

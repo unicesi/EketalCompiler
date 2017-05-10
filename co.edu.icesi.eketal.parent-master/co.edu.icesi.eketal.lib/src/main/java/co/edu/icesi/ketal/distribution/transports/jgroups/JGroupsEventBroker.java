@@ -126,10 +126,4 @@ public class JGroupsEventBroker implements EventBroker {
 		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
 	}
 
-	@Override
-	public void closeComunication() {
-		syncMonitor.closeComunication();
-		asyncMonitor.closeComunication();
-	}
-
 }
