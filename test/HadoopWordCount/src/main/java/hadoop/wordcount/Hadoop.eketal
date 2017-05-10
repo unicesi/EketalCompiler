@@ -5,8 +5,8 @@ import org.apache.hadoop.mapreduce.*;
 eventclass Hadoop{
 	automaton mapReduce(){
 		start init: (setupEvent -> firtsMap);
-		firtsMap: (mapEvent -> mapState);
-		mapState: (mapEvent -> mapState) || (latestEvent -> finalState);
+		firtsMap: (mapEvent -> reduced);
+		reduced: (mapEvent -> reduced) || (latestEvent -> finalState);
 		end finalState;
 	}
 	
