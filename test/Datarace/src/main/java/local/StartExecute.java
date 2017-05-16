@@ -75,9 +75,7 @@ public class StartExecute {
 		cache.destroy();
 
 		bf.close();
-		
-		EventHandler.getInstance().close();
-		
+				
 		System.out.println("[INFO] Stopped transation");
 	}
 }
