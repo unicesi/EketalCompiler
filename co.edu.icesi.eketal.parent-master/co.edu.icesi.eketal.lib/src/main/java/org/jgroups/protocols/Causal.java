@@ -939,7 +939,7 @@ public class Causal extends Protocol
                 return down_prot.down(evt);
             }
         } catch (RuntimeException e) {
-            if (debug) log.error("*** down: "+e.getMessage(), e);
+            if (debug) log.debug("{} *** down: "+e.getMessage(), e);
             throw e;
         }
 
@@ -963,7 +963,7 @@ public class Causal extends Protocol
                 	return up_prot.up(evt);
             }
         } catch (RuntimeException e) {
-            if (debug) log.error("*** up: "+e.getMessage(), e);
+            if (debug) log.debug("{} *** up: "+e.getMessage(), e);
             throw e;
         }
         return null;
@@ -1036,8 +1036,8 @@ public class Causal extends Protocol
          * PROOF vector print
          */
         //////////////////////////////////////////////////////////////////////////
-        log.error("Upwarding: "+upwardWaitingQueue);
-        log.error("Downwarding: "+downwardWaitingQueue);
+        log.debug("{} Upwarding: "+upwardWaitingQueue);
+        log.debug("{} Downwarding: "+downwardWaitingQueue);
         TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
         log.debug("app Vector");
         printValues(currentView.timeVector);
@@ -1064,13 +1064,13 @@ public class Causal extends Protocol
         	 * modifies the TransportedVectorTime of that Event.
         	 * In other case, the message is passed up. 
         	 */      
-        	log.error("Colocando un vector en el Evento");
+        	log.debug("{} Colocando un vector en el Evento");
 //        	System.err.print("Colocando un vector en el Evento");
         	if (msg.getObject() instanceof BrokerMessage) {
     			BrokerMessage bm = (BrokerMessage) msg.getObject();
     			if (bm != null) {
     				if (bm.getEvent() instanceof co.edu.icesi.ketal.core.Event) {
-    					log.error("Sin ordenamiento: ----");
+    					log.debug("{} Sin ordenamiento: ----");
 //    					System.err.print("Sin ordenamiento: ----");
     	        		co.edu.icesi.ketal.core.Event ketalEvent= bm.getEvent();
     	        		ketalEvent.setTransportedVectorTime(messageVector);
@@ -1087,9 +1087,9 @@ public class Causal extends Protocol
 
         		if(!waitingMessages.isEmpty())
         		{
-        			log.error("Upwarding: "+upwardWaitingQueue);
-        			log.error("Downwarding: "+downwardWaitingQueue);
-        			log.error("Cola de espera: "+waitingMessages);
+        			log.debug("{} Upwarding: "+upwardWaitingQueue);
+        			log.debug("{} Downwarding: "+downwardWaitingQueue);
+        			log.debug("{} Cola de espera: "+waitingMessages);
 //        			System.err.print("Upwarding: "+upwardWaitingQueue);
 //        			System.err.println("Downwarding: "+downwardWaitingQueue);
 //        			System.err.println("Cola de espera: "+waitingMessages);
@@ -1160,7 +1160,7 @@ public class Causal extends Protocol
             while ((!upwardWaitingQueue.isEmpty()) &&
                     currentView.isCausallyNext((queuedVector = (TransportedVectorTime) upwardWaitingQueue.getFirst()))) {
             	//PROOF
-            	log.error("desencolando");
+            	log.debug("{} desencolando");
 //            	System.err.print("desencolando");
             	
             	upwardWaitingQueue.remove(queuedVector);

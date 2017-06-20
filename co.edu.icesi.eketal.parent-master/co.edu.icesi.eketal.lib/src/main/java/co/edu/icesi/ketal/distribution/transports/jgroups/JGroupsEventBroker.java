@@ -65,36 +65,14 @@ public class JGroupsEventBroker implements EventBroker {
 
 	@Override
 	public URL getAsyncAddress() {	    
-	    Channel channel = asyncMonitor.channel;
-		return getAddressFromChannel(channel);
+		return asyncMonitor.getIpAddress();
 	}
 
 	@Override
-	public URL getSyncAddress() {  
-	    Channel channel = syncMonitor.channel;
-	    return getAddressFromChannel(channel);
+	public URL getSyncAddress() {
+	    return syncMonitor.getIpAddress();
 	}
-	
-	public URL getAddressFromChannel(Channel myChannel){
-		String srcIp = ""; 
-		PhysicalAddress physicalAddr = (PhysicalAddress)myChannel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, myChannel.getAddress()));
 
-	    if(physicalAddr instanceof IpAddress) {
-	        IpAddress ipAddr = (IpAddress)physicalAddr;
-	        InetAddress inetAddr = ipAddr.getIpAddress();
-	        srcIp = inetAddr.getHostAddress();
-	    }
-		
-	    URL retorno = null;
-		try {
-			retorno = new URL("http://"+srcIp);
-		} catch (MalformedURLException e) {
-			logger.error(e.getStackTrace());
-			e.printStackTrace();
-		}
-	    
-		return retorno;
-	}
 	
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous

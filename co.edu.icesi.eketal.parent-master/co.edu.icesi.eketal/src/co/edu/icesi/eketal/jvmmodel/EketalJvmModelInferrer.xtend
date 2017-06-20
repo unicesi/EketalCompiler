@@ -39,6 +39,7 @@ import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.Pos
 import java.net.URL
 import co.edu.icesi.eketal.eketal.JVarD
+import java.net.MalformedURLException
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -303,7 +304,19 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			members+=eventDefinitionClass.toMethod("getAsyncAddress", typeRef(URL))[
 				static = false
 				body='''
-					return eventBroker.getAsyncAddress();
+					«typeof(URL)» url = eventBroker.getAsyncAddress();
+					if(url!=null){
+						return url;
+					}else{
+						«typeRef(ReceiverMessageHandler)».getLogger().error("[Handle] Could not obtain JGroups ip Address for the async monitor");
+						try{
+							return new URL("http:127.0.0.1");
+						}catch(«typeRef(MalformedURLException)» e){
+							«typeRef(ReceiverMessageHandler)».getLogger().error("[Handle] "+e.getMessage());
+							e.printStackTrace();
+							return null;
+						}
+					}
 				'''
 			]
 			

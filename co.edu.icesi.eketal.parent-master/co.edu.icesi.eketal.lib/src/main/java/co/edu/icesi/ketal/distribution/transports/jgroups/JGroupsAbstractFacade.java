@@ -1,12 +1,18 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jgroups.Channel;
 import org.jgroups.JChannel;
+import org.jgroups.PhysicalAddress;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
+import org.jgroups.stack.IpAddress;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.distribution.EventBroker;
@@ -29,6 +35,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	RpcDispatcher disp;
 	RspList rsp_list;
 	RequestOptions opts;
+	protected URL address;
 	// RequestHandler disp;
 
 	// The properties configuring the Jgroups communication stack
@@ -74,11 +81,41 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.jeb = jeb;
 		try {
 			channel = new JChannel(props);
-			
+			initializeAddress();
 		} catch (Exception e) {
 			getLogger().error(e.getMessage());
 //			e.printStackTrace();
 		}
+	}
+	
+	private void initializeAddress() {
+		if(address==null){
+			String srcIp = ""; 
+			PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
+
+		    if(physicalAddr instanceof IpAddress) {
+		        IpAddress ipAddr = (IpAddress)physicalAddr;
+		        InetAddress inetAddr = ipAddr.getIpAddress();
+		        srcIp = inetAddr.getHostAddress()+":"+ipAddr.getPort();
+		    }
+			
+		    URL retorno = null;
+			try {
+				retorno = new URL("http://"+srcIp);
+			} catch (MalformedURLException e) {
+				logger.error(e.getStackTrace());
+				e.printStackTrace();
+			}
+			
+			address = retorno;
+		}
+	}
+	
+	public URL getIpAddress(){
+		if(address==null){
+			initializeAddress();
+		}
+		return address;
 	}
 	
 	/**
@@ -90,6 +127,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.groupName = groupName;
 		try {
 			channel = new JChannel();
+			initializeAddress();
 		} catch (Exception e) {
 			getLogger().error(e.getMessage());
 //			e.printStackTrace();
