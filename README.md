@@ -11,7 +11,7 @@
 
 ## 1. Installing EKETAL's development environment using MAVEN
 
-This section describes how to download the project, how to build and install the language, and how to build a sample project. This is an example using JBossCache, to run an example using a mock of JBossCache and a recent version of JGroups, use the second git clone command. Finally, in this [video](https://dl.dropboxusercontent.com/u/37542543/Eketal.mp4) you can see all the steps described next.
+This section describes how to download the project, how to build and install the language, and how to build a sample project. This is an example using JBossCache, to run an example using a mock of JBossCache and a recent version of JGroups, use the second git clone command. Finally, in this [video](https://www.dropbox.com/s/os1rrj7h3gu2l7i/Eketal.mp4?dl=0) you can see all the steps described next.
 
 ### 1.1. Download the sources
   You can download the sources in two ways: directly from github or using git.
