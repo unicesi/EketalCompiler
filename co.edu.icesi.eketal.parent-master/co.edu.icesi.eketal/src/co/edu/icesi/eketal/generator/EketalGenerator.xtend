@@ -99,11 +99,11 @@ class EketalGenerator implements IGenerator{
 			
 			final static Log logger = LogFactory.getLog(«modelo.name.toFirstUpper».class);
 			«FOR event:modelo.declarations»
-				«IF event instanceof JVarD»
-					//«importedLibraries+=agregarImports((event as JVarD).type.qualifiedName)»
-					//--------Evento: «event.name.toString»-------------
-					private «(event as JVarD).type.simpleName» «(event as JVarD).name.toFirstLower»;
-				«ENDIF»
+«««				«IF event instanceof JVarD»
+«««					//«importedLibraries+=agregarImports((event as JVarD).type.qualifiedName)»
+«««					//--------Evento: «event.name.toString»-------------
+«««					private «(event as JVarD).type.simpleName» «(event as JVarD).name.toFirstLower»;
+«««				«ENDIF»
 				«IF event instanceof co.edu.icesi.eketal.eketal.Automaton»
 					//«automatonName=event.name»
 				«ENDIF»
@@ -119,28 +119,33 @@ class EketalGenerator implements IGenerator{
 					//	System.out.println("[Aspectj] Threw an exception: " + e);
 					//}
 					after(): «event.name.toFirstLower»(){
-						Automaton automata = «automatonName.toFirstUpper».getInstance();
-						Reaction.verifyAfter(automata);
+						«IF !modelo.declarations.filter(Automaton).isEmpty»						
+							Automaton automata = «automatonName.toFirstUpper».getInstance();
+							Reaction.verifyAfter(automata);
+						«ENDIF»
 						//System.out.println("[Aspectj] After: Returned or threw an Exception");
 						logger.debug("[Aspectj] After: Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
-						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
-						Automaton automata = «automatonName.toFirstUpper».getInstance();
-						Map map = new HashMap<String, Object>();
-						//map.put("Automata", automata);
-						Event event = new NamedEvent("«event.name»");
-						event.setLocalization(distribuidor.getAsyncAddress());
-						distribuidor.multicast(event, map);
-						if(!automata.evaluate(event)){
-							//System.out.println("[Aspectj] Before: Event not recognized by the automaton");
-							logger.debug("[Aspectj] Before: Event not recognized by the automaton");
-							//Debería parar
-						}else{
-							Reaction.verifyBefore(automata);
-							//System.out.println("[Aspectj] Before: Returned or threw an Exception");
-							logger.debug("[Aspectj] Before: Returned or threw an Exception");
-						}
+						«IF !modelo.declarations.filter(Automaton).isEmpty»
+							EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
+							Automaton automata = «automatonName.toFirstUpper».getInstance();
+							Map map = new HashMap<String, Object>();
+							//map.put("Automata", automata);
+							Event event = new NamedEvent("«event.name»");
+							event.setLocalization(distribuidor.getAsyncAddress());
+							if(event.getLocalization()==null){System.out.println("No source location es Null");}
+							distribuidor.multicast(event, map);
+							if(!automata.evaluate(event)){
+								//System.out.println("[Aspectj] Before: Event not recognized by the automaton");
+								logger.debug("[Aspectj] Before: Event not recognized by the automaton");
+								//Debería parar
+							}else{
+								Reaction.verifyBefore(automata);
+								//System.out.println("[Aspectj] Before: Returned or threw an Exception");
+								logger.debug("[Aspectj] Before: Returned or threw an Exception");
+							}
+						«ENDIF»
 						//while(!automata.evaluate(event)){
 						//	wait(100);
 						//	
