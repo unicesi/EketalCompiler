@@ -258,7 +258,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					@Override
 					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
 					    			«typeof(int)» typeOfMsgSent){
-					    if(event.getLocalization().equals(eventBroker.getAsyncAddress())){
+					    if(event.getLocalization().getHost().equals(eventBroker.getAsyncAddress().getHost())){
 					    	return null;
 					    }
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
