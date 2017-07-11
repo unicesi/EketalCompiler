@@ -29,7 +29,7 @@ eventclass Hadoop{
 	automaton mapReduce(){
 		start init: (setupEvent -> firtsMap);
 		firtsMap: (mapEvent -> reduced);
-		reduced: (mapEvent -> reduced) || (lastest -> finalState);
+		reduced: (mapEvent -> reduced) || (latest -> finalState);
 		end finalState;
 	}
 	
@@ -41,7 +41,7 @@ eventclass Hadoop{
 	
 	event mapEvent(): execution(* WordCount2.TokenizerMapper.map(Object, Text, Mapper.Context));
 
-	event lastest(): execution(* WordCount2.TokenizerMapper.cleanup(org.apache.hadoop.mapreduce.Mapper.Context));
+	event latest(): execution(* WordCount2.TokenizerMapper.cleanup(org.apache.hadoop.mapreduce.Mapper.Context));
 	
 	contador:int
 	

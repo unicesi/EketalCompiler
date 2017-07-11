@@ -77,5 +77,7 @@ public class StartExecute {
 		bf.close();
 				
 		System.out.println("[INFO] Stopped transation");
+		
+		System.exit(0);
 	}
 }
