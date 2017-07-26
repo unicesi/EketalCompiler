@@ -275,7 +275,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						return handle;
 					}
 				};
-				eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler);
+				eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler, true);
 				'''
 				//TODO automaton name
 				//TODO if

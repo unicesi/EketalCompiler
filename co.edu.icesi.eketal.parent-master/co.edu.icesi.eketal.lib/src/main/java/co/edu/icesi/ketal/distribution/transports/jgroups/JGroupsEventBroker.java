@@ -47,6 +47,17 @@ public class JGroupsEventBroker implements EventBroker {
 		this.asyncMonitor = new JGroupsAsyncFacade(groupName, this);
 		this.syncMonitor = new JGroupsSyncFacade(groupName);
 	}
+	
+	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh, boolean asynOn) {
+		System.setProperty("java.net.preferIPv4Stack" , "true");
+		this.groupName = groupName;
+		this.messageHandler = bmh;
+		if(asynOn){			
+			this.asyncMonitor = new JGroupsAsyncFacade(groupName, this);
+		}else{
+			this.syncMonitor = new JGroupsSyncFacade(groupName);			
+		}
+	}
 
 	public JGroupsEventBroker(String groupName) {
 		this(groupName, new DefaultMessageHandler());
