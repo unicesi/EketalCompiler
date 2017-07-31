@@ -2,10 +2,13 @@ package co.edu.icesi.ketal.distribution.transports.jgroups;
 
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jgroups.Address;
 import org.jgroups.Channel;
 import org.jgroups.JChannel;
 import org.jgroups.PhysicalAddress;
@@ -42,10 +45,10 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	// Properties are managed by class DistributionProperties
 	//String props = DistributionProperties.getInstance()
 			//.getStack("AspectsGroup");
-	  private String props = "UDP(mcast_send_buf_size=32000;mcast_port=45566;ucast_recv_buf_size=64000;" +
-			   "mcast_addr=228.8.8.8;mcast_recv_buf_size=64000;max_bundle_size=60000;" +
+	  private String props = "UDP(mcast_send_buf_size=212K;mcast_port=45566;ucast_recv_buf_size=212K;" +
+			   "mcast_addr=228.8.8.8;mcast_recv_buf_size=212K;max_bundle_size=60000;" +
 			   "max_bundle_timeout=30;" +
-			   "ucast_send_buf_size=32000;ip_ttl=32):" +
+			   "ucast_send_buf_size=212K;ip_ttl=32):" +
 			   "PING(timeout=2000;num_initial_members=3):" +
 			   //Added to simulate lost messages
 			   "DISCARD(up=0.05;excludeItself=true):" +
@@ -55,7 +58,8 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 			   "pbcast.NAKACK(use_mcast_xmit=false;retransmit_timeout=600,1200,2400,4800):" +
 			   "pbcast.STABLE(stability_delay=1000;desired_avg_gossip=20000;max_bytes=0):" +
 			   "FRAG(frag_size=8192):" +
-			   "pbcast.GMS(join_timeout=5000;print_local_addr=true;view_bundling=true):Causal(causal_order_prot_interest=false)";
+			   //"pbcast.GMS(join_timeout=5000;print_local_addr=true;view_bundling=true):Causal(causal_order_prot_interest=false)";
+			   "pbcast.GMS(join_timeout=5000;print_local_addr=true;view_bundling=true)";
 
 	String groupName;
 	EventBroker jeb;
@@ -68,7 +72,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	 * messages receiver
 	 */
 	public abstract void initializeFacade();
-
+	
 	/**
 	 * Initializes the channel and receives the base group name and the specific
 	 * EventBroker (to handle the messages) as parameters
@@ -90,15 +94,36 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 	
 	private void initializeAddress() {
 		if(address==null){
-			String srcIp = ""; 
-			PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
-
+			String srcIp = "";
+			Address addr = channel.getAddress();
+			PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, addr));
+			
 		    if(physicalAddr instanceof IpAddress) {
 		        IpAddress ipAddr = (IpAddress)physicalAddr;
 		        InetAddress inetAddr = ipAddr.getIpAddress();
 		        srcIp = inetAddr.getHostAddress()+":"+ipAddr.getPort();
 		    }
-			
+		    
+		    boolean isPhysical = isPhysical(srcIp);		    
+		    
+		    
+		    if(srcIp=="" || isPhysical){
+		    	if(addr instanceof org.jgroups.util.UUID){
+		    		String string = org.jgroups.util.UUID.get(addr);
+		    		try {
+		    			URI uri = new URI("http://"+string.split("-")[0]+(isPhysical?":"+srcIp.split(":")[8]:""));
+						address = uri.toURL();
+						return;
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+		    	}
+		    }
+		    if(srcIp==""){
+		    	return;
+		    }
 		    URL retorno = null;
 			try {
 				retorno = new URL("http://"+srcIp);
@@ -106,11 +131,17 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 				logger.error(e.getStackTrace());
 				e.printStackTrace();
 			}
-			
+			if(retorno==null){
+				logger.error("Null en la direccion ip");
+			}
 			address = retorno;
 		}
 	}
 	
+	private boolean isPhysical(String srcIp) {
+		return srcIp.split(":").length>2&&srcIp!="";
+	}
+
 	public URL getIpAddress(){
 		if(address==null){
 			initializeAddress();

@@ -134,7 +134,6 @@ class EketalGenerator implements IGenerator{
 							//map.put("Automata", automata);
 							Event event = new NamedEvent("«event.name»");
 							event.setLocalization(distribuidor.getAsyncAddress());
-							if(event.getLocalization()==null){System.out.println("No source location es Null");}
 							distribuidor.multicast(event, map);
 							if(!automata.evaluate(event)){
 								//System.out.println("[Aspectj] Before: Event not recognized by the automaton");

@@ -109,7 +109,7 @@ public class WordCount2 {
 
 	public static void main(String[] args) throws Exception {
 		int termino = executeHadoop(args);
-		System.exit(termino);		
+		System.exit(termino);	
 	}
 
 	public static int executeHadoop(String[] args) throws Exception{
@@ -119,8 +119,8 @@ public class WordCount2 {
 		//simula argumentos el ingreso de argumentos o parametros (archivo de entrada y archivo de salida)
 		String[] remainingArgs = optionParser.getRemainingArgs();
 //		String sep = File.separator;
-//		String[] remainingArgs = {"\\."+sep+"src"+sep+"main"+sep+"java"+sep+"hadoop"+sep+"wordcount"+sep+"Hadoop.eketal"
-//				, "\\."+sep+"src"+sep+"main"+sep+"java"+sep+"hadoop"+sep+"wordcount"+sep+"out"};
+//		String[] remainingArgs = {"\\."+sep+"1728.txt"//src"+sep+"main"+sep+"java"+sep+"hadoop"+sep+"wordcount"+sep+"Hadoop.eketal"
+//				, "\\."+sep+"src"+sep+"main"+sep+"java"+sep+"hadoop"+sep+"wordcount"+sep+"out"+System.currentTimeMillis()};
 		
 		if (!(remainingArgs.length != 2 || remainingArgs.length != 4)) {
 			System.err.println("Usage: wordcount <in> <out> [-skip skipPatternFile]");
