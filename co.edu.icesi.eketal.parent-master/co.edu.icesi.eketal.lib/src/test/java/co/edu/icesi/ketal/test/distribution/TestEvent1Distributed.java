@@ -6,7 +6,6 @@ import java.util.List;
 
 import co.edu.icesi.ketal.core.Event;
 
-import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 
@@ -52,22 +51,22 @@ public class TestEvent1Distributed  implements Event, Serializable{
 		}
 
 		@Override
-		public Address getLocalization() {
+		public URL getLocalization() {
 			return null;
 		}
 
 		@Override
-		public boolean setLocalization(Address url) {
+		public boolean setLocalization(URL url) {
 			return false;
 		}
 
 		@Override
-		public List<Address> getTargetLocalization() {
+		public List<URL> getTargetLocalization() {
 			return null;
 		}
 
 		@Override
-		public boolean setTargetLocalization(List<Address> url) {
+		public boolean setTargetLocalization(List<URL> url) {
 			return false;
 		}
 

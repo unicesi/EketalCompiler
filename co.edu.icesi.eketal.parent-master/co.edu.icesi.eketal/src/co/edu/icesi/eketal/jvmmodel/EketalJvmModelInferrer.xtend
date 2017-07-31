@@ -12,7 +12,6 @@ import java.util.TreeMap
 import java.util.Set
 import org.eclipse.xtext.common.types.JvmVisibility
 import co.edu.icesi.eketal.eketal.Group
-import org.eclipse.xtext.common.types.JvmField
 import java.util.HashSet
 import co.edu.icesi.eketal.eketal.StateType
 import co.edu.icesi.ketal.core.State
@@ -32,16 +31,15 @@ import co.edu.icesi.ketal.distribution.BrokerMessageHandler
 import co.edu.icesi.ketal.distribution.ReceiverMessageHandler
 import co.edu.icesi.ketal.distribution.EventBroker
 import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker
-import co.edu.icesi.ketal.distribution.KetalMessageHandler
-import java.util.Vector
 import java.util.Hashtable
 import co.edu.icesi.ketal.core.Expression
-import org.eclipse.xtext.common.types.JvmTypeReference
 import java.util.Arrays
 import org.jgroups.Message
 import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.Pos
-import org.jgroups.Address
+import java.net.URL
+import co.edu.icesi.eketal.eketal.JVarD
+import java.net.MalformedURLException
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -172,6 +170,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, String automatonName) {
 		acceptor.accept(reactions.toClass("co.edu.icesi.eketal.reaction."+reaction)) [
 			val set = reactions.declarations.filter(typeof(Rc))
+			val variables = reactions.declarations.filter(typeof(JVarD))
+			if(!variables.isEmpty){
+				for(variable:variables){
+					members+=reactions.toField(variable.name.toFirstLower, variable.type)[
+						static = true
+					]
+				}
+			}
 			val after = new HashMap<String, String>()
 			val before = new HashMap<String, String>()
 			for(rc:set){
@@ -258,9 +264,11 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
 						«typeRef(Automaton)» automaton = «nameAutomaton».getInstance();
 						if(!automaton.evaluate(event)){
-			    			System.out.println("[Handle] Evento no reconocido por el autómata");
+							«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Evento no reconocido por el autómata");
+			    			//System.out.println("[Handle] Evento no reconocido por el autómata");
 			    		}else{
-			    			System.out.println("[Handle] Returned or threw an Exception");							
+			    			«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Returned or threw an Exception");
+			    			//System.out.println("[Handle] Returned or threw an Exception");							
 			    			co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
 			    			co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
 			    		}
@@ -293,21 +301,25 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 
-			members+=eventDefinitionClass.toMethod("getAsyncAddress", typeRef(Address))[
+			members+=eventDefinitionClass.toMethod("getAsyncAddress", typeRef(URL))[
 				static = false
 				body='''
-					return eventBroker.getAsyncAddress();
-				'''
-			]
-			
-			members+=eventDefinitionClass.toMethod("close", typeRef(void))[
-				static = false
-				body='''
-					if(eventBroker!=null){
-						eventBroker.closeComunication();
+					«typeof(URL)» url = eventBroker.getAsyncAddress();
+					if(url!=null){
+						return url;
+					}else{
+						«typeRef(ReceiverMessageHandler)».getLogger().error("[Handle] Could not obtain JGroups ip Address for the async monitor");
+						try{
+							return new URL("http:127.0.0.1");
+						}catch(«typeRef(MalformedURLException)» e){
+							«typeRef(ReceiverMessageHandler)».getLogger().error("[Handle] "+e.getMessage());
+							e.printStackTrace();
+							return null;
+						}
 					}
 				'''
 			]
+			
 			//TODO Síncrono
 			/* 
 			members+=eventDefinitionClass.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[

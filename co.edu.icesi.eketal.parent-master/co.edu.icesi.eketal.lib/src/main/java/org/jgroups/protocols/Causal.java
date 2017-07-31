@@ -939,7 +939,7 @@ public class Causal extends Protocol
                 return down_prot.down(evt);
             }
         } catch (RuntimeException e) {
-            if (debug) log.error("*** down: "+e.getMessage(), e);
+            if (debug) log.debug("{} *** down: "+e.getMessage(), e);
             throw e;
         }
 
@@ -963,7 +963,7 @@ public class Causal extends Protocol
                 	return up_prot.up(evt);
             }
         } catch (RuntimeException e) {
-            if (debug) log.error("*** up: "+e.getMessage(), e);
+            if (debug) log.debug("{} *** up: "+e.getMessage(), e);
             throw e;
         }
         return null;
@@ -1036,15 +1036,24 @@ public class Causal extends Protocol
          * PROOF vector print
          */
         //////////////////////////////////////////////////////////////////////////
-        System.err.print("Upwarding: "+upwardWaitingQueue);
-        System.err.println("Downwarding: "+downwardWaitingQueue);
+        log.debug("{} Upwarding: "+upwardWaitingQueue);
+        log.debug("{} Downwarding: "+downwardWaitingQueue);
         TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
-        System.out.print("app Vector");
+        log.debug("app Vector");
         printValues(currentView.timeVector);
-        System.out.println("");
-        System.out.print("new Vector: "+messageVector.getAssociatedMessage());
+        log.debug("\n");
+        log.debug("new Vector: "+messageVector.getAssociatedMessage());
         printValues(messageVector.getValues());
-        System.out.println("");
+        log.debug("\n");
+//        System.err.print("Upwarding: "+upwardWaitingQueue);
+//        System.err.println("Downwarding: "+downwardWaitingQueue);
+//        TransportedVectorTime messageVector = ((CausalHeader)obj).getVectorTime();
+//        System.out.print("app Vector");
+//        printValues(currentView.timeVector);
+//        System.out.println("");
+//        System.out.print("new Vector: "+messageVector.getAssociatedMessage());
+//        printValues(messageVector.getValues());
+//        System.out.println("");
       ///////////////////////////////////////////////////////////////////////////
         
         
@@ -1055,12 +1064,14 @@ public class Causal extends Protocol
         	 * modifies the TransportedVectorTime of that Event.
         	 * In other case, the message is passed up. 
         	 */      
-        	System.err.print("Colocando un vector en el Evento");
+        	log.debug("{} Colocando un vector en el Evento");
+//        	System.err.print("Colocando un vector en el Evento");
         	if (msg.getObject() instanceof BrokerMessage) {
     			BrokerMessage bm = (BrokerMessage) msg.getObject();
     			if (bm != null) {
     				if (bm.getEvent() instanceof co.edu.icesi.ketal.core.Event) {
-    	            	System.err.print("Sin ordenamiento: ----");
+    					log.debug("{} Sin ordenamiento: ----");
+//    					System.err.print("Sin ordenamiento: ----");
     	        		co.edu.icesi.ketal.core.Event ketalEvent= bm.getEvent();
     	        		ketalEvent.setTransportedVectorTime(messageVector);
     	        		bm.setEvent(ketalEvent);
@@ -1076,9 +1087,12 @@ public class Causal extends Protocol
 
         		if(!waitingMessages.isEmpty())
         		{
-        			System.err.print("Upwarding: "+upwardWaitingQueue);
-        			System.err.println("Downwarding: "+downwardWaitingQueue);
-        			System.err.println("Cola de espera: "+waitingMessages);
+        			log.debug("{} Upwarding: "+upwardWaitingQueue);
+        			log.debug("{} Downwarding: "+downwardWaitingQueue);
+        			log.debug("{} Cola de espera: "+waitingMessages);
+//        			System.err.print("Upwarding: "+upwardWaitingQueue);
+//        			System.err.println("Downwarding: "+downwardWaitingQueue);
+//        			System.err.println("Cola de espera: "+waitingMessages);
         			//PROOF
         			if(waitingMessages.contains(messageVector))
         			{
@@ -1146,7 +1160,8 @@ public class Causal extends Protocol
             while ((!upwardWaitingQueue.isEmpty()) &&
                     currentView.isCausallyNext((queuedVector = (TransportedVectorTime) upwardWaitingQueue.getFirst()))) {
             	//PROOF
-            	System.err.print("desencolando");
+            	log.debug("{} desencolando");
+//            	System.err.print("desencolando");
             	
             	upwardWaitingQueue.remove(queuedVector);
             	Message tmp=queuedVector.getAssociatedMessage();
@@ -1253,12 +1268,16 @@ public class Causal extends Protocol
 
     
     private void printValues(int[] val){
-    	System.out.print("[");
+    	log.debug("[");
+//    	System.out.print("[");
     	for(int con=0; con<val.length; con++){
-    		System.out.print(""+val[con]+",");
+    		log.debug(""+val[con]+",");
+    		//System.out.print(""+val[con]+",");
     	}
-    	System.out.print("]");
-    	System.out.println();
+    	log.debug("]");
+    	log.debug("\n");
+//    	System.out.print("]");
+//    	System.out.println();
     }
      
 }

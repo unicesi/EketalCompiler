@@ -27,6 +27,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import co.edu.icesi.eketal.eketal.Model
 import co.edu.icesi.eketal.eketal.Pos
 import java.util.HashMap
+import co.edu.icesi.eketal.eketal.TPrefix
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -89,17 +90,20 @@ class EketalGenerator implements IGenerator{
 		importedLibraries+="co.edu.icesi.ketal.core.Event"
 		importedLibraries+="java.util.Map"
 		importedLibraries+="java.util.HashMap"
+		importedLibraries+="org.apache.commons.logging.Log";
+		importedLibraries+="org.apache.commons.logging.LogFactory";
 		//TODO línea 82, saber cómo se crea el evento
 		
 		var aspect = '''
 		public aspect «modelo.name.toFirstUpper»{
 			
+			final static Log logger = LogFactory.getLog(«modelo.name.toFirstUpper».class);
 			«FOR event:modelo.declarations»
-				«IF event instanceof JVarD»
-					//«importedLibraries+=agregarImports((event as JVarD).type.qualifiedName)»
-					//--------Evento: «event.name.toString»-------------
-					private «(event as JVarD).type.simpleName» «(event as JVarD).name.toFirstLower»;
-				«ENDIF»
+«««				«IF event instanceof JVarD»
+«««					//«importedLibraries+=agregarImports((event as JVarD).type.qualifiedName)»
+«««					//--------Evento: «event.name.toString»-------------
+«««					private «(event as JVarD).type.simpleName» «(event as JVarD).name.toFirstLower»;
+«««				«ENDIF»
 				«IF event instanceof co.edu.icesi.eketal.eketal.Automaton»
 					//«automatonName=event.name»
 				«ENDIF»
@@ -115,25 +119,33 @@ class EketalGenerator implements IGenerator{
 					//	System.out.println("[Aspectj] Threw an exception: " + e);
 					//}
 					after(): «event.name.toFirstLower»(){
-						Automaton automata = «automatonName.toFirstUpper».getInstance();
-						Reaction.verifyAfter(automata);
-						System.out.println("[Aspectj] After: Returned or threw an Exception");
+						«IF !modelo.declarations.filter(Automaton).isEmpty»						
+							Automaton automata = «automatonName.toFirstUpper».getInstance();
+							Reaction.verifyAfter(automata);
+						«ENDIF»
+						//System.out.println("[Aspectj] After: Returned or threw an Exception");
+						logger.debug("[Aspectj] After: Returned or threw an Exception");
 					}
 					before(): «event.name.toFirstLower»(){
-						EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
-						Automaton automata = «automatonName.toFirstUpper».getInstance();
-						Map map = new HashMap<String, Object>();
-						//map.put("Automata", automata);
-						Event event = new NamedEvent("«event.name»");
-						event.setLocalization(distribuidor.getAsyncAddress());
-						distribuidor.multicast(event, map);
-						if(!automata.evaluate(event)){
-							System.out.println("[Aspectj] Before: Event not recognized by the automaton");
-							//Debería parar
-						}else{
-							Reaction.verifyBefore(automata);
-							System.out.println("[Aspectj] Before: Returned or threw an Exception");							
-						}
+						«IF !modelo.declarations.filter(Automaton).isEmpty»
+							EventHandler distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
+							Automaton automata = «automatonName.toFirstUpper».getInstance();
+							Map map = new HashMap<String, Object>();
+							//map.put("Automata", automata);
+							Event event = new NamedEvent("«event.name»");
+							event.setLocalization(distribuidor.getAsyncAddress());
+							if(event.getLocalization()==null){System.out.println("No source location es Null");}
+							distribuidor.multicast(event, map);
+							if(!automata.evaluate(event)){
+								//System.out.println("[Aspectj] Before: Event not recognized by the automaton");
+								logger.debug("[Aspectj] Before: Event not recognized by the automaton");
+								//Debería parar
+							}else{
+								Reaction.verifyBefore(automata);
+								//System.out.println("[Aspectj] Before: Returned or threw an Exception");
+								logger.debug("[Aspectj] Before: Returned or threw an Exception");
+							}
+						«ENDIF»
 						//while(!automata.evaluate(event)){
 						//	wait(100);
 						//	
@@ -257,8 +269,11 @@ class EketalGenerator implements IGenerator{
 		 * Toma todos los parmámetros del evento y los añade a una lista
 		 */
 		var parameters = newArrayList()
-		for(p : trigger.params){
-			parameters+=p.simpleName
+		for(p : trigger.params){			
+			if(!p.qualifiedName.contains('$'))
+				parameters+=p.simpleName
+			else
+				parameters+=p.qualifiedName.split("\\.").last.replace('$','.')//p.getQualifiedName('.')
 		}
 		
 		var String typeReturn = null
@@ -272,9 +287,16 @@ class EketalGenerator implements IGenerator{
 		 * La primera posición es el nombre del pointcut, la segunda es la definición del pointcut completo
 		 * En el pointcut completo se toma todos los parámetros y agrupan separados por ','
 		 */
+		 var triggerType = ""
+		 switch (trigger.triggerType){
+			 case TPrefix.CALL:
+			 	triggerType="call"
+			 case TPrefix.EXECUTION:
+			 	triggerType="execution"
+		 }
 		 
 		var CharSequence[] returnCall = newArrayList('''point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»()''',
-			'''pointcut point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»(): call(«typeReturn» «trigger.esig»(«parameters.join(',')»))''')
+			'''pointcut point«trigger.esig.toString.replaceAll("\\.", "").toFirstUpper»(): «triggerType»(«typeReturn» «trigger.esig»(«parameters.join(',')»))''')
 		return returnCall
 	}
 	

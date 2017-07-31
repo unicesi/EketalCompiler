@@ -1,9 +1,12 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * This class is a singleton class that serves as central point
  * for Distribution configuration parameters.
- * This version is inherited form AWED« first implementation and some of
+ * This version is inherited form AWEDï¿½ first implementation and some of
  * the available parameters are not used.
  * 
  * The communication stack is a configuration string that is passed to JGroups to configure the
@@ -24,7 +27,10 @@ public class DistributionProperties {
 	private int RMIExceptionPort;
 	private boolean usingCausalSupport;
 	
-
+	// Default logger
+	private static final Log logger = LogFactory
+			.getLog(DistributionProperties.class);
+	
 	private DistributionProperties() {
 		initializeParameters();
 	}
@@ -62,7 +68,8 @@ public class DistributionProperties {
 			port =";" + "bind_port=" + port;
 		}
 		
-		System.out.println("Options prototcol:" + protocol);
+//		System.out.println("Options prototcol:" + protocol);
+		logger.debug("Options prototcol:" + protocol);
 		if((protocol == null) || (protocol.equals("UDP"))){
 			stack ="UDP(mcast_send_buf_size=32000;mcast_port=45566;ucast_recv_buf_size=64000;" +
 				   "mcast_addr=228.8.8.8;loopback=true;mcast_recv_buf_size=64000;max_bundle_size=60000;" +
@@ -144,12 +151,14 @@ public class DistributionProperties {
 	
 	public void initializeUseCustomizedSockets() {
 		String s = System.getProperty("awed.distribution.CustomizedSockets");
-		System.out.println("awed.distribution.CustomizedSockets: "+s);
+		logger.debug("awed.distribution.CustomizedSockets: "+s);
+//		System.out.println("awed.distribution.CustomizedSockets: "+s);
 		if ("true".equals(s) )
 			useCustomizedSockets = true;
 		else
 			useCustomizedSockets = false;
-		System.out.println("useCustomizedSockets set to: "+useCustomizedSockets);
+		logger.debug("useCustomizedSockets set to: "+useCustomizedSockets);
+		//System.out.println("useCustomizedSockets set to: "+useCustomizedSockets);
 	}
 	
 	public void initializeRMIRegistryPort() {

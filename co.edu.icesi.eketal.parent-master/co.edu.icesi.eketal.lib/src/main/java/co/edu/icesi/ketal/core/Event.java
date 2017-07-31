@@ -4,7 +4,6 @@ package co.edu.icesi.ketal.core;
 import java.net.URL;
 import java.util.List;
 
-import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 
@@ -26,20 +25,20 @@ public interface Event
 	 * Method to get the localization of the event in form of a class URL
 	 * @return URL
 	 */
-	public Address getLocalization();
+	public URL getLocalization();
 	
 	/**
 	 * Method to set the localization of the event
 	 * @param url Representing the localization
 	 */
-	public boolean setLocalization(Address url);
+	public boolean setLocalization(URL url);
 	
 	/**
 	 * Method to get the localization of a specific target if it is necessary.
 	 * It means, if the event must be executed in a specific target.
 	 * @return
 	 */
-	public List<Address> getTargetLocalization();
+	public List<URL> getTargetLocalization();
 	
 	/**
 	 * Sets the localization of the target of the event, it means if the event must be executed in a specific 
@@ -47,7 +46,7 @@ public interface Event
 	 * @param url
 	 * @return
 	 */
-	public boolean setTargetLocalization(List<Address> url);
+	public boolean setTargetLocalization(List<URL> url);
 
 
 	/**

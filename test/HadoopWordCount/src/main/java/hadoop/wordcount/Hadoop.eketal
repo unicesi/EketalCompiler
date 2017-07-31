@@ -1,0 +1,40 @@
+package hadoop.wordcount;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.*;
+
+eventclass Hadoop{
+	automaton mapReduce(){
+		start init: (setupEvent -> firtsMap);
+		firtsMap: (mapEvent -> reduced);
+		reduced: (mapEvent -> reduced) || (latestEvent -> finalState);
+		end finalState;
+	}
+	
+	group localGroup{
+		localhost
+	}
+	
+	event setupEvent(): execution(* WordCount2.TokenizerMapper.setup(org.apache.hadoop.mapreduce.Mapper.Context));
+	
+	event mapEvent(): execution(* WordCount2.TokenizerMapper.map(Object, Text, Mapper.Context));
+
+	event latestEvent(): execution(* WordCount2.TokenizerMapper.cleanup(org.apache.hadoop.mapreduce.Mapper.Context));
+	
+	contador:int
+	
+	reaction before mapReduce.firtsMap{
+		contador=1;
+		long time = System.currentTimeMillis();
+		System.out.println(new StringBuilder("Tiempo inicial: ").append(System.currentTimeMillis()).toString());
+		SingletonTime singleton = SingletonTime.getInstance();
+		singleton.setTiempoInicial(time);
+	}
+	
+	reaction after mapReduce.reduced{
+		contador=Integer.sum(contador,1);		
+	}
+	
+	reaction after mapReduce.finalState{
+		System.out.println(new StringBuilder("Numero de ejecuciones del map: ").append(contador).toString());		
+	}
+}

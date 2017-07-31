@@ -3047,6 +3047,22 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+// Rule TPrefix
+ruleTPrefix
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getTPrefixAccess().getAlternatives()); }
+		(rule__TPrefix__Alternatives)
+		{ after(grammarAccess.getTPrefixAccess().getAlternatives()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Rule StateType
 ruleStateType
 	@init {
@@ -4318,6 +4334,27 @@ rule__JvmWildcardTypeReference__Alternatives_2
 		{ before(grammarAccess.getJvmWildcardTypeReferenceAccess().getGroup_2_1()); }
 		(rule__JvmWildcardTypeReference__Group_2_1__0)
 		{ after(grammarAccess.getJvmWildcardTypeReferenceAccess().getGroup_2_1()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__TPrefix__Alternatives
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getTPrefixAccess().getCallEnumLiteralDeclaration_0()); }
+		('call')
+		{ after(grammarAccess.getTPrefixAccess().getCallEnumLiteralDeclaration_0()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getTPrefixAccess().getExecutionEnumLiteralDeclaration_1()); }
+		('execution')
+		{ after(grammarAccess.getTPrefixAccess().getExecutionEnumLiteralDeclaration_1()); }
 	)
 ;
 finally {
@@ -6151,9 +6188,9 @@ rule__Trigger__Group__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getTriggerAccess().getCallKeyword_0()); }
-	'call'
-	{ after(grammarAccess.getTriggerAccess().getCallKeyword_0()); }
+	{ before(grammarAccess.getTriggerAccess().getTriggerTypeAssignment_0()); }
+	(rule__Trigger__TriggerTypeAssignment_0)
+	{ after(grammarAccess.getTriggerAccess().getTriggerTypeAssignment_0()); }
 )
 ;
 finally {
@@ -22258,6 +22295,21 @@ rule__KindAttribute__ConditionAssignment_2_1
 		{ before(grammarAccess.getKindAttributeAccess().getConditionXParenthesizedExpressionParserRuleCall_2_1_0()); }
 		ruleXParenthesizedExpression
 		{ after(grammarAccess.getKindAttributeAccess().getConditionXParenthesizedExpressionParserRuleCall_2_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Trigger__TriggerTypeAssignment_0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getTriggerAccess().getTriggerTypeTPrefixEnumRuleCall_0_0()); }
+		ruleTPrefix
+		{ after(grammarAccess.getTriggerAccess().getTriggerTypeTPrefixEnumRuleCall_0_0()); }
 	)
 ;
 finally {

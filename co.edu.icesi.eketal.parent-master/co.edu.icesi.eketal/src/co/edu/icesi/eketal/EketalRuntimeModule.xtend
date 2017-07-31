@@ -3,16 +3,15 @@
  */
 package co.edu.icesi.eketal
 
-import com.google.inject.Binder
-import org.eclipse.xtext.generator.IOutputConfigurationProvider
-import com.google.inject.Singleton
-import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures
 import co.edu.icesi.eketal.outputconfiguration.EketalOutputConfigurationProvider
-import org.eclipse.xtext.generator.IGenerator
 import co.edu.icesi.eketal.outputconfiguration.OutputConfigurationAwaredGenerator
 import co.edu.icesi.eketal.scoping.EketalScopeProvider
-import org.eclipse.xtext.scoping.IScopeProvider
+import com.google.inject.Binder
+import com.google.inject.Singleton
+import org.eclipse.xtext.generator.IGenerator
+import org.eclipse.xtext.generator.IOutputConfigurationProvider
 import org.eclipse.xtext.linking.LinkingScopeProviderBinding
+import org.eclipse.xtext.scoping.IScopeProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.

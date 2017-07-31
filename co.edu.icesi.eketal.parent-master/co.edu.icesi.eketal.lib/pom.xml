@@ -2,24 +2,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>co.edu.icesi.eketal.lib</artifactId>
-	
+
 	<properties>
 		<jar.name>${project.artifactId}-${project.version}</jar.name>
 		<bundle.dir>../co.edu.icesi.eketal.lib.osgi/</bundle.dir>
 	</properties>
-	
+
 	<parent>
 		<groupId>co.edu.icesi.eketal</groupId>
 		<artifactId>co.edu.icesi.eketal.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
 			<resource>
-				<directory>src/main/java</directory>
+				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
@@ -34,32 +34,31 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 		        <groupId>org.apache.maven.plugins</groupId> -->
-<!-- 		        <artifactId>maven-surefire-plugin</artifactId> -->
-<!-- 		        <version>2.19.1</version> -->
-<!-- 		        <configuration> -->
-<!-- 		        	<skipTests>true</skipTests> -->
-<!-- 	        	</configuration> -->
-<!-- 	        </plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
+			<!-- <version>2.19.1</version> -->
+			<!-- <configuration> -->
+			<!-- <skipTests>true</skipTests> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
-          			<execution>
-          				<phase>package</phase>
-          				<goals>
-          					<goal>run</goal>
-          				</goals>
-          				<configuration>
-          					<tasks>
-          						<copy file="target/${jar.name}.jar" tofile="${bundle.dir}/${jar.name}.jar"/>
-          						<!--  <delete file="${bundle.dir}/OSGI-OPT/src/${project.artifactId}"/>
-          						<unzip src="target/${jar.name}-sources.jar" dest="${bundle.dir}/OSGI-OPT/src/${project.artifactId}"/>
-          						-->
-          					</tasks>
-          				</configuration>
-          			</execution>
-          		</executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy file="target/${jar.name}.jar" tofile="${bundle.dir}/${jar.name}.jar" />
+								<!-- <delete file="${bundle.dir}/OSGI-OPT/src/${project.artifactId}"/> 
+									<unzip src="target/${jar.name}-sources.jar" dest="${bundle.dir}/OSGI-OPT/src/${project.artifactId}"/> -->
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -75,6 +74,31 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.logging.log4j</groupId> -->
+<!-- 			<artifactId>log4j-1.2-api</artifactId> -->
+<!-- 			<version>2.8.1</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>1.2</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+			<dependency>
+		   	<groupId>org.apache.logging.log4j</groupId>
+		   	<artifactId>log4j-jcl</artifactId>
+		   	<version>2.8.1</version>
+	   </dependency> -->
 		<dependency>
 			<groupId>org.jgroups</groupId>
 			<artifactId>jgroups</artifactId>

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 
-import org.jgroups.Address;
 import org.jgroups.protocols.TransportedVectorTime;
 
 import co.edu.icesi.ketal.core.Event;
@@ -51,23 +50,23 @@ public class TestEvent1Distributed  implements Event, Serializable{
 		}
 
 		@Override
-		public Address getLocalization() {
+		public URL getLocalization() {
 			return null;
 		}
 
 		@Override
-		public boolean setLocalization(Address url) {
+		public boolean setLocalization(URL url) {
 			return true;
 			
 		}
 
 		@Override
-		public List<Address> getTargetLocalization() {
+		public List<URL> getTargetLocalization() {
 			return null;
 		}
 
 		@Override
-		public boolean setTargetLocalization(List<Address> url) {
+		public boolean setTargetLocalization(List<URL> url) {
 			return false;
 		}
 

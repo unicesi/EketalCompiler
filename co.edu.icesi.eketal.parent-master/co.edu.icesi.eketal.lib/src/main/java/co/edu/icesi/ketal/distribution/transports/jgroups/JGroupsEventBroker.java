@@ -1,10 +1,18 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Address;
+import org.jgroups.Channel;
 import org.jgroups.Message;
+import org.jgroups.PhysicalAddress;
+import org.jgroups.stack.IpAddress;
 import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
 
@@ -28,8 +36,12 @@ public class JGroupsEventBroker implements EventBroker {
 	private JGroupsSyncFacade syncMonitor;
 	private String groupName;
 	private BrokerMessageHandler messageHandler;
-
+	
+	protected static final Log logger = LogFactory
+			.getLog(JGroupsAbstractFacade.class);
+	
 	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh) {
+		System.setProperty("java.net.preferIPv4Stack" , "true");
 		this.groupName = groupName;
 		this.messageHandler = bmh;
 		this.asyncMonitor = new JGroupsAsyncFacade(groupName, this);
@@ -52,14 +64,16 @@ public class JGroupsEventBroker implements EventBroker {
 	 */
 
 	@Override
-	public Address getAsyncAddress() {
-		return asyncMonitor.getChannel().getAddress();
+	public URL getAsyncAddress() {	    
+		return asyncMonitor.getIpAddress();
 	}
 
 	@Override
-	public Address getSyncAddress() {
-		return syncMonitor.getChannel().getAddress();
+	public URL getSyncAddress() {
+	    return syncMonitor.getIpAddress();
 	}
+
+	
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous
 	// messages
@@ -88,12 +102,6 @@ public class JGroupsEventBroker implements EventBroker {
 	public NotifyingFuture<RspList<Object>> multicastWithFutures(String class_name,
 			String method_name, Object... parameters) {
 		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
-	}
-
-	@Override
-	public void closeComunication() {
-		syncMonitor.closeComunication();
-		asyncMonitor.closeComunication();
 	}
 
 }

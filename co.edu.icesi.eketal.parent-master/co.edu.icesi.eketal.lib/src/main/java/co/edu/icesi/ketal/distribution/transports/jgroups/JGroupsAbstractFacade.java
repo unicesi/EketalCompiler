@@ -1,10 +1,18 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Channel;
 import org.jgroups.JChannel;
+import org.jgroups.PhysicalAddress;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
+import org.jgroups.stack.IpAddress;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.distribution.EventBroker;
@@ -19,14 +27,15 @@ import co.edu.icesi.ketal.distribution.EventBroker;
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 
 	// Default logger
-	static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-			.getLogger(JGroupsAbstractFacade.class);
+	protected static final Log logger = LogFactory
+			.getLog(JGroupsAbstractFacade.class);
 
 	// Channel object, this is part of Jgroups API
 	Channel channel;
 	RpcDispatcher disp;
 	RspList rsp_list;
 	RequestOptions opts;
+	protected URL address;
 	// RequestHandler disp;
 
 	// The properties configuring the Jgroups communication stack
@@ -72,19 +81,41 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.jeb = jeb;
 		try {
 			channel = new JChannel(props);
-			
+			initializeAddress();
 		} catch (Exception e) {
-			e.printStackTrace();
+			getLogger().error(e.getMessage());
+//			e.printStackTrace();
 		}
 	}
+	
+	private void initializeAddress() {
+		if(address==null){
+			String srcIp = ""; 
+			PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
 
-	public void closeComunication(){
-		if(channel==null)
-			return;
-		if(channel.isConnected())
-			channel.disconnect();
-		if(channel.isOpen())
-			channel.close();
+		    if(physicalAddr instanceof IpAddress) {
+		        IpAddress ipAddr = (IpAddress)physicalAddr;
+		        InetAddress inetAddr = ipAddr.getIpAddress();
+		        srcIp = inetAddr.getHostAddress()+":"+ipAddr.getPort();
+		    }
+			
+		    URL retorno = null;
+			try {
+				retorno = new URL("http://"+srcIp);
+			} catch (MalformedURLException e) {
+				logger.error(e.getStackTrace());
+				e.printStackTrace();
+			}
+			
+			address = retorno;
+		}
+	}
+	
+	public URL getIpAddress(){
+		if(address==null){
+			initializeAddress();
+		}
+		return address;
 	}
 	
 	/**
@@ -96,17 +127,15 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.groupName = groupName;
 		try {
 			channel = new JChannel();
+			initializeAddress();
 		} catch (Exception e) {
-			e.printStackTrace();
+			getLogger().error(e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
-	public static org.apache.log4j.Logger getLogger() {
+	public static Log getLogger() {
 		return logger;
-	}
-
-	public static void setLogger(org.apache.log4j.Logger logger) {
-		JGroupsAbstractFacade.logger = logger;
 	}
 
 	public Channel getChannel() {
@@ -179,11 +208,5 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 
 	public void setSignal(Object signal) {
 		this.signal = signal;
-	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		closeComunication();
-		super.finalize();
 	}
 }
