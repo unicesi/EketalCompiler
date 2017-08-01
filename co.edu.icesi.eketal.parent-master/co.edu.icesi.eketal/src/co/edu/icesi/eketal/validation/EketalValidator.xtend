@@ -14,6 +14,10 @@ import co.edu.icesi.eketal.eketal.Step
 import java.util.TreeSet
 import co.edu.icesi.eketal.eketal.Automaton
 import co.edu.icesi.eketal.eketal.StateType
+import co.edu.icesi.eketal.eketal.Host
+import co.edu.icesi.eketal.eketal.Group
+import java.net.URL
+import java.net.MalformedURLException
 
 /**
  * This class contains custom validation rules. 
@@ -28,6 +32,7 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val NO_INITIAL_STATE_FOUND = "eketal.issue.noInitialStateFound"
 	public static val MANY_INITIAL_STATES_FOUND = "eketal.issue.manyInitialStatesFound"
 	public static val NO_TRANSITIONS_FROM_INITIAL_STATE = "eketal.issue.noTransitionsFromInitialState"
+	public static val NO_VALID_IP = "eketal.issue.noValidIpOnGroup"
 	
 	@Check
 	def checkAutomatonDeterminism(Step step){
@@ -36,8 +41,32 @@ class EketalValidator extends AbstractEketalValidator {
 			for(event:duplicate.keySet){
 				error("The step '" + step.name + "' cannot have another transition with the same event as '" + event.name +
 					"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)
-				
 			}			
+		}
+	}
+	
+	@Check
+	def checkAutomatonDeterminism(Group group){
+		for(host:group.hosts){
+			try {
+				if(!(host.ip.equals("localhost")||host.ip.equals("jphost"))){
+					var bytes = host.ip.split("\\.")
+					for(byteIter:bytes){
+						if(byteIter=='*'){							
+							
+						}else if(Integer.parseInt(byteIter)<0 || Integer.parseInt(byteIter)>255){
+							error("The host '" + host+ "' cannot be resolved because their bytes must must be between 0<x<255 in '" + group.name +
+								"'", EketalPackage.Literals.GROUP__NAME, NO_VALID_IP)							
+						}
+					}
+					var URL test = new URL("http://"+host.ip)
+				}
+			} catch (MalformedURLException exception) {
+				error("The host '" + host.ip+ "' cannot be resolved as a correct address in the group'" + group.name +
+					"'", EketalPackage.Literals.GROUP__NAME, NO_VALID_IP)
+			}catch(Exception e){
+				
+			}
 		}
 	}
 	

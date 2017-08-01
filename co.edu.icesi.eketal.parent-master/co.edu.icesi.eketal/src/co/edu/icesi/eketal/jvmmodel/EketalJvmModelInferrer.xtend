@@ -40,6 +40,7 @@ import co.edu.icesi.eketal.eketal.Pos
 import java.net.URL
 import co.edu.icesi.eketal.eketal.JVarD
 import java.net.MalformedURLException
+import co.edu.icesi.eketal.eketal.Host
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -258,7 +259,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					@Override
 					public Object handle(«typeof(Event)» event, «typeof(Map)» metadata, «typeof(Message)» msg,
 					    			«typeof(int)» typeOfMsgSent){
-					    if(event.getLocalization().getHost().equals(eventBroker.getAsyncAddress().getHost())){
+					    if(event.getLocalization().equals(eventBroker.getAsyncAddress())){
 					    	return null;
 					    }
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
@@ -355,8 +356,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //			annotations+=annotationRef(Singleton)
 			
 			val grupos = new TreeSet()
+			val function = [Host h | h.ip]
 			claseGrupos.declarations.filter(typeof(Group)).forEach[
-				grupos+="\""+it.name+"\""
+				grupos+="\""+it.name+":["+it.hosts.join(",", function)+"]\""
 			]
 			
 			if(!grupos.isEmpty){
@@ -366,23 +368,46 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				]
 			}
 
-			members+=claseGrupos.toField("grupos", typeRef(Set, typeRef(String)))[
+			members+=claseGrupos.toField("grupos", typeRef(Map, typeRef(String), typeRef(Set, typeRef(URL))))[
 				static = true
-				initializer = '''new «typeRef(TreeSet)»<«typeRef(String)»>(
-				«IF !grupos.empty»
-					«typeRef(Arrays)».asList(SET_VALUES)
-				«ENDIF»
-				)'''
+				initializer = '''initializeGroups()'''
+			]
+			
+			members+=claseGrupos.toMethod("initializeGroups", typeRef(Map))[
+				static = true
+				body='''
+					«TreeMap» retorno = new «TreeMap»();
+					for(«typeRef(String)» s : SET_VALUES){
+						«typeRef(String)»[] keyValue = s.replace("]","").split(":[");
+						«typeRef(Set, typeRef(URL))» values = new «typeRef(TreeSet)»();
+						for(«typeRef(String)» ip : keyValue[1].split(",")){
+							try{
+								if(ip.equals("localhost")){
+									co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName» local = co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName».getInstance();
+									values.add(new «typeRef(URL)»("http://"+local.getAsyncAddress().getHost()));
+								}else{
+									values.add(new «typeRef(URL)»("http://"+ip));
+								}
+							}catch(«typeRef(Exception)» e){
+								e.printStackTrace();
+							}
+						}
+						retorno.put(keyValue[0],values);
+					}
+					
+					return retorno;
+				'''
 			]
 			
 			members+=claseGrupos.toConstructor[
 			]
 			
-			members+=claseGrupos.toMethod("addGroup", typeRef(Boolean))[
-				parameters+=claseGrupos.toParameter("nuevoGrupo", String.typeRef)
+			members+=claseGrupos.toMethod("addGroup", typeRef(void))[
+				parameters+=claseGrupos.toParameter("newGrupo", String.typeRef)
+				parameters+=claseGrupos.toParameter("hosts", typeRef(Set, typeRef(URL)))
 				static = true
 				body='''
-					return grupos.add(nuevoGrupo);
+					grupos.put(newGrupo, hosts);
 				'''
 			]
 			
@@ -390,7 +415,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				parameters+=claseGrupos.toParameter("grupoEliminar", String.typeRef)
 				static = true
 				body='''
-					return grupos.remove(grupoEliminar);
+					return grupos.remove(grupoEliminar)!=null;
 				'''
 			]
 			
@@ -411,7 +436,16 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					if(grupos==null){
 						return false;
 					}
-					return grupos.contains(nombreGrupo);
+					co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName» local = co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName».getInstance();
+					«typeRef(URL)» url = local.getAsyncAddress();
+					«typeRef(boolean)» retorno = false;
+					try{						
+						retorno = grupos.get(nombreGrupo).contains(new «typeRef(URL)»("http://"+url.getHost()));
+					}catch(«typeRef(Exception)» e){
+						e.printStackTrace();
+						retorno = false;
+					}
+					return retorno;
 				'''
 			]
 		]
