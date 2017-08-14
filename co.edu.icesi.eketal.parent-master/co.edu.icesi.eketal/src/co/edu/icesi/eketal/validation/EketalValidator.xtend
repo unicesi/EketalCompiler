@@ -18,6 +18,7 @@ import co.edu.icesi.eketal.eketal.Host
 import co.edu.icesi.eketal.eketal.Group
 import java.net.URL
 import java.net.MalformedURLException
+import co.edu.icesi.eketal.eketal.EvDecl
 
 /**
  * This class contains custom validation rules. 
@@ -33,6 +34,19 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val MANY_INITIAL_STATES_FOUND = "eketal.issue.manyInitialStatesFound"
 	public static val NO_TRANSITIONS_FROM_INITIAL_STATE = "eketal.issue.noTransitionsFromInitialState"
 	public static val NO_VALID_IP = "eketal.issue.noValidIpOnGroup"
+	public static val REPEATED_EVENT_NAME = "eketal.issue.repeatedEventName"
+	
+	@Check
+	def checkRepeatedEventName(EventClass myClass){
+		var events = myClass.declarations.filter(typeof(EvDecl))
+		val duplicate = events.groupBy[ev| ev.name].filter[e,l|l.size > 1]
+		if (!duplicate.empty) {
+			for(event:duplicate.keySet){
+				error("The event '" + event + "' is repeated in '" + myClass.name +
+					"'", EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, REPEATED_EVENT_NAME)
+			}			
+		}
+	}
 	
 	@Check
 	def checkAutomatonDeterminism(Step step){

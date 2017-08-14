@@ -276,7 +276,9 @@ class EketalGenerator implements IGenerator{
 		}
 		
 		var String typeReturn = null
-		if(trigger.returndef.astk==null){
+		if(trigger.returndef==null){
+			typeReturn=""
+		}else if(trigger.returndef.astk==null){
 			typeReturn=trigger.returndef.jvmRef.simpleName
 		}else{
 			typeReturn = "*"
