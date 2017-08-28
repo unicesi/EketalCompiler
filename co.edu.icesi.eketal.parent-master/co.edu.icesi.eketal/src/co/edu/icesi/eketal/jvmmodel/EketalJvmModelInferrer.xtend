@@ -41,6 +41,8 @@ import java.net.URL
 import co.edu.icesi.eketal.eketal.JVarD
 import java.net.MalformedURLException
 import co.edu.icesi.eketal.eketal.Host
+import java.util.ArrayList
+import java.util.List
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -57,9 +59,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject extension IQualifiedNameProvider
 		
-	public static String groupClassName = "GroupsControl"
-	public static String handlerClassName = "EventHandler"
-	public static String reaction = "Reaction"
+	public static String groupClassName = "_GroupsControl"
+	public static String handlerClassName = "_EventHandler"
+	public static String reaction = "_Reaction"
 		
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -115,6 +117,13 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		 * Collects all the automatons and creates an automaton for each one
 		 */
 		var automatons = element.typeDeclaration.declarations.filter(typeof(co.edu.icesi.eketal.eketal.Automaton));
+		val eventsOfAutomaton =  automatons.toInvertedMap[a | 
+			val Set steps = new TreeSet
+			//steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
+			a.steps.forall[s|steps.add(s.name)]
+			return steps	
+		]
+		
 		var String nameAutomaton;
 		for(declaracion : automatons){
 			//Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
@@ -122,6 +131,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			 * Creates the class with the singleton nature
 			 */
 			nameAutomaton = "co.edu.icesi.eketal.automaton."+declaracion.name.toFirstUpper
+			
 			acceptor.accept(declaracion.toClass(nameAutomaton)) [
 			 	//superTypes+=entity.superType.cloneWithProxies
 	//					 	superTypes+=typeRef(Automaton)
@@ -158,17 +168,17 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		 * Creates the class that contains the required reactions
 		 */
 		var reactions = element.typeDeclaration;
-		createReactionClass(acceptor, reactions, nameAutomaton)
+		createReactionClass(acceptor, reactions, eventsOfAutomaton)
 		
 		/*
 		 * Creates the class that handles the control in the jgroups
 		 */
 		val handlerClass = element.typeDeclaration;
-		createHandlerClass(acceptor, handlerClass, nameAutomaton)
+		createHandlerClass(acceptor, handlerClass, automatons.toSet)
 		
 	}
 	
-	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, String automatonName) {
+	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions,  Map automatonsMap) {
 		acceptor.accept(reactions.toClass("co.edu.icesi.eketal.reaction."+reaction)) [
 			val set = reactions.declarations.filter(typeof(Rc))
 			val variables = reactions.declarations.filter(typeof(JVarD))
@@ -206,11 +216,21 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				body='''
 					«IF !before.isEmpty»
 						«typeRef(State)» actual = automaton.getCurrentState();
-						«FOR state:before.keySet»
-							if(actual.equals(«automatonName».estados.get("«state»"))){
-								«before.get(state)»;
-							}
+						«FOR state:before.keySet»	
+							«FOR automaton:automatonsMap.keySet.map[a|a as co.edu.icesi.eketal.eketal.Automaton]»
+								«IF (automatonsMap.get(automaton) as Set<String>).contains(state)»
+								if(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».class.isInstance(automaton)){
+									System.out.println("instanceof");
+									if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state»"))){
+										«before.get(state)»;
+									}
+								}else{
+									System.out.println("NOinstanceof");									
+								}
+								«ENDIF»
+							«ENDFOR»								
 						«ENDFOR»
+						
 					«ENDIF»
 				'''
 			]
@@ -222,9 +242,15 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					«IF !after.isEmpty»
 						«typeRef(State)» actual = automaton.getCurrentState();
 						«FOR state:after.keySet»
-							if(actual.equals(«automatonName».estados.get("«state»"))){
-								«after.get(state)»;
-							}
+							«FOR automaton:automatonsMap.keySet.map[a|a as co.edu.icesi.eketal.eketal.Automaton]»
+								«IF automaton.steps.contains(state)»
+									if(automaton.getClass().isAssignableFrom(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».class){
+										if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state»"))){
+											«after.get(state)»;
+										}
+									}
+								«ENDIF»
+							«ENDFOR»
 						«ENDFOR»
 					«ENDIF»
 				'''
@@ -236,7 +262,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	/*
 	 * Also adds the Singleton nature
 	 */
-	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass, String nameAutomaton) {
+	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass,  Set machines) {
+		val automatons = machines.map[a|a as co.edu.icesi.eketal.eketal.Automaton].toSet
 		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol."+handlerClassName)) [
 			//Implementación de la simulación Singleton
 			members+=eventDefinitionClass.toField("instance", typeRef(it))[
@@ -263,16 +290,18 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					    	return null;
 					    }
 						Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
-						«typeRef(Automaton)» automaton = «nameAutomaton».getInstance();
-						if(!automaton.evaluate(event)){
-							«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Evento no reconocido por el autómata");
-			    			//System.out.println("[Handle] Evento no reconocido por el autómata");
+						«FOR nameAutomaton:automatons»
+						«typeRef(Automaton)» automaton«nameAutomaton.name.toFirstUpper» = co.edu.icesi.eketal.automaton.«nameAutomaton.name.toFirstUpper».getInstance();
+						if(!automaton«nameAutomaton.name.toFirstUpper».evaluate(event)){
+							«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Event not recognized by the automaton: «nameAutomaton.name.toFirstUpper»");
+			    			//System.out.println("[Handle] Event not recognized by the automaton: «nameAutomaton.name.toFirstUpper»");
 			    		}else{
-			    			«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Returned or threw an Exception");
-			    			//System.out.println("[Handle] Returned or threw an Exception");							
-			    			co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);					
-			    			co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);					
+			    			«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Recognized event in «nameAutomaton.name»");
+			    			//System.out.println("[Handle] Recognized event by automaton «nameAutomaton.name»");							
+			    			co.edu.icesi.eketal.reaction.«reaction».verifyBefore(automaton«nameAutomaton.name.toFirstUpper»);					
+			    			co.edu.icesi.eketal.reaction.«reaction».verifyAfter(automaton«nameAutomaton.name.toFirstUpper»);					
 			    		}
+						«ENDFOR»
 						return handle;
 					}
 				};

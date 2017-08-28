@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import co.edu.icesi.eketal.automaton.DeadLockDetector;
-import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol._EventHandler;
 
 public class Executor {
 
@@ -40,7 +40,7 @@ public class Executor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			EventHandler.getInstance().close();
+//			_EventHandler.getInstance().close();
 		}
 		
 	}

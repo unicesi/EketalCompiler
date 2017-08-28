@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import co.edu.icesi.eketal.automaton.DeadLockDetector;
-import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol._EventHandler;
 import co.edu.icesi.ketal.core.Automaton;
 import co.edu.icesi.ketal.core.Event;
 import co.edu.icesi.ketal.core.NamedEvent;
