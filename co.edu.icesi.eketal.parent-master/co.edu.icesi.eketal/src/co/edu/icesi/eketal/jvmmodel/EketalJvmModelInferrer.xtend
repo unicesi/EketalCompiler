@@ -33,7 +33,6 @@ import co.edu.icesi.ketal.distribution.EventBroker
 import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker
 import java.util.Hashtable
 import co.edu.icesi.ketal.core.Expression
-import java.util.Arrays
 import org.jgroups.Message
 import co.edu.icesi.eketal.eketal.Rc
 import co.edu.icesi.eketal.eketal.Pos
@@ -41,8 +40,8 @@ import java.net.URL
 import co.edu.icesi.eketal.eketal.JVarD
 import java.net.MalformedURLException
 import co.edu.icesi.eketal.eketal.Host
-import java.util.ArrayList
-import java.util.List
+import java.util.regex.Pattern
+import java.util.Collections
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -248,12 +247,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							«FOR automaton:automatonsMap.keySet.map[a|a as co.edu.icesi.eketal.eketal.Automaton]»
 								«IF (automatonsMap.get(automaton) as Set<String>).contains(state)»
 									if(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».class.isInstance(automaton)){
-										System.out.println("instanceof");
 										if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state»"))){
 											«before.get(state)»;
 										}
-									}else{
-										System.out.println("NOinstanceof");									
 									}
 								«ENDIF»
 							«ENDFOR»								
@@ -323,8 +319,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 									«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Event not recognized by the automaton: «nameAutomaton.name.toFirstUpper»");
 												//System.out.println("[Handle] Event not recognized by the automaton: «nameAutomaton.name.toFirstUpper»");
 											}else{
-												«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Recognized event in «nameAutomaton.name»");
-												//System.out.println("[Handle] Recognized event by automaton «nameAutomaton.name»");							
+												«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Recognized event "+event+" in «nameAutomaton.name»");
+												//System.out.println("[Handle] Recognized event "+event+" by automaton «nameAutomaton.name»");							
 												co.edu.icesi.eketal.reaction.«reaction».verifyBefore(automaton«nameAutomaton.name.toFirstUpper»);					
 												co.edu.icesi.eketal.reaction.«reaction».verifyAfter(automaton«nameAutomaton.name.toFirstUpper»);					
 											}
@@ -430,10 +426,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			members += claseGrupos.toMethod("initializeGroups", typeRef(Map)) [
 				static = true
 				body = '''
-					«TreeMap» retorno = new «TreeMap»();
+					«Map» retorno = «Collections».synchronizedMap(new «Hashtable»());
 					for(«typeRef(String)» s : SET_VALUES){
-						«typeRef(String)»[] keyValue = s.replace("]","").split(":[");
-						«typeRef(Set, typeRef(URL))» values = new «typeRef(TreeSet)»();
+						«typeRef(String)»[] keyValue = s.replace("]","").split(«typeRef(Pattern)».quote(":["));
+						«typeRef(Set, typeRef(URL))» values = new «typeRef(HashSet)»();
 						for(«typeRef(String)» ip : keyValue[1].split(",")){
 							try{
 								if(ip.equals("localhost")){

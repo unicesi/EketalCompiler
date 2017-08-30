@@ -7,14 +7,11 @@ import co.edu.icesi.eketal.eketal.Model
 import java.util.ArrayList
 import org.eclipse.xtext.validation.Check
 import org.eclipse.emf.common.util.URI
-import java.util.Arrays
 import co.edu.icesi.eketal.eketal.EketalPackage
 import co.edu.icesi.eketal.eketal.EventClass
 import co.edu.icesi.eketal.eketal.Step
-import java.util.TreeSet
 import co.edu.icesi.eketal.eketal.Automaton
 import co.edu.icesi.eketal.eketal.StateType
-import co.edu.icesi.eketal.eketal.Host
 import co.edu.icesi.eketal.eketal.Group
 import java.net.URL
 import java.net.MalformedURLException

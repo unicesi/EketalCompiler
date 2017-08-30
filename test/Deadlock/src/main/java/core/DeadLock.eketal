@@ -20,7 +20,7 @@ eventclass DeadLock{
 	
 	event prepareEvent():host(localGroup)&&call(* TreeCache.prepare());
 	
-	event commitEvent(): call(* TreeCache.commit());
+	event commitEvent(): host(localGroup)&&call(* TreeCache.commit());
 	
 	reaction before deadLockDetector.deadlock{
 		System.out.println("----------------------------------------");

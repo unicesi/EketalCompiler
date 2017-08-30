@@ -12,7 +12,6 @@ import co.edu.icesi.eketal.eketal.Trigger
 import co.edu.icesi.eketal.eketal.KindAttribute
 import java.io.File
 import co.edu.icesi.eketal.eketal.UnaryEvent
-import co.edu.icesi.eketal.eketal.JVarD
 import java.util.Set
 import java.util.TreeSet
 import java.util.ArrayList
@@ -21,15 +20,9 @@ import org.eclipse.xtext.xbase.impl.XStringLiteralImpl
 import co.edu.icesi.eketal.eketal.Automaton
 import org.eclipse.emf.common.util.EList
 import co.edu.icesi.eketal.eketal.Decl
-import co.edu.icesi.eketal.eketal.Rc
-import org.eclipse.xtext.xbase.XBlockExpression
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import co.edu.icesi.eketal.eketal.Model
-import co.edu.icesi.eketal.eketal.Pos
 import java.util.HashMap
 import co.edu.icesi.eketal.eketal.TPrefix
-import java.util.Map
-import java.util.TreeMap
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -166,8 +159,8 @@ class EketalGenerator implements IGenerator{
 										//Debería parar
 									}else{
 										«EketalJvmModelInferrer.reaction».verifyBefore(«automatonName.name»);
-										//System.out.println("[Aspectj] Before: Recognized event in «automatonName.name»");
-										logger.debug("[Aspectj] Before: Recognized event in «automatonName.name»");
+										//System.out.println("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
+										logger.debug("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
 									}
 								«ENDIF»
 							«ENDFOR»

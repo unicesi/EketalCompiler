@@ -29,11 +29,11 @@ public class Executor {
 				}else if(r.equals("commit")){
 					tree.commit();
 				}else if(r.equals("automaton")){
-					System.out.println(DeadLockDetector.getInstance().getCurrentState());
+					System.out.println(DeadLockDetector.getInstance().getCurrentState().toString());
 				}
 			}
 			bf.close();
-			
+			 
 			System.out.println("termina");
 			
 		}catch (IOException e) {
