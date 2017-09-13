@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?>
-<target name="co.edu.icesi.eketal.target" sequenceNumber="2">
+<?pde version="3.8"?><target name="co.edu.icesi.eketal.target" sequenceNumber="21">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.draw2d.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.xpand" version="0.0.0"/>
-<unit id="org.eclipse.xtend" version="0.0.0"/>
-<unit id="org.eclipse.xtend.typesystem.emf" version="0.0.0"/>
-<repository location="http://download.eclipse.org/releases/mars/201506241002/"/>
+<unit id="org.eclipse.sapphire.platform.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.sapphire.ui.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.fx.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.sapphire.ui.swt.xml.editor.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.sapphire.source.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.common.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.sapphire.osgi.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.sapphire.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.scout.sdk-feature.feature.group" version="6.0.0.RC4"/>
+<unit id="org.eclipse.sapphire.ui.swt.gef.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.cloudio.doc.user.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.gef4.dot.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.sapphire.java.jdt.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.cloudio.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.gef4.geometry.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.sapphire.modeling.xml.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.zest.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.gef4.dot.doc.user.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.sapphire.java.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.layout.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.gef4.mvc.sdk.feature.group" version="1.0.0.201606082015"/>
+<unit id="org.eclipse.sapphire.sdk.feature.group" version="9.0.5.201605181639"/>
+<unit id="org.eclipse.gef4.graph.sdk.feature.group" version="1.0.0.201606082015"/>
+<repository location="http://download.eclipse.org/releases/neon/201606221000"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.mwe2.launcher.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/modeling/emft/mwe/updates/releases/2.8.1/"/>
+<unit id="org.eclipse.emf.mwe2.language.sdk.feature.group" version="2.9.0.v201605261103"/>
+<unit id="org.eclipse.emf.mwe.sdk.feature.group" version="1.3.20.v201605261103"/>
+<repository location="http://download.eclipse.org/modeling/emft/mwe/updates/releases/2.9.0/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.10.0/"/>
+<unit id="jbase.lib.feature.feature.group" version="0.7.0.v20170907-0911"/>
+<unit id="jbase.sdk.feature.group" version="0.7.0.v20170907-0911"/>
+<repository location="https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.7/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="jbase.sdk.feature.group" version="0.5.0.v20160828-1111"/>
-<unit id="jbase.lib.feature.feature.group" version="0.5.0.v20160828-1111"/>
-<repository location="https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.5/"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.12.0.v20170519-1412"/>
+<unit id="org.eclipse.xtext.sdk.feature.group" version="2.12.0.v20170519-1412"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.12.0/"/>
 </location>
 </locations>
 </target>

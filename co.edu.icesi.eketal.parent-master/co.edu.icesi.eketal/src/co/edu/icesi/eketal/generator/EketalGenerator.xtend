@@ -138,7 +138,7 @@ class EketalGenerator implements IGenerator{
 									«EketalJvmModelInferrer.reaction».verifyAfter(«automatonName.name»);
 								«ENDIF»			
 								//System.out.println("[Aspectj] After: Recognized event in «automatonName.name»");
-								logger.debug("[Aspectj] After: Recognized event in «automatonName.name»");
+								logger.info("[Aspectj] After: Recognized event in «automatonName.name»");
 							«ENDFOR»
 						«ENDIF»
 					}
@@ -155,12 +155,12 @@ class EketalGenerator implements IGenerator{
 									distribuidor.multicast(event, map«automatonName.name.toFirstUpper»);
 									if(!«automatonName.name».evaluate(event)){
 										//System.out.println("[Aspectj] Before: Event not recognized by the automaton");
-										logger.debug("[Aspectj] Before: Event not recognized by the automaton: «automatonName.name.toFirstUpper»");
+										logger.info("[Aspectj] Before: Event not recognized by the automaton: «automatonName.name.toFirstUpper»");
 										//Debería parar
 									}else{
 										«EketalJvmModelInferrer.reaction».verifyBefore(«automatonName.name»);
 										//System.out.println("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
-										logger.debug("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
+										logger.info("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
 									}
 								«ENDIF»
 							«ENDFOR»
