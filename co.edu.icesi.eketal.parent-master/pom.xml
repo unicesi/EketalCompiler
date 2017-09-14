@@ -58,18 +58,18 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<!-- These are bundles and feature that do not have a corresponding 
-									source version; NOT the ones that we do not want source versions -->
-								<plugin id="co.edu.icesi.eketal.lib.osgi" />
+								<plugin id="co.edu.icesi.eketal.lib.osgi" />								
 								<feature id="co.edu.icesi.eketal.feature" />
-
+							</excludes> 
+							<!-- 	These are bundles and feature that do not have a corresponding 
+									source version; NOT the ones that we do not want source versions
 								<feature id="org.eclipse.swtbot.ide" />
 								<feature id="org.eclipse.xtext.sdk" />
 								<feature id="org.eclipse.xtend.sdk" />
 								<feature id="org.eclipse.pde" />
 								<feature id="org.eclipse.emf.mwe2.language.sdk" />
 								<feature id="org.eclipse.emf.mwe2.runtime.sdk" />
-							</excludes>
+							-->
 						</configuration>
 					</execution>
 				</executions>
