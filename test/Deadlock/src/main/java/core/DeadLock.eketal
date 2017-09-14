@@ -23,8 +23,8 @@ eventclass DeadLock{
 	event commitEvent(): host(localGroup)&&call(* TreeCache.commit());
 	
 	reaction before deadLockDetector.deadlock{
-		System.out.println("----------------------------------------");
-		System.out.println("Deadlock detected");
-		System.out.println("----------------------------------------");
+		String sep = "----------------------------------------";
+		String deadlock = "Deadlock detected";
+		System.out.println(sep+deadlock+sep);
 	}
 }
