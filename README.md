@@ -10,18 +10,27 @@
   If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using MAVEN. Then we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
 
 ## 1. Installing EKETAL's development environment using MAVEN
+
+This section describes how to download the project, how to build and install the language, and how to build a sample project. This is an example using JBossCache, to run an example using a mock of JBossCache and a recent version of JGroups, use the second git clone command. Finally, in this [video](https://www.dropbox.com/s/os1rrj7h3gu2l7i/Eketal.mp4?dl=0) you can see all the steps described next.
+
 ### 1.1. Download the sources
-  You can download the sources in two ways: directly from github and using git.
+  You can download the sources in two ways: directly from github or using git.
 #### From Github
- Click in the button "Clone or Download" and press the "Download Zip" option.
+ Click in the button "Clone or Download" and press the "Download Zip" option and uncompress the files.
 #### Using Git
   You must have Git installed.
   Type into the git bash:
 
 ```
-  git clone https://github.com/unicesi/eketal.git
+  git clone -b "master" https://github.com/unicesi/eketal.git
 ```
 
+The mock example can be download as follows:
+
+```
+  git clone -b "JGroups-3.6.9-Final" https://github.com/unicesi/eketal.git
+```
+	
 Once you have downloaded the sources, run the following commands in the maven prompt line (with maven installed)
 
 ### 1.2. Increase memory.
@@ -38,19 +47,19 @@ To change the environment variables in IOS/linux
 ```
 export JAVA_HOME=</your/java/path>
 ```
-In windows, change it in environment variables
+In windows, change it in environment variables.
 
 You can skip the test of the kernel Ketal with this instruction
 
 ```
-cd co.edu.icesi.eketal.parent-master/
+cd eketal/co.edu.icesi.eketal.parent-master/
 mvn clean install -DskipTests=true
 ```
 
 Or run it with the test's (it takes longer)
 
 ```
-cd co.edu.icesi.eketal.parent-master/
+cd eketal/co.edu.icesi.eketal.parent-master/
 mvn clean install
 ```
 
@@ -62,15 +71,24 @@ cd test/Datarace
 ```
 This will compile and generate the sources
 ```
-mvn clean compile
+mvn clean package
 ```
-Finally, run the generated application
+Finally, run the generated application. **Make sure to have access to internet and you can 'ping www.google.com' from your machine**
 ```
 mvn exec:java -Dexec.mainClass="local.StartExecute"
 ```
 Now, open a new command line and run the following:
 ```
 mvn exec:java -Dexec.mainClass="local.RunExecute"
+```
+
+If you like to run this example with the jar files, from a command line (with a jdk 1.8 as the JAVA_HOME), execute the following commands:
+```
+java -jar target/StartExecute.jar
+```
+And in a new command line:
+```
+java -jar target/RunExecute.jar
 ```
 
 This example shows how Eketal detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.

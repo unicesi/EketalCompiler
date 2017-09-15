@@ -78,7 +78,7 @@ public class JGroupsAsyncFacade extends JGroupsAbstractFacade {
 
 			// logger.debug(channel.getView().toString());
 		} catch (Exception e) {
-			logger.debug(e);
+			logger.debug(e.toString());
 		}
 	}
 
@@ -97,9 +97,15 @@ public class JGroupsAsyncFacade extends JGroupsAbstractFacade {
 	 */
 	public void broadcastMessageAsync(BrokerMessage m) {
 		try {
+<<<<<<< HEAD
 			// channel.send(null, null, m);
 			// Modified by Oscar Kiyoshige Garc�s.
 			channel.send(null, m);
+=======
+			 channel.send(null, null, m);
+			// Modified by Oscar Kiyoshige Garc�s.
+//			channel.send(null, m);
+>>>>>>> master
 			typeOfMsgSent = 0;
 		} catch (Exception ex) {
 			logger.error("Error no message delivery: ", ex);

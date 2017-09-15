@@ -71,7 +71,7 @@ public class RpcDispatcherTest {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Test
+//	@Test
 	public void testMessageSending() throws Exception {
 
 		// Saves all the brokers involved in a list

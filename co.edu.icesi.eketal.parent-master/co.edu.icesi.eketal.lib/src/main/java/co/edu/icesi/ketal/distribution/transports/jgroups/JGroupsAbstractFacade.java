@@ -1,5 +1,6 @@
 package co.edu.icesi.ketal.distribution.transports.jgroups;
 
+<<<<<<< HEAD
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,13 +10,22 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jgroups.Address;
+=======
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+>>>>>>> master
 import org.jgroups.Channel;
+import org.jgroups.ChannelException;
 import org.jgroups.JChannel;
 import org.jgroups.PhysicalAddress;
 import org.jgroups.ReceiverAdapter;
-import org.jgroups.blocks.RequestOptions;
+//import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.RpcDispatcher;
+<<<<<<< HEAD
 import org.jgroups.stack.IpAddress;
+=======
+import org.jgroups.conf.ClassConfigurator;
+>>>>>>> master
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.distribution.EventBroker;
@@ -28,18 +38,27 @@ import co.edu.icesi.ketal.distribution.EventBroker;
  * 
  */
 public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
-
+	
 	// Default logger
+<<<<<<< HEAD
 	protected static final Log logger = LogFactory
 			.getLog(JGroupsAbstractFacade.class);
 
+=======
+	protected static Log logger = LogFactory.getLog(JGroupsAbstractFacade.class); 
+>>>>>>> master
 	// Channel object, this is part of Jgroups API
 	Channel channel;
 	RpcDispatcher disp;
 	RspList rsp_list;
+<<<<<<< HEAD
 	RequestOptions opts;
 	protected URL address;
 	// RequestHandler disp;
+=======
+//	RequestOptions opts;
+//	 RequestHandler disp;
+>>>>>>> master
 
 	// The properties configuring the Jgroups communication stack
 	// Properties are managed by class DistributionProperties
@@ -84,8 +103,12 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.groupName = groupName;
 		this.jeb = jeb;
 		try {
+<<<<<<< HEAD
 			channel = new JChannel(props);
 			initializeAddress();
+=======
+			channel = new JChannel();			
+>>>>>>> master
 		} catch (Exception e) {
 			getLogger().error(e.getMessage());
 //			e.printStackTrace();
@@ -169,6 +192,13 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		return logger;
 	}
 
+<<<<<<< HEAD
+=======
+	public static void setLogger(Log logger) {
+		JGroupsAbstractFacade.logger = logger;
+	}
+
+>>>>>>> master
 	public Channel getChannel() {
 		return channel;
 	}
@@ -193,13 +223,13 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.rsp_list = rsp_list;
 	}
 
-	public RequestOptions getOpts() {
-		return opts;
-	}
-
-	public void setOpts(RequestOptions opts) {
-		this.opts = opts;
-	}
+//	public RequestOptions getOpts() {
+//		return opts;
+//	}
+//
+//	public void setOpts(RequestOptions opts) {
+//		this.opts = opts;
+//	}
 
 	public String getProps() {
 		return props;

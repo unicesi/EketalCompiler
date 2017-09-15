@@ -44,7 +44,7 @@ public class ReceiverMessageHandler implements BrokerMessageHandler {
 			 * .split(" ")[1]);
 			 */
 			return "["
-					+ msg.getHeader(Short.parseShort("15")).toString()
+					+ msg.getHeader(Short.parseShort("15")+"").toString()
 							.split(" ")[1];
 			
 		}

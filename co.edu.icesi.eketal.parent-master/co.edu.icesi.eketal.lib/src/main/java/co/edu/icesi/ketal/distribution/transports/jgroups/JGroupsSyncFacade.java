@@ -2,10 +2,10 @@ package co.edu.icesi.ketal.distribution.transports.jgroups;
 
 import org.jgroups.Message;
 import org.jgroups.blocks.MethodCall;
-import org.jgroups.blocks.RequestOptions;
-import org.jgroups.blocks.ResponseMode;
+//import org.jgroups.blocks.RequestOptions;
+//import org.jgroups.blocks.ResponseMode;
 import org.jgroups.blocks.RpcDispatcher;
-import org.jgroups.util.NotifyingFuture;
+//import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
 import co.edu.icesi.ketal.distribution.BrokerMessage;
 
@@ -71,13 +71,13 @@ public class JGroupsSyncFacade extends JGroupsAbstractFacade {
 			// This is needed for the RpcDispatcher. The channel cannot set the
 			// reciever to this
 			disp = new RpcDispatcher(channel, null, null, this);
-			opts = new RequestOptions(ResponseMode.GET_ALL, 5000);
+//			opts = new RequestOptions(ResponseMode.GET_ALL, 5000);
 
 			channel.connect(groupName);
 
 			// logger.debug(channel.getView().toString());
 		} catch (Exception e) {
-			logger.debug(e);
+			logger.debug(e.toString());
 		}
 	}
 
@@ -111,13 +111,16 @@ public class JGroupsSyncFacade extends JGroupsAbstractFacade {
 			call.setArgs(method_parameters);
 			// Waits for all nodes (including the sender) to execute the method
 			// configured (call) and saves the results in a list
-
-			rsp_list = disp.callRemoteMethods(null, call, opts);
+			
+			
+			rsp_list = (RspList) disp.callRemoteMethod(null, call, 0, (long)5000);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
+			e.printStackTrace();
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 
@@ -139,36 +142,36 @@ public class JGroupsSyncFacade extends JGroupsAbstractFacade {
 	 * @param method_parameters
 	 * @return result list
 	 */
-	public NotifyingFuture<RspList<Object>> broadcastMessageWithFuture(
-			String class_name, String method_name, Object... method_parameters) {
-		MethodCall call;
-		NotifyingFuture<RspList<Object>> futures = null;
-		try {
-			// Saves the class type of the method parameters into an array thats
-			// needed to invoke the method call
-			Class<?>[] array = new Class<?>[method_parameters.length];
-			for (int i = 0; i < array.length; i++) {
-				array[i] = method_parameters[i].getClass();
-			}
-			// Configures the method with its parameters types
-			call = new MethodCall(Class.forName(class_name).getMethod(
-					method_name, array));
-			// Set the method parameters
-			call.setArgs(method_parameters);
-
-			futures = disp.callRemoteMethodsWithFuture(null, call, opts);
-
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return futures;
-	}
+//	public NotifyingFuture<RspList<Object>> broadcastMessageWithFuture(
+//			String class_name, String method_name, Object... method_parameters) {
+//		MethodCall call;
+//		NotifyingFuture<RspList<Object>> futures = null;
+//		try {
+//			// Saves the class type of the method parameters into an array thats
+//			// needed to invoke the method call
+//			Class<?>[] array = new Class<?>[method_parameters.length];
+//			for (int i = 0; i < array.length; i++) {
+//				array[i] = method_parameters[i].getClass();
+//			}
+//			// Configures the method with its parameters types
+//			call = new MethodCall(Class.forName(class_name).getMethod(
+//					method_name, array));
+//			// Set the method parameters
+//			call.setArgs(method_parameters);
+//
+//			futures = disp.callRemoteMethodsWithFuture(null, call, opts);
+//
+//		} catch (NoSuchMethodException e) {
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		return futures;
+//	}
 
 	// Created by David Dur�n
 	/*

@@ -11,9 +11,13 @@ import org.apache.commons.logging.LogFactory;
 import org.jgroups.Address;
 import org.jgroups.Channel;
 import org.jgroups.Message;
+<<<<<<< HEAD
 import org.jgroups.PhysicalAddress;
 import org.jgroups.stack.IpAddress;
 import org.jgroups.util.NotifyingFuture;
+=======
+//import org.jgroups.util.NotifyingFuture;
+>>>>>>> master
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.core.Event;
@@ -75,6 +79,7 @@ public class JGroupsEventBroker implements EventBroker {
 	 */
 
 	@Override
+<<<<<<< HEAD
 	public URL getAsyncAddress() {	    
 		return asyncMonitor.getIpAddress();
 	}
@@ -82,6 +87,15 @@ public class JGroupsEventBroker implements EventBroker {
 	@Override
 	public URL getSyncAddress() {
 	    return syncMonitor.getIpAddress();
+=======
+	public Address getAsyncAddress() {
+		return asyncMonitor.getChannel().getLocalAddress();
+	}
+
+	@Override
+	public Address getSyncAddress() {
+		return syncMonitor.getChannel().getLocalAddress();
+>>>>>>> master
 	}
 
 	
@@ -104,15 +118,15 @@ public class JGroupsEventBroker implements EventBroker {
 
 	//Created by David Dur�n
 	@Override
-	public RspList<Object> multicastSync(String class_name, String method_name, Object... parameters) {
+	public RspList multicastSync(String class_name, String method_name, Object... parameters) {
 		return syncMonitor.broadcastMessageSync(class_name, method_name, parameters);
 	}
 	
 	//Created by David Dur�n	
-	@Override
-	public NotifyingFuture<RspList<Object>> multicastWithFutures(String class_name,
-			String method_name, Object... parameters) {
-		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
-	}
+//	@Override
+//	public NotifyingFuture<RspList<Object>> multicastWithFutures(String class_name,
+//			String method_name, Object... parameters) {
+//		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
+//	}
 
 }
