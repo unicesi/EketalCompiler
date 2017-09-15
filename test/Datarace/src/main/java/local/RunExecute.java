@@ -10,7 +10,7 @@ import org.jboss.cache.Fqn;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 
-import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol._EventHandler;
 
 public class RunExecute {
 	

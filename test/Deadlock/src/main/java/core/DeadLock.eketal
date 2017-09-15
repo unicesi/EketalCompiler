@@ -20,11 +20,17 @@ eventclass DeadLock{
 	
 	event prepareEvent():host(localGroup)&&call(* TreeCache.prepare());
 	
-	event commitEvent(): call(* TreeCache.commit());
+	event commitEvent(): host(localGroup)&&call(* TreeCache.commit());
 	
 	reaction before deadLockDetector.deadlock{
-		System.out.println("----------------------------------------");
-		System.out.println("Deadlock detected");
-		System.out.println("----------------------------------------");
+		String ^group = "34";
+		try{
+			Integer.parseInt(^group);
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+		String sep = "----------------------------------------";
+		String deadlock = "Deadlock detected";
+		System.out.println(sep+deadlock+sep);
 	}
 }

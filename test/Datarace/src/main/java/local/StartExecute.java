@@ -19,7 +19,7 @@ import org.jboss.cache.transaction.GenericTransactionManagerLookup;
 
 import org.mockito.Mockito;
 
-import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol._EventHandler;
 
 import static org.mockito.Mockito.*;
 

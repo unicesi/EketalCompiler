@@ -43,24 +43,23 @@
 					</dependency>
 					<dependency>
 						<groupId>org.eclipse.xtext</groupId>
-						<artifactId>org.eclipse.xtext.xtext.generator</artifactId>
+						<artifactId>org.eclipse.xtext.common.types</artifactId>
 						<version>${xtextVersion}</version>
-						<exclusions>
-							<exclusion>
-								<groupId>org.eclipse.emf</groupId>
-								<artifactId>org.eclipse.emf.mwe2.runtime</artifactId>
-       						</exclusion>
-						</exclusions>
 					</dependency>
 					<dependency>
-						<groupId>org.eclipse.emf</groupId>
-						<artifactId>org.eclipse.emf.mwe2.runtime</artifactId>
-						<version>2.9.0.201605261059</version>
+						<groupId>org.eclipse.xtext</groupId>
+						<artifactId>org.eclipse.xtext.xtext.generator</artifactId>
+						<version>${xtextVersion}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.eclipse.xtext</groupId>
 						<artifactId>org.eclipse.xtext.xbase</artifactId>
 						<version>${xtextVersion}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.xtext</groupId>
+						<artifactId>xtext-antlr-generator</artifactId>
+						<version>[2.1.1, 3)</version>
 					</dependency>
 				</dependencies>
 			</plugin>

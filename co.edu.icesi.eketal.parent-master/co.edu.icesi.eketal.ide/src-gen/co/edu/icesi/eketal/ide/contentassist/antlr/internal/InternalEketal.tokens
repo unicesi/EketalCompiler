@@ -8,7 +8,7 @@
 '&='=28
 '('=66
 ')'=67
-'*'=8
+'*'=6
 '*='=25
 '+'=39
 '++'=43
@@ -17,8 +17,8 @@
 '-'=38
 '--'=44
 '-='=24
-'->'=75
-'.'=77
+'->'=76
+'.'=74
 '...'=104
 '/'=33
 '/='=26
@@ -38,7 +38,7 @@
 '^='=30
 'after'=58
 'around'=57
-'automaton'=74
+'automaton'=75
 'before'=56
 'break'=79
 'call'=51
@@ -71,7 +71,7 @@
 'on'=71
 'op'=65
 'package'=59
-'reaction'=76
+'reaction'=77
 'return'=101
 'start'=54
 'state'=53
@@ -90,13 +90,13 @@
 '||'=19
 '}'=63
 '~'=40
-RULE_ANY=8
+RULE_ANY=6
 RULE_ANY_OTHER=14
 RULE_CHARACTER=9
-RULE_DECIMAL=7
-RULE_HEX=5
+RULE_DECIMAL=8
+RULE_HEX=7
 RULE_ID=4
-RULE_INT=6
+RULE_INT=5
 RULE_ML_COMMENT=11
 RULE_SL_COMMENT=12
 RULE_STRING=10

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class InternalEketalLexer extends Lexer {
-    public static final int RULE_HEX=5;
+    public static final int RULE_HEX=7;
     public static final int T__50=50;
     public static final int RULE_CHARACTER=9;
     public static final int T__59=59;
@@ -27,8 +27,8 @@ public class InternalEketalLexer extends Lexer {
     public static final int T__60=60;
     public static final int T__61=61;
     public static final int RULE_ID=4;
-    public static final int RULE_ANY=8;
-    public static final int RULE_INT=6;
+    public static final int RULE_ANY=6;
+    public static final int RULE_INT=5;
     public static final int T__66=66;
     public static final int RULE_ML_COMMENT=11;
     public static final int T__67=67;
@@ -76,7 +76,7 @@ public class InternalEketalLexer extends Lexer {
     public static final int T__96=96;
     public static final int T__97=97;
     public static final int T__98=98;
-    public static final int RULE_DECIMAL=7;
+    public static final int RULE_DECIMAL=8;
     public static final int T__26=26;
     public static final int T__27=27;
     public static final int T__28=28;
@@ -1354,11 +1354,10 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = T__74;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:70:7: ( 'automaton' )
-            // InternalEketal.g:70:9: 'automaton'
+            // InternalEketal.g:70:7: ( '.' )
+            // InternalEketal.g:70:9: '.'
             {
-            match("automaton"); 
-
+            match('.'); 
 
             }
 
@@ -1375,10 +1374,10 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = T__75;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:71:7: ( '->' )
-            // InternalEketal.g:71:9: '->'
+            // InternalEketal.g:71:7: ( 'automaton' )
+            // InternalEketal.g:71:9: 'automaton'
             {
-            match("->"); 
+            match("automaton"); 
 
 
             }
@@ -1396,10 +1395,10 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = T__76;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:72:7: ( 'reaction' )
-            // InternalEketal.g:72:9: 'reaction'
+            // InternalEketal.g:72:7: ( '->' )
+            // InternalEketal.g:72:9: '->'
             {
-            match("reaction"); 
+            match("->"); 
 
 
             }
@@ -1417,10 +1416,11 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = T__77;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:73:7: ( '.' )
-            // InternalEketal.g:73:9: '.'
+            // InternalEketal.g:73:7: ( 'reaction' )
+            // InternalEketal.g:73:9: 'reaction'
             {
-            match('.'); 
+            match("reaction"); 
+
 
             }
 
@@ -2020,8 +2020,8 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_ANY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25406:10: ( '*' )
-            // InternalEketal.g:25406:12: '*'
+            // InternalEketal.g:25616:10: ( '*' )
+            // InternalEketal.g:25616:12: '*'
             {
             match('*'); 
 
@@ -2040,11 +2040,11 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25408:13: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? )
-            // InternalEketal.g:25408:15: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
+            // InternalEketal.g:25618:13: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? )
+            // InternalEketal.g:25618:15: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
             {
             match('\"'); 
-            // InternalEketal.g:25408:19: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+            // InternalEketal.g:25618:19: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
             loop1:
             do {
                 int alt1=3;
@@ -2060,7 +2060,7 @@ public class InternalEketalLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // InternalEketal.g:25408:20: '\\\\' .
+            	    // InternalEketal.g:25618:20: '\\\\' .
             	    {
             	    match('\\'); 
             	    matchAny(); 
@@ -2068,7 +2068,7 @@ public class InternalEketalLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // InternalEketal.g:25408:27: ~ ( ( '\\\\' | '\"' ) )
+            	    // InternalEketal.g:25618:27: ~ ( ( '\\\\' | '\"' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2088,7 +2088,7 @@ public class InternalEketalLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalEketal.g:25408:43: ( '\"' )?
+            // InternalEketal.g:25618:43: ( '\"' )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -2097,7 +2097,7 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt2) {
                 case 1 :
-                    // InternalEketal.g:25408:43: '\"'
+                    // InternalEketal.g:25618:43: '\"'
                     {
                     match('\"'); 
 
@@ -2122,11 +2122,11 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_CHARACTER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25410:16: ( '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
-            // InternalEketal.g:25410:18: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
+            // InternalEketal.g:25620:16: ( '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // InternalEketal.g:25620:18: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
             {
             match('\''); 
-            // InternalEketal.g:25410:23: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+            // InternalEketal.g:25620:23: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
             loop3:
             do {
                 int alt3=3;
@@ -2142,7 +2142,7 @@ public class InternalEketalLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalEketal.g:25410:24: '\\\\' .
+            	    // InternalEketal.g:25620:24: '\\\\' .
             	    {
             	    match('\\'); 
             	    matchAny(); 
@@ -2150,7 +2150,7 @@ public class InternalEketalLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // InternalEketal.g:25410:31: ~ ( ( '\\\\' | '\\'' ) )
+            	    // InternalEketal.g:25620:31: ~ ( ( '\\\\' | '\\'' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2170,7 +2170,7 @@ public class InternalEketalLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalEketal.g:25410:48: ( '\\'' )?
+            // InternalEketal.g:25620:48: ( '\\'' )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -2179,7 +2179,7 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // InternalEketal.g:25410:48: '\\''
+                    // InternalEketal.g:25620:48: '\\''
                     {
                     match('\''); 
 
@@ -2204,10 +2204,10 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25412:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // InternalEketal.g:25412:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // InternalEketal.g:25622:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // InternalEketal.g:25622:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // InternalEketal.g:25412:12: ( '0x' | '0X' )
+            // InternalEketal.g:25622:12: ( '0x' | '0X' )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -2235,7 +2235,7 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // InternalEketal.g:25412:13: '0x'
+                    // InternalEketal.g:25622:13: '0x'
                     {
                     match("0x"); 
 
@@ -2243,7 +2243,7 @@ public class InternalEketalLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalEketal.g:25412:18: '0X'
+                    // InternalEketal.g:25622:18: '0X'
                     {
                     match("0X"); 
 
@@ -2253,7 +2253,7 @@ public class InternalEketalLexer extends Lexer {
 
             }
 
-            // InternalEketal.g:25412:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // InternalEketal.g:25622:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt6=0;
             loop6:
             do {
@@ -2291,7 +2291,7 @@ public class InternalEketalLexer extends Lexer {
                 cnt6++;
             } while (true);
 
-            // InternalEketal.g:25412:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // InternalEketal.g:25622:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt8=2;
             int LA8_0 = input.LA(1);
 
@@ -2300,10 +2300,10 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // InternalEketal.g:25412:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // InternalEketal.g:25622:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // InternalEketal.g:25412:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // InternalEketal.g:25622:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt7=2;
                     int LA7_0 = input.LA(1);
 
@@ -2321,7 +2321,7 @@ public class InternalEketalLexer extends Lexer {
                     }
                     switch (alt7) {
                         case 1 :
-                            // InternalEketal.g:25412:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // InternalEketal.g:25622:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -2345,7 +2345,7 @@ public class InternalEketalLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // InternalEketal.g:25412:84: ( 'l' | 'L' )
+                            // InternalEketal.g:25622:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -2384,11 +2384,11 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25414:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // InternalEketal.g:25414:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // InternalEketal.g:25624:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // InternalEketal.g:25624:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // InternalEketal.g:25414:21: ( '0' .. '9' | '_' )*
+            // InternalEketal.g:25624:21: ( '0' .. '9' | '_' )*
             loop9:
             do {
                 int alt9=2;
@@ -2437,11 +2437,11 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25416:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // InternalEketal.g:25416:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // InternalEketal.g:25626:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // InternalEketal.g:25626:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // InternalEketal.g:25416:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // InternalEketal.g:25626:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -2450,7 +2450,7 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt11) {
                 case 1 :
-                    // InternalEketal.g:25416:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // InternalEketal.g:25626:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2461,7 +2461,7 @@ public class InternalEketalLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // InternalEketal.g:25416:36: ( '+' | '-' )?
+                    // InternalEketal.g:25626:36: ( '+' | '-' )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -2494,7 +2494,7 @@ public class InternalEketalLexer extends Lexer {
 
             }
 
-            // InternalEketal.g:25416:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // InternalEketal.g:25626:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt12=3;
             int LA12_0 = input.LA(1);
 
@@ -2506,7 +2506,7 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt12) {
                 case 1 :
-                    // InternalEketal.g:25416:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // InternalEketal.g:25626:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -2530,7 +2530,7 @@ public class InternalEketalLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalEketal.g:25416:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // InternalEketal.g:25626:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2563,10 +2563,10 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25418:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // InternalEketal.g:25418:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // InternalEketal.g:25628:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // InternalEketal.g:25628:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // InternalEketal.g:25418:11: ( '^' )?
+            // InternalEketal.g:25628:11: ( '^' )?
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -2575,7 +2575,7 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt13) {
                 case 1 :
-                    // InternalEketal.g:25418:11: '^'
+                    // InternalEketal.g:25628:11: '^'
                     {
                     match('^'); 
 
@@ -2593,7 +2593,7 @@ public class InternalEketalLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalEketal.g:25418:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // InternalEketal.g:25628:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop14:
             do {
                 int alt14=2;
@@ -2642,12 +2642,12 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25420:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalEketal.g:25420:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalEketal.g:25630:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalEketal.g:25630:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalEketal.g:25420:24: ( options {greedy=false; } : . )*
+            // InternalEketal.g:25630:24: ( options {greedy=false; } : . )*
             loop15:
             do {
                 int alt15=2;
@@ -2672,7 +2672,7 @@ public class InternalEketalLexer extends Lexer {
 
                 switch (alt15) {
             	case 1 :
-            	    // InternalEketal.g:25420:52: .
+            	    // InternalEketal.g:25630:52: .
             	    {
             	    matchAny(); 
 
@@ -2702,12 +2702,12 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25422:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalEketal.g:25422:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalEketal.g:25632:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalEketal.g:25632:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalEketal.g:25422:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalEketal.g:25632:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop16:
             do {
                 int alt16=2;
@@ -2720,7 +2720,7 @@ public class InternalEketalLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // InternalEketal.g:25422:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalEketal.g:25632:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2740,7 +2740,7 @@ public class InternalEketalLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalEketal.g:25422:40: ( ( '\\r' )? '\\n' )?
+            // InternalEketal.g:25632:40: ( ( '\\r' )? '\\n' )?
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -2749,9 +2749,9 @@ public class InternalEketalLexer extends Lexer {
             }
             switch (alt18) {
                 case 1 :
-                    // InternalEketal.g:25422:41: ( '\\r' )? '\\n'
+                    // InternalEketal.g:25632:41: ( '\\r' )? '\\n'
                     {
-                    // InternalEketal.g:25422:41: ( '\\r' )?
+                    // InternalEketal.g:25632:41: ( '\\r' )?
                     int alt17=2;
                     int LA17_0 = input.LA(1);
 
@@ -2760,7 +2760,7 @@ public class InternalEketalLexer extends Lexer {
                     }
                     switch (alt17) {
                         case 1 :
-                            // InternalEketal.g:25422:41: '\\r'
+                            // InternalEketal.g:25632:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2792,10 +2792,10 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25424:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalEketal.g:25424:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalEketal.g:25634:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalEketal.g:25634:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalEketal.g:25424:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalEketal.g:25634:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt19=0;
             loop19:
             do {
@@ -2849,8 +2849,8 @@ public class InternalEketalLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEketal.g:25426:16: ( . )
-            // InternalEketal.g:25426:18: .
+            // InternalEketal.g:25636:16: ( . )
+            // InternalEketal.g:25636:18: .
             {
             matchAny(); 
 
@@ -3591,19 +3591,19 @@ public class InternalEketalLexer extends Lexer {
 
     protected DFA20 dfa20 = new DFA20(this);
     static final String DFA20_eotS =
-        "\1\uffff\1\66\1\70\1\74\1\76\2\71\1\103\1\107\1\111\1\115\1\117\1\121\1\123\1\125\1\uffff\10\71\4\uffff\1\71\3\uffff\3\71\1\173\3\uffff\4\71\4\uffff\2\u008c\16\uffff\2\71\26\uffff\11\71\1\u009b\15\71\4\uffff\1\u00ab\1\u00ac\3\uffff\3\71\5\uffff\3\71\1\u00b4\3\71\5\uffff\1\u008c\3\uffff\4\71\1\u00bd\7\71\1\uffff\2\71\1\u00c8\14\71\2\uffff\4\71\1\u00d9\2\71\1\uffff\1\71\1\u00dd\6\71\1\uffff\1\71\1\u00e5\10\71\1\uffff\1\71\1\u00f1\1\u00f2\11\71\1\u00fc\3\71\1\uffff\1\u0100\2\71\1\uffff\1\u0103\5\71\1\u010b\1\uffff\1\71\1\u010d\1\u010e\1\u010f\5\71\1\u0115\1\u0117\2\uffff\1\u0118\1\71\1\u011a\1\71\1\u011c\1\71\1\u011e\2\71\1\uffff\1\u0121\2\71\1\uffff\1\u0124\1\71\1\uffff\1\u0126\1\u0127\5\71\1\uffff\1\u012d\3\uffff\1\u012e\1\71\1\u0130\1\u0131\1\71\1\uffff\1\71\2\uffff\1\71\1\uffff\1\u0135\1\uffff\1\u0136\1\uffff\2\71\1\uffff\1\71\1\u013a\1\uffff\1\71\2\uffff\1\71\1\u013d\3\71\2\uffff\1\71\2\uffff\1\71\1\u0143\1\71\2\uffff\1\71\1\u0146\1\71\1\uffff\1\u0148\1\71\1\uffff\5\71\1\uffff\1\u014f\1\71\1\uffff\1\u0151\1\uffff\1\u0152\1\u0153\1\u0154\3\71\1\uffff\1\u0158\4\uffff\1\u0159\1\71\1\u015b\2\uffff\1\71\1\uffff\1\u015d\1\uffff";
+        "\1\uffff\1\66\1\70\1\74\1\76\2\71\1\103\1\107\1\111\1\115\1\117\1\121\1\123\1\125\1\uffff\10\71\4\uffff\1\71\3\uffff\2\71\1\172\1\71\3\uffff\4\71\4\uffff\2\u008c\16\uffff\2\71\26\uffff\11\71\1\u009b\15\71\4\uffff\1\u00ab\1\u00ac\3\uffff\2\71\2\uffff\1\71\3\uffff\3\71\1\u00b4\3\71\5\uffff\1\u008c\3\uffff\4\71\1\u00bd\7\71\1\uffff\2\71\1\u00c8\14\71\2\uffff\4\71\1\u00d9\2\71\1\uffff\1\71\1\u00dd\6\71\1\uffff\1\71\1\u00e5\10\71\1\uffff\1\71\1\u00f1\1\u00f2\11\71\1\u00fc\3\71\1\uffff\1\u0100\2\71\1\uffff\1\u0103\5\71\1\u010b\1\uffff\1\71\1\u010d\1\u010e\1\u010f\5\71\1\u0115\1\u0117\2\uffff\1\u0118\1\71\1\u011a\1\71\1\u011c\1\71\1\u011e\2\71\1\uffff\1\u0121\2\71\1\uffff\1\u0124\1\71\1\uffff\1\u0126\1\u0127\5\71\1\uffff\1\u012d\3\uffff\1\u012e\1\71\1\u0130\1\u0131\1\71\1\uffff\1\71\2\uffff\1\71\1\uffff\1\u0135\1\uffff\1\u0136\1\uffff\2\71\1\uffff\1\71\1\u013a\1\uffff\1\71\2\uffff\1\71\1\u013d\3\71\2\uffff\1\71\2\uffff\1\71\1\u0143\1\71\2\uffff\1\71\1\u0146\1\71\1\uffff\1\u0148\1\71\1\uffff\5\71\1\uffff\1\u014f\1\71\1\uffff\1\u0151\1\uffff\1\u0152\1\u0153\1\u0154\3\71\1\uffff\1\u0158\4\uffff\1\u0159\1\71\1\u015b\2\uffff\1\71\1\uffff\1\u015d\1\uffff";
     static final String DFA20_eofS =
         "\u015e\uffff";
     static final String DFA20_minS =
-        "\1\0\1\75\1\44\1\46\1\75\1\160\1\157\1\53\1\55\1\75\1\52\2\75\1\74\1\75\1\uffff\1\154\1\164\1\146\2\141\1\145\1\146\1\141\4\uffff\1\156\3\uffff\1\157\1\162\1\145\1\56\3\uffff\1\145\1\150\1\145\1\150\4\uffff\2\60\16\uffff\1\150\1\143\26\uffff\1\145\1\144\1\145\1\163\1\141\1\160\1\151\1\156\1\160\1\44\1\163\1\154\1\162\1\156\1\154\1\156\1\141\1\146\1\145\1\157\2\164\1\143\4\uffff\2\44\3\uffff\1\163\1\157\1\141\5\uffff\1\167\1\154\1\151\1\44\1\146\1\165\1\162\5\uffff\1\60\3\uffff\1\157\1\141\1\145\1\143\1\44\1\156\1\145\1\162\1\145\1\164\1\143\1\157\1\uffff\1\164\1\163\1\44\1\141\1\154\1\145\1\143\1\164\1\163\1\157\1\141\1\165\1\145\1\157\1\153\2\uffff\1\164\1\165\1\143\1\165\1\44\2\154\1\uffff\1\141\1\44\1\145\1\157\1\163\1\154\1\156\1\165\1\uffff\1\164\1\44\1\145\1\164\1\162\1\143\1\145\1\162\1\141\1\145\1\uffff\1\154\2\44\1\150\1\151\1\163\1\162\1\153\1\156\1\162\1\155\1\141\1\44\1\160\1\164\1\162\1\uffff\1\44\1\145\1\165\1\uffff\1\44\1\167\1\164\1\150\1\144\1\164\1\44\1\uffff\1\143\3\44\1\150\1\162\1\170\1\164\1\156\2\44\2\uffff\1\44\1\156\1\44\1\145\1\44\1\144\1\44\1\141\1\147\1\uffff\1\44\1\151\1\156\1\uffff\1\44\1\154\1\uffff\2\44\1\157\1\163\2\151\1\154\1\uffff\1\44\3\uffff\1\44\1\157\2\44\1\143\1\uffff\1\171\2\uffff\1\165\1\uffff\1\44\1\uffff\1\44\1\uffff\1\164\1\145\1\uffff\1\157\1\44\1\uffff\1\164\2\uffff\1\163\1\44\2\157\1\141\2\uffff\1\156\2\uffff\1\145\1\44\1\145\2\uffff\1\157\1\44\1\156\1\uffff\1\44\1\164\1\uffff\2\156\1\163\1\151\1\157\1\uffff\1\44\1\156\1\uffff\1\44\1\uffff\3\44\1\163\1\172\1\146\1\uffff\1\44\4\uffff\1\44\1\145\1\44\2\uffff\1\144\1\uffff\1\44\1\uffff";
+        "\1\0\1\75\1\44\1\46\1\75\1\160\1\157\1\53\1\55\1\75\1\52\2\75\1\74\1\75\1\uffff\1\154\1\164\1\146\2\141\1\145\1\146\1\141\4\uffff\1\156\3\uffff\1\157\1\162\1\56\1\145\3\uffff\1\145\1\150\1\145\1\150\4\uffff\2\60\16\uffff\1\150\1\143\26\uffff\1\145\1\144\1\145\1\163\1\141\1\160\1\151\1\156\1\160\1\44\1\163\1\154\1\162\1\156\1\154\1\156\1\141\1\146\1\145\1\157\2\164\1\143\4\uffff\2\44\3\uffff\1\163\1\157\2\uffff\1\141\3\uffff\1\167\1\154\1\151\1\44\1\146\1\165\1\162\5\uffff\1\60\3\uffff\1\157\1\141\1\145\1\143\1\44\1\156\1\145\1\162\1\145\1\164\1\143\1\157\1\uffff\1\164\1\163\1\44\1\141\1\154\1\145\1\143\1\164\1\163\1\157\1\141\1\165\1\145\1\157\1\153\2\uffff\1\164\1\165\1\143\1\165\1\44\2\154\1\uffff\1\141\1\44\1\145\1\157\1\163\1\154\1\156\1\165\1\uffff\1\164\1\44\1\145\1\164\1\162\1\143\1\145\1\162\1\141\1\145\1\uffff\1\154\2\44\1\150\1\151\1\163\1\162\1\153\1\156\1\162\1\155\1\141\1\44\1\160\1\164\1\162\1\uffff\1\44\1\145\1\165\1\uffff\1\44\1\167\1\164\1\150\1\144\1\164\1\44\1\uffff\1\143\3\44\1\150\1\162\1\170\1\164\1\156\2\44\2\uffff\1\44\1\156\1\44\1\145\1\44\1\144\1\44\1\141\1\147\1\uffff\1\44\1\151\1\156\1\uffff\1\44\1\154\1\uffff\2\44\1\157\1\163\2\151\1\154\1\uffff\1\44\3\uffff\1\44\1\157\2\44\1\143\1\uffff\1\171\2\uffff\1\165\1\uffff\1\44\1\uffff\1\44\1\uffff\1\164\1\145\1\uffff\1\157\1\44\1\uffff\1\164\2\uffff\1\163\1\44\2\157\1\141\2\uffff\1\156\2\uffff\1\145\1\44\1\145\2\uffff\1\157\1\44\1\156\1\uffff\1\44\1\164\1\uffff\2\156\1\163\1\151\1\157\1\uffff\1\44\1\156\1\uffff\1\44\1\uffff\3\44\1\163\1\172\1\146\1\uffff\1\44\4\uffff\1\44\1\145\1\44\2\uffff\1\144\1\uffff\1\44\1\uffff";
     static final String DFA20_maxS =
-        "\1\uffff\1\174\1\172\2\75\1\160\1\157\1\75\1\76\4\75\1\74\1\75\1\uffff\1\170\1\171\1\156\2\157\1\162\1\165\1\141\4\uffff\1\160\3\uffff\1\157\1\162\1\145\1\56\3\uffff\1\165\1\150\1\157\1\162\4\uffff\1\170\1\154\16\uffff\1\150\1\143\26\uffff\1\164\1\144\1\145\1\163\1\141\1\160\1\151\1\156\1\160\1\172\1\163\1\154\1\162\1\156\1\164\1\156\1\141\1\146\1\145\1\157\2\164\1\143\4\uffff\2\172\3\uffff\1\163\1\157\1\164\5\uffff\1\167\1\154\1\151\1\172\1\146\1\171\1\162\5\uffff\1\154\3\uffff\1\157\1\141\1\145\1\143\1\172\1\156\1\145\1\164\1\145\1\164\1\143\1\157\1\uffff\1\164\1\163\1\172\1\141\1\154\1\145\1\143\1\164\1\163\1\157\1\141\1\165\1\145\1\157\1\153\2\uffff\1\164\1\165\1\143\1\165\1\172\2\154\1\uffff\1\141\1\172\1\145\1\157\1\163\1\154\1\156\1\165\1\uffff\1\164\1\172\1\151\1\164\1\162\1\143\1\150\1\162\1\141\1\145\1\uffff\1\154\2\172\1\150\1\151\1\163\1\162\1\153\1\156\1\162\1\155\1\141\1\172\1\160\1\164\1\162\1\uffff\1\172\1\145\1\165\1\uffff\1\172\1\167\1\164\1\150\1\163\1\164\1\172\1\uffff\1\143\3\172\1\150\1\162\1\170\1\164\1\156\2\172\2\uffff\1\172\1\156\1\172\1\145\1\172\1\144\1\172\1\141\1\147\1\uffff\1\172\1\151\1\156\1\uffff\1\172\1\154\1\uffff\2\172\1\157\1\163\2\151\1\154\1\uffff\1\172\3\uffff\1\172\1\157\2\172\1\143\1\uffff\1\171\2\uffff\1\165\1\uffff\1\172\1\uffff\1\172\1\uffff\1\164\1\145\1\uffff\1\157\1\172\1\uffff\1\164\2\uffff\1\163\1\172\2\157\1\141\2\uffff\1\156\2\uffff\1\145\1\172\1\145\2\uffff\1\157\1\172\1\156\1\uffff\1\172\1\164\1\uffff\2\156\1\163\1\151\1\157\1\uffff\1\172\1\156\1\uffff\1\172\1\uffff\3\172\1\163\1\172\1\146\1\uffff\1\172\4\uffff\1\172\1\145\1\172\2\uffff\1\144\1\uffff\1\172\1\uffff";
+        "\1\uffff\1\174\1\172\2\75\1\160\1\157\1\75\1\76\4\75\1\74\1\75\1\uffff\1\170\1\171\1\156\2\157\1\162\1\165\1\141\4\uffff\1\160\3\uffff\1\157\1\162\1\56\1\145\3\uffff\1\165\1\150\1\157\1\162\4\uffff\1\170\1\154\16\uffff\1\150\1\143\26\uffff\1\164\1\144\1\145\1\163\1\141\1\160\1\151\1\156\1\160\1\172\1\163\1\154\1\162\1\156\1\164\1\156\1\141\1\146\1\145\1\157\2\164\1\143\4\uffff\2\172\3\uffff\1\163\1\157\2\uffff\1\164\3\uffff\1\167\1\154\1\151\1\172\1\146\1\171\1\162\5\uffff\1\154\3\uffff\1\157\1\141\1\145\1\143\1\172\1\156\1\145\1\164\1\145\1\164\1\143\1\157\1\uffff\1\164\1\163\1\172\1\141\1\154\1\145\1\143\1\164\1\163\1\157\1\141\1\165\1\145\1\157\1\153\2\uffff\1\164\1\165\1\143\1\165\1\172\2\154\1\uffff\1\141\1\172\1\145\1\157\1\163\1\154\1\156\1\165\1\uffff\1\164\1\172\1\151\1\164\1\162\1\143\1\150\1\162\1\141\1\145\1\uffff\1\154\2\172\1\150\1\151\1\163\1\162\1\153\1\156\1\162\1\155\1\141\1\172\1\160\1\164\1\162\1\uffff\1\172\1\145\1\165\1\uffff\1\172\1\167\1\164\1\150\1\163\1\164\1\172\1\uffff\1\143\3\172\1\150\1\162\1\170\1\164\1\156\2\172\2\uffff\1\172\1\156\1\172\1\145\1\172\1\144\1\172\1\141\1\147\1\uffff\1\172\1\151\1\156\1\uffff\1\172\1\154\1\uffff\2\172\1\157\1\163\2\151\1\154\1\uffff\1\172\3\uffff\1\172\1\157\2\172\1\143\1\uffff\1\171\2\uffff\1\165\1\uffff\1\172\1\uffff\1\172\1\uffff\1\164\1\145\1\uffff\1\157\1\172\1\uffff\1\164\2\uffff\1\163\1\172\2\157\1\141\2\uffff\1\156\2\uffff\1\145\1\172\1\145\2\uffff\1\157\1\172\1\156\1\uffff\1\172\1\164\1\uffff\2\156\1\163\1\151\1\157\1\uffff\1\172\1\156\1\uffff\1\172\1\uffff\3\172\1\163\1\172\1\146\1\uffff\1\172\4\uffff\1\172\1\145\1\172\2\uffff\1\144\1\uffff\1\172\1\uffff";
     static final String DFA20_acceptS =
-        "\17\uffff\1\32\10\uffff\1\56\1\60\1\61\1\62\1\uffff\1\64\1\65\1\66\4\uffff\1\102\1\103\1\104\4\uffff\1\122\1\124\1\135\1\136\2\uffff\1\142\1\145\1\146\1\5\1\17\1\1\1\20\1\2\1\142\1\6\1\16\1\3\1\21\1\4\2\uffff\1\11\1\35\1\31\1\12\1\36\1\75\1\30\1\13\1\134\1\14\1\143\1\144\1\23\1\15\1\24\1\22\1\27\1\25\1\34\1\33\1\26\1\32\27\uffff\1\56\1\60\1\61\1\62\2\uffff\1\64\1\65\1\66\3\uffff\1\132\1\77\1\102\1\103\1\104\7\uffff\1\122\1\124\1\135\1\136\1\137\1\uffff\1\140\1\141\1\145\14\uffff\1\72\17\uffff\1\63\1\71\7\uffff\1\112\10\uffff\1\51\12\uffff\1\107\20\uffff\1\105\3\uffff\1\116\7\uffff\1\110\13\uffff\1\45\1\115\11\uffff\1\70\3\uffff\1\125\2\uffff\1\133\7\uffff\1\67\1\uffff\1\47\1\50\1\43\5\uffff\1\44\1\uffff\1\131\1\120\1\uffff\1\106\1\uffff\1\101\1\uffff\1\54\2\uffff\1\73\2\uffff\1\111\1\uffff\1\126\1\7\5\uffff\1\40\1\113\1\uffff\1\130\1\41\3\uffff\1\52\1\53\3\uffff\1\127\2\uffff\1\37\5\uffff\1\117\2\uffff\1\55\1\uffff\1\114\6\uffff\1\100\1\uffff\1\76\1\10\1\42\1\46\3\uffff\1\74\1\57\1\uffff\1\123\1\uffff\1\121";
+        "\17\uffff\1\32\10\uffff\1\56\1\60\1\61\1\62\1\uffff\1\64\1\65\1\66\4\uffff\1\102\1\103\1\104\4\uffff\1\122\1\124\1\135\1\136\2\uffff\1\142\1\145\1\146\1\5\1\17\1\1\1\20\1\2\1\142\1\6\1\16\1\3\1\21\1\4\2\uffff\1\11\1\35\1\31\1\12\1\36\1\76\1\30\1\13\1\134\1\14\1\143\1\144\1\23\1\15\1\24\1\22\1\27\1\25\1\34\1\33\1\26\1\32\27\uffff\1\56\1\60\1\61\1\62\2\uffff\1\64\1\65\1\66\2\uffff\1\132\1\74\1\uffff\1\102\1\103\1\104\7\uffff\1\122\1\124\1\135\1\136\1\137\1\uffff\1\140\1\141\1\145\14\uffff\1\72\17\uffff\1\63\1\71\7\uffff\1\112\10\uffff\1\51\12\uffff\1\107\20\uffff\1\105\3\uffff\1\116\7\uffff\1\110\13\uffff\1\45\1\115\11\uffff\1\70\3\uffff\1\125\2\uffff\1\133\7\uffff\1\67\1\uffff\1\47\1\50\1\43\5\uffff\1\44\1\uffff\1\131\1\120\1\uffff\1\106\1\uffff\1\101\1\uffff\1\54\2\uffff\1\73\2\uffff\1\111\1\uffff\1\126\1\7\5\uffff\1\40\1\113\1\uffff\1\130\1\41\3\uffff\1\52\1\53\3\uffff\1\127\2\uffff\1\37\5\uffff\1\117\2\uffff\1\55\1\uffff\1\114\6\uffff\1\100\1\uffff\1\77\1\10\1\42\1\46\3\uffff\1\75\1\57\1\uffff\1\123\1\uffff\1\121";
     static final String DFA20_specialS =
         "\1\0\u015d\uffff}>";
     static final String[] DFA20_transitionS = {
-            "\11\63\2\62\2\63\1\62\22\63\1\62\1\14\1\55\1\54\1\61\1\13\1\3\1\56\1\35\1\36\1\11\1\7\1\37\1\10\1\43\1\12\1\57\11\60\1\33\1\30\1\15\1\4\1\16\1\46\1\53\32\61\1\44\1\63\1\45\1\2\1\61\1\63\1\26\1\25\1\24\1\51\1\20\1\23\1\41\1\40\1\22\1\5\1\61\1\6\1\61\1\47\1\34\1\27\1\61\1\42\1\21\1\52\2\61\1\50\3\61\1\31\1\1\1\32\1\17\uff81\63",
+            "\11\63\2\62\2\63\1\62\22\63\1\62\1\14\1\55\1\54\1\61\1\13\1\3\1\56\1\35\1\36\1\11\1\7\1\37\1\10\1\42\1\12\1\57\11\60\1\33\1\30\1\15\1\4\1\16\1\46\1\53\32\61\1\44\1\63\1\45\1\2\1\61\1\63\1\26\1\25\1\24\1\51\1\20\1\23\1\41\1\40\1\22\1\5\1\61\1\6\1\61\1\47\1\34\1\27\1\61\1\43\1\21\1\52\2\61\1\50\3\61\1\31\1\1\1\32\1\17\uff81\63",
             "\1\65\76\uffff\1\64",
             "\1\71\30\uffff\1\67\3\uffff\32\71\4\uffff\1\71\1\uffff\32\71",
             "\1\72\26\uffff\1\73",
@@ -3638,7 +3638,7 @@ public class InternalEketalLexer extends Lexer {
             "\1\167",
             "\1\170",
             "\1\171",
-            "\1\172",
+            "\1\173",
             "",
             "",
             "",
@@ -3724,9 +3724,9 @@ public class InternalEketalLexer extends Lexer {
             "",
             "\1\u00ad",
             "\1\u00ae",
+            "",
+            "",
             "\1\u00af\22\uffff\1\u00b0",
-            "",
-            "",
             "",
             "",
             "",
@@ -4061,9 +4061,9 @@ public class InternalEketalLexer extends Lexer {
 
                         else if ( (LA20_0=='g') ) {s = 33;}
 
-                        else if ( (LA20_0=='r') ) {s = 34;}
+                        else if ( (LA20_0=='.') ) {s = 34;}
 
-                        else if ( (LA20_0=='.') ) {s = 35;}
+                        else if ( (LA20_0=='r') ) {s = 35;}
 
                         else if ( (LA20_0=='[') ) {s = 36;}
 
