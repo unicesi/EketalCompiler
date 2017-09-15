@@ -43,6 +43,7 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTypeReturnAccess().getAlternatives(), "rule__TypeReturn__Alternatives");
 					put(grammarAccess.getHostAccess().getAlternatives(), "rule__Host__Alternatives");
 					put(grammarAccess.getIpAccess().getAlternatives(), "rule__Ip__Alternatives");
+					put(grammarAccess.getIpAccess().getAlternatives_2_1(), "rule__Ip__Alternatives_2_1");
 					put(grammarAccess.getXJStatementOrBlockAccess().getAlternatives(), "rule__XJStatementOrBlock__Alternatives");
 					put(grammarAccess.getXImportDeclarationAccess().getAlternatives_1(), "rule__XImportDeclaration__Alternatives_1");
 					put(grammarAccess.getXImportDeclarationAccess().getAlternatives_1_0_2(), "rule__XImportDeclaration__Alternatives_1_0_2");
@@ -111,6 +112,9 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTriggerAccess().getGroup_5_1(), "rule__Trigger__Group_5_1__0");
 					put(grammarAccess.getGroupAccess().getGroup(), "rule__Group__Group__0");
 					put(grammarAccess.getIpAccess().getGroup_2(), "rule__Ip__Group_2__0");
+					put(grammarAccess.getIpAccess().getGroup_2_0(), "rule__Ip__Group_2_0__0");
+					put(grammarAccess.getIpAccess().getGroup_2_0_2(), "rule__Ip__Group_2_0_2__0");
+					put(grammarAccess.getIpAccess().getGroup_2_0_2_2(), "rule__Ip__Group_2_0_2_2__0");
 					put(grammarAccess.getAutomatonAccess().getGroup(), "rule__Automaton__Group__0");
 					put(grammarAccess.getAutomatonAccess().getGroup_3(), "rule__Automaton__Group_3__0");
 					put(grammarAccess.getAutomatonAccess().getGroup_3_1(), "rule__Automaton__Group_3_1__0");

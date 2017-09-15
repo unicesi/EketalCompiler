@@ -1,9 +1,16 @@
 package co.edu.icesi.ketal.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Facade State of the dk.brics.automaton.State
  */
 public class State implements Cloneable{
+	
+	private static final Log logger = LogFactory
+			.getLog(State.class);
+	
 	private dk.brics.automaton.State state;
 	
 	// This Event is saved to show what event happened to stay in this State
@@ -111,7 +118,8 @@ public class State implements Cloneable{
         try{
             obj=super.clone();
         }catch(CloneNotSupportedException ex){
-            System.out.println("Error al Clonar");
+        	logger.error("Error al Clonar");
+//            System.out.println("Error al Clonar");
         }
         return obj;
     }

@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import co.edu.icesi.eketal.automaton.AutomatonConstructor;
-import co.edu.icesi.eketal.handlercontrol.EventHandler;
+import co.edu.icesi.eketal.handlercontrol._EventHandler;
 import co.edu.icesi.ketal.core.Automaton;
 import co.edu.icesi.ketal.core.Event;
 import co.edu.icesi.ketal.core.NamedEvent;
@@ -22,8 +22,8 @@ public class TestAutomaton {
     public void testAutomaton(){
     	System.setProperty("java.net.preferIPv4Stack" , "true");
     	
-        Event eventHello = new NamedEvent("eventoHello");
-        Event eventWorld = new NamedEvent("eventoWorld");
+        Event eventHello = new NamedEvent("eventHello");
+        Event eventWorld = new NamedEvent("eventWorld");
         
 		System.out.println(instance.getCurrentState().toString());
 		String state = instance.getCurrentState().toString();

@@ -58,8 +58,5 @@ public interface EventBroker {
 	public URL getAsyncAddress();
 	
 	public URL getSyncAddress();
-	
-	//Written by Camilo Pimienta: This method allows to close the channel where the communication is stored
-	public void closeComunication();
 
 }

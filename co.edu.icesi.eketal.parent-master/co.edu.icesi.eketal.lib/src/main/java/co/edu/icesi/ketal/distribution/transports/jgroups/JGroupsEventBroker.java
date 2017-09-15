@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgroups.Address;
 import org.jgroups.Channel;
 import org.jgroups.Message;
@@ -34,13 +36,27 @@ public class JGroupsEventBroker implements EventBroker {
 	private JGroupsSyncFacade syncMonitor;
 	private String groupName;
 	private BrokerMessageHandler messageHandler;
-
+	
+	protected static final Log logger = LogFactory
+			.getLog(JGroupsAbstractFacade.class);
+	
 	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh) {
 		System.setProperty("java.net.preferIPv4Stack" , "true");
 		this.groupName = groupName;
 		this.messageHandler = bmh;
 		this.asyncMonitor = new JGroupsAsyncFacade(groupName, this);
 		this.syncMonitor = new JGroupsSyncFacade(groupName);
+	}
+	
+	public JGroupsEventBroker(String groupName, BrokerMessageHandler bmh, boolean asynOn) {
+		System.setProperty("java.net.preferIPv4Stack" , "true");
+		this.groupName = groupName;
+		this.messageHandler = bmh;
+		if(asynOn){			
+			this.asyncMonitor = new JGroupsAsyncFacade(groupName, this);
+		}else{
+			this.syncMonitor = new JGroupsSyncFacade(groupName);			
+		}
 	}
 
 	public JGroupsEventBroker(String groupName) {
@@ -59,55 +75,16 @@ public class JGroupsEventBroker implements EventBroker {
 	 */
 
 	@Override
-	public URL getAsyncAddress() {
-		
-		String srcIp = "";   
-	    
-	    Channel channel = asyncMonitor.channel;
-	    
-	    PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
-
-	    if(physicalAddr instanceof IpAddress) {
-	        IpAddress ipAddr = (IpAddress)physicalAddr;
-	        InetAddress inetAddr = ipAddr.getIpAddress();
-	        srcIp = inetAddr.getHostAddress();
-	    }
-		
-	    URL retorno = null;
-		try {
-			retorno = new URL("http://"+srcIp);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-		return retorno;
+	public URL getAsyncAddress() {	    
+		return asyncMonitor.getIpAddress();
 	}
 
 	@Override
 	public URL getSyncAddress() {
-		String srcIp = "";   
-	    
-	    Channel channel = syncMonitor.channel;
-	    
-	    PhysicalAddress physicalAddr = (PhysicalAddress)channel.down(new org.jgroups.Event(org.jgroups.Event.GET_PHYSICAL_ADDRESS, channel.getAddress()));
-
-	    if(physicalAddr instanceof IpAddress) {
-	        IpAddress ipAddr = (IpAddress)physicalAddr;
-	        InetAddress inetAddr = ipAddr.getIpAddress();
-	        srcIp = inetAddr.getHostAddress();
-	    }
-		
-	    URL retorno = null;
-		try {
-			retorno = new URL(srcIp);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-		return retorno;
+	    return syncMonitor.getIpAddress();
 	}
+
+	
 	// Modified by David Dur�n
 	// Method that calls the broadcastMessageSync(m) method for synchronous
 	// messages
@@ -136,12 +113,6 @@ public class JGroupsEventBroker implements EventBroker {
 	public NotifyingFuture<RspList<Object>> multicastWithFutures(String class_name,
 			String method_name, Object... parameters) {
 		return syncMonitor.broadcastMessageWithFuture(class_name, method_name, parameters);
-	}
-
-	@Override
-	public void closeComunication() {
-		syncMonitor.closeComunication();
-		asyncMonitor.closeComunication();
 	}
 
 }

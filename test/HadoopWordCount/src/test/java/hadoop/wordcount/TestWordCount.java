@@ -18,7 +18,7 @@ public class TestWordCount {
 	    String[] args = {"\\./1728.txt","out"+ran.nextInt(100)};
 	    final InputStream original = System.in;
 	    try {
-			WordCount2.main(args);
+			WordCount2.executeHadoop(args);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

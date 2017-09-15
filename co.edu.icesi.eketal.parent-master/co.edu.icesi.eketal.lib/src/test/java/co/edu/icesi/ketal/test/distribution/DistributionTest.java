@@ -47,11 +47,6 @@ public class DistributionTest {
 		automaton.setRegularExpression("ABB|CAAB");		
 	}
 	
-	@After
-	public void tearDown() throws Exception {
-		eventBroker1.closeComunication();
-		eventBroker2.closeComunication();
-	}
 	
 	/**
 	 * This test just checks that messages are being send from one broker to the other.
