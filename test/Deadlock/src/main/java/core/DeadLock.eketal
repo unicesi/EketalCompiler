@@ -23,6 +23,12 @@ eventclass DeadLock{
 	event commitEvent(): host(localGroup)&&call(* TreeCache.commit());
 	
 	reaction before deadLockDetector.deadlock{
+		String ^group = "34";
+		try{
+			Integer.parseInt(^group);
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}
 		String sep = "----------------------------------------";
 		String deadlock = "Deadlock detected";
 		System.out.println(sep+deadlock+sep);
