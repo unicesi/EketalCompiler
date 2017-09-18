@@ -100,7 +100,8 @@ Explore more about this example and the other examples [here](https://github.com
 ### 3.1. Download the sources
   You can download the sources in two ways: directly from Github and using git.
  #### From Github
- Click in the button "Clone or Download" and press the "Download Zip" option
+   Click in the button "Clone or Download" and press the "Download Zip" option. Unzip the file. Finally, start Eclipse and set the workspace in the directory where you downloaded the sources
+ 
  #### Using Git
   You must have Git installed.
   Type into the git bash:
@@ -108,6 +109,16 @@ Explore more about this example and the other examples [here](https://github.com
 ```
   git clone https://github.com/unicesi/eketal.git
 ```
+  Start Eclipse and set the workspace in the directory where you downloaded the sources
+ 
+ #### Using Eclipse
+  Open the Git view by going to "**Windows**" tab of Eclipse -> "**Perspective**" -> "**Open perspective**" -> "**Other**" and select "*Git*". In the "*Git reposotories*" view from eclipse "*Clone a Git reposotory and add the clone to this view*" button/link paste the this 
+```
+  https://github.com/unicesi/eketal.git
+```
+in the "**URI**" field, and buttons "**Next**", then again "**Next**", in the "**Directory**" file you can select the preferred directory to put the project and "**Finish**" button.
+
+### 3.2. Set up Eclipse environment
 
 First, install the following tools in the suggested order, here are their update sites repositories, install them to your eclipse as explained in the (2) "Installing the IDE as an Eclipse's plugin" section.
 
@@ -128,19 +139,19 @@ Firts, xtext, later AspectJ, then JBase and finally MWE:
 -MWE: http://download.eclipse.org/modeling/emft/mwe/updates/releases/2.9.0/
 
 
-### 3.2. Import the project
+### 3.3. Import the project
 
 Once you have installed those features, import the downloaded sources in your favorite eclipse IDE as a maven project as follows:
 #### 3.2.1. Go to "File" -> "Import…"
 #### 3.2.2. Then "Maven" -> "Existing Maven Projects"
 #### 3.2.3. Select the folder where you downloaded the sources, select all and click on "Finish".
 
-### 3.3. Fix the build path
+### 3.4. Fix the build path
 Finally, Github does not allow to have empty folders, so eclipse will show a build path error named as follows "The project cannot be built until build path errors are resolved co.edu.icesi.eketal.ide”. So the missing folders must be added manually as shown next:
 
-#### 3.3.1. In the “Package Explorer” view from eclipse, right click in the "co.edu.icesi.eketal.ide project" -> "New" -> "Folder"
-#### 3.3.2. Name that folder as “src” without the quotes and "Finish" option.
-#### 3.3.3. Repeat (3.3.1.) and name the new folder as "xtend-gen"
-#### 3.3.4. Finally, right click in the in the parent project "co.edu.icesi.eketal.parent" -> "Maven" -> "Update Project".
+#### 3.4.1. In the “Package Explorer” view from eclipse, right click in the "co.edu.icesi.eketal.ide project" -> "New" -> "Folder"
+#### 3.4.2. Name that folder as “src” without the quotes and "Finish" option.
+#### 3.4.3. Repeat (3.3.1.) and name the new folder as "xtend-gen"
+#### 3.4.4. Finally, right click in the in the parent project "co.edu.icesi.eketal.parent" -> "Maven" -> "Update Project".
 
 In case of problems, please submit an issue.
