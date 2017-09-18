@@ -10,6 +10,8 @@ import org.jboss.cache.Cache;
 import org.jboss.cache.CacheFactory;
 import org.jboss.cache.DefaultCacheFactory;
 import org.jboss.cache.Fqn;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 import co.edu.icesi.eketal.handlercontrol.EventHandler;
 

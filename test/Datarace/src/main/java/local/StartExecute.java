@@ -32,7 +32,7 @@ public class StartExecute {
 		}
 				
 		System.out.println("[INFO] Starting cache");
-		
+	
 		CacheFactory factory = new DefaultCacheFactory();
 		Cache cache = factory.createCache("config/total-replication.xml");
 
