@@ -24,12 +24,6 @@ This section describes how to download the project, how to build and install the
 ```
   git clone -b "master" https://github.com/unicesi/eketal.git
 ```
-
-The mock example can be download as follows:
-
-```
-  git clone -b "JGroups-3.6.9-Final" https://github.com/unicesi/eketal.git
-```
 	
 Once you have downloaded the sources, run the following commands in the maven prompt line (with maven installed)
 
@@ -102,7 +96,7 @@ Explore more about this example and the other examples [here](https://github.com
 #### 4. In the location, put the EKetal update site: http://unicesi.github.io/eketal/repository/ and press OK.
 #### 5. Select all the items and proceed to install.
 
-## 3. Installing EKETAL's development environment using Eclipse
+## 3. Installing EKETAL's development environment using Eclipse **NEON**
 ### 3.1. Download the sources
   You can download the sources in two ways: directly from Github and using git.
  #### From Github
@@ -115,13 +109,24 @@ Explore more about this example and the other examples [here](https://github.com
   git clone https://github.com/unicesi/eketal.git
 ```
 
-First, install the following tools, here are their update sites repositories, install them to your eclipse as explained in the (2) "Installing the IDE as an Eclipse's plugin" section.
+First, install the following tools in the suggested order, here are their update sites repositories, install them to your eclipse as explained in the (2) "Installing the IDE as an Eclipse's plugin" section.
 
--Xtext: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
+Firts, xtext, later AspectJ, then JBase and finally MWE:
 
--JBase: https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.5/
+-Xtext: http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.12.0/ 
 
--AspectJ: http://download.eclipse.org/tools/ajdt/45/dev/update
+-AspectJ: http://download.eclipse.org/tools/ajdt/46/dev/update
+
+[x] *AspectJ Development tools*
+
+[x] *Other AJDT Tools*
+
+-JBase: https://dl.bintray.com/lorenzobettini/xtext-jbase/updates/0.7/
+
+\* *It is not necessary to download sources of JBase*
+
+-MWE: http://download.eclipse.org/modeling/emft/mwe/updates/releases/2.9.0/
+
 
 ### 3.2. Import the project
 
