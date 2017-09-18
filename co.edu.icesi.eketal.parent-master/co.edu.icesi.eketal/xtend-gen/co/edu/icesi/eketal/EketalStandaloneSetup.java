@@ -11,7 +11,6 @@ import co.edu.icesi.eketal.EketalStandaloneSetupGenerated;
 @SuppressWarnings("all")
 public class EketalStandaloneSetup extends EketalStandaloneSetupGenerated {
   public static void doSetup() {
-    EketalStandaloneSetup _eketalStandaloneSetup = new EketalStandaloneSetup();
-    _eketalStandaloneSetup.createInjectorAndDoEMFRegistration();
+    new EketalStandaloneSetup().createInjectorAndDoEMFRegistration();
   }
 }

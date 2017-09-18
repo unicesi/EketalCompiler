@@ -4,11 +4,10 @@
 package co.edu.icesi.eketal.jvmmodel;
 
 import co.edu.icesi.eketal.eketal.Automaton;
-import co.edu.icesi.eketal.eketal.Body;
-import co.edu.icesi.eketal.eketal.Decl;
-import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
 import co.edu.icesi.eketal.eketal.Group;
+import co.edu.icesi.eketal.eketal.Host;
+import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.Pos;
 import co.edu.icesi.eketal.eketal.Rc;
@@ -29,8 +28,10 @@ import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -39,6 +40,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -53,12 +55,11 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
-import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -84,11 +85,11 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
   @Extension
   private IQualifiedNameProvider _iQualifiedNameProvider;
   
-  public static String groupClassName = "GroupsControl";
+  public static String groupClassName = "_GroupsControl";
   
-  public static String handlerClassName = "EventHandler";
+  public static String handlerClassName = "_EventHandler";
   
-  public static String reaction = "Reaction";
+  public static String reaction = "_Reaction";
   
   /**
    * The dispatch method {@code infer} is called for each instance of the
@@ -116,15 +117,13 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
    *            <code>true</code>.
    */
   protected void _infer(final Model element, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(element);
-    final JvmGenericType implementation = this._jvmTypesBuilder.toClass(element, _fullyQualifiedName);
+    final JvmGenericType implementation = this._jvmTypesBuilder.toClass(element, this._iQualifiedNameProvider.getFullyQualifiedName(element));
     boolean _equals = Objects.equal(implementation, null);
     if (_equals) {
       return;
     }
     EventClass eventClass = element.getTypeDeclaration();
-    QualifiedName _fullyQualifiedName_1 = this._iQualifiedNameProvider.getFullyQualifiedName(eventClass);
-    JvmGenericType eventClassGenerate = this._jvmTypesBuilder.toClass(eventClass, _fullyQualifiedName_1);
+    JvmGenericType eventClassGenerate = this._jvmTypesBuilder.toClass(eventClass, this._iQualifiedNameProvider.getFullyQualifiedName(eventClass));
     EList<Adapter> _eAdapters = eventClassGenerate.eAdapters();
     OutputConfigurationAdapter _outputConfigurationAdapter = new OutputConfigurationAdapter(IFileSystemAccess.DEFAULT_OUTPUT);
     _eAdapters.add(_outputConfigurationAdapter);
@@ -134,30 +133,35 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
     acceptor.<JvmGenericType>accept(eventClassGenerate, _function);
     final EventClass groupsClass = element.getTypeDeclaration();
     this.createGroupClass(acceptor, groupsClass);
-    EventClass _typeDeclaration = element.getTypeDeclaration();
-    EList<Decl> _declarations = _typeDeclaration.getDeclarations();
-    Iterable<Automaton> automatons = Iterables.<Automaton>filter(_declarations, Automaton.class);
+    Iterable<Automaton> automatons = Iterables.<Automaton>filter(element.getTypeDeclaration().getDeclarations(), Automaton.class);
+    final Function1<Automaton, Set<String>> _function_1 = (Automaton a) -> {
+      final Set<String> steps = new TreeSet<String>();
+      final Function1<Step, Boolean> _function_2 = (Step s) -> {
+        return Boolean.valueOf(steps.add(s.getName()));
+      };
+      IterableExtensions.<Step>forall(a.getSteps(), _function_2);
+      return steps;
+    };
+    final Map<Automaton, Set<String>> eventsOfAutomaton = IterableExtensions.<Automaton, Set<String>>toInvertedMap(automatons, _function_1);
     String nameAutomaton = null;
     for (final Automaton declaracion : automatons) {
       {
-        String _name = declaracion.getName();
-        String _firstUpper = StringExtensions.toFirstUpper(_name);
+        String _firstUpper = StringExtensions.toFirstUpper(declaracion.getName());
         String _plus = ("co.edu.icesi.eketal.automaton." + _firstUpper);
         nameAutomaton = _plus;
-        JvmGenericType _class = this._jvmTypesBuilder.toClass(declaracion, nameAutomaton);
-        final Procedure1<JvmGenericType> _function_1 = (JvmGenericType it) -> {
-          EList<JvmMember> _members = it.getMembers();
+        final Procedure1<JvmGenericType> _function_2 = (JvmGenericType it) -> {
+          final JvmTypeReference typeAutomaton = this._typeReferenceBuilder.typeRef(it);
+          EList<JvmTypeReference> _superTypes = it.getSuperTypes();
           JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
-          final Procedure1<JvmField> _function_2 = (JvmField it_1) -> {
+          this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef);
+          EList<JvmMember> _members = it.getMembers();
+          final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
             it_1.setStatic(true);
           };
-          JvmField _field = this._jvmTypesBuilder.toField(declaracion, "instance", _typeRef, _function_2);
+          JvmField _field = this._jvmTypesBuilder.toField(declaracion, "instance", typeAutomaton, _function_3);
           this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
           EList<JvmMember> _members_1 = it.getMembers();
-          JvmTypeReference _typeRef_1 = this._typeReferenceBuilder.typeRef(String.class);
-          JvmTypeReference _typeRef_2 = this._typeReferenceBuilder.typeRef(State.class);
-          JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef(Map.class, _typeRef_1, _typeRef_2);
-          final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
+          final Procedure1<JvmField> _function_4 = (JvmField it_1) -> {
             it_1.setStatic(true);
             it_1.setVisibility(JvmVisibility.PUBLIC);
             StringConcatenationClient _client = new StringConcatenationClient() {
@@ -165,73 +169,167 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                 _builder.append("new ");
                 JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashMap.class);
-                _builder.append(_typeRef, "");
+                _builder.append(_typeRef);
                 _builder.append("<String, ");
                 JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-                _builder.append(_typeRef_1, "");
+                _builder.append(_typeRef_1);
                 _builder.append(">()");
               }
             };
             this._jvmTypesBuilder.setInitializer(it_1, _client);
           };
-          JvmField _field_1 = this._jvmTypesBuilder.toField(declaracion, "estados", _typeRef_3, _function_3);
+          JvmField _field_1 = this._jvmTypesBuilder.toField(declaracion, "estados", this._typeReferenceBuilder.typeRef(HashMap.class, this._typeReferenceBuilder.typeRef(String.class), this._typeReferenceBuilder.typeRef(State.class)), _function_4);
           this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field_1);
           EList<JvmMember> _members_2 = it.getMembers();
-          JvmTypeReference _typeRef_4 = this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
-          final Procedure1<JvmOperation> _function_4 = (JvmOperation it_1) -> {
+          final Procedure1<JvmOperation> _function_5 = (JvmOperation it_1) -> {
             it_1.setStatic(true);
             StringConcatenationClient _client = new StringConcatenationClient() {
               @Override
               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                _builder.append("if(instance==null)");
+                _builder.append("if(instance==null){");
                 _builder.newLine();
                 _builder.append("\t");
-                _builder.append("new ");
-                String _name = declaracion.getName();
-                String _firstUpper = StringExtensions.toFirstUpper(_name);
-                _builder.append(_firstUpper, "\t");
+                _builder.append("//lista de estados finales");
+                _builder.newLine();
+                _builder.append("\t");
+                JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Set.class, EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class));
+                _builder.append(_typeRef, "\t");
+                _builder.append(" estadosFinales = new ");
+                JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashSet.class);
+                _builder.append(_typeRef_1, "\t");
                 _builder.append("();");
                 _builder.newLineIfNotEmpty();
-                _builder.append("return instance;");
+                _builder.append("\t");
+                _builder.append("//conjunto de transiciones");
+                _builder.newLine();
+                _builder.append("   \t");
+                JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Set.class, EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Transition.class));
+                _builder.append(_typeRef_2, "   \t");
+                _builder.append(" transitionSet = new ");
+                JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashSet.class);
+                _builder.append(_typeRef_3, "   \t");
+                _builder.append("();");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("//map de expresiones con caracteres");
+                _builder.newLine();
+                _builder.append("   \t");
+                JvmTypeReference _typeRef_4 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Hashtable.class, EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Expression.class), EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Character.class));
+                _builder.append(_typeRef_4, "   \t");
+                _builder.append(" expressions = new ");
+                JvmTypeReference _typeRef_5 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Hashtable.class);
+                _builder.append(_typeRef_5, "   \t");
+                _builder.append("();");
+                _builder.newLineIfNotEmpty();
+                _builder.append("   \t");
+                JvmTypeReference _typeRef_6 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
+                _builder.append(_typeRef_6, "   \t");
+                _builder.append(" initial = initialize(transitionSet, estadosFinales, expressions);");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("return new ");
+                _builder.append(typeAutomaton, "\t");
+                _builder.append("(transitionSet, initial, estadosFinales, expressions);");
+                _builder.newLineIfNotEmpty();
+                _builder.append("}else{");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("return instance;\t\t\t\t\t\t");
+                _builder.newLine();
+                _builder.append("}");
                 _builder.newLine();
               }
             };
             this._jvmTypesBuilder.setBody(it_1, _client);
           };
-          JvmOperation _method = this._jvmTypesBuilder.toMethod(declaracion, "getInstance", _typeRef_4, _function_4);
+          JvmOperation _method = this._jvmTypesBuilder.toMethod(declaracion, "getInstance", this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class), _function_5);
           this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method);
           EList<JvmMember> _members_3 = it.getMembers();
-          final Procedure1<JvmConstructor> _function_5 = (JvmConstructor it_1) -> {
-            it_1.setVisibility(JvmVisibility.PRIVATE);
+          final Procedure1<JvmOperation> _function_6 = (JvmOperation it_1) -> {
+            EList<JvmFormalParameter> _parameters = it_1.getParameters();
+            JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(declaracion, "event", this._typeReferenceBuilder.typeRef(Event.class));
+            this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
             StringConcatenationClient _client = new StringConcatenationClient() {
               @Override
               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                _builder.append("initialize();");
+                _builder.append("if(event instanceof ");
+                JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(NamedEvent.class);
+                _builder.append(_typeRef);
+                _builder.append("){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("   \t\t\t");
+                _builder.append("return super.evaluate(event);");
+                _builder.newLine();
+                _builder.append("   \t\t");
+                _builder.append("}");
+                _builder.newLine();
+                _builder.append("   \t\t");
+                _builder.append("return false;");
                 _builder.newLine();
               }
             };
             this._jvmTypesBuilder.setBody(it_1, _client);
           };
-          JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(declaracion, _function_5);
-          this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_3, _constructor);
+          JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(declaracion, "evaluate", this._typeReferenceBuilder.typeRef(boolean.class), _function_6);
+          this._jvmTypesBuilder.<JvmOperation>operator_add(_members_3, _method_1);
           EList<JvmMember> _members_4 = it.getMembers();
+          final Procedure1<JvmConstructor> _function_7 = (JvmConstructor it_1) -> {
+            it_1.setVisibility(JvmVisibility.PRIVATE);
+            EList<JvmFormalParameter> _parameters = it_1.getParameters();
+            JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(declaracion, "transitions", this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(Transition.class)));
+            this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+            EList<JvmFormalParameter> _parameters_1 = it_1.getParameters();
+            JvmFormalParameter _parameter_1 = this._jvmTypesBuilder.toParameter(declaracion, "begin", this._typeReferenceBuilder.typeRef(State.class));
+            this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_1, _parameter_1);
+            EList<JvmFormalParameter> _parameters_2 = it_1.getParameters();
+            JvmFormalParameter _parameter_2 = this._jvmTypesBuilder.toParameter(declaracion, "finalStates", this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(State.class)));
+            this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_2, _parameter_2);
+            EList<JvmFormalParameter> _parameters_3 = it_1.getParameters();
+            JvmFormalParameter _parameter_3 = this._jvmTypesBuilder.toParameter(declaracion, "expressions", 
+              this._typeReferenceBuilder.typeRef(Hashtable.class, this._typeReferenceBuilder.typeRef(Expression.class), this._typeReferenceBuilder.typeRef(Character.class)));
+            this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_3, _parameter_3);
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                _builder.append("super(transitions, begin, finalStates, expressions);");
+                _builder.newLine();
+                _builder.append("initializeAutomaton();");
+                _builder.newLine();
+              }
+            };
+            this._jvmTypesBuilder.setBody(it_1, _client);
+          };
+          JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(declaracion, _function_7);
+          this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_4, _constructor);
+          EList<JvmMember> _members_5 = it.getMembers();
           JvmOperation _AutomatonInit = this.AutomatonInit(((Automaton) declaracion));
-          this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _AutomatonInit);
+          this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _AutomatonInit);
         };
-        acceptor.<JvmGenericType>accept(_class, _function_1);
+        acceptor.<JvmGenericType>accept(this._jvmTypesBuilder.toClass(declaracion, nameAutomaton), _function_2);
       }
     }
     EventClass reactions = element.getTypeDeclaration();
-    this.createReactionClass(acceptor, reactions, nameAutomaton);
+    this.createReactionClass(acceptor, reactions, eventsOfAutomaton);
     final EventClass handlerClass = element.getTypeDeclaration();
-    this.createHandlerClass(acceptor, handlerClass, nameAutomaton);
+    this.createHandlerClass(acceptor, handlerClass, IterableExtensions.<Automaton>toSet(automatons));
   }
   
-  public void createReactionClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass reactions, final String automatonName) {
-    JvmGenericType _class = this._jvmTypesBuilder.toClass(reactions, ("co.edu.icesi.eketal.reaction." + EketalJvmModelInferrer.reaction));
+  public void createReactionClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass reactions, final Map automatonsMap) {
     final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
-      EList<Decl> _declarations = reactions.getDeclarations();
-      final Iterable<Rc> set = Iterables.<Rc>filter(_declarations, Rc.class);
+      final Iterable<Rc> set = Iterables.<Rc>filter(reactions.getDeclarations(), Rc.class);
+      final Iterable<JVarD> variables = Iterables.<JVarD>filter(reactions.getDeclarations(), JVarD.class);
+      boolean _isEmpty = IterableExtensions.isEmpty(variables);
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        for (final JVarD variable : variables) {
+          EList<JvmMember> _members = it.getMembers();
+          final Procedure1<JvmField> _function_1 = (JvmField it_1) -> {
+            it_1.setStatic(true);
+          };
+          JvmField _field = this._jvmTypesBuilder.toField(reactions, StringExtensions.toFirstLower(variable.getName()), variable.getType(), _function_1);
+          this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
+        }
+      }
       final HashMap<String, String> after = new HashMap<String, String>();
       final HashMap<String, String> before = new HashMap<String, String>();
       for (final Rc rc : set) {
@@ -239,45 +337,34 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
           if ((Objects.equal(rc.getAutomaton(), null) || Objects.equal(rc.getState(), null))) {
             return;
           }
-          Automaton _automaton = rc.getAutomaton();
-          String _name = _automaton.getName();
+          String _name = rc.getAutomaton().getName();
           String _plus = ("reaction" + _name);
-          Step _state = rc.getState();
-          String _name_1 = _state.getName();
+          String _name_1 = rc.getState().getName();
           String name = (_plus + _name_1);
-          EList<JvmMember> _members = it.getMembers();
-          JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(void.class);
-          final Procedure1<JvmOperation> _function_1 = (JvmOperation it_1) -> {
+          EList<JvmMember> _members_1 = it.getMembers();
+          final Procedure1<JvmOperation> _function_2 = (JvmOperation it_1) -> {
             it_1.setStatic(true);
-            Body _body = rc.getBody();
-            XExpression _body_1 = _body.getBody();
-            this._jvmTypesBuilder.setBody(it_1, _body_1);
+            this._jvmTypesBuilder.setBody(it_1, rc.getBody().getBody());
           };
-          JvmOperation _method = this._jvmTypesBuilder.toMethod(reactions, name, _typeRef, _function_1);
-          this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
+          JvmOperation _method = this._jvmTypesBuilder.toMethod(reactions, name, this._typeReferenceBuilder.typeRef(void.class), _function_2);
+          this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _method);
           Pos _pos = rc.getPos();
           boolean _equals = Objects.equal(_pos, Pos.BEFORE);
           if (_equals) {
-            Step _state_1 = rc.getState();
-            String _name_2 = _state_1.getName();
-            before.put(_name_2, (name + "()"));
+            before.put(rc.getState().getName(), (name + "()"));
           } else {
             Pos _pos_1 = rc.getPos();
             boolean _equals_1 = Objects.equal(_pos_1, Pos.AFTER);
             if (_equals_1) {
-              Step _state_2 = rc.getState();
-              String _name_3 = _state_2.getName();
-              after.put(_name_3, (name + "()"));
+              after.put(rc.getState().getName(), (name + "()"));
             }
           }
         }
       }
-      EList<JvmMember> _members = it.getMembers();
-      JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(void.class);
-      final Procedure1<JvmOperation> _function_1 = (JvmOperation it_1) -> {
+      EList<JvmMember> _members_1 = it.getMembers();
+      final Procedure1<JvmOperation> _function_2 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_1 = this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(reactions, "automaton", _typeRef_1);
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(reactions, "automaton", this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
@@ -288,42 +375,65 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
               boolean _not = (!_isEmpty);
               if (_not) {
                 JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-                _builder.append(_typeRef, "");
+                _builder.append(_typeRef);
                 _builder.append(" actual = automaton.getCurrentState();");
                 _builder.newLineIfNotEmpty();
                 {
                   Set<String> _keySet = before.keySet();
                   for(final String state : _keySet) {
-                    _builder.append("if(actual.equals(");
-                    _builder.append(automatonName, "");
-                    _builder.append(".estados.get(\"");
-                    _builder.append(state, "");
-                    _builder.append("\"))){");
-                    _builder.newLineIfNotEmpty();
-                    _builder.append("\t");
-                    String _get = before.get(state);
-                    _builder.append(_get, "\t");
-                    _builder.append(";");
-                    _builder.newLineIfNotEmpty();
-                    _builder.append("}");
-                    _builder.newLine();
+                    {
+                      final Function1<Object, Automaton> _function = (Object a) -> {
+                        return ((Automaton) a);
+                      };
+                      Iterable<Automaton> _map = IterableExtensions.<Object, Automaton>map(automatonsMap.keySet(), _function);
+                      for(final Automaton automaton : _map) {
+                        {
+                          Object _get = automatonsMap.get(automaton);
+                          boolean _contains = ((Set<String>) _get).contains(state);
+                          if (_contains) {
+                            _builder.append("if(co.edu.icesi.eketal.automaton.");
+                            String _firstUpper = StringExtensions.toFirstUpper(automaton.getName());
+                            _builder.append(_firstUpper);
+                            _builder.append(".class.isInstance(automaton)){");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("if(actual.equals(co.edu.icesi.eketal.automaton.");
+                            String _firstUpper_1 = StringExtensions.toFirstUpper(automaton.getName());
+                            _builder.append(_firstUpper_1, "\t");
+                            _builder.append(".estados.get(\"");
+                            _builder.append(state, "\t");
+                            _builder.append("\"))){");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t\t");
+                            String _get_1 = before.get(state);
+                            _builder.append(_get_1, "\t\t");
+                            _builder.append(";");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("}");
+                            _builder.newLine();
+                            _builder.append("}");
+                            _builder.newLine();
+                          }
+                        }
+                      }
+                    }
                   }
                 }
+                _builder.newLine();
               }
             }
           }
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method = this._jvmTypesBuilder.toMethod(reactions, "verifyBefore", _typeRef, _function_1);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
-      EList<JvmMember> _members_1 = it.getMembers();
-      JvmTypeReference _typeRef_1 = this._typeReferenceBuilder.typeRef(void.class);
-      final Procedure1<JvmOperation> _function_2 = (JvmOperation it_1) -> {
+      JvmOperation _method = this._jvmTypesBuilder.toMethod(reactions, "verifyBefore", this._typeReferenceBuilder.typeRef(void.class), _function_2);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _method);
+      EList<JvmMember> _members_2 = it.getMembers();
+      final Procedure1<JvmOperation> _function_3 = (JvmOperation it_1) -> {
         it_1.setStatic(true);
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_2 = this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(reactions, "automaton", _typeRef_2);
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(reactions, "automaton", this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -333,25 +443,48 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
               boolean _not = (!_isEmpty);
               if (_not) {
                 JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-                _builder.append(_typeRef, "");
+                _builder.append(_typeRef);
                 _builder.append(" actual = automaton.getCurrentState();");
                 _builder.newLineIfNotEmpty();
                 {
                   Set<String> _keySet = after.keySet();
                   for(final String state : _keySet) {
-                    _builder.append("if(actual.equals(");
-                    _builder.append(automatonName, "");
-                    _builder.append(".estados.get(\"");
-                    _builder.append(state, "");
-                    _builder.append("\"))){");
-                    _builder.newLineIfNotEmpty();
-                    _builder.append("\t");
-                    String _get = after.get(state);
-                    _builder.append(_get, "\t");
-                    _builder.append(";");
-                    _builder.newLineIfNotEmpty();
-                    _builder.append("}");
-                    _builder.newLine();
+                    {
+                      final Function1<Object, Automaton> _function = (Object a) -> {
+                        return ((Automaton) a);
+                      };
+                      Iterable<Automaton> _map = IterableExtensions.<Object, Automaton>map(automatonsMap.keySet(), _function);
+                      for(final Automaton automaton : _map) {
+                        {
+                          boolean _contains = automaton.getSteps().contains(state);
+                          if (_contains) {
+                            _builder.append("if(automaton.getClass().isAssignableFrom(co.edu.icesi.eketal.automaton.");
+                            String _firstUpper = StringExtensions.toFirstUpper(automaton.getName());
+                            _builder.append(_firstUpper);
+                            _builder.append(".class){");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("if(actual.equals(co.edu.icesi.eketal.automaton.");
+                            String _firstUpper_1 = StringExtensions.toFirstUpper(automaton.getName());
+                            _builder.append(_firstUpper_1, "\t");
+                            _builder.append(".estados.get(\"");
+                            _builder.append(state, "\t");
+                            _builder.append("\"))){");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t\t");
+                            String _get = after.get(state);
+                            _builder.append(_get, "\t\t");
+                            _builder.append(";");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("}");
+                            _builder.newLine();
+                            _builder.append("}");
+                            _builder.newLine();
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -360,57 +493,57 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(reactions, "verifyAfter", _typeRef_1, _function_2);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _method_1);
+      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(reactions, "verifyAfter", this._typeReferenceBuilder.typeRef(void.class), _function_3);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method_1);
     };
-    acceptor.<JvmGenericType>accept(_class, _function);
+    acceptor.<JvmGenericType>accept(this._jvmTypesBuilder.toClass(reactions, ("co.edu.icesi.eketal.reaction." + EketalJvmModelInferrer.reaction)), _function);
   }
   
   /**
    * Also adds the Singleton nature
    */
-  public void createHandlerClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass eventDefinitionClass, final String nameAutomaton) {
-    JvmGenericType _class = this._jvmTypesBuilder.toClass(eventDefinitionClass, ("co.edu.icesi.eketal.handlercontrol." + EketalJvmModelInferrer.handlerClassName));
-    final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
+  public void createHandlerClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass eventDefinitionClass, final Set machines) {
+    final Function1<Object, Automaton> _function = (Object a) -> {
+      return ((Automaton) a);
+    };
+    final Set<Automaton> automatons = IterableExtensions.<Automaton>toSet(IterableExtensions.<Object, Automaton>map(machines, _function));
+    final Procedure1<JvmGenericType> _function_1 = (JvmGenericType it) -> {
       EList<JvmMember> _members = it.getMembers();
-      JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(it);
-      final Procedure1<JvmField> _function_1 = (JvmField it_1) -> {
+      final Procedure1<JvmField> _function_2 = (JvmField it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("new ");
-            _builder.append(EketalJvmModelInferrer.handlerClassName, "");
+            _builder.append(EketalJvmModelInferrer.handlerClassName);
             _builder.append("()");
           }
         };
         this._jvmTypesBuilder.setInitializer(it_1, _client);
       };
-      JvmField _field = this._jvmTypesBuilder.toField(eventDefinitionClass, "instance", _typeRef, _function_1);
+      JvmField _field = this._jvmTypesBuilder.toField(eventDefinitionClass, "instance", this._typeReferenceBuilder.typeRef(it), _function_2);
       this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
       EList<JvmMember> _members_1 = it.getMembers();
-      JvmTypeReference _typeRef_1 = this._typeReferenceBuilder.typeRef(BrokerMessageHandler.class);
-      final Procedure1<JvmField> _function_2 = (JvmField it_1) -> {
-        it_1.setStatic(true);
-      };
-      JvmField _field_1 = this._jvmTypesBuilder.toField(eventDefinitionClass, "brokerMessageHandler", _typeRef_1, _function_2);
-      this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field_1);
-      EList<JvmMember> _members_2 = it.getMembers();
-      JvmTypeReference _typeRef_2 = this._typeReferenceBuilder.typeRef(EventBroker.class);
       final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
         it_1.setStatic(true);
       };
-      JvmField _field_2 = this._jvmTypesBuilder.toField(eventDefinitionClass, "eventBroker", _typeRef_2, _function_3);
+      JvmField _field_1 = this._jvmTypesBuilder.toField(eventDefinitionClass, "brokerMessageHandler", this._typeReferenceBuilder.typeRef(BrokerMessageHandler.class), _function_3);
+      this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field_1);
+      EList<JvmMember> _members_2 = it.getMembers();
+      final Procedure1<JvmField> _function_4 = (JvmField it_1) -> {
+        it_1.setStatic(true);
+      };
+      JvmField _field_2 = this._jvmTypesBuilder.toField(eventDefinitionClass, "eventBroker", this._typeReferenceBuilder.typeRef(EventBroker.class), _function_4);
       this._jvmTypesBuilder.<JvmField>operator_add(_members_2, _field_2);
       EList<JvmMember> _members_3 = it.getMembers();
-      final Procedure1<JvmConstructor> _function_4 = (JvmConstructor it_1) -> {
+      final Procedure1<JvmConstructor> _function_5 = (JvmConstructor it_1) -> {
         it_1.setVisibility(JvmVisibility.PRIVATE);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("brokerMessageHandler = new ");
             JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
-            _builder.append(_typeRef, "");
+            _builder.append(_typeRef);
             _builder.append("(){");
             _builder.newLineIfNotEmpty();
             _builder.append("\t");
@@ -441,44 +574,85 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("\t\t");
             _builder.append("Object handle = super.handle(event, metadata, msg, typeOfMsgSent);");
             _builder.newLine();
-            _builder.append("\t\t");
-            JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
-            _builder.append(_typeRef_1, "\t\t");
-            _builder.append(" automaton = ");
-            _builder.append(nameAutomaton, "\t\t");
-            _builder.append(".getInstance();");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t\t");
-            _builder.append("if(!automaton.evaluate(event)){");
-            _builder.newLine();
-            _builder.append("\t\t\t");
-            JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
-            _builder.append(_typeRef_2, "\t\t\t");
-            _builder.append(".getLogger().info(\"[Handle] Evento no reconocido por el autómata\");");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t\t\t    \t\t\t");
-            _builder.append("//System.out.println(\"[Handle] Evento no reconocido por el autómata\");");
-            _builder.newLine();
-            _builder.append("\t\t\t    \t\t");
-            _builder.append("}else{");
-            _builder.newLine();
-            _builder.append("\t\t\t    \t\t\t");
-            JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
-            _builder.append(_typeRef_3, "\t\t\t    \t\t\t");
-            _builder.append(".getLogger().info(\"[Handle] Returned or threw an Exception\");");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t\t\t    \t\t\t");
-            _builder.append("//System.out.println(\"[Handle] Returned or threw an Exception\");\t\t\t\t\t\t\t");
-            _builder.newLine();
-            _builder.append("\t\t\t    \t\t\t");
-            _builder.append("co.edu.icesi.eketal.reaction.Reaction.verifyBefore(automaton);\t\t\t\t\t");
-            _builder.newLine();
-            _builder.append("\t\t\t    \t\t\t");
-            _builder.append("co.edu.icesi.eketal.reaction.Reaction.verifyAfter(automaton);\t\t\t\t\t");
-            _builder.newLine();
-            _builder.append("\t\t\t    \t\t");
-            _builder.append("}");
-            _builder.newLine();
+            {
+              for(final Automaton nameAutomaton : automatons) {
+                _builder.append("\t\t");
+                JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
+                _builder.append(_typeRef_1, "\t\t");
+                _builder.append(" automaton");
+                String _firstUpper = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper, "\t\t");
+                _builder.append(" = co.edu.icesi.eketal.automaton.");
+                String _firstUpper_1 = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper_1, "\t\t");
+                _builder.append(".getInstance();");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("if(!automaton");
+                String _firstUpper_2 = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper_2, "\t\t");
+                _builder.append(".evaluate(event)){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t");
+                JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
+                _builder.append(_typeRef_2, "\t\t\t");
+                _builder.append(".getLogger().info(\"[Handle] Event not recognized by the automaton: ");
+                String _firstUpper_3 = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper_3, "\t\t\t");
+                _builder.append("\");");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t\t");
+                _builder.append("//System.out.println(\"[Handle] Event not recognized by the automaton: ");
+                String _firstUpper_4 = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper_4, "\t\t\t\t\t\t");
+                _builder.append("\");");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t");
+                _builder.append("}else{");
+                _builder.newLine();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t\t");
+                JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
+                _builder.append(_typeRef_3, "\t\t\t\t\t\t");
+                _builder.append(".getLogger().info(\"[Handle] Recognized event \"+event+\" in ");
+                String _name = nameAutomaton.getName();
+                _builder.append(_name, "\t\t\t\t\t\t");
+                _builder.append("\");");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t\t");
+                _builder.append("//System.out.println(\"[Handle] Recognized event \"+event+\" by automaton ");
+                String _name_1 = nameAutomaton.getName();
+                _builder.append(_name_1, "\t\t\t\t\t\t");
+                _builder.append("\");\t\t\t\t\t\t\t");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t\t");
+                _builder.append("co.edu.icesi.eketal.reaction.");
+                _builder.append(EketalJvmModelInferrer.reaction, "\t\t\t\t\t\t");
+                _builder.append(".verifyBefore(automaton");
+                String _firstUpper_5 = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper_5, "\t\t\t\t\t\t");
+                _builder.append(");\t\t\t\t\t");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t\t");
+                _builder.append("co.edu.icesi.eketal.reaction.");
+                _builder.append(EketalJvmModelInferrer.reaction, "\t\t\t\t\t\t");
+                _builder.append(".verifyAfter(automaton");
+                String _firstUpper_6 = StringExtensions.toFirstUpper(nameAutomaton.getName());
+                _builder.append(_firstUpper_6, "\t\t\t\t\t\t");
+                _builder.append(");\t\t\t\t\t");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t\t\t");
+                _builder.append("}");
+                _builder.newLine();
+              }
+            }
             _builder.append("\t\t");
             _builder.append("return handle;");
             _builder.newLine();
@@ -489,18 +663,17 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("eventBroker = new ");
             JvmTypeReference _typeRef_4 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(JGroupsEventBroker.class);
-            _builder.append(_typeRef_4, "");
-            _builder.append("(\"Eketal\", brokerMessageHandler);");
+            _builder.append(_typeRef_4);
+            _builder.append("(\"Eketal\", brokerMessageHandler, true);");
             _builder.newLineIfNotEmpty();
           }
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(eventDefinitionClass, _function_4);
+      JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(eventDefinitionClass, _function_5);
       this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_3, _constructor);
       EList<JvmMember> _members_4 = it.getMembers();
-      JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef(it);
-      final Procedure1<JvmOperation> _function_5 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_6 = (JvmOperation it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -518,18 +691,15 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getInstance", _typeRef_3, _function_5);
+      JvmOperation _method = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getInstance", this._typeReferenceBuilder.typeRef(it), _function_6);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method);
       EList<JvmMember> _members_5 = it.getMembers();
-      JvmTypeReference _typeRef_4 = this._typeReferenceBuilder.typeRef(void.class);
-      final Procedure1<JvmOperation> _function_6 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_5 = this._typeReferenceBuilder.typeRef(Event.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(eventDefinitionClass, "evento", _typeRef_5);
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(eventDefinitionClass, "evento", this._typeReferenceBuilder.typeRef(Event.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         EList<JvmFormalParameter> _parameters_1 = it_1.getParameters();
-        JvmTypeReference _typeRef_6 = this._typeReferenceBuilder.typeRef(Map.class);
-        JvmFormalParameter _parameter_1 = this._jvmTypesBuilder.toParameter(eventDefinitionClass, "map", _typeRef_6);
+        JvmFormalParameter _parameter_1 = this._jvmTypesBuilder.toParameter(eventDefinitionClass, "map", this._typeReferenceBuilder.typeRef(Map.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_1, _parameter_1);
         it_1.setStatic(false);
         StringConcatenationClient _client = new StringConcatenationClient() {
@@ -541,34 +711,56 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "multicast", _typeRef_4, _function_6);
+      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "multicast", this._typeReferenceBuilder.typeRef(void.class), _function_7);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_1);
       EList<JvmMember> _members_6 = it.getMembers();
-      JvmTypeReference _typeRef_5 = this._typeReferenceBuilder.typeRef(URL.class);
-      final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
-        it_1.setStatic(false);
-        StringConcatenationClient _client = new StringConcatenationClient() {
-          @Override
-          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-            _builder.append("return eventBroker.getAsyncAddress();");
-            _builder.newLine();
-          }
-        };
-        this._jvmTypesBuilder.setBody(it_1, _client);
-      };
-      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getAsyncAddress", _typeRef_5, _function_7);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_2);
-      EList<JvmMember> _members_7 = it.getMembers();
-      JvmTypeReference _typeRef_6 = this._typeReferenceBuilder.typeRef(void.class);
       final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
         it_1.setStatic(false);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-            _builder.append("if(eventBroker!=null){");
+            _builder.append(URL.class);
+            _builder.append(" url = eventBroker.getAsyncAddress();");
+            _builder.newLineIfNotEmpty();
+            _builder.append("if(url!=null){");
             _builder.newLine();
             _builder.append("\t");
-            _builder.append("eventBroker.closeComunication();");
+            _builder.append("return url;");
+            _builder.newLine();
+            _builder.append("}else{");
+            _builder.newLine();
+            _builder.append("\t");
+            JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
+            _builder.append(_typeRef, "\t");
+            _builder.append(".getLogger().error(\"[Handle] Could not obtain JGroups ip Address for the async monitor\");");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("try{");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("return new ");
+            _builder.append(URL.class, "\t\t");
+            _builder.append("(\"http:127.0.0.1\");");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("}catch(");
+            JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(MalformedURLException.class);
+            _builder.append(_typeRef_1, "\t");
+            _builder.append(" e){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(ReceiverMessageHandler.class);
+            _builder.append(_typeRef_2, "\t\t");
+            _builder.append(".getLogger().error(\"[Handle] \"+e.getMessage());");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("e.printStackTrace();");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("return null;");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("}");
             _builder.newLine();
             _builder.append("}");
             _builder.newLine();
@@ -576,130 +768,208 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_3 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "close", _typeRef_6, _function_8);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_3);
+      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getAsyncAddress", this._typeReferenceBuilder.typeRef(URL.class), _function_8);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_2);
     };
-    acceptor.<JvmGenericType>accept(_class, _function);
+    acceptor.<JvmGenericType>accept(this._jvmTypesBuilder.toClass(eventDefinitionClass, ("co.edu.icesi.eketal.handlercontrol." + EketalJvmModelInferrer.handlerClassName)), _function_1);
   }
   
   public void createGroupClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass claseGrupos) {
-    JvmGenericType _class = this._jvmTypesBuilder.toClass(claseGrupos, ("co.edu.icesi.eketal.groupsimpl." + EketalJvmModelInferrer.groupClassName));
     final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
       final TreeSet<String> grupos = new TreeSet<String>();
-      EList<Decl> _declarations = claseGrupos.getDeclarations();
-      Iterable<Group> _filter = Iterables.<Group>filter(_declarations, Group.class);
-      final Consumer<Group> _function_1 = (Group it_1) -> {
+      final Function1<Host, String> _function_1 = (Host h) -> {
+        return h.getIp();
+      };
+      final Function1<Host, String> function = _function_1;
+      final Consumer<Group> _function_2 = (Group it_1) -> {
         String _name = it_1.getName();
         String _plus = ("\"" + _name);
-        String _plus_1 = (_plus + "\"");
-        grupos.add(_plus_1);
+        String _plus_1 = (_plus + ":[");
+        String _join = IterableExtensions.<Host>join(it_1.getHosts(), ",", function);
+        String _plus_2 = (_plus_1 + _join);
+        String _plus_3 = (_plus_2 + "]\"");
+        grupos.add(_plus_3);
       };
-      _filter.forEach(_function_1);
+      Iterables.<Group>filter(claseGrupos.getDeclarations(), Group.class).forEach(_function_2);
       boolean _isEmpty = grupos.isEmpty();
       boolean _not = (!_isEmpty);
       if (_not) {
         EList<JvmMember> _members = it.getMembers();
-        JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef("java.lang.String[]");
-        final Procedure1<JvmField> _function_2 = (JvmField it_1) -> {
+        final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
           it_1.setStatic(true);
           StringConcatenationClient _client = new StringConcatenationClient() {
             @Override
             protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
               _builder.append("{");
               String _join = IterableExtensions.join(grupos, ",");
-              _builder.append(_join, "");
+              _builder.append(_join);
               _builder.append("}");
             }
           };
           this._jvmTypesBuilder.setInitializer(it_1, _client);
         };
-        JvmField _field = this._jvmTypesBuilder.toField(claseGrupos, "SET_VALUES", _typeRef, _function_2);
+        JvmField _field = this._jvmTypesBuilder.toField(claseGrupos, "SET_VALUES", this._typeReferenceBuilder.typeRef("java.lang.String[]"), _function_3);
         this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
       }
       EList<JvmMember> _members_1 = it.getMembers();
-      JvmTypeReference _typeRef_1 = this._typeReferenceBuilder.typeRef(String.class);
-      JvmTypeReference _typeRef_2 = this._typeReferenceBuilder.typeRef(Set.class, _typeRef_1);
-      final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
+      final Procedure1<JvmField> _function_4 = (JvmField it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-            _builder.append("new ");
-            JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(TreeSet.class);
-            _builder.append(_typeRef, "");
-            _builder.append("<");
-            JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class);
-            _builder.append(_typeRef_1, "");
-            _builder.append(">(");
-            _builder.newLineIfNotEmpty();
-            {
-              boolean _isEmpty = grupos.isEmpty();
-              boolean _not = (!_isEmpty);
-              if (_not) {
-                _builder.append("\t\t\t\t");
-                JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Arrays.class);
-                _builder.append(_typeRef_2, "\t\t\t\t");
-                _builder.append(".asList(SET_VALUES)");
-                _builder.newLineIfNotEmpty();
-              }
-            }
-            _builder.append("\t\t\t\t");
-            _builder.append(")");
+            _builder.append("initializeGroups()");
           }
         };
         this._jvmTypesBuilder.setInitializer(it_1, _client);
       };
-      JvmField _field_1 = this._jvmTypesBuilder.toField(claseGrupos, "grupos", _typeRef_2, _function_3);
+      JvmField _field_1 = this._jvmTypesBuilder.toField(claseGrupos, "grupos", this._typeReferenceBuilder.typeRef(Map.class, this._typeReferenceBuilder.typeRef(String.class), this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(URL.class))), _function_4);
       this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field_1);
       EList<JvmMember> _members_2 = it.getMembers();
-      final Procedure1<JvmConstructor> _function_4 = (JvmConstructor it_1) -> {
-      };
-      JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(claseGrupos, _function_4);
-      this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_2, _constructor);
-      EList<JvmMember> _members_3 = it.getMembers();
-      JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef(Boolean.class);
       final Procedure1<JvmOperation> _function_5 = (JvmOperation it_1) -> {
-        EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_4 = this._typeReferenceBuilder.typeRef(String.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "nuevoGrupo", _typeRef_4);
-        this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-            _builder.append("return grupos.add(nuevoGrupo);");
+            _builder.append(Map.class);
+            _builder.append(" retorno = ");
+            _builder.append(Collections.class);
+            _builder.append(".synchronizedMap(new ");
+            _builder.append(Hashtable.class);
+            _builder.append("());");
+            _builder.newLineIfNotEmpty();
+            _builder.append("for(");
+            JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class);
+            _builder.append(_typeRef);
+            _builder.append(" s : SET_VALUES){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class);
+            _builder.append(_typeRef_1, "\t");
+            _builder.append("[] keyValue = s.replace(\"]\",\"\").split(");
+            JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Pattern.class);
+            _builder.append(_typeRef_2, "\t");
+            _builder.append(".quote(\":[\"));");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Set.class, EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(URL.class));
+            _builder.append(_typeRef_3, "\t");
+            _builder.append(" values = new ");
+            JvmTypeReference _typeRef_4 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashSet.class);
+            _builder.append(_typeRef_4, "\t");
+            _builder.append("();");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("for(");
+            JvmTypeReference _typeRef_5 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class);
+            _builder.append(_typeRef_5, "\t");
+            _builder.append(" ip : keyValue[1].split(\",\")){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("try{");
+            _builder.newLine();
+            _builder.append("\t\t\t");
+            _builder.append("if(ip.equals(\"localhost\")){");
+            _builder.newLine();
+            _builder.append("\t\t\t\t");
+            _builder.append("co.edu.icesi.eketal.handlercontrol.");
+            _builder.append(EketalJvmModelInferrer.handlerClassName, "\t\t\t\t");
+            _builder.append(" local = co.edu.icesi.eketal.handlercontrol.");
+            _builder.append(EketalJvmModelInferrer.handlerClassName, "\t\t\t\t");
+            _builder.append(".getInstance();");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t\t");
+            _builder.append("values.add(new ");
+            JvmTypeReference _typeRef_6 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(URL.class);
+            _builder.append(_typeRef_6, "\t\t\t\t");
+            _builder.append("(\"http://\"+local.getAsyncAddress().getHost()));");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t");
+            _builder.append("}else{");
+            _builder.newLine();
+            _builder.append("\t\t\t\t");
+            _builder.append("values.add(new ");
+            JvmTypeReference _typeRef_7 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(URL.class);
+            _builder.append(_typeRef_7, "\t\t\t\t");
+            _builder.append("(\"http://\"+ip));");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t");
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("}catch(");
+            JvmTypeReference _typeRef_8 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Exception.class);
+            _builder.append(_typeRef_8, "\t\t");
+            _builder.append(" e){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t");
+            _builder.append("e.printStackTrace();");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("retorno.put(keyValue[0],values);");
+            _builder.newLine();
+            _builder.append("}");
+            _builder.newLine();
+            _builder.newLine();
+            _builder.append("return retorno;");
             _builder.newLine();
           }
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method = this._jvmTypesBuilder.toMethod(claseGrupos, "addGroup", _typeRef_3, _function_5);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_3, _method);
+      JvmOperation _method = this._jvmTypesBuilder.toMethod(claseGrupos, "initializeGroups", this._typeReferenceBuilder.typeRef(Map.class), _function_5);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method);
+      EList<JvmMember> _members_3 = it.getMembers();
+      final Procedure1<JvmConstructor> _function_6 = (JvmConstructor it_1) -> {
+      };
+      JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(claseGrupos, _function_6);
+      this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_3, _constructor);
       EList<JvmMember> _members_4 = it.getMembers();
-      JvmTypeReference _typeRef_4 = this._typeReferenceBuilder.typeRef(Boolean.class);
-      final Procedure1<JvmOperation> _function_6 = (JvmOperation it_1) -> {
-        EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_5 = this._typeReferenceBuilder.typeRef(String.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "grupoEliminar", _typeRef_5);
-        this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
-        it_1.setStatic(true);
-        StringConcatenationClient _client = new StringConcatenationClient() {
-          @Override
-          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-            _builder.append("return grupos.remove(grupoEliminar);");
-            _builder.newLine();
-          }
-        };
-        this._jvmTypesBuilder.setBody(it_1, _client);
-      };
-      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(claseGrupos, "removeGroup", _typeRef_4, _function_6);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method_1);
-      EList<JvmMember> _members_5 = it.getMembers();
-      JvmTypeReference _typeRef_5 = this._typeReferenceBuilder.typeRef(boolean.class);
       final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_6 = this._typeReferenceBuilder.typeRef(String.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "grupo", _typeRef_6);
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "newGrupo", this._typeReferenceBuilder.typeRef(String.class));
+        this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+        EList<JvmFormalParameter> _parameters_1 = it_1.getParameters();
+        JvmFormalParameter _parameter_1 = this._jvmTypesBuilder.toParameter(claseGrupos, "hosts", this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(URL.class)));
+        this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_1, _parameter_1);
+        it_1.setStatic(true);
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+            _builder.append("grupos.put(newGrupo, hosts);");
+            _builder.newLine();
+          }
+        };
+        this._jvmTypesBuilder.setBody(it_1, _client);
+      };
+      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(claseGrupos, "addGroup", this._typeReferenceBuilder.typeRef(void.class), _function_7);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method_1);
+      EList<JvmMember> _members_5 = it.getMembers();
+      final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
+        EList<JvmFormalParameter> _parameters = it_1.getParameters();
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "grupoEliminar", this._typeReferenceBuilder.typeRef(String.class));
+        this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+        it_1.setStatic(true);
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+            _builder.append("return grupos.remove(grupoEliminar)!=null;");
+            _builder.newLine();
+          }
+        };
+        this._jvmTypesBuilder.setBody(it_1, _client);
+      };
+      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(claseGrupos, "removeGroup", this._typeReferenceBuilder.typeRef(Boolean.class), _function_8);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_2);
+      EList<JvmMember> _members_6 = it.getMembers();
+      final Procedure1<JvmOperation> _function_9 = (JvmOperation it_1) -> {
+        EList<JvmFormalParameter> _parameters = it_1.getParameters();
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "grupo", this._typeReferenceBuilder.typeRef(String.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
@@ -711,14 +981,14 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(claseGrupos, "on", _typeRef_5, _function_7);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_2);
-      EList<JvmMember> _members_6 = it.getMembers();
-      JvmTypeReference _typeRef_6 = this._typeReferenceBuilder.typeRef(boolean.class);
-      final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
+      JvmOperation _method_3 = this._jvmTypesBuilder.toMethod(claseGrupos, "on", this._typeReferenceBuilder.typeRef(boolean.class), _function_9);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_3);
+      EList<JvmMember> _members_7 = it.getMembers();
+      final Procedure1<JvmOperation> _function_10 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
-        JvmTypeReference _typeRef_7 = this._typeReferenceBuilder.typeRef(String.class);
-        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "nombreGrupo", _typeRef_7);
+        JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "nombreGrupo", 
+          this._typeReferenceBuilder.typeRef(
+            String.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
@@ -731,133 +1001,138 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("}");
             _builder.newLine();
-            _builder.append("return grupos.contains(nombreGrupo);");
+            _builder.append("co.edu.icesi.eketal.handlercontrol.");
+            _builder.append(EketalJvmModelInferrer.handlerClassName);
+            _builder.append(" local = co.edu.icesi.eketal.handlercontrol.");
+            _builder.append(EketalJvmModelInferrer.handlerClassName);
+            _builder.append(".getInstance();");
+            _builder.newLineIfNotEmpty();
+            JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(URL.class);
+            _builder.append(_typeRef);
+            _builder.append(" url = local.getAsyncAddress();");
+            _builder.newLineIfNotEmpty();
+            JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(boolean.class);
+            _builder.append(_typeRef_1);
+            _builder.append(" retorno = false;");
+            _builder.newLineIfNotEmpty();
+            _builder.append("try{\t\t\t\t\t\t");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("retorno = grupos.get(nombreGrupo).contains(new ");
+            JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(URL.class);
+            _builder.append(_typeRef_2, "\t");
+            _builder.append("(\"http://\"+url.getHost()));");
+            _builder.newLineIfNotEmpty();
+            _builder.append("}catch(");
+            JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Exception.class);
+            _builder.append(_typeRef_3);
+            _builder.append(" e){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("e.printStackTrace();");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("retorno = false;");
+            _builder.newLine();
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("return retorno;");
             _builder.newLine();
           }
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_3 = this._jvmTypesBuilder.toMethod(claseGrupos, "host", _typeRef_6, _function_8);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_3);
+      JvmOperation _method_4 = this._jvmTypesBuilder.toMethod(claseGrupos, "host", this._typeReferenceBuilder.typeRef(boolean.class), _function_10);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_4);
     };
-    acceptor.<JvmGenericType>accept(_class, _function);
+    acceptor.<JvmGenericType>accept(this._jvmTypesBuilder.toClass(claseGrupos, ("co.edu.icesi.eketal.groupsimpl." + EketalJvmModelInferrer.groupClassName)), _function);
   }
   
   public JvmOperation AutomatonInit(final Automaton declaracion) {
-    JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(void.class);
     final Procedure1<JvmOperation> _function = (JvmOperation it) -> {
+      EList<JvmFormalParameter> _parameters = it.getParameters();
+      JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(declaracion, "transitionSet", this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(Transition.class)));
+      this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+      EList<JvmFormalParameter> _parameters_1 = it.getParameters();
+      JvmFormalParameter _parameter_1 = this._jvmTypesBuilder.toParameter(declaracion, "estadosFinales", this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(State.class)));
+      this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_1, _parameter_1);
+      EList<JvmFormalParameter> _parameters_2 = it.getParameters();
+      JvmFormalParameter _parameter_2 = this._jvmTypesBuilder.toParameter(declaracion, "expressions", 
+        this._typeReferenceBuilder.typeRef(Hashtable.class, this._typeReferenceBuilder.typeRef(Expression.class), this._typeReferenceBuilder.typeRef(Character.class)));
+      this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_2, _parameter_2);
+      it.setStatic(true);
       it.setVisibility(JvmVisibility.PRIVATE);
       StringConcatenationClient _client = new StringConcatenationClient() {
         @Override
         protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
           _builder.append("//Relación evento caracter");
           _builder.newLine();
-          JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Map.class);
-          _builder.append(_typeRef, "");
-          _builder.append("<String, Character> mapping = new ");
-          JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(TreeMap.class);
-          _builder.append(_typeRef_1, "");
-          _builder.append("<String, Character>();");
+          JvmTypeReference _typeRef = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Map.class, EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class), EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Character.class));
+          _builder.append(_typeRef);
+          _builder.append(" mapping = new ");
+          JvmTypeReference _typeRef_1 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(TreeMap.class, EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class), EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Character.class));
+          _builder.append(_typeRef_1);
+          _builder.append("();");
           _builder.newLineIfNotEmpty();
           _builder.append("//Estado inicial");
           _builder.newLine();
           JvmTypeReference _typeRef_2 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-          _builder.append(_typeRef_2, "");
+          _builder.append(_typeRef_2);
           _builder.append(" inicial = null;");
-          _builder.newLineIfNotEmpty();
-          _builder.append("//lista de estados finales");
-          _builder.newLine();
-          JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Set.class);
-          _builder.append(_typeRef_3, "");
-          _builder.append("<");
-          JvmTypeReference _typeRef_4 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-          _builder.append(_typeRef_4, "");
-          _builder.append("> estadosFinales = new ");
-          JvmTypeReference _typeRef_5 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashSet.class);
-          _builder.append(_typeRef_5, "");
-          _builder.append("();");
-          _builder.newLineIfNotEmpty();
-          _builder.newLine();
-          _builder.append("//conjunto de transiciones");
-          _builder.newLine();
-          JvmTypeReference _typeRef_6 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashSet.class);
-          _builder.append(_typeRef_6, "");
-          _builder.append("<");
-          JvmTypeReference _typeRef_7 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Transition.class);
-          _builder.append(_typeRef_7, "");
-          _builder.append("> transitionSet = new ");
-          JvmTypeReference _typeRef_8 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(HashSet.class);
-          _builder.append(_typeRef_8, "");
-          _builder.append("();");
-          _builder.newLineIfNotEmpty();
-          _builder.append("//map de expresiones con caracteres");
-          _builder.newLine();
-          JvmTypeReference _typeRef_9 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Hashtable.class);
-          _builder.append(_typeRef_9, "");
-          _builder.append("<");
-          JvmTypeReference _typeRef_10 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Expression.class);
-          _builder.append(_typeRef_10, "");
-          _builder.append(", ");
-          JvmTypeReference _typeRef_11 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Character.class);
-          _builder.append(_typeRef_11, "");
-          _builder.append("> expressions = new ");
-          JvmTypeReference _typeRef_12 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Hashtable.class);
-          _builder.append(_typeRef_12, "");
-          _builder.append("();");
           _builder.newLineIfNotEmpty();
           _builder.newLine();
           _builder.append("int consecutivo = 65;");
           _builder.newLine();
-          _builder.append("Character caracter = (char)consecutivo;");
-          _builder.newLine();
-          _builder.append("String nombreEvento = \"\";");
-          _builder.newLine();
-          _builder.append("String estadoLlegada = \"\";");
-          _builder.newLine();
+          _builder.append(Character.class);
+          _builder.append(" caracter = (char)consecutivo;");
+          _builder.newLineIfNotEmpty();
+          _builder.append(String.class);
+          _builder.append(" nombreEvento = \"\";");
+          _builder.newLineIfNotEmpty();
+          _builder.append(String.class);
+          _builder.append(" estadoLlegada = \"\";");
+          _builder.newLineIfNotEmpty();
           _builder.newLine();
           {
             EList<Step> _steps = declaracion.getSteps();
             for(final Step step : _steps) {
               _builder.append("//Definición del estado: ");
               String _name = step.getName();
-              _builder.append(_name, "");
+              _builder.append(_name);
               _builder.newLineIfNotEmpty();
               _builder.append("String estado");
-              String _name_1 = step.getName();
-              String _firstUpper = StringExtensions.toFirstUpper(_name_1);
-              _builder.append(_firstUpper, "");
+              String _firstUpper = StringExtensions.toFirstUpper(step.getName());
+              _builder.append(_firstUpper);
               _builder.append(" = \"");
-              String _name_2 = step.getName();
-              _builder.append(_name_2, "");
+              String _name_1 = step.getName();
+              _builder.append(_name_1);
               _builder.append("\";");
               _builder.newLineIfNotEmpty();
               _builder.append("estados.put(estado");
-              String _name_3 = step.getName();
-              String _firstUpper_1 = StringExtensions.toFirstUpper(_name_3);
-              _builder.append(_firstUpper_1, "");
+              String _firstUpper_1 = StringExtensions.toFirstUpper(step.getName());
+              _builder.append(_firstUpper_1);
               _builder.append(", new ");
-              JvmTypeReference _typeRef_13 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-              _builder.append(_typeRef_13, "");
+              JvmTypeReference _typeRef_3 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
+              _builder.append(_typeRef_3);
               _builder.append("());");
               _builder.newLineIfNotEmpty();
               {
                 if (((!Objects.equal(step.getType(), null)) && Objects.equal(step.getType(), StateType.START))) {
                   _builder.append("//");
                   StateType _type = step.getType();
-                  _builder.append(_type, "");
+                  _builder.append(_type);
                   _builder.append(" ");
-                  _builder.append(StateType.START, "");
+                  _builder.append(StateType.START);
                   _builder.append(" ");
-                  _builder.append(StateType.START_VALUE, "");
+                  _builder.append(StateType.START_VALUE);
                   _builder.newLineIfNotEmpty();
                   _builder.append("//Estado inicial: ");
-                  String _name_4 = step.getName();
-                  _builder.append(_name_4, "");
+                  String _name_2 = step.getName();
+                  _builder.append(_name_2);
                   _builder.newLineIfNotEmpty();
                   _builder.append("inicial = estados.get(estado");
-                  String _name_5 = step.getName();
-                  String _firstUpper_2 = StringExtensions.toFirstUpper(_name_5);
-                  _builder.append(_firstUpper_2, "");
+                  String _firstUpper_2 = StringExtensions.toFirstUpper(step.getName());
+                  _builder.append(_firstUpper_2);
                   _builder.append(");");
                   _builder.newLineIfNotEmpty();
                 }
@@ -868,38 +1143,33 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             EList<Step> _steps_1 = declaracion.getSteps();
             for(final Step step_1 : _steps_1) {
               {
-                EList<TransDef> _transitions = step_1.getTransitions();
-                boolean _isEmpty = _transitions.isEmpty();
+                boolean _isEmpty = step_1.getTransitions().isEmpty();
                 boolean _not = (!_isEmpty);
                 if (_not) {
                   {
-                    EList<TransDef> _transitions_1 = step_1.getTransitions();
-                    for(final TransDef transition : _transitions_1) {
+                    EList<TransDef> _transitions = step_1.getTransitions();
+                    for(final TransDef transition : _transitions) {
                       _builder.append("//Transicion de ");
-                      EvDecl _event = transition.getEvent();
-                      String _name_6 = _event.getName();
-                      _builder.append(_name_6, "");
+                      String _name_3 = transition.getEvent().getName();
+                      _builder.append(_name_3);
                       _builder.append(" -> ");
-                      Step _target = transition.getTarget();
-                      String _name_7 = _target.getName();
-                      _builder.append(_name_7, "");
+                      String _name_4 = transition.getTarget().getName();
+                      _builder.append(_name_4);
                       _builder.newLineIfNotEmpty();
                       _builder.append("estadoLlegada = \"");
-                      Step _target_1 = transition.getTarget();
-                      String _name_8 = _target_1.getName();
-                      _builder.append(_name_8, "");
+                      String _name_5 = transition.getTarget().getName();
+                      _builder.append(_name_5);
                       _builder.append("\";");
                       _builder.newLineIfNotEmpty();
                       _builder.append("if(!estados.containsKey(estadoLlegada)){");
                       _builder.newLine();
                       _builder.append("\t");
                       _builder.append("estados.put(estado");
-                      String _name_9 = step_1.getName();
-                      String _firstUpper_3 = StringExtensions.toFirstUpper(_name_9);
+                      String _firstUpper_3 = StringExtensions.toFirstUpper(step_1.getName());
                       _builder.append(_firstUpper_3, "\t");
                       _builder.append(", new ");
-                      JvmTypeReference _typeRef_14 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
-                      _builder.append(_typeRef_14, "\t");
+                      JvmTypeReference _typeRef_4 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(State.class);
+                      _builder.append(_typeRef_4, "\t");
                       _builder.append("());");
                       _builder.newLineIfNotEmpty();
                       _builder.append("}");
@@ -909,9 +1179,8 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
                       _builder.append("consecutivo++;");
                       _builder.newLine();
                       _builder.append("nombreEvento = \"");
-                      EvDecl _event_1 = transition.getEvent();
-                      String _name_10 = _event_1.getName();
-                      _builder.append(_name_10, "");
+                      String _name_6 = transition.getEvent().getName();
+                      _builder.append(_name_6);
                       _builder.append("\";");
                       _builder.newLineIfNotEmpty();
                       _builder.append("if(!mapping.containsKey(nombreEvento)){");
@@ -928,31 +1197,26 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
                       _builder.newLineIfNotEmpty();
                       _builder.append("}");
                       _builder.newLine();
-                      JvmTypeReference _typeRef_15 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Transition.class);
-                      _builder.append(_typeRef_15, "");
+                      JvmTypeReference _typeRef_5 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Transition.class);
+                      _builder.append(_typeRef_5);
                       _builder.append(" ");
-                      String _name_11 = step_1.getName();
-                      _builder.append(_name_11, "");
-                      EvDecl _event_2 = transition.getEvent();
-                      String _name_12 = _event_2.getName();
-                      String _firstUpper_4 = StringExtensions.toFirstUpper(_name_12);
-                      _builder.append(_firstUpper_4, "");
+                      String _name_7 = step_1.getName();
+                      _builder.append(_name_7);
+                      String _firstUpper_4 = StringExtensions.toFirstUpper(transition.getEvent().getName());
+                      _builder.append(_firstUpper_4);
                       _builder.append(" = new ");
-                      JvmTypeReference _typeRef_16 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Transition.class);
-                      _builder.append(_typeRef_16, "");
+                      JvmTypeReference _typeRef_6 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Transition.class);
+                      _builder.append(_typeRef_6);
                       _builder.append("(estados.get(estado");
-                      String _name_13 = step_1.getName();
-                      String _firstUpper_5 = StringExtensions.toFirstUpper(_name_13);
-                      _builder.append(_firstUpper_5, "");
+                      String _firstUpper_5 = StringExtensions.toFirstUpper(step_1.getName());
+                      _builder.append(_firstUpper_5);
                       _builder.append("), estados.get(estadoLlegada), mapping.get(nombreEvento));");
                       _builder.newLineIfNotEmpty();
                       _builder.append("transitionSet.add(");
-                      String _name_14 = step_1.getName();
-                      _builder.append(_name_14, "");
-                      EvDecl _event_3 = transition.getEvent();
-                      String _name_15 = _event_3.getName();
-                      String _firstUpper_6 = StringExtensions.toFirstUpper(_name_15);
-                      _builder.append(_firstUpper_6, "");
+                      String _name_8 = step_1.getName();
+                      _builder.append(_name_8);
+                      String _firstUpper_6 = StringExtensions.toFirstUpper(transition.getEvent().getName());
+                      _builder.append(_firstUpper_6);
                       _builder.append(");");
                       _builder.newLineIfNotEmpty();
                       _builder.newLine();
@@ -965,20 +1229,17 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
                 boolean _equals = Objects.equal(_type_1, StateType.END);
                 if (_equals) {
                   _builder.append("//Estado final ");
-                  String _name_16 = step_1.getName();
-                  String _firstUpper_7 = StringExtensions.toFirstUpper(_name_16);
-                  _builder.append(_firstUpper_7, "");
+                  String _firstUpper_7 = StringExtensions.toFirstUpper(step_1.getName());
+                  _builder.append(_firstUpper_7);
                   _builder.newLineIfNotEmpty();
                   _builder.append("estados.get(estado");
-                  String _name_17 = step_1.getName();
-                  String _firstUpper_8 = StringExtensions.toFirstUpper(_name_17);
-                  _builder.append(_firstUpper_8, "");
+                  String _firstUpper_8 = StringExtensions.toFirstUpper(step_1.getName());
+                  _builder.append(_firstUpper_8);
                   _builder.append(").setAccept(true);");
                   _builder.newLineIfNotEmpty();
                   _builder.append("estadosFinales.add(estados.get(estado");
-                  String _name_18 = step_1.getName();
-                  String _firstUpper_9 = StringExtensions.toFirstUpper(_name_18);
-                  _builder.append(_firstUpper_9, "");
+                  String _firstUpper_9 = StringExtensions.toFirstUpper(step_1.getName());
+                  _builder.append(_firstUpper_9);
                   _builder.append("));");
                   _builder.newLineIfNotEmpty();
                   _builder.newLine();
@@ -986,45 +1247,13 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
               }
             }
           }
-          JvmTypeReference _typeRef_17 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(co.edu.icesi.ketal.core.Automaton.class);
-          _builder.append(_typeRef_17, "");
-          _builder.append(" automata = new Automaton(transitionSet, inicial, estadosFinales, expressions){");
-          _builder.newLineIfNotEmpty();
-          _builder.append("\t");
-          _builder.append("@Override");
-          _builder.newLine();
-          _builder.append("\t    \t");
-          _builder.append("public boolean evaluate(");
-          JvmTypeReference _typeRef_18 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(Event.class);
-          _builder.append(_typeRef_18, "\t    \t");
-          _builder.append(" event){");
-          _builder.newLineIfNotEmpty();
-          _builder.append("\t    \t\t");
-          _builder.append("if(event instanceof NamedEvent){");
-          _builder.newLine();
-          _builder.append("\t    \t\t\t");
-          _builder.append("return super.evaluate(event);");
-          _builder.newLine();
-          _builder.append("\t    \t\t");
-          _builder.append("}");
-          _builder.newLine();
-          _builder.append("\t    \t\t");
-          _builder.append("return false;");
-          _builder.newLine();
-          _builder.append("\t    \t");
-          _builder.append("}");
-          _builder.newLine();
-          _builder.append("};");
-          _builder.newLine();
-          _builder.append("automata.initializeAutomaton();");
-          _builder.newLine();
-          _builder.append("instance = automata;");
+          _builder.append("return inicial;");
           _builder.newLine();
         }
       };
       this._jvmTypesBuilder.setBody(it, _client);
     };
-    final JvmOperation method = this._jvmTypesBuilder.toMethod(declaracion, "initialize", _typeRef, _function);
+    final JvmOperation method = this._jvmTypesBuilder.toMethod(declaracion, "initialize", this._typeReferenceBuilder.typeRef(State.class), _function);
     return method;
   }
   

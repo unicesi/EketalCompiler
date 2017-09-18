@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.jgroups.Message;
+import org.jgroups.util.NotifyingFuture;
 import org.jgroups.util.RspList;
 
 import co.edu.icesi.ketal.core.Event;
@@ -44,14 +45,14 @@ public interface EventBroker {
 	// Created by David Dur�n
 	// This method returns a list that contains the results of the method called
 	// (method_name) executed in every node
-	public RspList multicastSync(String class_name, String method_name,
+	public RspList<Object> multicastSync(String class_name, String method_name,
 			Object... parameters);
 
 	// Created by David Dur�n
 	// This method returns a list that is filled asynchronously and contains the
 	// results of the method called (method_name) executed in every node
-//	public NotifyingFuture<RspList<Object>> multicastWithFutures(
-//			String class_name, String method_name, Object... parameters);
+	public NotifyingFuture<RspList<Object>> multicastWithFutures(
+			String class_name, String method_name, Object... parameters);
 
 	// Written by Andr�s Barrera
 	public URL getAsyncAddress();

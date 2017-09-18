@@ -66,11 +66,11 @@ public class NodeCausal extends ReceiverAdapter{
     }
     public void send(String msg, Address dest) throws Exception
     {
-//    	channel.send(dest,(Address)null,(Object)msg);	
+    	channel.send(dest,(Object)msg);	
     }
     private void start() throws Exception {
     	channel.setReceiver(this);
         channel.connect("ChatCluster");
-        address=channel.getLocalAddress();
+        address=channel.getAddress();
     }
 }

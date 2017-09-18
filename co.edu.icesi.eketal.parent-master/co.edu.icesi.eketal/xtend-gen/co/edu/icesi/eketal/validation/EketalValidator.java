@@ -7,21 +7,26 @@ import co.edu.icesi.eketal.eketal.Automaton;
 import co.edu.icesi.eketal.eketal.EketalPackage;
 import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
+import co.edu.icesi.eketal.eketal.Group;
+import co.edu.icesi.eketal.eketal.Host;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
 import co.edu.icesi.eketal.eketal.TransDef;
 import co.edu.icesi.eketal.validation.AbstractEketalValidator;
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -46,18 +51,45 @@ public class EketalValidator extends AbstractEketalValidator {
   
   public final static String NO_TRANSITIONS_FROM_INITIAL_STATE = "eketal.issue.noTransitionsFromInitialState";
   
+  public final static String NO_VALID_IP = "eketal.issue.noValidIpOnGroup";
+  
+  public final static String REPEATED_EVENT_NAME = "eketal.issue.repeatedEventName";
+  
+  @Check
+  public void checkRepeatedEventName(final EventClass myClass) {
+    Iterable<EvDecl> events = Iterables.<EvDecl>filter(myClass.getDeclarations(), EvDecl.class);
+    final Function1<EvDecl, String> _function = (EvDecl ev) -> {
+      return ev.getName();
+    };
+    final Function2<String, List<EvDecl>, Boolean> _function_1 = (String e, List<EvDecl> l) -> {
+      int _size = l.size();
+      return Boolean.valueOf((_size > 1));
+    };
+    final Map<String, List<EvDecl>> duplicate = MapExtensions.<String, List<EvDecl>>filter(IterableExtensions.<String, EvDecl>groupBy(events, _function), _function_1);
+    boolean _isEmpty = duplicate.isEmpty();
+    boolean _not = (!_isEmpty);
+    if (_not) {
+      Set<String> _keySet = duplicate.keySet();
+      for (final String event : _keySet) {
+        String _name = myClass.getName();
+        String _plus = ((("The event \'" + event) + "\' is repeated in \'") + _name);
+        String _plus_1 = (_plus + 
+          "\'");
+        this.error(_plus_1, EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, EketalValidator.REPEATED_EVENT_NAME);
+      }
+    }
+  }
+  
   @Check
   public void checkAutomatonDeterminism(final Step step) {
-    EList<TransDef> _transitions = step.getTransitions();
     final Function1<TransDef, EvDecl> _function = (TransDef t) -> {
       return t.getEvent();
     };
-    Map<EvDecl, List<TransDef>> _groupBy = IterableExtensions.<EvDecl, TransDef>groupBy(_transitions, _function);
     final Function2<EvDecl, List<TransDef>, Boolean> _function_1 = (EvDecl e, List<TransDef> l) -> {
       int _size = l.size();
       return Boolean.valueOf((_size > 1));
     };
-    final Map<EvDecl, List<TransDef>> duplicate = MapExtensions.<EvDecl, List<TransDef>>filter(_groupBy, _function_1);
+    final Map<EvDecl, List<TransDef>> duplicate = MapExtensions.<EvDecl, List<TransDef>>filter(IterableExtensions.<EvDecl, TransDef>groupBy(step.getTransitions(), _function), _function_1);
     boolean _isEmpty = duplicate.isEmpty();
     boolean _not = (!_isEmpty);
     if (_not) {
@@ -76,13 +108,57 @@ public class EketalValidator extends AbstractEketalValidator {
   }
   
   @Check
+  public void checkAutomatonDeterminism(final Group group) {
+    EList<Host> _hosts = group.getHosts();
+    for (final Host host : _hosts) {
+      try {
+        boolean _not = (!(host.getIp().equals("localhost") || host.getIp().equals("jphost")));
+        if (_not) {
+          String[] bytes = host.getIp().split("\\.");
+          for (final String byteIter : bytes) {
+            boolean _equals = Objects.equal(byteIter, "*");
+            if (_equals) {
+            } else {
+              if (((Integer.parseInt(byteIter) < 0) || (Integer.parseInt(byteIter) > 255))) {
+                String _name = group.getName();
+                String _plus = ((("The host \'" + host) + "\' cannot be resolved because their bytes must must be between 0<x<255 in \'") + _name);
+                String _plus_1 = (_plus + 
+                  "\'");
+                this.error(_plus_1, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
+              }
+            }
+          }
+          String _ip = host.getIp();
+          String _plus_2 = ("http://" + _ip);
+          URL test = new URL(_plus_2);
+        }
+      } catch (final Throwable _t) {
+        if (_t instanceof MalformedURLException) {
+          final MalformedURLException exception = (MalformedURLException)_t;
+          String _ip_1 = host.getIp();
+          String _plus_3 = ("The host \'" + _ip_1);
+          String _plus_4 = (_plus_3 + "\' cannot be resolved as a correct address in the group\'");
+          String _name_1 = group.getName();
+          String _plus_5 = (_plus_4 + _name_1);
+          String _plus_6 = (_plus_5 + 
+            "\'");
+          this.error(_plus_6, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
+        } else if (_t instanceof Exception) {
+          final Exception e = (Exception)_t;
+        } else {
+          throw Exceptions.sneakyThrow(_t);
+        }
+      }
+    }
+  }
+  
+  @Check
   public void checkInitialState(final Automaton automaton) {
-    EList<Step> _steps = automaton.getSteps();
     final Function1<Step, Boolean> _function = (Step s) -> {
       StateType _type = s.getType();
       return Boolean.valueOf(Objects.equal(_type, StateType.START));
     };
-    final Iterable<Step> initialState = IterableExtensions.<Step>filter(_steps, _function);
+    final Iterable<Step> initialState = IterableExtensions.<Step>filter(automaton.getSteps(), _function);
     int _size = IterableExtensions.size(initialState);
     boolean _equals = (_size == 0);
     if (_equals) {
@@ -123,33 +199,20 @@ public class EketalValidator extends AbstractEketalValidator {
   
   public String fromURItoFQN(final URI resourceURI) {
     ArrayList<String> segments = new ArrayList<String>();
-    String[] _segments = resourceURI.segments();
-    int _size = ((List<String>)Conversions.doWrapArray(_segments)).size();
+    int _size = ((List<String>)Conversions.doWrapArray(resourceURI.segments())).size();
     boolean _greaterThan = (_size > 1);
     if (_greaterThan) {
       List<String> _segmentsList = resourceURI.segmentsList();
-      String[] _segments_1 = resourceURI.segments();
-      int _size_1 = ((List<String>)Conversions.doWrapArray(_segments_1)).size();
+      int _size_1 = ((List<String>)Conversions.doWrapArray(resourceURI.segments())).size();
       int _minus = (_size_1 - 1);
-      List<String> _subList = _segmentsList.subList(3, _minus);
-      segments.addAll(_subList);
-      String _lastSegment = resourceURI.lastSegment();
-      String _lastSegment_1 = resourceURI.lastSegment();
-      int _lastIndexOf = _lastSegment_1.lastIndexOf(".");
-      String _substring = _lastSegment.substring(0, _lastIndexOf);
-      segments.add(_substring);
+      segments.addAll(_segmentsList.subList(3, _minus));
+      segments.add(resourceURI.lastSegment().substring(0, resourceURI.lastSegment().lastIndexOf(".")));
     } else {
-      String _lastSegment_2 = resourceURI.lastSegment();
-      boolean _contains = _lastSegment_2.contains(".");
+      boolean _contains = resourceURI.lastSegment().contains(".");
       if (_contains) {
-        String _lastSegment_3 = resourceURI.lastSegment();
-        String _lastSegment_4 = resourceURI.lastSegment();
-        int _lastIndexOf_1 = _lastSegment_4.lastIndexOf(".");
-        String _substring_1 = _lastSegment_3.substring(0, _lastIndexOf_1);
-        segments.add(_substring_1);
+        segments.add(resourceURI.lastSegment().substring(0, resourceURI.lastSegment().lastIndexOf(".")));
       } else {
-        String _lastSegment_5 = resourceURI.lastSegment();
-        segments.add(_lastSegment_5);
+        segments.add(resourceURI.lastSegment());
       }
     }
     final Function2<String, String, String> _function = (String r, String t) -> {
@@ -167,9 +230,7 @@ public class EketalValidator extends AbstractEketalValidator {
   
   @Check
   public void checkMonitorStartsWithCapital(final EventClass typeDecl) {
-    String _name = typeDecl.getName();
-    char _charAt = _name.charAt(0);
-    boolean _isUpperCase = Character.isUpperCase(_charAt);
+    boolean _isUpperCase = Character.isUpperCase(typeDecl.getName().charAt(0));
     boolean _not = (!_isUpperCase);
     if (_not) {
       this.warning("Name should start with a capital", EketalPackage.Literals.EVENT_CLASS__NAME, 
@@ -179,12 +240,9 @@ public class EketalValidator extends AbstractEketalValidator {
   
   @Check
   public void checkTypeDeclarationNameMatchesPhysicalName(final EventClass typeDecl) {
-    Resource _eResource = typeDecl.eResource();
-    final URI URI = _eResource.getURI();
+    final URI URI = typeDecl.eResource().getURI();
     String _lastSegment = URI.lastSegment();
-    String _lastSegment_1 = URI.lastSegment();
-    String _fileExtension = URI.fileExtension();
-    int _indexOf = _lastSegment_1.indexOf(_fileExtension);
+    int _indexOf = URI.lastSegment().indexOf(URI.fileExtension());
     int _minus = (_indexOf - 1);
     final String fileName = _lastSegment.substring(0, _minus);
     final boolean isPublic = ((!Objects.equal(typeDecl.eContainer(), null)) && (typeDecl.eContainer() instanceof Model));

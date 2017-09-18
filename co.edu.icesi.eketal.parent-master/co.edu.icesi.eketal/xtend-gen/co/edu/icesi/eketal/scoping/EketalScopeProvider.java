@@ -3,7 +3,6 @@
  */
 package co.edu.icesi.eketal.scoping;
 
-import co.edu.icesi.eketal.eketal.Automaton;
 import co.edu.icesi.eketal.eketal.EketalPackage;
 import co.edu.icesi.eketal.eketal.Rc;
 import co.edu.icesi.eketal.eketal.Step;
@@ -28,8 +27,7 @@ public class EketalScopeProvider extends AbstractEketalScopeProvider {
     if ((context instanceof Rc)) {
       boolean _equals = Objects.equal(reference, EketalPackage.Literals.RC__STATE);
       if (_equals) {
-        Automaton _automaton = ((Rc)context).getAutomaton();
-        final EList<Step> candidates = _automaton.getSteps();
+        final EList<Step> candidates = ((Rc)context).getAutomaton().getSteps();
         return Scopes.scopeFor(candidates);
       }
     }

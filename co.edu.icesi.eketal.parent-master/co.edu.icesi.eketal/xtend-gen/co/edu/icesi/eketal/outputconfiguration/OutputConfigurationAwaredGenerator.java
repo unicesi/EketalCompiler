@@ -7,7 +7,6 @@ import co.edu.icesi.eketal.outputconfiguration.SingleOutputConfigurationFileSyst
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -29,8 +28,7 @@ public class OutputConfigurationAwaredGenerator extends JvmModelGenerator {
     final EList<EObject> _contents = input.getContents();
     for (final EObject obj : _contents) {
       {
-        EList<Adapter> _eAdapters = obj.eAdapters();
-        final Iterable<OutputConfigurationAdapter> adapters = Iterables.<OutputConfigurationAdapter>filter(_eAdapters, OutputConfigurationAdapter.class);
+        final Iterable<OutputConfigurationAdapter> adapters = Iterables.<OutputConfigurationAdapter>filter(obj.eAdapters(), OutputConfigurationAdapter.class);
         for (final OutputConfigurationAdapter adapter : adapters) {
           {
             String outputConfiguration = adapter.getOutputConfigurationName();

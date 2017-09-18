@@ -2,8 +2,8 @@
 package co.edu.icesi.ketal.test.causal;
 
 import org.jgroups.*;
-//import org.jgroups.logging.Log;
-//import org.jgroups.logging.LogFactory;
+import org.jgroups.logging.Log;
+import org.jgroups.logging.LogFactory;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -40,7 +40,7 @@ public class CausalDemo implements Runnable
 	private final Vector<String> alphabet = new Vector<String>();
 	private boolean starter = false;
 	private int doneCount=0;
-//	private Log log=LogFactory.getLog(getClass());
+	private Log log=LogFactory.getLog(getClass());
    
    private final String props = "UDP(mcast_send_buf_size=32000;mcast_port=45566;ucast_recv_buf_size=64000;" +
 		   "mcast_addr=228.8.8.8;loopback=true;mcast_recv_buf_size=64000;max_bundle_size=60000;" +
@@ -156,12 +156,10 @@ public class CausalDemo implements Runnable
 	   }
    }
    
-   
    /**
     * Waits for messages sent by others nodes and responses if necessary
     * @param receiver CausalReceiver used to receive messages from the group
     */
-   /*
    private void listenMessages(CausalReceiver receiver)
    {
 	   
@@ -231,7 +229,6 @@ public class CausalDemo implements Runnable
 	   }
 	   
    }
-   */
 
    /* (non-Javadoc)
     * @see java.lang.Runnable#run()
@@ -243,9 +240,10 @@ public class CausalDemo implements Runnable
 	   
 	   initialize(receiver);
 	   shutDownHook();
-//	   listenMessages(receiver);
+	   listenMessages(receiver);
 	   
    }
+
 
    /**
     * @param args
