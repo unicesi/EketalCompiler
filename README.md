@@ -98,7 +98,7 @@ Explore more about this example and the other examples [here](https://github.com
 
 ## 3. Installing EKETAL's development environment using Eclipse **NEON**
 ### 3.1. Download the sources
-  You can download the sources in two ways: directly from Github and using git.
+  Eketal's sources can be downloaded in three ways: directly from Github, using git and from Eclipse.
  #### From Github
    Click in the button "Clone or Download" and press the "Download Zip" option. Unzip the file. Finally, start Eclipse and set the workspace in the directory where you downloaded the sources
  
