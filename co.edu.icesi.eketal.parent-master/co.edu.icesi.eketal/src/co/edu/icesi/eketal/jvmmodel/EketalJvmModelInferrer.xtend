@@ -118,7 +118,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val eventsOfAutomaton = automatons.toInvertedMap [ a |
 			val Set<String> steps = new TreeSet
 			// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
-			a.steps.forall[s|steps.add(s.name)]
+			a.steps.forall[s|steps.add(a.name+":"+s.name)]
 			return steps
 		]
 
@@ -181,6 +181,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					body = '''
 						super(transitions, begin, finalStates, expressions);
 						initializeAutomaton();
+						instance = this;
 					'''
 				]
 				/*
@@ -219,7 +220,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			val after = new HashMap<String, String>()
 			val before = new HashMap<String, String>()
 			for (rc : set) {
-				if (rc.automaton == null || rc.state == null)
+				if (rc.automaton === null || rc.state === null)
 					return
 				var name = "reaction" + rc.automaton.name + rc.state.name
 				members += reactions.toMethod(name, typeRef(void)) [
@@ -232,9 +233,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //					}
 				]
 				if (rc.pos == Pos.BEFORE) {
-					before.put(rc.state.name, name + "()")
+					before.put(rc.automaton.name +":"+ rc.state.name, name + "()")
 				} else if (rc.pos == Pos.AFTER) {
-					after.put(rc.state.name, name + "()")
+					after.put(rc.automaton.name +":"+ rc.state.name, name + "()")
 				}
 			}
 			members += reactions.toMethod("verifyBefore", typeRef(void)) [
@@ -247,7 +248,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							«FOR automaton:automatonsMap.keySet.map[a|a as co.edu.icesi.eketal.eketal.Automaton]»
 								«IF (automatonsMap.get(automaton) as Set<String>).contains(state)»
 									if(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».class.isInstance(automaton)){
-										if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state»"))){
+										if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state.split(Pattern.quote(":")).get(1)»"))){
 											«before.get(state)»;
 										}
 									}
@@ -269,7 +270,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							«FOR automaton:automatonsMap.keySet.map[a|a as co.edu.icesi.eketal.eketal.Automaton]»
 								«IF automaton.steps.contains(state)»
 									if(automaton.getClass().isAssignableFrom(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».class){
-										if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state»"))){
+										if(actual.equals(co.edu.icesi.eketal.automaton.«automaton.name.toFirstUpper».estados.get("«state.split(Pattern.quote(":")).get(1)»"))){
 											«after.get(state)»;
 										}
 									}

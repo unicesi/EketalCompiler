@@ -3,11 +3,11 @@
 
   This project uses XText to implement a compiler for EKetal. We use Jbase to generate pure java expressions and statements using the XText framework.
 
-  The compiler generates AspectJ and Java code to instrument distributed applications.
+  The compiler generates AspectJ and Java code to instrument monitoring in distributed applications.
 
-  This guide describes first how to install the development environment using MAVEN and test it. If you are a programmer interested in experimenting with the language or a reviewer interested in the project, this may be the recommended installation procedure.
+  This guide describes how to install the development environment and test it. If you are a developer interested in experimenting with the language or a reviewer interested in the project, this may be the recommended installation procedure, we recommend to install this project via Maven.
 
-  If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using MAVEN. Then we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
+  If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using Maven. Then we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
 
 ## 1. Installing EKETAL's development environment using MAVEN
 
@@ -141,16 +141,16 @@ Firts, xtext, later AspectJ, then JBase and finally MWE:
 
 ### 3.3. Import the project
 
-Once you have installed those features, import the downloaded sources in your favorite eclipse IDE as a maven project as follows:
-#### 3.2.1. Go to "File" -> "Import…"
+Once you have installed those features, import the downloaded sources in your favorite eclipse IDE as a Maven project as follows:
+#### 3.2.1. Go to "File" -> "Import..."
 #### 3.2.2. Then "Maven" -> "Existing Maven Projects"
 #### 3.2.3. Select the folder where you downloaded the sources, select all and click on "Finish".
 
 ### 3.4. Fix the build path
-Finally, Github does not allow to have empty folders, so eclipse will show a build path error named as follows "The project cannot be built until build path errors are resolved co.edu.icesi.eketal.ide”. So the missing folders must be added manually as shown next:
+Finally, Github does not allow to have empty folders, so eclipse will show a build path error named as follows "The project cannot be built until build path errors are resolved co.edu.icesi.eketal.ide". So the missing folders must be added manually as shown next:
 
-#### 3.4.1. In the “Package Explorer” view from eclipse, right click in the "co.edu.icesi.eketal.ide project" -> "New" -> "Folder"
-#### 3.4.2. Name that folder as “src” without the quotes and "Finish" option.
+#### 3.4.1. In the "Package Explorer" view from eclipse, right click in the "co.edu.icesi.eketal.ide project" -> "New" -> "Folder"
+#### 3.4.2. Name that folder as "src" without the quotes and "Finish" option.
 #### 3.4.3. Repeat (3.3.1.) and name the new folder as "xtend-gen"
 #### 3.4.4. Finally, right click in the in the parent project "co.edu.icesi.eketal.parent" -> "Maven" -> "Update Project".
 

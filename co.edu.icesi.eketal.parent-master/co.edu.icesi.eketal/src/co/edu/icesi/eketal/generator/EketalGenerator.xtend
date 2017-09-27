@@ -134,11 +134,11 @@ class EketalGenerator implements IGenerator{
 						«IF !automatons.isEmpty»
 							«FOR automatonName:automatons»
 								«IF eventsOfAutomaton.get(automatonName).contains(event.name)»
-									Automaton «automatonName.name» = «automatonName.name.toFirstUpper».getInstance();
-									«EketalJvmModelInferrer.reaction».verifyAfter(«automatonName.name»);
+									Automaton «automatonName.name.toFirstLower» = «automatonName.name.toFirstUpper».getInstance();
+									«EketalJvmModelInferrer.reaction».verifyAfter(«automatonName.name.toFirstLower»);
 								«ENDIF»			
 								//System.out.println("[Aspectj] After: Recognized event in «automatonName.name»");
-								logger.info("[Aspectj] After: Recognized event in «automatonName.name»");
+								logger.info("[Aspectj] After: Recognized event in «automatonName.name.toFirstUpper»");
 							«ENDFOR»
 						«ENDIF»
 					}
@@ -147,20 +147,19 @@ class EketalGenerator implements IGenerator{
 							Event event = new NamedEvent("«event.name»");
 							«EketalJvmModelInferrer.handlerClassName» distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
 							event.setLocalization(distribuidor.getAsyncAddress());
+							Map map = new HashMap<String, Object>();
+							distribuidor.multicast(event, map);
 							«FOR automatonName:automatons»
 								«IF eventsOfAutomaton.get(automatonName).contains(event.name)»
-									Automaton «automatonName.name» = «automatonName.name.toFirstUpper».getInstance();
-									Map map«automatonName.name.toFirstUpper» = new HashMap<String, Object>();
-									//map.put("Automata", «automatonName.name»);
-									distribuidor.multicast(event, map«automatonName.name.toFirstUpper»);
-									if(!«automatonName.name».evaluate(event)){
+									Automaton «automatonName.name.toFirstLower» = «automatonName.name.toFirstUpper».getInstance();
+									if(!«automatonName.name.toFirstLower».evaluate(event)){
 										//System.out.println("[Aspectj] Before: Event not recognized by the automaton");
 										logger.info("[Aspectj] Before: Event not recognized by the automaton: «automatonName.name.toFirstUpper»");
 										//Debería parar
 									}else{
-										«EketalJvmModelInferrer.reaction».verifyBefore(«automatonName.name»);
+										«EketalJvmModelInferrer.reaction».verifyBefore(«automatonName.name.toFirstLower»);
 										//System.out.println("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
-										logger.info("[Aspectj] Before: Recognized event "+event+" in «automatonName.name»");
+										logger.info("[Aspectj] Before: Recognized event "+event+" in «automatonName.name.toFirstUpper»");
 									}
 								«ENDIF»
 							«ENDFOR»
