@@ -222,7 +222,7 @@ class EketalGenerator implements IGenerator{
 	 */
 
 	def eventExpression(EventExpression event, TreeSet<String> pointcuts) {
-			if(event.tipoEvento!=null){
+			if(event.tipoEvento!==null){
 				var eventKind = event.tipoEvento
 				switch(eventKind){
 					Trigger:{
@@ -259,7 +259,7 @@ class EketalGenerator implements IGenerator{
 	}
 	
 	def returnAttribute(KindAttribute attribute) {
-		if(attribute.condition!=null){
+		if(attribute.condition!==null){
 			println(attribute.condition.eContents.size + "doGenerate línea 169")
 			var body = ""
 			if(attribute.condition.eContents.size==1){
@@ -273,11 +273,12 @@ class EketalGenerator implements IGenerator{
 				}
 			}
 			return '''if(«body»)'''
-		}else if(attribute.hostgroup!=null){
+		}else if(attribute.hostgroup!==null){
 			return '''if(«EketalJvmModelInferrer.groupClassName».host("«attribute.hostgroup.name»"))'''
-		}else if(attribute.ongroup!=null){
+		}else if(attribute.ongroup!==null){
 			return '''if(«EketalJvmModelInferrer.groupClassName».on("«attribute.ongroup.name»"))'''
-//			return '''on()'''//TODO acá debe hacer otro procesamiento dado que este elemento no está
+//			//TODO Se debe ligar este nombre del grupo al evento para que en la definicion se sepa cual debe ser
+			//return '''if(«EketalJvmModelInferrer.groupClassName».on("«attribute.ongroup.name»"))'''
 //			//soportado por aspectj
 		}
 	}

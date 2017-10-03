@@ -241,6 +241,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			members += reactions.toMethod("verifyBefore", typeRef(void)) [
 				parameters += reactions.toParameter("automaton", typeRef(Automaton))
 				static = true
+				synchronized = true
 				body = '''
 					«IF !before.isEmpty»
 						«typeRef(State)» actual = automaton.getCurrentState();
@@ -313,6 +314,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						    if(event.getLocalization().equals(eventBroker.getAsyncAddress())){
 						    	return null;
 						    }
+						    
+						    Set<URL> host = (Set<URL>) metadata.get("host");
+						    if(!host.isEmpty()){
+						    	if(!host.contains(eventBroker.getAsyncAddress())){
+						    		return null;
+						    	}
+						    }
+						    	    
 							Object handle = super.handle(event, metadata, msg, typeOfMsgSent);
 							«FOR nameAutomaton : automatons»
 								«typeRef(Automaton)» automaton«nameAutomaton.name.toFirstUpper» = co.edu.icesi.eketal.automaton.«nameAutomaton.name.toFirstUpper».getInstance();
@@ -419,7 +428,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				]
 			}
 
-			members += claseGrupos.toField("grupos", typeRef(Map, typeRef(String), typeRef(Set, typeRef(URL)))) [
+			members += claseGrupos.toField("grupos", typeRef(Map, typeRef(String), typeRef(HashSet, typeRef(URL)))) [
 				static = true
 				initializer = '''initializeGroups()'''
 			]
@@ -430,7 +439,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					«Map» retorno = «Collections».synchronizedMap(new «Hashtable»());
 					for(«typeRef(String)» s : SET_VALUES){
 						«typeRef(String)»[] keyValue = s.replace("]","").split(«typeRef(Pattern)».quote(":["));
-						«typeRef(Set, typeRef(URL))» values = new «typeRef(HashSet)»();
+						«typeRef(HashSet, typeRef(URL))» values = new «typeRef(HashSet)»();
 						for(«typeRef(String)» ip : keyValue[1].split(",")){
 							try{
 								if(ip.equals("localhost")){
@@ -470,15 +479,20 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 
 			// TODO realizar el llamado para ver
-			members += claseGrupos.toMethod("on", typeRef(boolean)) [
+			members += claseGrupos.toMethod("host", typeRef(HashSet, typeRef(URL))) [
 				parameters += claseGrupos.toParameter("grupo", typeRef(String))
 				static = true
 				body = '''
-					return true;
+					if(grupos.containsKey(grupo)){
+				    	return grupos.get(grupo);
+				    }else{
+				    	return new HashSet<>();
+				    }
+				    return true;
 				'''
 			]
 
-			members += claseGrupos.toMethod("host", typeRef(boolean)) [
+			members += claseGrupos.toMethod("on", typeRef(boolean)) [
 				parameters +=
 					claseGrupos.toParameter("nombreGrupo",
 						typeRef(
