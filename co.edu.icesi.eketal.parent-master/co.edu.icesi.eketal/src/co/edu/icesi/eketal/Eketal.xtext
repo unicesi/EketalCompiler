@@ -74,8 +74,8 @@ EventPredicate:
 ;
 	
 KindAttribute:
-	'host' '('hostgroup=[Group]')'
-	| 'on' '('ongroup=[Group]')'
+	'host' '(' (not='!')? hostgroup=[Group]')'
+	| 'on' '(' (not='!')? ongroup=[Group]')'
 	| 'if' condition=XParenthesizedExpression
 //	| 'eq'"("JExp","JExp")"
 ;

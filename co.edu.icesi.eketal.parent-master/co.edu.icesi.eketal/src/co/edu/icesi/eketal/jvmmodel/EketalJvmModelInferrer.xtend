@@ -315,7 +315,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						    	return null;
 						    }
 						    
-						    Set<URL> host = (Set<URL>) metadata.get("host");
+						    «typeRef(Set, typeRef(URL))» host = («typeRef(Set, typeRef(URL))») metadata.get("host");
 						    if(!host.isEmpty()){
 						    	if(!host.contains(eventBroker.getAsyncAddress())){
 						    		return null;
@@ -463,7 +463,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 
 			members += claseGrupos.toMethod("addGroup", typeRef(void)) [
 				parameters += claseGrupos.toParameter("newGrupo", String.typeRef)
-				parameters += claseGrupos.toParameter("hosts", typeRef(Set, typeRef(URL)))
+				parameters += claseGrupos.toParameter("hosts", typeRef(HashSet, typeRef(URL)))
 				static = true
 				body = '''
 					grupos.put(newGrupo, hosts);
@@ -478,15 +478,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 
-			// TODO realizar el llamado para ver
-			members += claseGrupos.toMethod("host", typeRef(HashSet, typeRef(URL))) [
-				parameters += claseGrupos.toParameter("grupo", typeRef(String))
+			members += claseGrupos.toMethod("host", typeRef(boolean)) [
+				parameters += claseGrupos.toParameter("eventName", typeRef(String))
+				parameters += claseGrupos.toParameter("pGroup", typeRef(String))
+				parameters += claseGrupos.toParameter("not", typeRef(boolean))
 				static = true
 				body = '''
-					if(grupos.containsKey(grupo)){
-				    	return grupos.get(grupo);
-				    }else{
-				    	return new HashSet<>();
+					if(!grupos.containsKey(pGroup)){
+				    	grupos.put(pGroup,new HashSet<>());
 				    }
 				    return true;
 				'''
@@ -494,7 +493,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 
 			members += claseGrupos.toMethod("on", typeRef(boolean)) [
 				parameters +=
-					claseGrupos.toParameter("nombreGrupo",
+					claseGrupos.toParameter("groupName",
 						typeRef(
 							String))
 				static = true
@@ -506,7 +505,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							«typeRef(URL)» url = local.getAsyncAddress();
 							«typeRef(boolean)» retorno = false;
 							try{						
-								retorno = grupos.get(nombreGrupo).contains(new «typeRef(URL)»("http://"+url.getHost()));
+								retorno = grupos.get(groupName).contains(new «typeRef(URL)»("http://"+url.getHost()));
 							}catch(«typeRef(Exception)» e){
 								e.printStackTrace();
 								retorno = false;
