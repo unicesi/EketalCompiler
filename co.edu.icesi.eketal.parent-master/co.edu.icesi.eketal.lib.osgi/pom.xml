@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <parent>
       <groupId>co.edu.icesi.eketal</groupId>
 	  <artifactId>co.edu.icesi.eketal.parent</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
+	  <version>2.0.1-SNAPSHOT</version>
  </parent>
  
   <artifactId>co.edu.icesi.eketal.lib.osgi</artifactId>	

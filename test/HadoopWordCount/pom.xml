@@ -16,6 +16,7 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<hadoop-version>2.7.3</hadoop-version>
 		<log4j-version>2.8.1</log4j-version>
+		<eketal-version>2.0.1-SNAPSHOT</eketal-version>
 	</properties>
 	
 	<build>
@@ -190,12 +191,12 @@
 					<dependency>
 						<groupId>co.edu.icesi.eketal</groupId>
 						<artifactId>co.edu.icesi.eketal.lib</artifactId>
-						<version>1.0.0-SNAPSHOT</version>
+						<version>${eketal-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>co.edu.icesi.eketal</groupId>
 						<artifactId>co.edu.icesi.eketal</artifactId>
-						<version>1.0.0-SNAPSHOT</version>
+						<version>${eketal-version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -206,12 +207,12 @@
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
 			<artifactId>co.edu.icesi.eketal.lib</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${eketal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
 			<artifactId>co.edu.icesi.eketal</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${eketal-version}</version>
 		</dependency>
 		
 		<!-- <dependency>

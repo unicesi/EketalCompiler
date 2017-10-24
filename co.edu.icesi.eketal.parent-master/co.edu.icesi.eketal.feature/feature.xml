@@ -2,7 +2,7 @@
 <feature
       id="co.edu.icesi.eketal.feature"
       label="Eketal Feature "
-      version="1.0.0.qualifier">
+      version="2.0.1.qualifier">
 
    <requires>
       <import plugin="org.eclipse.xtext"/>
@@ -29,7 +29,6 @@
       <import plugin="org.eclipse.xtext.xbase.ui"/>
       <import plugin="org.eclipse.xtext.xbase.ide"/>
       <import plugin="org.eclipse.xtext.ide"/>
-      <!--<import plugin="org.eclipse.ajdt.core"/>-->
    </requires>
 
    <plugin
