@@ -241,6 +241,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			members += reactions.toMethod("verifyBefore", typeRef(void)) [
 				parameters += reactions.toParameter("automaton", typeRef(Automaton))
 				static = true
+				synchronized = true
 				body = '''
 					«IF !before.isEmpty»
 						«typeRef(State)» actual = automaton.getCurrentState();
