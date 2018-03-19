@@ -32,16 +32,25 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val NO_TRANSITIONS_FROM_INITIAL_STATE = "eketal.issue.noTransitionsFromInitialState"
 	public static val NO_VALID_IP = "eketal.issue.noValidIpOnGroup"
 	public static val REPEATED_EVENT_NAME = "eketal.issue.repeatedEventName"
+	public static val REPEATED_AUTOMATON_NAME = "eketal.issue.repeatedAutomatonName"
 	
 	@Check
-	def checkRepeatedEventName(EventClass myClass){
+	def checkRepeatedDeclarationsName(EventClass myClass){
 		var events = myClass.declarations.filter(typeof(EvDecl))
 		val duplicate = events.groupBy[ev| ev.name].filter[e,l|l.size > 1]
 		if (!duplicate.empty) {
 			for(event:duplicate.keySet){
 				error("The event '" + event + "' is repeated in '" + myClass.name +
 					"'", EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, REPEATED_EVENT_NAME)
-			}			
+			}
+		}
+		var automatons = myClass.declarations.filter(typeof(Automaton))
+		val duplicateAutomaton = automatons.groupBy[aut| aut.name].filter[e,l|l.size > 1]
+		if (!duplicateAutomaton.empty) {
+			for(automaton:duplicateAutomaton.keySet){
+				error("The automaton '" + automaton + "' is repeated in '" + myClass.name +
+					"'", EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, REPEATED_AUTOMATON_NAME)
+			}
 		}
 	}
 	
