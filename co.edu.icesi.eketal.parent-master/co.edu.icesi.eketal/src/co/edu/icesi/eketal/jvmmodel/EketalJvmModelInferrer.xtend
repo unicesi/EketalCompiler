@@ -42,6 +42,7 @@ import java.net.MalformedURLException
 import co.edu.icesi.eketal.eketal.Host
 import java.util.regex.Pattern
 import java.util.Collections
+import co.edu.icesi.eketal.eketal.MSig
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -217,6 +218,20 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					]
 				}
 			}
+			
+			val operations = reactions.declarations.filter(typeof(MSig))
+			if (!operations.isEmpty) {
+				for (method : operations) {
+					members += reactions.toMethod(method.name.toFirstLower, method.type ?: inferredType)[
+						static=true
+						for (p : method.params) {
+								parameters += p.toParameter(p.name, p.parameterType)
+						}
+						body = method.body
+					]
+				}
+			}
+			
 			val after = new HashMap<String, String>()
 			val before = new HashMap<String, String>()
 			for (rc : set) {
