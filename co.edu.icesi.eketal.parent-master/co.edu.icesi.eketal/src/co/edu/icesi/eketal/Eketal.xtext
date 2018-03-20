@@ -137,9 +137,24 @@ enum StateType:
 //////////////////////////////////////
 ////Linear Temporal Logic definition
 //////////////////////////////////////
+//TODO precedences:
+//Unary->Binary
+//Bind from right to left
+//always eventually p = (always (eventually p))
+//p until q until r = p until (q until r)
+//until -> &&,||,->
+//TODO parentheses quitar
+//ltl logical(){
+		//eventHello -> eventually(otherEvent)
+		//eventHello -> otherEvent until anotherEvent
+		//always((eventually(eventHello)))
+//		eventually((always(eventHello)))
+		//http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
+		//always((eventHello -> !anotherEvent until otherEvent))
+//	}
 Ltl:
 	'ltl' name=ID '('(params+=FullJvmFormalParameter 
-        (',' params+=FullJvmFormalParameter)*)?')' '{' predicates+=LtlOr* '}'
+        (',' params+=FullJvmFormalParameter)*)?')' '{' predicate=LtlOr '}'
 ;
 LtlOr returns LtlExpression:
 	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*
@@ -154,7 +169,7 @@ LtlUntil  returns LtlExpression:
 ;
 
 LtlThen returns LtlExpression:
-	UnaryExpresion ({LtlThen.left=current} op='->' right=UnaryExpresion)*
+	LtlUnary ({LtlThen.left=current} op='->' right=LtlUnary)*
 ;
 
 LtlUnary returns LtlExpression:
