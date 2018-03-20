@@ -20,9 +20,9 @@ Model:
 EventClass:
 	'eventclass' name=ID '{' declarations+=Decl* '}'
 ;
-	
+
 Decl:
-	Automaton
+	Automaton | Ltl
 	| Rc
 	| MSig
 	| JVarD
@@ -115,7 +115,6 @@ Ip:
 ////Automata definicion
 //////////////////////////////////////
 //TODO estado de finalización default
-//TODO Restricción de que solo puede haber un autómata
 Automaton:
 	'automaton' name=ID '('(params+=FullJvmFormalParameter 
         (',' params+=FullJvmFormalParameter)*)?')' '{' steps+=Step* '}'
@@ -133,6 +132,53 @@ enum StateType:
 	state |
 	start |
 	end
+;
+
+//////////////////////////////////////
+////Linear Temporal Logic definition
+//////////////////////////////////////
+Ltl:
+	'ltl' name=ID '('(params+=FullJvmFormalParameter 
+        (',' params+=FullJvmFormalParameter)*)?')' '{' predicates+=LtlOr* '}'
+;
+LtlOr returns LtlExpression:
+	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*
+;
+
+LtlAnd  returns LtlExpression:
+	LtlUntil ({LtlAnd.left=current} op='&&' right=LtlUntil)*
+;
+
+LtlUntil  returns LtlExpression:
+	LtlThen ({LtlUntil.left=current} op='until' right=LtlThen)*
+;
+
+LtlThen returns LtlExpression:
+	UnaryExpresion ({LtlThen.left=current} op='->' right=UnaryExpresion)*
+;
+
+LtlUnary returns LtlExpression:
+	LtlAtom | LtlAlways | LtlNext | LtlEventually | LtlNot
+;
+
+LtlNext returns LtlExpression:{UnaryLtl}
+	op='next' '(' expr=LtlAtom ')'
+;
+
+LtlAlways returns LtlExpression:{UnaryLtl}
+	op='always' '(' expr=LtlAtom ')'
+;
+
+LtlEventually returns LtlExpression:{UnaryLtl}
+	op='eventually' '(' expr=LtlAtom ')'
+;
+
+LtlNot returns LtlExpression:{UnaryLtl}
+	op='!' expr=LtlAtom
+;
+
+LtlAtom returns LtlExpression:
+	event=[EvDecl] | '('LtlOr')'
 ;
 
 //////////////////////////////////////
