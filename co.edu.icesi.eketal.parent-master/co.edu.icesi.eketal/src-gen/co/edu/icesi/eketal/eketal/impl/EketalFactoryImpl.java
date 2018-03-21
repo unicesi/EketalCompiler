@@ -82,11 +82,18 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
       case EketalPackage.AUTOMATON: return createAutomaton();
       case EketalPackage.STEP: return createStep();
       case EketalPackage.TRANS_DEF: return createTransDef();
+      case EketalPackage.LTL: return createLtl();
+      case EketalPackage.LTL_EXPRESSION: return createLtlExpression();
       case EketalPackage.RC: return createRc();
       case EketalPackage.BODY: return createBody();
       case EketalPackage.OR_EVENT: return createOrEvent();
       case EketalPackage.AND_EVENT: return createAndEvent();
       case EketalPackage.UNARY_EVENT: return createUnaryEvent();
+      case EketalPackage.LTL_OR: return createLtlOr();
+      case EketalPackage.LTL_AND: return createLtlAnd();
+      case EketalPackage.LTL_UNTIL: return createLtlUntil();
+      case EketalPackage.LTL_THEN: return createLtlThen();
+      case EketalPackage.UNARY_LTL: return createUnaryLtl();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -315,6 +322,28 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public Ltl createLtl()
+  {
+    LtlImpl ltl = new LtlImpl();
+    return ltl;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public LtlExpression createLtlExpression()
+  {
+    LtlExpressionImpl ltlExpression = new LtlExpressionImpl();
+    return ltlExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Rc createRc()
   {
     RcImpl rc = new RcImpl();
@@ -363,6 +392,61 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     UnaryEventImpl unaryEvent = new UnaryEventImpl();
     return unaryEvent;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public LtlOr createLtlOr()
+  {
+    LtlOrImpl ltlOr = new LtlOrImpl();
+    return ltlOr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public LtlAnd createLtlAnd()
+  {
+    LtlAndImpl ltlAnd = new LtlAndImpl();
+    return ltlAnd;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public LtlUntil createLtlUntil()
+  {
+    LtlUntilImpl ltlUntil = new LtlUntilImpl();
+    return ltlUntil;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public LtlThen createLtlThen()
+  {
+    LtlThenImpl ltlThen = new LtlThenImpl();
+    return ltlThen;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public UnaryLtl createUnaryLtl()
+  {
+    UnaryLtlImpl unaryLtl = new UnaryLtlImpl();
+    return unaryLtl;
   }
 
   /**

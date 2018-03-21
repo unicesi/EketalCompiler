@@ -87,6 +87,15 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Eketal.ecore#//TransDef/event"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Eketal.ecore#//TransDef/target"/>
     </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//Ltl">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//Ltl/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//Ltl/params"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//Ltl/predicate"/>
+    </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//LtlExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlExpression/event"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//LtlExpression/op"/>
+    </genClasses>
     <genClasses ecoreClass="Eketal.ecore#//Rc">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//Rc/syncex"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//Rc/pos"/>
@@ -107,6 +116,25 @@
     </genClasses>
     <genClasses ecoreClass="Eketal.ecore#//UnaryEvent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//UnaryEvent/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//LtlOr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlOr/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlOr/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//LtlAnd">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlAnd/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlAnd/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//LtlUntil">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlUntil/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlUntil/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//LtlThen">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlThen/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//LtlThen/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Eketal.ecore#//UnaryLtl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//UnaryLtl/expr"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

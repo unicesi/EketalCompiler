@@ -55,8 +55,10 @@ public class EketalValidator extends AbstractEketalValidator {
   
   public final static String REPEATED_EVENT_NAME = "eketal.issue.repeatedEventName";
   
+  public final static String REPEATED_AUTOMATON_NAME = "eketal.issue.repeatedAutomatonName";
+  
   @Check
-  public void checkRepeatedEventName(final EventClass myClass) {
+  public void checkRepeatedDeclarationsName(final EventClass myClass) {
     Iterable<EvDecl> events = Iterables.<EvDecl>filter(myClass.getDeclarations(), EvDecl.class);
     final Function1<EvDecl, String> _function = (EvDecl ev) -> {
       return ev.getName();
@@ -76,6 +78,27 @@ public class EketalValidator extends AbstractEketalValidator {
         String _plus_1 = (_plus + 
           "\'");
         this.error(_plus_1, EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, EketalValidator.REPEATED_EVENT_NAME);
+      }
+    }
+    Iterable<Automaton> automatons = Iterables.<Automaton>filter(myClass.getDeclarations(), Automaton.class);
+    final Function1<Automaton, String> _function_2 = (Automaton aut) -> {
+      return aut.getName();
+    };
+    final Function2<String, List<Automaton>, Boolean> _function_3 = (String e, List<Automaton> l) -> {
+      int _size = l.size();
+      return Boolean.valueOf((_size > 1));
+    };
+    final Map<String, List<Automaton>> duplicateAutomaton = MapExtensions.<String, List<Automaton>>filter(IterableExtensions.<String, Automaton>groupBy(automatons, _function_2), _function_3);
+    boolean _isEmpty_1 = duplicateAutomaton.isEmpty();
+    boolean _not_1 = (!_isEmpty_1);
+    if (_not_1) {
+      Set<String> _keySet_1 = duplicateAutomaton.keySet();
+      for (final String automaton : _keySet_1) {
+        String _name_1 = myClass.getName();
+        String _plus_2 = ((("The automaton \'" + automaton) + "\' is repeated in \'") + _name_1);
+        String _plus_3 = (_plus_2 + 
+          "\'");
+        this.error(_plus_3, EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, EketalValidator.REPEATED_AUTOMATON_NAME);
       }
     }
   }

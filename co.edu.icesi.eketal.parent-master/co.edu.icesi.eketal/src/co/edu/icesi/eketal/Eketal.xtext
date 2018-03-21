@@ -139,7 +139,7 @@ enum StateType:
 //////////////////////////////////////
 Ltl:
 	'ltl' name=ID '('(params+=FullJvmFormalParameter 
-        (',' params+=FullJvmFormalParameter)*)?')' '{' predicates+=LtlOr* '}'
+        (',' params+=FullJvmFormalParameter)*)?')' '{' predicate=LtlOr '}'
 ;
 LtlOr returns LtlExpression:
 	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*
@@ -154,7 +154,7 @@ LtlUntil  returns LtlExpression:
 ;
 
 LtlThen returns LtlExpression:
-	UnaryExpresion ({LtlThen.left=current} op='->' right=UnaryExpresion)*
+	LtlUnary ({LtlThen.left=current} op='->' right=LtlUnary)*
 ;
 
 LtlUnary returns LtlExpression:
@@ -162,15 +162,15 @@ LtlUnary returns LtlExpression:
 ;
 
 LtlNext returns LtlExpression:{UnaryLtl}
-	op='next' '(' expr=LtlAtom ')'
+	op='next' expr=LtlAtom
 ;
 
 LtlAlways returns LtlExpression:{UnaryLtl}
-	op='always' '(' expr=LtlAtom ')'
+	op='always' expr=LtlAtom
 ;
 
 LtlEventually returns LtlExpression:{UnaryLtl}
-	op='eventually' '(' expr=LtlAtom ')'
+	op='eventually' expr=LtlAtom
 ;
 
 LtlNot returns LtlExpression:{UnaryLtl}

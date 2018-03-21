@@ -17,6 +17,12 @@ import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.Host;
 import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.KindAttribute;
+import co.edu.icesi.eketal.eketal.Ltl;
+import co.edu.icesi.eketal.eketal.LtlAnd;
+import co.edu.icesi.eketal.eketal.LtlExpression;
+import co.edu.icesi.eketal.eketal.LtlOr;
+import co.edu.icesi.eketal.eketal.LtlThen;
+import co.edu.icesi.eketal.eketal.LtlUntil;
 import co.edu.icesi.eketal.eketal.MSig;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.OrEvent;
@@ -28,6 +34,7 @@ import co.edu.icesi.eketal.eketal.TPrefix;
 import co.edu.icesi.eketal.eketal.TransDef;
 import co.edu.icesi.eketal.eketal.Trigger;
 import co.edu.icesi.eketal.eketal.UnaryEvent;
+import co.edu.icesi.eketal.eketal.UnaryLtl;
 
 import jbase.jbase.JbasePackage;
 
@@ -170,6 +177,20 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass ltlEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ltlExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass rcEClass = null;
 
   /**
@@ -199,6 +220,41 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * @generated
    */
   private EClass unaryEventEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ltlOrEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ltlAndEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ltlUntilEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ltlThenEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass unaryLtlEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -823,6 +879,76 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getLtl()
+  {
+    return ltlEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getLtl_Name()
+  {
+    return (EAttribute)ltlEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtl_Params()
+  {
+    return (EReference)ltlEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtl_Predicate()
+  {
+    return (EReference)ltlEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getLtlExpression()
+  {
+    return ltlExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlExpression_Event()
+  {
+    return (EReference)ltlExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getLtlExpression_Op()
+  {
+    return (EAttribute)ltlExpressionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getRc()
   {
     return rcEClass;
@@ -983,6 +1109,146 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getLtlOr()
+  {
+    return ltlOrEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlOr_Left()
+  {
+    return (EReference)ltlOrEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlOr_Right()
+  {
+    return (EReference)ltlOrEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getLtlAnd()
+  {
+    return ltlAndEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlAnd_Left()
+  {
+    return (EReference)ltlAndEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlAnd_Right()
+  {
+    return (EReference)ltlAndEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getLtlUntil()
+  {
+    return ltlUntilEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlUntil_Left()
+  {
+    return (EReference)ltlUntilEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlUntil_Right()
+  {
+    return (EReference)ltlUntilEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getLtlThen()
+  {
+    return ltlThenEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlThen_Left()
+  {
+    return (EReference)ltlThenEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLtlThen_Right()
+  {
+    return (EReference)ltlThenEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getUnaryLtl()
+  {
+    return unaryLtlEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getUnaryLtl_Expr()
+  {
+    return (EReference)unaryLtlEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getTPrefix()
   {
     return tPrefixEEnum;
@@ -1107,6 +1373,15 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(transDefEClass, TRANS_DEF__EVENT);
     createEReference(transDefEClass, TRANS_DEF__TARGET);
 
+    ltlEClass = createEClass(LTL);
+    createEAttribute(ltlEClass, LTL__NAME);
+    createEReference(ltlEClass, LTL__PARAMS);
+    createEReference(ltlEClass, LTL__PREDICATE);
+
+    ltlExpressionEClass = createEClass(LTL_EXPRESSION);
+    createEReference(ltlExpressionEClass, LTL_EXPRESSION__EVENT);
+    createEAttribute(ltlExpressionEClass, LTL_EXPRESSION__OP);
+
     rcEClass = createEClass(RC);
     createEAttribute(rcEClass, RC__SYNCEX);
     createEAttribute(rcEClass, RC__POS);
@@ -1127,6 +1402,25 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
 
     unaryEventEClass = createEClass(UNARY_EVENT);
     createEReference(unaryEventEClass, UNARY_EVENT__EXPR);
+
+    ltlOrEClass = createEClass(LTL_OR);
+    createEReference(ltlOrEClass, LTL_OR__LEFT);
+    createEReference(ltlOrEClass, LTL_OR__RIGHT);
+
+    ltlAndEClass = createEClass(LTL_AND);
+    createEReference(ltlAndEClass, LTL_AND__LEFT);
+    createEReference(ltlAndEClass, LTL_AND__RIGHT);
+
+    ltlUntilEClass = createEClass(LTL_UNTIL);
+    createEReference(ltlUntilEClass, LTL_UNTIL__LEFT);
+    createEReference(ltlUntilEClass, LTL_UNTIL__RIGHT);
+
+    ltlThenEClass = createEClass(LTL_THEN);
+    createEReference(ltlThenEClass, LTL_THEN__LEFT);
+    createEReference(ltlThenEClass, LTL_THEN__RIGHT);
+
+    unaryLtlEClass = createEClass(UNARY_LTL);
+    createEReference(unaryLtlEClass, UNARY_LTL__EXPR);
 
     // Create enums
     tPrefixEEnum = createEEnum(TPREFIX);
@@ -1176,10 +1470,16 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     triggerEClass.getESuperTypes().add(this.getEventPredicate());
     groupEClass.getESuperTypes().add(this.getDecl());
     automatonEClass.getESuperTypes().add(this.getDecl());
+    ltlEClass.getESuperTypes().add(this.getDecl());
     rcEClass.getESuperTypes().add(this.getDecl());
     orEventEClass.getESuperTypes().add(this.getEventExpression());
     andEventEClass.getESuperTypes().add(this.getEventExpression());
     unaryEventEClass.getESuperTypes().add(this.getEventExpression());
+    ltlOrEClass.getESuperTypes().add(this.getLtlExpression());
+    ltlAndEClass.getESuperTypes().add(this.getLtlExpression());
+    ltlUntilEClass.getESuperTypes().add(this.getLtlExpression());
+    ltlThenEClass.getESuperTypes().add(this.getLtlExpression());
+    unaryLtlEClass.getESuperTypes().add(this.getLtlExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1251,6 +1551,15 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getTransDef_Event(), this.getEvDecl(), null, "event", null, 0, 1, TransDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTransDef_Target(), this.getStep(), null, "target", null, 0, 1, TransDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(ltlEClass, Ltl.class, "Ltl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getLtl_Name(), ecorePackage.getEString(), "name", null, 0, 1, Ltl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLtl_Params(), theJbasePackage.getXJJvmFormalParameter(), null, "params", null, 0, -1, Ltl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLtl_Predicate(), this.getLtlExpression(), null, "predicate", null, 0, 1, Ltl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ltlExpressionEClass, LtlExpression.class, "LtlExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLtlExpression_Event(), this.getEvDecl(), null, "event", null, 0, 1, LtlExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getLtlExpression_Op(), ecorePackage.getEString(), "op", null, 0, 1, LtlExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(rcEClass, Rc.class, "Rc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRc_Syncex(), ecorePackage.getEString(), "syncex", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getRc_Pos(), this.getPos(), "pos", null, 0, 1, Rc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1271,6 +1580,25 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
 
     initEClass(unaryEventEClass, UnaryEvent.class, "UnaryEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getUnaryEvent_Expr(), this.getEventExpression(), null, "expr", null, 0, 1, UnaryEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ltlOrEClass, LtlOr.class, "LtlOr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLtlOr_Left(), this.getLtlExpression(), null, "left", null, 0, 1, LtlOr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLtlOr_Right(), this.getLtlExpression(), null, "right", null, 0, 1, LtlOr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ltlAndEClass, LtlAnd.class, "LtlAnd", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLtlAnd_Left(), this.getLtlExpression(), null, "left", null, 0, 1, LtlAnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLtlAnd_Right(), this.getLtlExpression(), null, "right", null, 0, 1, LtlAnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ltlUntilEClass, LtlUntil.class, "LtlUntil", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLtlUntil_Left(), this.getLtlExpression(), null, "left", null, 0, 1, LtlUntil.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLtlUntil_Right(), this.getLtlExpression(), null, "right", null, 0, 1, LtlUntil.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ltlThenEClass, LtlThen.class, "LtlThen", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLtlThen_Left(), this.getLtlExpression(), null, "left", null, 0, 1, LtlThen.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLtlThen_Right(), this.getLtlExpression(), null, "right", null, 0, 1, LtlThen.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(unaryLtlEClass, UnaryLtl.class, "UnaryLtl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getUnaryLtl_Expr(), this.getLtlExpression(), null, "expr", null, 0, 1, UnaryLtl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(tPrefixEEnum, TPrefix.class, "TPrefix");

@@ -23,6 +23,8 @@ public class EketalSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected EketalGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_AtomEvent_LeftParenthesisKeyword_1_0_a;
 	protected AbstractElementAlias match_AtomEvent_LeftParenthesisKeyword_1_0_p;
+	protected AbstractElementAlias match_LtlAtom_LeftParenthesisKeyword_1_0_a;
+	protected AbstractElementAlias match_LtlAtom_LeftParenthesisKeyword_1_0_p;
 	protected AbstractElementAlias match_Model_SemicolonKeyword_0_2_q;
 	protected AbstractElementAlias match_Step___RightParenthesisKeyword_2_4_3_VerticalLineVerticalLineKeyword_2_4_0_LeftParenthesisKeyword_2_4_1__a;
 	protected AbstractElementAlias match_Step___VerticalLineVerticalLineKeyword_2_4_0_LeftParenthesisKeyword_2_4_1_RightParenthesisKeyword_2_4_3__a;
@@ -38,6 +40,8 @@ public class EketalSyntacticSequencer extends AbstractSyntacticSequencer {
 		grammarAccess = (EketalGrammarAccess) access;
 		match_AtomEvent_LeftParenthesisKeyword_1_0_a = new TokenAlias(true, true, grammarAccess.getAtomEventAccess().getLeftParenthesisKeyword_1_0());
 		match_AtomEvent_LeftParenthesisKeyword_1_0_p = new TokenAlias(true, false, grammarAccess.getAtomEventAccess().getLeftParenthesisKeyword_1_0());
+		match_LtlAtom_LeftParenthesisKeyword_1_0_a = new TokenAlias(true, true, grammarAccess.getLtlAtomAccess().getLeftParenthesisKeyword_1_0());
+		match_LtlAtom_LeftParenthesisKeyword_1_0_p = new TokenAlias(true, false, grammarAccess.getLtlAtomAccess().getLeftParenthesisKeyword_1_0());
 		match_Model_SemicolonKeyword_0_2_q = new TokenAlias(false, true, grammarAccess.getModelAccess().getSemicolonKeyword_0_2());
 		match_Step___RightParenthesisKeyword_2_4_3_VerticalLineVerticalLineKeyword_2_4_0_LeftParenthesisKeyword_2_4_1__a = new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getStepAccess().getRightParenthesisKeyword_2_4_3()), new TokenAlias(false, false, grammarAccess.getStepAccess().getVerticalLineVerticalLineKeyword_2_4_0()), new TokenAlias(false, false, grammarAccess.getStepAccess().getLeftParenthesisKeyword_2_4_1()));
 		match_Step___VerticalLineVerticalLineKeyword_2_4_0_LeftParenthesisKeyword_2_4_1_RightParenthesisKeyword_2_4_3__a = new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getStepAccess().getVerticalLineVerticalLineKeyword_2_4_0()), new TokenAlias(false, false, grammarAccess.getStepAccess().getLeftParenthesisKeyword_2_4_1()), new TokenAlias(false, false, grammarAccess.getStepAccess().getRightParenthesisKeyword_2_4_3()));
@@ -90,6 +94,10 @@ public class EketalSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_AtomEvent_LeftParenthesisKeyword_1_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_AtomEvent_LeftParenthesisKeyword_1_0_p.equals(syntax))
 				emit_AtomEvent_LeftParenthesisKeyword_1_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_LtlAtom_LeftParenthesisKeyword_1_0_a.equals(syntax))
+				emit_LtlAtom_LeftParenthesisKeyword_1_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_LtlAtom_LeftParenthesisKeyword_1_0_p.equals(syntax))
+				emit_LtlAtom_LeftParenthesisKeyword_1_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Model_SemicolonKeyword_0_2_q.equals(syntax))
 				emit_Model_SemicolonKeyword_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Step___RightParenthesisKeyword_2_4_3_VerticalLineVerticalLineKeyword_2_4_0_LeftParenthesisKeyword_2_4_1__a.equals(syntax))
@@ -136,6 +144,43 @@ public class EketalSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) {OrEvent.left=}
 	 */
 	protected void emit_AtomEvent_LeftParenthesisKeyword_1_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     '('*
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) (ambiguity) event=[EvDecl|ID]
+	 *     (rule start) (ambiguity) op='!'
+	 *     (rule start) (ambiguity) op='always'
+	 *     (rule start) (ambiguity) op='eventually'
+	 *     (rule start) (ambiguity) op='next'
+	 *     (rule start) (ambiguity) {LtlAnd.left=}
+	 *     (rule start) (ambiguity) {LtlOr.left=}
+	 *     (rule start) (ambiguity) {LtlThen.left=}
+	 *     (rule start) (ambiguity) {LtlUntil.left=}
+	 */
+	protected void emit_LtlAtom_LeftParenthesisKeyword_1_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     '('+
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) (ambiguity) op='!'
+	 *     (rule start) (ambiguity) op='always'
+	 *     (rule start) (ambiguity) op='eventually'
+	 *     (rule start) (ambiguity) op='next'
+	 *     (rule start) (ambiguity) {LtlAnd.left=}
+	 *     (rule start) (ambiguity) {LtlOr.left=}
+	 *     (rule start) (ambiguity) {LtlThen.left=}
+	 *     (rule start) (ambiguity) {LtlUntil.left=}
+	 */
+	protected void emit_LtlAtom_LeftParenthesisKeyword_1_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

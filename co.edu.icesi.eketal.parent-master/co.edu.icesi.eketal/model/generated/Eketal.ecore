@@ -99,6 +99,18 @@
     <eLiterals name="start" value="1" literal="start"/>
     <eLiterals name="end" value="2" literal="end"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ltl" eSuperTypes="#//Decl">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="ecore:EClass platform:/resource/jbase/model/custom/Jbase.ecore#//XJJvmFormalParameter"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//LtlExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LtlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="#//EvDecl"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rc" eSuperTypes="#//Decl">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="syncex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pos" eType="#//Pos"/>
@@ -129,6 +141,34 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnaryEvent" eSuperTypes="#//EventExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//EventExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LtlOr" eSuperTypes="#//LtlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//LtlExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//LtlExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LtlAnd" eSuperTypes="#//LtlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//LtlExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//LtlExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LtlUntil" eSuperTypes="#//LtlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//LtlExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//LtlExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LtlThen" eSuperTypes="#//LtlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//LtlExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//LtlExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnaryLtl" eSuperTypes="#//LtlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//LtlExpression"
         containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

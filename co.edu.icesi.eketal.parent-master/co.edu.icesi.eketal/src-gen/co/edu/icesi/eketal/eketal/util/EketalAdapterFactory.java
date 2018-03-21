@@ -156,6 +156,16 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
         return createTransDefAdapter();
       }
       @Override
+      public Adapter caseLtl(Ltl object)
+      {
+        return createLtlAdapter();
+      }
+      @Override
+      public Adapter caseLtlExpression(LtlExpression object)
+      {
+        return createLtlExpressionAdapter();
+      }
+      @Override
       public Adapter caseRc(Rc object)
       {
         return createRcAdapter();
@@ -179,6 +189,31 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
       public Adapter caseUnaryEvent(UnaryEvent object)
       {
         return createUnaryEventAdapter();
+      }
+      @Override
+      public Adapter caseLtlOr(LtlOr object)
+      {
+        return createLtlOrAdapter();
+      }
+      @Override
+      public Adapter caseLtlAnd(LtlAnd object)
+      {
+        return createLtlAndAdapter();
+      }
+      @Override
+      public Adapter caseLtlUntil(LtlUntil object)
+      {
+        return createLtlUntilAdapter();
+      }
+      @Override
+      public Adapter caseLtlThen(LtlThen object)
+      {
+        return createLtlThenAdapter();
+      }
+      @Override
+      public Adapter caseUnaryLtl(UnaryLtl object)
+      {
+        return createUnaryLtlAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -443,6 +478,36 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.Ltl <em>Ltl</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.Ltl
+   * @generated
+   */
+  public Adapter createLtlAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlExpression <em>Ltl Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.LtlExpression
+   * @generated
+   */
+  public Adapter createLtlExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.Rc <em>Rc</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -513,6 +578,81 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createUnaryEventAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlOr <em>Ltl Or</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.LtlOr
+   * @generated
+   */
+  public Adapter createLtlOrAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlAnd <em>Ltl And</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.LtlAnd
+   * @generated
+   */
+  public Adapter createLtlAndAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlUntil <em>Ltl Until</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.LtlUntil
+   * @generated
+   */
+  public Adapter createLtlUntilAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlThen <em>Ltl Then</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.LtlThen
+   * @generated
+   */
+  public Adapter createLtlThenAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.UnaryLtl <em>Unary Ltl</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.UnaryLtl
+   * @generated
+   */
+  public Adapter createUnaryLtlAdapter()
   {
     return null;
   }
