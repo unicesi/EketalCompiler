@@ -143,15 +143,7 @@ enum StateType:
 //always eventually p = (always (eventually p))
 //p until q until r = p until (q until r)
 //until -> &&,||,->
-//TODO parentheses quitar
-//ltl logical(){
-		//eventHello -> eventually(otherEvent)
-		//eventHello -> otherEvent until anotherEvent
-		//always((eventually(eventHello)))
-//		eventually((always(eventHello)))
-		//http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
-		//always((eventHello -> !anotherEvent until otherEvent))
-//	}
+//http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
 Ltl:
 	'ltl' name=ID '('(params+=FullJvmFormalParameter 
         (',' params+=FullJvmFormalParameter)*)?')' '{' predicate=LtlOr '}'
