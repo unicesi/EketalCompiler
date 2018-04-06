@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>co.edu.icesi.eketal</groupId>
 	<version>2.0.1-SNAPSHOT</version>
@@ -19,11 +19,12 @@
 		<module>co.edu.icesi.eketal.ide</module>
 		<module>co.edu.icesi.eketal.ui</module>
 		<module>co.edu.icesi.eketal.target</module>
-		<module>co.edu.icesi.eketal.lib</module>
+    	<module>co.edu.icesi.eketal.lib.ltl2buchi</module>
+		<module>co.edu.icesi.eketal.lib.ketal</module>
 		<module>co.edu.icesi.eketal.lib.osgi</module>
 		<module>co.edu.icesi.eketal.feature</module>
 		<module>co.edu.icesi.eketal.repository</module>
-	</modules>
+  </modules>
 	<build>
 		<plugins>
 			<plugin>
@@ -58,8 +59,8 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<plugin id="co.edu.icesi.eketal.lib.osgi" />								
-								<feature id="co.edu.icesi.eketal.feature" />
+								<plugin id="co.edu.icesi.eketal.lib.osgi"/>								
+								<feature id="co.edu.icesi.eketal.feature"/>
 							</excludes> 
 							<!-- 	These are bundles and feature that do not have a corresponding 
 									source version; NOT the ones that we do not want source versions
@@ -184,7 +185,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -206,7 +207,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -225,7 +226,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -247,7 +248,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

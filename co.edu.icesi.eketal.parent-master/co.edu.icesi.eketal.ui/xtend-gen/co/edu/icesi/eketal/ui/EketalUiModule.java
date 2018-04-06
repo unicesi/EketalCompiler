@@ -20,7 +20,7 @@ public class EketalUiModule extends AbstractEketalUiModule {
     return EketalPluginCreator.class;
   }
   
-  public EketalUiModule(final AbstractUIPlugin plugin) {
-    super(plugin);
+  public EketalUiModule(final AbstractUIPlugin arg0) {
+    super(arg0);
   }
 }

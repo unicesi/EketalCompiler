@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
-			<artifactId>co.edu.icesi.eketal.lib</artifactId>
+			<artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
 			<version>${eketal-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
@@ -206,7 +206,7 @@
 						</dependency>
 						<dependency>
 							<groupId>co.edu.icesi.eketal</groupId>
-							<artifactId>co.edu.icesi.eketal.lib</artifactId>
+							<artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
 							<version>${eketal-version}</version>
 					</dependency>
 				</dependencies>

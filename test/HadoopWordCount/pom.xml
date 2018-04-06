@@ -190,7 +190,7 @@
 					</dependency>
 					<dependency>
 						<groupId>co.edu.icesi.eketal</groupId>
-						<artifactId>co.edu.icesi.eketal.lib</artifactId>
+						<artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
 						<version>${eketal-version}</version>
 					</dependency>
 					<dependency>
@@ -206,7 +206,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
-			<artifactId>co.edu.icesi.eketal.lib</artifactId>
+			<artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
 			<version>${eketal-version}</version>
 		</dependency>
 		<dependency>
