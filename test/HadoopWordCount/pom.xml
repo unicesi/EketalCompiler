@@ -16,7 +16,7 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<hadoop-version>2.7.3</hadoop-version>
 		<log4j-version>2.8.1</log4j-version>
-		<eketal-version>2.0.1-SNAPSHOT</eketal-version>
+		<eketal-version>3.0.0-SNAPSHOT</eketal-version>
 	</properties>
 	
 	<build>
