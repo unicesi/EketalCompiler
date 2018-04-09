@@ -1,0 +1,39 @@
+package org.apache.hadoop.yarn.server.nodemanager;
+
+import org.apache.hadoop.yarn.server.security.ApplicationACLsManager;
+import org.apache.hadoop.yarn.server.nodemanager.containermanager.ContainerManagerImpl;
+import org.apache.hadoop.yarn.server.nodemanager.containermanager.application.*;
+import org.apache.hadoop.yarn.api.records.ApplicationId;
+import org.apache.hadoop.security.Credentials;
+
+eventclass ENodeManager{
+	
+	automaton yarnContainer(){
+		start initial: (startContainer -> container);
+		end container: (startContainer -> container);
+	}
+	
+	automaton yarnConstructor(){
+		start initial: (constructorEvent -> last);
+		end last;
+	}
+	
+	group localGroup{
+		localhost
+	}
+	
+	event startContainer(): execution(* ApplicationImpl.InitContainerTransition.transition(ApplicationImpl, ApplicationEvent));
+	event constructorEvent(): call(NodeManager.^new());
+	
+	reaction before yarnConstructor.last{
+		long time = System.currentTimeMillis();
+		System.out.println(System.currentTimeMillis());
+	}
+	
+	counter:int
+	
+	reaction before yarnContainer.container{
+		counter+=1;
+		System.out.println("Number of containers launched: "+counter);
+	}
+}

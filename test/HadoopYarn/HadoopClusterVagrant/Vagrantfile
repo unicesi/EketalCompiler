@@ -1,0 +1,109 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Multi-VM Configuration: a hadoop cluster using JSON config file
+# Configures VMs based on Hosted Chef Server defined Environment and Node (vs. Roles)
+# Author: Camilo Pimienta Rosero
+
+# read vm and chef configurations from JSON files
+nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
+hosts = Hash.new
+nodes_config.each { |temp_node|
+    nodes_values = temp_node[1]
+    ip = nodes_values[':ip']
+    hostname = nodes_values[':host']
+    hosts[hostname] = ip
+}
+
+#Vagrant.require_plugin "vagrant-omnibus"
+#ip = "127.0.0.1"
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+
+  nodes_config.each do |node|
+    node_name   = node[0] # name of node
+    node_values = node[1] # content of node
+
+    #config.vm.define node_name, autostart: false do |config|    
+    config.vm.define node_name do |machine|    
+      # configures all forwarding ports in JSON array
+      ports = node_values['ports']
+      ports.each do |port|
+        machine.vm.network :forwarded_port,
+          host:  port[':host'],
+          guest: port[':guest'],
+          id:    port[':id']
+      end
+
+      machine.vm.hostname = node_values[':node']
+      machine.vm.network :private_network, ip: node_values[':ip']
+      machine.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, "--memory", node_values[':memory']]
+        vb.customize ["modifyvm", :id, "--name", node_values[':node']]
+      end
+		
+	  #deleting first lines in hosts https://stackoverflow.com/questions/2112469/delete-specific-line-numbers-from-a-text-file-using-sed
+      #https://ruby-doc.org/core-2.1.4/Hash.html
+	  
+	  
+      hosts.each { |hostname, ip|
+        machine.vm.provision "shell", path: "host.sh", args: ["#{ip}", "#{hostname}"]
+      }
+
+      config.vm.provision "shell",
+        inline: "sudo yum update -y"
+      config.vm.provision "shell", path: "install-java.sh"
+		
+      if node_values[':isMaster']=="true" then
+        machine.vm.provision "shell", path: "install-sshpass.sh"
+        machine.vm.provision "shell", path: "public-key.sh"
+        machine.vm.provision "shell", path: "install-maven.sh"
+        machine.vm.provision "shell", path: "install-git.sh"
+		machine.vm.provision "shell", path: "configure-eketal.sh"
+		machine.vm.provision "shell", path: "configure-hadoop.sh"
+		machine.vm.provision "shell", path: "install-key.sh"
+		machine.vm.provision "shell", path: "install-hadoop.sh"
+      #else
+      end
+      #RSAAuthentication yes
+      #sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
+      #sudo sed -i -e "\\#PubkeyAuthentication yes# s/\\#PubkeyAuthentication yes/PubkeyAuthentication yes/g" /etc/ssh/sshd_config
+      #http://ermaker.github.io/blog/2015/11/18/change-insecure-key-to-my-own-key-on-vagrant.html
+      config.vm.provision "shell", inline: <<-EOC
+      echo "Configuring ssh properties"
+      sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
+      sudo echo "RSAAuthentication yes" >> /etc/ssh/sshd_config
+      sudo systemctl restart sshd.service
+      echo "Configured ssh properties"
+      EOC
+	  
+	  #config.vm.provision "shell", path: "provision.sh"
+    
+
+      # syncs local repository of large third-party installer files (quicker than downloading each time) /hadoop /puede ser git y el rpm de java
+      #config.vm.synced_folder "#{ENV['HOME']}/Documents/git_repos/chef-artifacts", "/vagrant"
+	  
+
+    #config.trigger.after :up, :vm => ['slave1'] do
+	#  master.vm.provision "shell", path: "install-key.sh", args: ip
+	#  master.vm.provision "shell", path: "install-hadoop.sh"
+	#  run "ssh-keyscan master | sort -u | grep ssh-rsa | awk '{ $2 \" \" $3 \" vagrant@\" $1}' >> .ssh/authorized_keys"
+    #end
+
+	#  config.vm.provision "file", source: "~/hadoop-2.7.3", destination: "/remote/newlocation/hadoop"
+	
+	#orderging
+	#https://github.com/aaronlord/vagrant/blob/master/Vagrantfile
+	#https://github.com/rgl/jenkins-vagrant/blob/master/Vagrantfile
+	
+	
+	#https://github.com/hashicorp/vagrant/issues/7015 environment variables
+	#https://mlafeldt.github.io/blog/system-provisioning-with-vagrant/
+	#https://stackoverflow.com/questions/40270391/shell-environment-variables-in-vagrant-files-are-only-passed-on-first-up
+	#https://stackoverflow.com/questions/19648088/pass-environment-variables-to-vagrant-shell-provisioner
+    # chef configuration section
+    end
+  end
+
+  
+end
