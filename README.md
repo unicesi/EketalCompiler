@@ -1,7 +1,7 @@
-# Eketal
-  Eketal is an event based programming model and language for runtime detection, monitoring, and dynamic modification of distributed and concurrent applications.
+# REAL
+  REAL is an event based programming model and language for runtime detection, monitoring, and dynamic modification of distributed and concurrent applications.
 
-  This project uses XText to implement a compiler for EKetal. We use Jbase to generate pure java expressions and statements using the XText framework.
+  This project uses XText to implement a compiler for REAL. We use Jbase to generate pure java expressions and statements using the XText framework.
 
   The compiler generates AspectJ and Java code to instrument monitoring in distributed applications.
 
@@ -9,7 +9,7 @@
 
   If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using Maven. Then we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
 
-## 1. Installing EKETAL's development environment using MAVEN
+## 1. Installing REAL's development environment using MAVEN
 
 This section describes how to download the project, how to build and install the language, and how to build a sample project. This is an example using JBossCache, to run an example using a mock of JBossCache and a recent version of JGroups, use the second git clone command. Finally, in this [video](https://www.dropbox.com/s/os1rrj7h3gu2l7i/Eketal.mp4?dl=0) you can see all the steps described next.
 
@@ -85,7 +85,7 @@ And in a new command line:
 java -jar target/RunExecute.jar
 ```
 
-This example shows how Eketal detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
+This example shows how REAL detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
 
 Explore more about this example and the other examples [here](https://github.com/unicesi/eketal/tree/master/test)
 
@@ -93,12 +93,12 @@ Explore more about this example and the other examples [here](https://github.com
 #### 1. Open the eclipse IDE
 #### 2. Go to "Help" -> "Install New Software..."
 #### 3. Click on "Add..."
-#### 4. In the location, put the EKetal update site: http://unicesi.github.io/eketal/repository/ and press OK.
+#### 4. In the location, put the REAL update site: http://unicesi.github.io/eketal/repository/ and press OK.
 #### 5. Select all the items and proceed to install.
 
-## 3. Installing EKETAL's development environment using Eclipse **NEON**
+## 3. Installing REAL's development environment using Eclipse **NEON**
 ### 3.1. Download the sources
-  Eketal's sources can be downloaded in three ways: directly from Github, using git and from Eclipse.
+  REAL's sources can be downloaded in three ways: directly from Github, using git and from Eclipse.
  #### From Github
    Click in the button "Clone or Download" and press the "Download Zip" option. Unzip the file. Finally, start Eclipse and set the workspace in the directory where you downloaded the sources
  
