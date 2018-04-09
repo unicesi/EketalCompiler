@@ -23,12 +23,13 @@ Inside [Docker_built](https://github.com/unicesi/eketal/tree/master/test/HadoopY
 
 To built the image, use the following scripts.
 Inside the [Docker_built](https://github.com/unicesi/eketal/tree/master/test/HadoopYarn/Docker_built)'s folder:
-'''
+
+```
 	docker build -t real_image .
-'''
+```
 Now, create a new folder wherever you want, so, there it can be download and built REAL and HADOOP (it may be source directory in which you download this repository).
 
-'''
+```
 	docker run -it -v $(pwd):/root real_image /bin/bash
 	#Run this in the containers console:
 	cd /root
@@ -46,16 +47,17 @@ Now, create a new folder wherever you want, so, there it can be download and bui
 	cp /root/eketal/test/HadoopYarn/HadoopClusterVagrant/ENodeManager.eketal hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/
 	cp /root/eketal/test/HadoopYarn/HadoopClusterVagrant/pom.xml hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/
 	mvn clean package -DskipTests
-'''
+```
 Finally, as docker built all of this in a shared folder with the host machine, the hadoop-yarn's jar is in the same directory that you created.
 
 The generated jars are in "hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/target/" directory.
 
 ## 2. With Vagrant
 Inside [HadoopClusterVagrant](https://github.com/unicesi/eketal/tree/master/test/HadoopYarn/HadoopClusterVagrant)'s folder
-'''
+
+```
 	vagrant up
-'''
+```
 Bellow command will built an entire cluster environment with Hadoop integrated with REAL, so you just only need to interact with the master's Virtual Machine, and run Hadoop.
 
 ## 3. Installing software artifacts.
@@ -63,9 +65,9 @@ Bellow command will built an entire cluster environment with Hadoop integrated w
 Required software was presented at the beggining. So, once those artifacts are installed, you may proceed as follows:
 
 Install Eketal (as described in root's directory of this repository). Then just build the Hadoop's artifacts with:
-'''
+```
 cp $EKETAL_HOME/test/HadoopYarn/HadoopClusterVagrant/ENodeManager.eketal $HADOOP_SRC/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/
 cp $EKETAL_HOME/test/HadoopYarn/HadoopClusterVagrant/pom.xml $HADOOP_SRC/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/
 cd $HADOOP_SRC 
 mvn clean package -DskipTests
-'''
+```
