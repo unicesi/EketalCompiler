@@ -43,6 +43,9 @@ import co.edu.icesi.eketal.eketal.Host
 import java.util.regex.Pattern
 import java.util.Collections
 import co.edu.icesi.eketal.eketal.MSig
+import co.edu.icesi.eketal.eketal.Ltl
+import co.edu.icesi.eketal.eketal.LtlExpression
+import co.edu.icesi.eketal.eketal.LtlOr
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -111,7 +114,19 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		 */
 		val groupsClass = element.typeDeclaration
 		createGroupClass(acceptor, groupsClass)
-
+		
+		var String nameBuchi;
+		var buchis = element.typeDeclaration.declarations.filter(typeof(Ltl));
+		createBuchis(acceptor, buchis)
+		
+		//val eventsOfLtlFormula = buchis.toInvertedMap [ a |
+		//	val Set<String> steps = new TreeSet
+			// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
+		//	a.predicate.event
+		//	return steps
+		//]
+		
+		
 		/*
 		 * Collects all the automatons and creates an automaton for each one
 		 */
@@ -205,6 +220,30 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val handlerClass = element.typeDeclaration;
 		createHandlerClass(acceptor, handlerClass, automatons.toSet)
 
+	}
+	
+	def createBuchis(IJvmDeclaredTypeAcceptor acceptor, Iterable<Ltl> ltls) {
+		for(Ltl ltl: ltls){
+			//Recupera el predicado de la formula
+			var LtlExpression tPredicate = ltl.predicate
+			
+			//TODO Relacionar eventos con caracteres
+			//Busca todos los eventos del predicado
+			System.out.println(tPredicate.toString)
+			
+			var String formulae
+			//TODO Leer la formula y separar por caracter '#'
+			//TODO intercambiar eventos por caracteres
+			//TODO intercambiar operadores de palabras por operadores
+			
+			var String ltlFormulae
+			
+			
+			//TODO Crear el automata de buchi
+			
+		}
+		
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, Map automatonsMap) {
