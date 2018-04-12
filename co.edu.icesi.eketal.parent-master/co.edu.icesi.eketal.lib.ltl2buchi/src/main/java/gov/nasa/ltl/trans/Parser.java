@@ -18,6 +18,8 @@
  */
 package gov.nasa.ltl.trans;
 
+import gov.nasa.ltl.exceptions.ParseErrorException;
+
 /**
  * Written by Dimitra Giannakopoulou, 19 Jan 2001
  * Parser by Flavio Lerda, 8 Feb 2001

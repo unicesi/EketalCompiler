@@ -19,6 +19,8 @@
 package gov.nasa.ltl.trans;
 //Written by Dimitra Giannakopoulou, 19 Jan 2001
 
+import gov.nasa.ltl.exceptions.LTLErrorException;
+import gov.nasa.ltl.exceptions.ParseErrorException;
 import gov.nasa.ltl.graph.*;
 
 /**

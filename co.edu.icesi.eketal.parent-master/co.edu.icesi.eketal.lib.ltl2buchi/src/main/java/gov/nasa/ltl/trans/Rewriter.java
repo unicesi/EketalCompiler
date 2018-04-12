@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
+import gov.nasa.ltl.exceptions.ParseErrorException;
+
 
 /**
  * This class provides the means to rewriting a formula according to

@@ -20,6 +20,8 @@ package gov.nasa.ltl.trans;
 //Written by Dimitra and Flavio (2001)
 //Some modifications by: Roby Joehanes
 
+import gov.nasa.ltl.exceptions.LTLErrorException;
+import gov.nasa.ltl.exceptions.ParseErrorException;
 import gov.nasa.ltl.graph.*;
 import gov.nasa.ltl.graphio.Writer;
 

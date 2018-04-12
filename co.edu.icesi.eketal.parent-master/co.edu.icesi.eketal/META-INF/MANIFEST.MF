@@ -34,6 +34,8 @@ Export-Package: co.edu.icesi.eketal,
 Import-Package: co.edu.icesi.ketal.core,
  co.edu.icesi.ketal.distribution,
  co.edu.icesi.ketal.distribution.transports.jgroups,
+ co.edu.icesi.ltl2buchi.translator,
+ gov.nasa.ltl.exceptions,
  dk.brics.automaton,
  org.apache.log4j,
  org.jgroups
