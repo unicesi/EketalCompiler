@@ -45,7 +45,13 @@ import java.util.Collections
 import co.edu.icesi.eketal.eketal.MSig
 import co.edu.icesi.eketal.eketal.Ltl
 import co.edu.icesi.eketal.eketal.LtlExpression
+import co.edu.icesi.ltl2buchi.translator.BuchiTranslator
 import co.edu.icesi.eketal.eketal.LtlOr
+import co.edu.icesi.eketal.eketal.LtlAnd
+import co.edu.icesi.eketal.eketal.UnaryLtl
+import co.edu.icesi.eketal.eketal.LtlUntil
+import co.edu.icesi.eketal.eketal.LtlThen
+import co.edu.icesi.eketal.eketal.impl.LtlOrImpl
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -227,23 +233,57 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			//Recupera el predicado de la formula
 			var LtlExpression tPredicate = ltl.predicate
 			
-			//TODO Relacionar eventos con caracteres
-			//Busca todos los eventos del predicado
-			System.out.println(tPredicate.toString)
-			
-			var String formulae
-			//TODO Leer la formula y separar por caracter '#'
-			//TODO intercambiar eventos por caracteres
-			//TODO intercambiar operadores de palabras por operadores
-			
-			var String ltlFormulae
-			
-			
+			var String formulae = retrieveFormula(tPredicate)
+			println(formulae)
+			//var String buchiMachine = BuchiTranslator.translateToString(formulae)
+			//println(buchiMachine)
 			//TODO Crear el automata de buchi
 			
 		}
-		
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def retrieveFormula(LtlExpression expression) {
+		switch (expression.class) {
+			case LtlOr: {
+				var or = expression as LtlOr
+				return retrieveFormula(or.left)+"||"+retrieveFormula(or.right)
+			}
+			case LtlAnd: {
+				var and = expression as LtlAnd
+				return retrieveFormula(and.left)+"&&"+retrieveFormula(and.right)
+			}
+			case LtlUntil: {
+				var until = expression as LtlUntil
+				return retrieveFormula(until.left)+"U"+retrieveFormula(until.right)
+			}
+			case LtlThen: {
+				var then = expression as LtlThen
+				return retrieveFormula(then.left)+"->"+retrieveFormula(then.right)
+			}
+			case UnaryLtl: {
+				var unary = expression as UnaryLtl
+				switch (unary.op) {
+					case "!": {
+						return "!"+unary.event.name
+					}
+					case "next": {
+						return "X"+unary.event.name
+					}
+					case "always": {
+						return "[]"+unary.event.name
+					}
+					case "eventually": {
+						return "<>"+unary.event.name
+					}
+					default: {
+						return unary.event.name
+					}
+				}
+			}
+			default: {
+				return expression.event.name
+			}
+		}
 	}
 
 	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, Map automatonsMap) {

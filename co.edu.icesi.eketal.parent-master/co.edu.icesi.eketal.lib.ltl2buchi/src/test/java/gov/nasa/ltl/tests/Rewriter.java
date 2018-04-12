@@ -3,8 +3,8 @@
  */
 package gov.nasa.ltl.tests;
 
+import gov.nasa.ltl.exceptions.ParseErrorException;
 import gov.nasa.ltl.trans.Formula;
-import gov.nasa.ltl.trans.ParseErrorException;
 import gov.nasa.ltl.trans.Parser;
 
 import java.io.BufferedReader;
