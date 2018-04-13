@@ -243,45 +243,43 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	def retrieveFormula(LtlExpression expression) {
-		switch (expression.class) {
-			case LtlOr: {
+		if(expression===null){return ""}
+		if(expression.event!==null){
+			return expression.event.name
+		}
+		switch (expression) {
+			LtlOr: {
 				var or = expression as LtlOr
 				return retrieveFormula(or.left)+"||"+retrieveFormula(or.right)
 			}
-			case LtlAnd: {
+			LtlAnd: {
 				var and = expression as LtlAnd
 				return retrieveFormula(and.left)+"&&"+retrieveFormula(and.right)
 			}
-			case LtlUntil: {
+			LtlUntil: {
 				var until = expression as LtlUntil
 				return retrieveFormula(until.left)+"U"+retrieveFormula(until.right)
 			}
-			case LtlThen: {
+			LtlThen: {
 				var then = expression as LtlThen
 				return retrieveFormula(then.left)+"->"+retrieveFormula(then.right)
 			}
-			case UnaryLtl: {
+			UnaryLtl: {
 				var unary = expression as UnaryLtl
 				switch (unary.op) {
 					case "!": {
-						return "!"+unary.event.name
+						return "!"+retrieveFormula(unary.expr)
 					}
 					case "next": {
-						return "X"+unary.event.name
+						return "X"+retrieveFormula(unary.expr)
 					}
 					case "always": {
-						return "[]"+unary.event.name
+						return "[]"+retrieveFormula(unary.expr)
 					}
 					case "eventually": {
-						return "<>"+unary.event.name
-					}
-					default: {
-						return unary.event.name
+						return "<>"+retrieveFormula(unary.expr)
 					}
 				}
-			}
-			default: {
-				return expression.event.name
 			}
 		}
 	}
@@ -507,12 +505,11 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				grupos += "\"" + it.name + ":[" + it.hosts.join(",", function) + "]\""
 			]
 
-			if (!grupos.isEmpty) {
-				members += claseGrupos.toField("SET_VALUES", typeRef("java.lang.String[]")) [
-					static = true
-					initializer = '''{«grupos.join(",")»}'''
-				]
-			}
+
+			members += claseGrupos.toField("SET_VALUES", typeRef("java.lang.String[]")) [
+				static = true
+				initializer = '''{«grupos.join(",")»}'''
+			]
 
 			members += claseGrupos.toField("grupos", typeRef(Map, typeRef(String), typeRef(Set, typeRef(URL)))) [
 				static = true

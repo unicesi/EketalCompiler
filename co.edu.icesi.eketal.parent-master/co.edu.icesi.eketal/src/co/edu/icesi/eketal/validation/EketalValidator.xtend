@@ -16,6 +16,7 @@ import co.edu.icesi.eketal.eketal.Group
 import java.net.URL
 import java.net.MalformedURLException
 import co.edu.icesi.eketal.eketal.EvDecl
+import co.edu.icesi.eketal.eketal.Ltl
 
 /**
  * This class contains custom validation rules. 
@@ -33,6 +34,8 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val NO_VALID_IP = "eketal.issue.noValidIpOnGroup"
 	public static val REPEATED_EVENT_NAME = "eketal.issue.repeatedEventName"
 	public static val REPEATED_AUTOMATON_NAME = "eketal.issue.repeatedAutomatonName"
+	public static val CAPITAL_U_ON_EVENT = "eketal.issue.capitalUOnEvent"
+	public static val LTL_REQUIRED = "eketal.issue.ltlExpressionRequired"
 	
 	@Check
 	def checkRepeatedDeclarationsName(EventClass myClass){
@@ -55,6 +58,14 @@ class EketalValidator extends AbstractEketalValidator {
 	}
 	
 	@Check
+	def capitalUOnEvents(EvDecl event){
+		if(event.name.contains('U')){
+			error("The name of the event '" + event + "' may not contain capital U i its name'" +
+					"'", EketalPackage.Literals.EV_DECL__NAME, CAPITAL_U_ON_EVENT)
+		}	
+	}
+	
+	@Check
 	def checkAutomatonDeterminism(Step step){
 		val duplicate = step.transitions.groupBy[t|t.event].filter[e,l|l.size > 1]
 		if (!duplicate.empty) {
@@ -62,6 +73,14 @@ class EketalValidator extends AbstractEketalValidator {
 				error("The step '" + step.name + "' cannot have another transition with the same event as '" + event.name +
 					"'", EketalPackage.Literals.STEP__TRANSITIONS, DETERMINIST_AUTOMATON_DEFINITION)
 			}			
+		}
+	}
+	
+	@Check
+	def checkValidLtlFormulae(Ltl formula){
+		if(formula.predicate===null){
+			error("The Ltl '" + formula.name + "' must contain a formula to evaluate'" +
+					"'", EketalPackage.Literals.LTL__NAME, LTL_REQUIRED)
 		}
 	}
 	
