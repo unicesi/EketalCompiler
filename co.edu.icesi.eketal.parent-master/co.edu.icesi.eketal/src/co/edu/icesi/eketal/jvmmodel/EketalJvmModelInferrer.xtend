@@ -102,7 +102,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //		println("Inferring model for " + element.name)
 		val implementation = element.toClass(element.fullyQualifiedName)
 
-		if (implementation == null)
+		if (implementation === null)
 			return;
 
 		var eventClass = element.typeDeclaration
@@ -121,7 +121,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val groupsClass = element.typeDeclaration
 		createGroupClass(acceptor, groupsClass)
 		
-		var String nameBuchi;
 		var buchis = element.typeDeclaration.declarations.filter(typeof(Ltl));
 		createBuchis(acceptor, buchis)
 		
@@ -230,20 +229,20 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	
 	def createBuchis(IJvmDeclaredTypeAcceptor acceptor, Iterable<Ltl> ltls) {
 		for(Ltl ltl: ltls){
-			//Recupera el predicado de la formula
-			var LtlExpression tPredicate = ltl.predicate
-			
-			var String formulae = retrieveFormula(tPredicate)
-			println(formulae)
-			//var String buchiMachine = BuchiTranslator.translateToString(formulae)
-			//println(buchiMachine)
-			//TODO Crear el automata de buchi
-			
+			if(ltl.predicate!==null){
+				//Obtiene predicado de la formula
+				var LtlExpression tPredicate = ltl.predicate
+				//Recupera la formula completa
+				var String formulae = retrieveFormula(tPredicate)
+				println(formulae)
+				var String buchiMachine = BuchiTranslator.translateToString(formulae)
+				println(buchiMachine)
+				//TODO Crear el automata de buchi
+			}
 		}
 	}
 	
-	def retrieveFormula(LtlExpression expression) {
-		if(expression===null){return ""}
+	def private String retrieveFormula(LtlExpression expression) {
 		if(expression.event!==null){
 			return expression.event.name
 		}
@@ -618,7 +617,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							//Definición del estado: «step.name»
 							String estado«step.name.toFirstUpper» = "«step.name»";
 							estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
-							«IF step.type!=null && step.type==StateType.START»
+							«IF step.type!==null && step.type==StateType.START»
 								//«step.type» «StateType.START» «StateType.START_VALUE»
 								//Estado inicial: «step.name»
 								inicial = estados.get(estado«step.name.toFirstUpper»);
