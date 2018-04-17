@@ -9,6 +9,8 @@ import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
 import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.Host;
+import co.edu.icesi.eketal.eketal.Ltl;
+import co.edu.icesi.eketal.eketal.LtlExpression;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
@@ -57,6 +59,10 @@ public class EketalValidator extends AbstractEketalValidator {
   
   public final static String REPEATED_AUTOMATON_NAME = "eketal.issue.repeatedAutomatonName";
   
+  public final static String CAPITAL_U_ON_EVENT = "eketal.issue.capitalUOnEvent";
+  
+  public final static String LTL_REQUIRED = "eketal.issue.ltlExpressionRequired";
+  
   @Check
   public void checkRepeatedDeclarationsName(final EventClass myClass) {
     Iterable<EvDecl> events = Iterables.<EvDecl>filter(myClass.getDeclarations(), EvDecl.class);
@@ -104,6 +110,15 @@ public class EketalValidator extends AbstractEketalValidator {
   }
   
   @Check
+  public void capitalUOnEvents(final EvDecl event) {
+    boolean _contains = event.getName().contains("U");
+    if (_contains) {
+      this.error(((("The name of the event \'" + event) + "\' may not contain capital U i its name\'") + 
+        "\'"), EketalPackage.Literals.EV_DECL__NAME, EketalValidator.CAPITAL_U_ON_EVENT);
+    }
+  }
+  
+  @Check
   public void checkAutomatonDeterminism(final Step step) {
     final Function1<TransDef, EvDecl> _function = (TransDef t) -> {
       return t.getEvent();
@@ -127,6 +142,20 @@ public class EketalValidator extends AbstractEketalValidator {
           "\'");
         this.error(_plus_3, EketalPackage.Literals.STEP__TRANSITIONS, EketalValidator.DETERMINIST_AUTOMATON_DEFINITION);
       }
+    }
+  }
+  
+  @Check
+  public void checkValidLtlFormulae(final Ltl formula) {
+    LtlExpression _predicate = formula.getPredicate();
+    boolean _tripleEquals = (_predicate == null);
+    if (_tripleEquals) {
+      String _name = formula.getName();
+      String _plus = ("The Ltl \'" + _name);
+      String _plus_1 = (_plus + "\' must contain a formula to evaluate\'");
+      String _plus_2 = (_plus_1 + 
+        "\'");
+      this.error(_plus_2, EketalPackage.Literals.LTL__NAME, EketalValidator.LTL_REQUIRED);
     }
   }
   

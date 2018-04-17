@@ -37,11 +37,11 @@ class EketalGenerator implements IGenerator{
 		val Set<String> importedLibraries = new TreeSet()
 		if(listModel.hasNext){
 			val modelo = listModel.next
-			if(modelo.name!=null)
+			if(modelo.name!==null)
 				importedLibraries+=modelo.name+".*"
-			if(modelo.importSection!=null && !modelo.importSection.importDeclarations.empty){
+			if(modelo.importSection!==null && !modelo.importSection.importDeclarations.empty){
 				modelo.importSection.importDeclarations.forEach[
-					if(it.importedNamespace!=null)
+					if(it.importedNamespace!==null)
 						importedLibraries+=it.importedNamespace
 					else
 						importedLibraries+=it.importedTypeName
@@ -222,7 +222,7 @@ class EketalGenerator implements IGenerator{
 	 */
 
 	def eventExpression(EventExpression event, TreeSet<String> pointcuts) {
-			if(event.tipoEvento!=null){
+			if(event.tipoEvento!==null){
 				var eventKind = event.tipoEvento
 				switch(eventKind){
 					Trigger:{
@@ -273,9 +273,9 @@ class EketalGenerator implements IGenerator{
 				}
 			}
 			return '''if(«body»)'''
-		}else if(attribute.hostgroup!=null){
+		}else if(attribute.hostgroup!==null){
 			return '''if(«EketalJvmModelInferrer.groupClassName».host("«attribute.hostgroup.name»"))'''
-		}else if(attribute.ongroup!=null){
+		}else if(attribute.ongroup!==null){
 			return '''if(«EketalJvmModelInferrer.groupClassName».on("«attribute.ongroup.name»"))'''
 //			return '''on()'''//TODO acá debe hacer otro procesamiento dado que este elemento no está
 //			//soportado por aspectj
@@ -295,9 +295,9 @@ class EketalGenerator implements IGenerator{
 		}
 		
 		var String typeReturn = null
-		if(trigger.returndef==null){
+		if(trigger.returndef===null){
 			typeReturn=""
-		}else if(trigger.returndef.astk==null){
+		}else if(trigger.returndef.astk===null){
 			typeReturn=trigger.returndef.jvmRef.simpleName
 		}else{
 			typeReturn = "*"

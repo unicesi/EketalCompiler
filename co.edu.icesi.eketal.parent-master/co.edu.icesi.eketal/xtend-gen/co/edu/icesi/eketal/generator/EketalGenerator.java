@@ -61,17 +61,17 @@ public class EketalGenerator implements IGenerator {
     if (_hasNext) {
       final Model modelo = listModel.next();
       String _name = modelo.getName();
-      boolean _notEquals = (!Objects.equal(_name, null));
-      if (_notEquals) {
+      boolean _tripleNotEquals = (_name != null);
+      if (_tripleNotEquals) {
         String _name_1 = modelo.getName();
         String _plus = (_name_1 + ".*");
         importedLibraries.add(_plus);
       }
-      if (((!Objects.equal(modelo.getImportSection(), null)) && (!modelo.getImportSection().getImportDeclarations().isEmpty()))) {
+      if (((modelo.getImportSection() != null) && (!modelo.getImportSection().getImportDeclarations().isEmpty()))) {
         final Consumer<XImportDeclaration> _function = (XImportDeclaration it) -> {
           String _importedNamespace = it.getImportedNamespace();
-          boolean _notEquals_1 = (!Objects.equal(_importedNamespace, null));
-          if (_notEquals_1) {
+          boolean _tripleNotEquals_1 = (_importedNamespace != null);
+          if (_tripleNotEquals_1) {
             String _importedNamespace_1 = it.getImportedNamespace();
             importedLibraries.add(_importedNamespace_1);
           } else {
@@ -467,8 +467,8 @@ public class EketalGenerator implements IGenerator {
    */
   public String eventExpression(final EventExpression event, final TreeSet<String> pointcuts) {
     EventPredicate _tipoEvento = event.getTipoEvento();
-    boolean _notEquals = (!Objects.equal(_tipoEvento, null));
-    if (_notEquals) {
+    boolean _tripleNotEquals = (_tipoEvento != null);
+    if (_tripleNotEquals) {
       EventPredicate eventKind = event.getTipoEvento();
       boolean _matched = false;
       if (eventKind instanceof Trigger) {
@@ -575,8 +575,8 @@ public class EketalGenerator implements IGenerator {
       return _builder_2.toString();
     } else {
       Group _hostgroup = attribute.getHostgroup();
-      boolean _notEquals_1 = (!Objects.equal(_hostgroup, null));
-      if (_notEquals_1) {
+      boolean _tripleNotEquals = (_hostgroup != null);
+      if (_tripleNotEquals) {
         StringConcatenation _builder_3 = new StringConcatenation();
         _builder_3.append("if(");
         _builder_3.append(EketalJvmModelInferrer.groupClassName);
@@ -587,8 +587,8 @@ public class EketalGenerator implements IGenerator {
         return _builder_3.toString();
       } else {
         Group _ongroup = attribute.getOngroup();
-        boolean _notEquals_2 = (!Objects.equal(_ongroup, null));
-        if (_notEquals_2) {
+        boolean _tripleNotEquals_1 = (_ongroup != null);
+        if (_tripleNotEquals_1) {
           StringConcatenation _builder_4 = new StringConcatenation();
           _builder_4.append("if(");
           _builder_4.append(EketalJvmModelInferrer.groupClassName);
@@ -619,13 +619,13 @@ public class EketalGenerator implements IGenerator {
     }
     String typeReturn = null;
     JVMTYPE _returndef = trigger.getReturndef();
-    boolean _equals = Objects.equal(_returndef, null);
-    if (_equals) {
+    boolean _tripleEquals = (_returndef == null);
+    if (_tripleEquals) {
       typeReturn = "";
     } else {
       String _astk = trigger.getReturndef().getAstk();
-      boolean _equals_1 = Objects.equal(_astk, null);
-      if (_equals_1) {
+      boolean _tripleEquals_1 = (_astk == null);
+      if (_tripleEquals_1) {
         typeReturn = trigger.getReturndef().getJvmRef().getSimpleName();
       } else {
         typeReturn = "*";

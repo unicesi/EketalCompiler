@@ -16,16 +16,16 @@ import dk.brics.automaton.RegExp;
  */
 public class Automaton {
 	
-	private dk.brics.automaton.Automaton automaton;
-	private State begin;
-	private State current;
-	private Set<State> endStates;
-	private Set<Transition> transitions;
-	private Hashtable<Expression, Character> expressionsExp_Char;
-	private Event incomingEvent;
+	protected dk.brics.automaton.Automaton automaton;
+	protected State begin;
+	protected State current;
+	protected Set<State> endStates;
+	protected Set<Transition> transitions;
+	protected Hashtable<Expression, Character> expressionsExp_Char;
+	protected Event incomingEvent;
 	
-	private Set<Transition> transitionsOfCurrentState;
-	private Hashtable<Character, Expression> expressionsChar_Exp;
+	protected Set<Transition> transitionsOfCurrentState;
+	protected Hashtable<Character, Expression> expressionsChar_Exp;
 	
 	/**
 	 * Empty constructor. Permits to create an Automaton. 
@@ -174,7 +174,7 @@ public class Automaton {
 	 * This Automata Facade change the estates and dynamically change the state
 	 * and the transitions.
 	 */
-	private void findTransitionsCurrentState(){
+	protected void findTransitionsCurrentState(){
 		
 		Iterator<Transition> it=transitions.iterator();
 		Transition temp=null;
@@ -353,7 +353,7 @@ public class Automaton {
 	 * @param exp Expression to be searched in the HashTable
 	 * @return Character mapped to a specific Expression.
 	 */
-	private Expression getExpressionMapCharacter(Character cha)
+	protected Expression getExpressionMapCharacter(Character cha)
 	{
 		if(cha !=null){
 			

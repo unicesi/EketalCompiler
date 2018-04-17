@@ -4,10 +4,17 @@
 package co.edu.icesi.eketal.jvmmodel;
 
 import co.edu.icesi.eketal.eketal.Automaton;
+import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
 import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.Host;
 import co.edu.icesi.eketal.eketal.JVarD;
+import co.edu.icesi.eketal.eketal.Ltl;
+import co.edu.icesi.eketal.eketal.LtlAnd;
+import co.edu.icesi.eketal.eketal.LtlExpression;
+import co.edu.icesi.eketal.eketal.LtlOr;
+import co.edu.icesi.eketal.eketal.LtlThen;
+import co.edu.icesi.eketal.eketal.LtlUntil;
 import co.edu.icesi.eketal.eketal.MSig;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.Pos;
@@ -15,6 +22,7 @@ import co.edu.icesi.eketal.eketal.Rc;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
 import co.edu.icesi.eketal.eketal.TransDef;
+import co.edu.icesi.eketal.eketal.UnaryLtl;
 import co.edu.icesi.eketal.outputconfiguration.OutputConfigurationAdapter;
 import co.edu.icesi.ketal.core.DefaultEqualsExpression;
 import co.edu.icesi.ketal.core.Event;
@@ -26,6 +34,7 @@ import co.edu.icesi.ketal.distribution.BrokerMessageHandler;
 import co.edu.icesi.ketal.distribution.EventBroker;
 import co.edu.icesi.ketal.distribution.ReceiverMessageHandler;
 import co.edu.icesi.ketal.distribution.transports.jgroups.JGroupsEventBroker;
+import co.edu.icesi.ltl2buchi.translator.BuchiTranslator;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
@@ -60,6 +69,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.InputOutput;
@@ -120,8 +130,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
    */
   protected void _infer(final Model element, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
     final JvmGenericType implementation = this._jvmTypesBuilder.toClass(element, this._iQualifiedNameProvider.getFullyQualifiedName(element));
-    boolean _equals = Objects.equal(implementation, null);
-    if (_equals) {
+    if ((implementation == null)) {
       return;
     }
     EventClass eventClass = element.getTypeDeclaration();
@@ -135,6 +144,8 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
     acceptor.<JvmGenericType>accept(eventClassGenerate, _function);
     final EventClass groupsClass = element.getTypeDeclaration();
     this.createGroupClass(acceptor, groupsClass);
+    Iterable<Ltl> buchis = Iterables.<Ltl>filter(element.getTypeDeclaration().getDeclarations(), Ltl.class);
+    this.createBuchis(acceptor, buchis);
     Iterable<Automaton> automatons = Iterables.<Automaton>filter(element.getTypeDeclaration().getDeclarations(), Automaton.class);
     final Function1<Automaton, Set<String>> _function_1 = (Automaton a) -> {
       final Set<String> steps = new TreeSet<String>();
@@ -320,6 +331,95 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
     this.createReactionClass(acceptor, reactions, eventsOfAutomaton);
     final EventClass handlerClass = element.getTypeDeclaration();
     this.createHandlerClass(acceptor, handlerClass, IterableExtensions.<Automaton>toSet(automatons));
+  }
+  
+  public void createBuchis(final IJvmDeclaredTypeAcceptor acceptor, final Iterable<Ltl> ltls) {
+    try {
+      for (final Ltl ltl : ltls) {
+        LtlExpression _predicate = ltl.getPredicate();
+        boolean _tripleNotEquals = (_predicate != null);
+        if (_tripleNotEquals) {
+          LtlExpression tPredicate = ltl.getPredicate();
+          String formulae = this.retrieveFormula(tPredicate);
+          InputOutput.<String>println(formulae);
+          String buchiMachine = BuchiTranslator.translateToString(formulae);
+          InputOutput.<String>println(buchiMachine);
+        }
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  private String retrieveFormula(final LtlExpression expression) {
+    EvDecl _event = expression.getEvent();
+    boolean _tripleNotEquals = (_event != null);
+    if (_tripleNotEquals) {
+      return expression.getEvent().getName();
+    }
+    boolean _matched = false;
+    if (expression instanceof LtlOr) {
+      _matched=true;
+      LtlOr or = ((LtlOr) expression);
+      String _retrieveFormula = this.retrieveFormula(or.getLeft());
+      String _plus = (_retrieveFormula + "||");
+      String _retrieveFormula_1 = this.retrieveFormula(or.getRight());
+      return (_plus + _retrieveFormula_1);
+    }
+    if (!_matched) {
+      if (expression instanceof LtlAnd) {
+        _matched=true;
+        LtlAnd and = ((LtlAnd) expression);
+        String _retrieveFormula = this.retrieveFormula(and.getLeft());
+        String _plus = (_retrieveFormula + "&&");
+        String _retrieveFormula_1 = this.retrieveFormula(and.getRight());
+        return (_plus + _retrieveFormula_1);
+      }
+    }
+    if (!_matched) {
+      if (expression instanceof LtlUntil) {
+        _matched=true;
+        LtlUntil until = ((LtlUntil) expression);
+        String _retrieveFormula = this.retrieveFormula(until.getLeft());
+        String _plus = (_retrieveFormula + "U");
+        String _retrieveFormula_1 = this.retrieveFormula(until.getRight());
+        return (_plus + _retrieveFormula_1);
+      }
+    }
+    if (!_matched) {
+      if (expression instanceof LtlThen) {
+        _matched=true;
+        LtlThen then = ((LtlThen) expression);
+        String _retrieveFormula = this.retrieveFormula(then.getLeft());
+        String _plus = (_retrieveFormula + "->");
+        String _retrieveFormula_1 = this.retrieveFormula(then.getRight());
+        return (_plus + _retrieveFormula_1);
+      }
+    }
+    if (!_matched) {
+      if (expression instanceof UnaryLtl) {
+        _matched=true;
+        UnaryLtl unary = ((UnaryLtl) expression);
+        String _op = unary.getOp();
+        if (_op != null) {
+          switch (_op) {
+            case "!":
+              String _retrieveFormula = this.retrieveFormula(unary.getExpr());
+              return ("!" + _retrieveFormula);
+            case "next":
+              String _retrieveFormula_1 = this.retrieveFormula(unary.getExpr());
+              return ("X" + _retrieveFormula_1);
+            case "always":
+              String _retrieveFormula_2 = this.retrieveFormula(unary.getExpr());
+              return ("[]" + _retrieveFormula_2);
+            case "eventually":
+              String _retrieveFormula_3 = this.retrieveFormula(unary.getExpr());
+              return ("<>" + _retrieveFormula_3);
+          }
+        }
+      }
+    }
+    return null;
   }
   
   public void createReactionClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass reactions, final Map automatonsMap) {
@@ -839,26 +939,22 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         grupos.add(_plus_3);
       };
       Iterables.<Group>filter(claseGrupos.getDeclarations(), Group.class).forEach(_function_2);
-      boolean _isEmpty = grupos.isEmpty();
-      boolean _not = (!_isEmpty);
-      if (_not) {
-        EList<JvmMember> _members = it.getMembers();
-        final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
-          it_1.setStatic(true);
-          StringConcatenationClient _client = new StringConcatenationClient() {
-            @Override
-            protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-              _builder.append("{");
-              String _join = IterableExtensions.join(grupos, ",");
-              _builder.append(_join);
-              _builder.append("}");
-            }
-          };
-          this._jvmTypesBuilder.setInitializer(it_1, _client);
+      EList<JvmMember> _members = it.getMembers();
+      final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
+        it_1.setStatic(true);
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+            _builder.append("{");
+            String _join = IterableExtensions.join(grupos, ",");
+            _builder.append(_join);
+            _builder.append("}");
+          }
         };
-        JvmField _field = this._jvmTypesBuilder.toField(claseGrupos, "SET_VALUES", this._typeReferenceBuilder.typeRef("java.lang.String[]"), _function_3);
-        this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
-      }
+        this._jvmTypesBuilder.setInitializer(it_1, _client);
+      };
+      JvmField _field = this._jvmTypesBuilder.toField(claseGrupos, "SET_VALUES", this._typeReferenceBuilder.typeRef("java.lang.String[]"), _function_3);
+      this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
       EList<JvmMember> _members_1 = it.getMembers();
       final Procedure1<JvmField> _function_4 = (JvmField it_1) -> {
         it_1.setStatic(true);
@@ -1165,7 +1261,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
               _builder.append("());");
               _builder.newLineIfNotEmpty();
               {
-                if (((!Objects.equal(step.getType(), null)) && Objects.equal(step.getType(), StateType.START))) {
+                if (((step.getType() != null) && Objects.equal(step.getType(), StateType.START))) {
                   _builder.append("//");
                   StateType _type = step.getType();
                   _builder.append(_type);
