@@ -5,7 +5,7 @@ Bundle-Vendor: My Company
 Bundle-Version: 3.0.0.qualifier
 Bundle-SymbolicName: co.edu.icesi.eketal.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: co.edu.icesi.eketal,
+Require-Bundle: co.edu.icesi.eketal;bundle-version="3.0.0",
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  jbase,
