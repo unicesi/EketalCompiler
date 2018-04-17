@@ -69,7 +69,7 @@ public class Transition {
 	
 	/**
 	 * Try a transition using an Expression.
-	 * @param c
+	 * @param incomingEvent
 	 * @return
 	 */
 	public boolean evaluateExpression(Event incomingEvent)
