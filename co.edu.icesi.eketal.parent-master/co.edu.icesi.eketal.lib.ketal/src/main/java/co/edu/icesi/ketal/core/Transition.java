@@ -7,12 +7,12 @@ package co.edu.icesi.ketal.core;
  * right now.
  */
 public class Transition {
-	private State begin;
-	private State end;
-	private Expression expression;
-	private Character character;
+	protected State begin;
+	protected State end;
+	protected Expression expression;
+	protected Character character;
 	
-	private dk.brics.automaton.Transition transition;
+	protected dk.brics.automaton.Transition transition;
 	
 	/**
 	 * Future Constructor. Automatic map Exp and a Character. 

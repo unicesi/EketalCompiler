@@ -7,13 +7,17 @@ import org.jgroups.protocols.TransportedVectorTime;
 
 public class CharEvent implements Event{
 	
-	private Character event;
+	private Character pEvent;
+	
+	public CharEvent(Character event) {
+		pEvent = event;
+	}
 	
 	@Override
 	public boolean equals(Event e) {
 		if(e instanceof CharEvent){
 			CharEvent compare = (CharEvent)e;
-			return compare.event==event;
+			return compare.pEvent==pEvent;
 		}
 		return false;
 	}

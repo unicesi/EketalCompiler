@@ -39,8 +39,7 @@ public class TestBuchiCase extends BuchiAutomaton {
 	private TestBuchiCase(final Set<co.edu.icesi.ketal.core.Transition> transitions,
 			final co.edu.icesi.ketal.core.State begin, final Set<co.edu.icesi.ketal.core.State> finalStates,
 			final Hashtable<co.edu.icesi.ketal.core.Expression, Character> expressions) {
-		//TODO fix this super
-		//super(transitions, begin, finalStates, expressions);
+		super(transitions, begin, finalStates, expressions);
 		initializeAutomaton();
 		instance = this;
 	}
@@ -73,9 +72,6 @@ public class TestBuchiCase extends BuchiAutomaton {
 		// start start 1
 		// Estado inicial: firstState
 		inicial = estados.get(estadoFirstState);
-		// Definición del estado: middleState
-		String estadoMiddleState = "middleState";
-		estados.put(estadoMiddleState, new co.edu.icesi.ketal.core.State());
 		// Definición del estado: finalState
 		String estadoFinalState = "finalState";
 		estados.put(estadoFinalState, new co.edu.icesi.ketal.core.State());
@@ -89,7 +85,7 @@ public class TestBuchiCase extends BuchiAutomaton {
 		nombreEvento = "eventHello";
 		if (!mapping.containsKey(nombreEvento)) {
 			mapping.put(nombreEvento, caracter);
-			expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
+			expressions.put(new DefaultEqualsExpression(new CharEvent(caracter)), mapping.get(nombreEvento));
 		}
 		co.edu.icesi.ketal.core.Transition firstStateEventHello = new co.edu.icesi.ketal.core.Transition(
 				estados.get(estadoFirstState), estados.get(estadoLlegada), mapping.get(nombreEvento));
@@ -105,43 +101,11 @@ public class TestBuchiCase extends BuchiAutomaton {
 		nombreEvento = "eventWorld";
 		if (!mapping.containsKey(nombreEvento)) {
 			mapping.put(nombreEvento, caracter);
-			expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
+			expressions.put(new DefaultEqualsExpression(new CharEvent(caracter)), mapping.get(nombreEvento));
 		}
 		co.edu.icesi.ketal.core.Transition firstStateEventWorld = new co.edu.icesi.ketal.core.Transition(
 				estados.get(estadoFirstState), estados.get(estadoLlegada), mapping.get(nombreEvento));
 		transitionSet.add(firstStateEventWorld);
-
-		// Transicion de otherEvent -> finalState
-		estadoLlegada = "finalState";
-		if (!estados.containsKey(estadoLlegada)) {
-			estados.put(estadoMiddleState, new co.edu.icesi.ketal.core.State());
-		}
-		caracter = (char) consecutivo;
-		consecutivo++;
-		nombreEvento = "otherEvent";
-		if (!mapping.containsKey(nombreEvento)) {
-			mapping.put(nombreEvento, caracter);
-			expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
-		}
-		co.edu.icesi.ketal.core.Transition middleStateOtherEvent = new co.edu.icesi.ketal.core.Transition(
-				estados.get(estadoMiddleState), estados.get(estadoLlegada), mapping.get(nombreEvento));
-		transitionSet.add(middleStateOtherEvent);
-
-		// Transicion de otherEvent -> finalState
-		estadoLlegada = "finalState";
-		if (!estados.containsKey(estadoLlegada)) {
-			estados.put(estadoFinalState, new co.edu.icesi.ketal.core.State());
-		}
-		caracter = (char) consecutivo;
-		consecutivo++;
-		nombreEvento = "otherEvent";
-		if (!mapping.containsKey(nombreEvento)) {
-			mapping.put(nombreEvento, caracter);
-			expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
-		}
-		co.edu.icesi.ketal.core.Transition finalStateOtherEvent = new co.edu.icesi.ketal.core.Transition(
-				estados.get(estadoFinalState), estados.get(estadoLlegada), mapping.get(nombreEvento));
-		transitionSet.add(finalStateOtherEvent);
 
 		// Estado final FinalState
 		estados.get(estadoFinalState).setAccept(true);
