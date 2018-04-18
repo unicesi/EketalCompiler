@@ -146,8 +146,13 @@ enum StateType:
 //http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
 Ltl:
 	'ltl' name=ID '('(params+=FullJvmFormalParameter 
-        (',' params+=FullJvmFormalParameter)*)?')' '{' predicate=LtlOr '}'
+        (',' params+=FullJvmFormalParameter)*)?')' '{' predicate=LtlThen '}'
 ;
+
+LtlThen returns LtlExpression:
+	LtlOr ({LtlThen.left=current} op='->' right=LtlOr)*
+;
+
 LtlOr returns LtlExpression:
 	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*
 ;
@@ -157,11 +162,7 @@ LtlAnd  returns LtlExpression:
 ;
 
 LtlUntil  returns LtlExpression:
-	LtlThen ({LtlUntil.left=current} op='until' right=LtlThen)*
-;
-
-LtlThen returns LtlExpression:
-	LtlUnary ({LtlThen.left=current} op='->' right=LtlUnary)*
+	LtlUnary ({LtlUntil.left=current} op='until' right=LtlUnary)*
 ;
 
 LtlUnary returns LtlExpression:

@@ -249,34 +249,34 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		switch (expression) {
 			LtlOr: {
 				var or = expression as LtlOr
-				return retrieveFormula(or.left)+"||"+retrieveFormula(or.right)
+				return "("+retrieveFormula(or.left)+"||"+retrieveFormula(or.right)+")"
 			}
 			LtlAnd: {
 				var and = expression as LtlAnd
-				return retrieveFormula(and.left)+"&&"+retrieveFormula(and.right)
+				return "("+retrieveFormula(and.left)+"&&"+retrieveFormula(and.right)+")"
 			}
 			LtlUntil: {
 				var until = expression as LtlUntil
-				return retrieveFormula(until.left)+"U"+retrieveFormula(until.right)
+				return "("+retrieveFormula(until.left)+")U("+retrieveFormula(until.right)+")"
 			}
 			LtlThen: {
 				var then = expression as LtlThen
-				return retrieveFormula(then.left)+"->"+retrieveFormula(then.right)
+				return "("+retrieveFormula(then.left)+")->("+retrieveFormula(then.right)+")"
 			}
 			UnaryLtl: {
 				var unary = expression as UnaryLtl
 				switch (unary.op) {
 					case "!": {
-						return "!"+retrieveFormula(unary.expr)
+						return "!("+retrieveFormula(unary.expr)+")"
 					}
 					case "next": {
-						return "X"+retrieveFormula(unary.expr)
+						return "X("+retrieveFormula(unary.expr)+")"
 					}
 					case "always": {
-						return "[]"+retrieveFormula(unary.expr)
+						return "[]("+retrieveFormula(unary.expr)+")"
 					}
 					case "eventually": {
-						return "<>"+retrieveFormula(unary.expr)
+						return "<>("+retrieveFormula(unary.expr)+")"
 					}
 				}
 			}
