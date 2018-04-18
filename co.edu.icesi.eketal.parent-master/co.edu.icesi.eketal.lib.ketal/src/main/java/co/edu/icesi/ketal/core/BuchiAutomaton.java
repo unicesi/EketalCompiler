@@ -7,13 +7,14 @@ import java.util.TreeSet;
 
 public class BuchiAutomaton extends Automaton {
 	
-	public BuchiAutomaton(Set<Transition> transitions, State begin, Set<State> end, Hashtable<Expression,Character> expressions){
-		super(transitions, begin, end, expressions);
+	public BuchiAutomaton(Set<? extends BuchiTransition> transitions, State begin, Set<State> end, Hashtable<Expression,Character> expressions){
+		super((Set<Transition>)(Set<? extends Transition>)transitions, begin, end, expressions);
+		//super((Set<Transition>)(Set<?>)transitions, begin, end, expressions);
 	}
 	
 	@Override
 	public boolean evaluate(Event event) {
-		if(event instanceof CharEvent){
+		if(event instanceof NamedEvent){
 			for (Transition transition : transitionsOfCurrentState) {
 				if(transition.evaluateExpression(event)){
 					//return super.perform(event, transition.getCharacter());

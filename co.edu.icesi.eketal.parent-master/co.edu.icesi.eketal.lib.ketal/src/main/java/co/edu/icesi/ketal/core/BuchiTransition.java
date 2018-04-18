@@ -9,6 +9,14 @@ public class BuchiTransition extends Transition implements Comparable<BuchiTrans
 		anyEvent = false;
 	}
 	
+	@Override
+	public boolean evaluateExpression(Event incomingEvent) {
+		if(anyEvent){
+			return true;
+		}
+		return super.evaluateExpression(incomingEvent);
+	}
+	
 	public BuchiTransition(State begin, State end, Character character, Expression label){
 		super(begin, end, character);
 		expression = label;
