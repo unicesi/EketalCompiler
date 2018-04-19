@@ -38,6 +38,11 @@ public class BuchiTransition extends Transition implements Comparable<BuchiTrans
 			//We prefer that the TRUE transitions must be evaluated at latest. 
 			retorno+=1000;
 		}
+		if(retorno==0){
+			if(!(begin.equals(o.begin)&&end.equals(o.end)&&expression.equals(o.expression))){
+				return -1;
+			}
+		}
 		return retorno;
 	}
 
