@@ -52,6 +52,8 @@ import co.edu.icesi.eketal.eketal.UnaryLtl
 import co.edu.icesi.eketal.eketal.LtlUntil
 import co.edu.icesi.eketal.eketal.LtlThen
 import co.edu.icesi.eketal.eketal.impl.LtlOrImpl
+import co.edu.icesi.ketal.core.BuchiAutomaton
+import co.edu.icesi.ketal.core.BuchiTransition
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -120,18 +122,16 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		 */
 		val groupsClass = element.typeDeclaration
 		createGroupClass(acceptor, groupsClass)
-		
+
 		var buchis = element.typeDeclaration.declarations.filter(typeof(Ltl));
 		createBuchis(acceptor, buchis)
-		
-		//val eventsOfLtlFormula = buchis.toInvertedMap [ a |
-		//	val Set<String> steps = new TreeSet
-			// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
-		//	a.predicate.event
-		//	return steps
-		//]
-		
-		
+
+		// val eventsOfLtlFormula = buchis.toInvertedMap [ a |
+		// val Set<String> steps = new TreeSet
+		// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
+		// a.predicate.event
+		// return steps
+		// ]
 		/*
 		 * Collects all the automatons and creates an automaton for each one
 		 */
@@ -139,7 +139,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val eventsOfAutomaton = automatons.toInvertedMap [ a |
 			val Set<String> steps = new TreeSet
 			// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
-			a.steps.forall[s|steps.add(a.name+":"+s.name)]
+			a.steps.forall[s|steps.add(a.name + ":" + s.name)]
 			return steps
 		]
 
@@ -169,10 +169,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							//lista de estados finales
 							«typeRef(Set, typeRef(State))» estadosFinales = new «typeRef(HashSet)»();
 							//conjunto de transiciones
-						   	«typeRef(Set, typeRef(Transition))» transitionSet = new «typeRef(HashSet)»();
+							  	«typeRef(Set, typeRef(Transition))» transitionSet = new «typeRef(HashSet)»();
 							//map de expresiones con caracteres
-						   	«typeRef(Hashtable, typeRef(Expression), typeRef(Character))» expressions = new «typeRef(Hashtable)»();
-						   	«typeRef(State)» initial = initialize(transitionSet, estadosFinales, expressions);
+							  	«typeRef(Hashtable, typeRef(Expression), typeRef(Character))» expressions = new «typeRef(Hashtable)»();
+							  	«typeRef(State)» initial = initialize(transitionSet, estadosFinales, expressions);
 							return new «typeAutomaton»(transitionSet, initial, estadosFinales, expressions);
 						}else{
 							return instance;						
@@ -226,57 +226,133 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		createHandlerClass(acceptor, handlerClass, automatons.toSet)
 
 	}
-	
+
 	def createBuchis(IJvmDeclaredTypeAcceptor acceptor, Iterable<Ltl> ltls) {
-		for(Ltl ltl: ltls){
-			if(ltl.predicate!==null){
-				//Obtiene predicado de la formula
+		var String nameAutomaton;
+		for (Ltl ltl : ltls) {
+			if (ltl.predicate !== null) {
+				// Obtiene predicado de la formula
 				var LtlExpression tPredicate = ltl.predicate
-				//Recupera la formula completa
+				// Recupera la formula completa
 				var String formulae = retrieveFormula(tPredicate)
 				println(formulae)
-				var String buchiMachine = BuchiTranslator.translateToString(formulae)
+				val String buchiMachine = BuchiTranslator.translateToString(formulae)
 				println(buchiMachine)
-				//TODO Crear el automata de buchi
+				// TODO Crear el automata de buchi
+				nameAutomaton = "co.edu.icesi.eketal.buchiautomaton." + ltl.name.toFirstUpper
+
+				acceptor.accept(ltl.toClass(nameAutomaton)) [
+					// superTypes+=entity.superType.cloneWithProxies
+					val typeAutomaton = typeRef(it)
+					superTypes += typeRef(BuchiAutomaton)
+					members += ltl.toField("instance", typeAutomaton)[static = true]
+					members += ltl.toField("estados", typeRef(HashMap, typeRef(String), typeRef(State))) [
+						static = true
+						visibility = JvmVisibility::PUBLIC
+						initializer = '''new «typeRef(HashMap)»<String, «typeRef(State)»>()'''
+					]
+
+					members += ltl.toMethod("getInstance", typeRef(BuchiAutomaton)) [
+						static = true
+						body = '''
+							if(instance==null){
+								//lista de estados finales
+								«typeRef(Set, typeRef(State))» estadosFinales = new «typeRef(HashSet)»();
+								//conjunto de transiciones
+								  	«typeRef(Set, typeRef(BuchiTransition))» transitionSet = new «typeRef(HashSet)»();
+								//map de expresiones con caracteres
+								  	«typeRef(Hashtable, typeRef(Expression), typeRef(Character))» expressions = new «typeRef(Hashtable)»();
+								  	«typeRef(State)» initial = initialize(transitionSet, estadosFinales, expressions);
+								return new «typeAutomaton»(transitionSet, initial, estadosFinales, expressions);
+							}else{
+								return instance;						
+							}
+						'''
+					]
+
+					members += ltl.toConstructor [
+						visibility = JvmVisibility::PRIVATE
+						parameters += ltl.toParameter("transitions", typeRef(Set, typeRef(BuchiTransition)))
+						parameters += ltl.toParameter("begin", typeRef(State))
+						parameters += ltl.toParameter("finalStates", typeRef(Set, typeRef(State)))
+						parameters +=
+							ltl.toParameter("expressions", typeRef(Hashtable, typeRef(Expression), typeRef(Character)))
+						body = '''
+							super(transitions, begin, finalStates, expressions);
+							initializeAutomaton();
+							instance = this;
+						'''
+					]
+					/*
+					 * Creates the main method
+					 */
+					members += BuchiAutomatonInit(buchiMachine, ltl as Ltl)
+				]
 			}
 		}
 	}
-	
+
+	def BuchiAutomatonInit(String string, Ltl declaracion) {
+		val method = declaracion.toMethod("initialize", typeRef(State)) [
+			parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(BuchiTransition)))
+			parameters += declaracion.toParameter("estadosFinales", typeRef(Set, typeRef(State)))
+			parameters += declaracion.toParameter("expressions",
+				typeRef(Hashtable, typeRef(Expression), typeRef(Character)))
+			static = true
+			visibility = JvmVisibility::PRIVATE
+			body = '''
+				//Relación evento caracter
+				«typeRef(Map, typeRef(String), typeRef(Character))» mapping = new «typeRef(TreeMap, typeRef(String), typeRef(Character))»();
+				//Estado inicial
+				«typeRef(State)» inicial = null;
+				
+				int consecutivo = 65;
+				«Character» caracter = (char)consecutivo;
+				«String» nombreEvento = "";
+				«String» estadoLlegada = "";
+				
+				
+				return inicial;
+			'''
+		]
+		return method
+	}
+
 	def private String retrieveFormula(LtlExpression expression) {
-		if(expression.event!==null){
+		if (expression.event !== null) {
 			return expression.event.name
 		}
 		switch (expression) {
 			LtlOr: {
 				var or = expression as LtlOr
-				return "("+retrieveFormula(or.left)+"||"+retrieveFormula(or.right)+")"
+				return "(" + retrieveFormula(or.left) + "||" + retrieveFormula(or.right) + ")"
 			}
 			LtlAnd: {
 				var and = expression as LtlAnd
-				return "("+retrieveFormula(and.left)+"&&"+retrieveFormula(and.right)+")"
+				return "(" + retrieveFormula(and.left) + "&&" + retrieveFormula(and.right) + ")"
 			}
 			LtlUntil: {
 				var until = expression as LtlUntil
-				return "("+retrieveFormula(until.left)+")U("+retrieveFormula(until.right)+")"
+				return "(" + retrieveFormula(until.left) + ")U(" + retrieveFormula(until.right) + ")"
 			}
 			LtlThen: {
 				var then = expression as LtlThen
-				return "("+retrieveFormula(then.left)+")->("+retrieveFormula(then.right)+")"
+				return "(" + retrieveFormula(then.left) + ")->(" + retrieveFormula(then.right) + ")"
 			}
 			UnaryLtl: {
 				var unary = expression as UnaryLtl
 				switch (unary.op) {
 					case "!": {
-						return "!("+retrieveFormula(unary.expr)+")"
+						return "!(" + retrieveFormula(unary.expr) + ")"
 					}
 					case "next": {
-						return "X("+retrieveFormula(unary.expr)+")"
+						return "X(" + retrieveFormula(unary.expr) + ")"
 					}
 					case "always": {
-						return "[]("+retrieveFormula(unary.expr)+")"
+						return "[](" + retrieveFormula(unary.expr) + ")"
 					}
 					case "eventually": {
-						return "<>("+retrieveFormula(unary.expr)+")"
+						return "<>(" + retrieveFormula(unary.expr) + ")"
 					}
 				}
 			}
@@ -294,20 +370,20 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					]
 				}
 			}
-			
+
 			val operations = reactions.declarations.filter(typeof(MSig))
 			if (!operations.isEmpty) {
 				for (method : operations) {
-					members += reactions.toMethod(method.name.toFirstLower, method.type ?: inferredType)[
-						static=true
+					members += reactions.toMethod(method.name.toFirstLower, method.type ?: inferredType) [
+						static = true
 						for (p : method.params) {
-								parameters += p.toParameter(p.name, p.parameterType)
+							parameters += p.toParameter(p.name, p.parameterType)
 						}
 						body = method.body
 					]
 				}
 			}
-			
+
 			val after = new HashMap<String, String>()
 			val before = new HashMap<String, String>()
 			for (rc : set) {
@@ -324,9 +400,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //					}
 				]
 				if (rc.pos == Pos.BEFORE) {
-					before.put(rc.automaton.name +":"+ rc.state.name, name + "()")
+					before.put(rc.automaton.name + ":" + rc.state.name, name + "()")
 				} else if (rc.pos == Pos.AFTER) {
-					after.put(rc.automaton.name +":"+ rc.state.name, name + "()")
+					after.put(rc.automaton.name + ":" + rc.state.name, name + "()")
 				}
 			}
 			members += reactions.toMethod("verifyBefore", typeRef(void)) [
@@ -504,7 +580,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				grupos += "\"" + it.name + ":[" + it.hosts.join(",", function) + "]\""
 			]
 
-
 			members += claseGrupos.toField("SET_VALUES", typeRef("java.lang.String[]")) [
 				static = true
 				initializer = '''{«grupos.join(",")»}'''
@@ -570,91 +645,88 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 
 			members += claseGrupos.toMethod("host", typeRef(boolean)) [
-				parameters +=
-					claseGrupos.toParameter("nombreGrupo",
-						typeRef(
-							String))
+				parameters += claseGrupos.toParameter("nombreGrupo", typeRef(String))
 				static = true
-						body = '''
-							if(grupos==null){
-								return false;
-							}
-							co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName» local = co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName».getInstance();
-							«typeRef(URL)» url = local.getAsyncAddress();
-							«typeRef(boolean)» retorno = false;
-							try{						
-								retorno = grupos.get(nombreGrupo).contains(new «typeRef(URL)»("http://"+url.getHost()));
-							}catch(«typeRef(Exception)» e){
-								e.printStackTrace();
-								retorno = false;
-							}
-							return retorno;
-						'''
-					]
-				]
-			}
+				body = '''
+					if(grupos==null){
+						return false;
+					}
+					co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName» local = co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName».getInstance();
+					«typeRef(URL)» url = local.getAsyncAddress();
+					«typeRef(boolean)» retorno = false;
+					try{						
+						retorno = grupos.get(nombreGrupo).contains(new «typeRef(URL)»("http://"+url.getHost()));
+					}catch(«typeRef(Exception)» e){
+						e.printStackTrace();
+						retorno = false;
+					}
+					return retorno;
+				'''
+			]
+		]
+	}
 
-			def AutomatonInit(co.edu.icesi.eketal.eketal.Automaton declaracion) {
-				val method = declaracion.toMethod("initialize", typeRef(State)) [
-					parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(Transition)))
-					parameters += declaracion.toParameter("estadosFinales", typeRef(Set, typeRef(State)))
-					parameters += declaracion.toParameter("expressions",
-							typeRef(Hashtable, typeRef(Expression), typeRef(Character)))
-					static = true
-					visibility = JvmVisibility::PRIVATE
-					body = '''
-						//Relación evento caracter
-						«typeRef(Map, typeRef(String), typeRef(Character))» mapping = new «typeRef(TreeMap, typeRef(String), typeRef(Character))»();
-						//Estado inicial
-						«typeRef(State)» inicial = null;
-						
-						int consecutivo = 65;
-						«Character» caracter = (char)consecutivo;
-						«String» nombreEvento = "";
-						«String» estadoLlegada = "";
-						
-						«FOR step : declaracion.steps»
-							//Definición del estado: «step.name»
-							String estado«step.name.toFirstUpper» = "«step.name»";
-							estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
-							«IF step.type!==null && step.type==StateType.START»
-								//«step.type» «StateType.START» «StateType.START_VALUE»
-								//Estado inicial: «step.name»
-								inicial = estados.get(estado«step.name.toFirstUpper»);
-							«ENDIF»
+	def AutomatonInit(co.edu.icesi.eketal.eketal.Automaton declaracion) {
+		val method = declaracion.toMethod("initialize", typeRef(State)) [
+			parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(Transition)))
+			parameters += declaracion.toParameter("estadosFinales", typeRef(Set, typeRef(State)))
+			parameters += declaracion.toParameter("expressions",
+				typeRef(Hashtable, typeRef(Expression), typeRef(Character)))
+			static = true
+			visibility = JvmVisibility::PRIVATE
+			body = '''
+				//Relación evento caracter
+				«typeRef(Map, typeRef(String), typeRef(Character))» mapping = new «typeRef(TreeMap, typeRef(String), typeRef(Character))»();
+				//Estado inicial
+				«typeRef(State)» inicial = null;
+				
+				int consecutivo = 65;
+				«Character» caracter = (char)consecutivo;
+				«String» nombreEvento = "";
+				«String» estadoLlegada = "";
+				
+				«FOR step : declaracion.steps»
+					//Definición del estado: «step.name»
+					String estado«step.name.toFirstUpper» = "«step.name»";
+					estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
+					«IF step.type!==null && step.type==StateType.START»
+						//«step.type» «StateType.START» «StateType.START_VALUE»
+						//Estado inicial: «step.name»
+						inicial = estados.get(estado«step.name.toFirstUpper»);
+					«ENDIF»
+				«ENDFOR»
+				«FOR step : declaracion.steps»	
+					«IF !step.transitions.isEmpty»
+						«FOR transition : step.transitions»
+							//Transicion de «transition.event.name» -> «transition.target.name»
+							estadoLlegada = "«transition.target.name»";
+							if(!estados.containsKey(estadoLlegada)){
+								estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
+							}
+							caracter = (char)consecutivo;
+							consecutivo++;
+							nombreEvento = "«transition.event.name»";
+							if(!mapping.containsKey(nombreEvento)){
+								mapping.put(nombreEvento, caracter);
+								expressions.put(new «DefaultEqualsExpression»(new «NamedEvent»(nombreEvento)), mapping.get(nombreEvento));
+							}
+							«typeRef(Transition)» «step.name»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.name.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
+							transitionSet.add(«step.name»«transition.event.name.toFirstUpper»);
+							
 						«ENDFOR»
-						«FOR step : declaracion.steps»	
-							«IF !step.transitions.isEmpty»
-								«FOR transition : step.transitions»
-									//Transicion de «transition.event.name» -> «transition.target.name»
-									estadoLlegada = "«transition.target.name»";
-									if(!estados.containsKey(estadoLlegada)){
-										estados.put(estado«step.name.toFirstUpper», new «typeRef(State)»());
-									}
-									caracter = (char)consecutivo;
-									consecutivo++;
-									nombreEvento = "«transition.event.name»";
-									if(!mapping.containsKey(nombreEvento)){
-										mapping.put(nombreEvento, caracter);
-										expressions.put(new «DefaultEqualsExpression»(new «NamedEvent»(nombreEvento)), mapping.get(nombreEvento));
-									}
-									«typeRef(Transition)» «step.name»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.name.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
-									transitionSet.add(«step.name»«transition.event.name.toFirstUpper»);
-									
-								«ENDFOR»
-							«ENDIF»
-							«IF step.type==StateType.END»
-								//Estado final «step.name.toFirstUpper»
-								estados.get(estado«step.name.toFirstUpper»).setAccept(true);
-								estadosFinales.add(estados.get(estado«step.name.toFirstUpper»));
-								
-							«ENDIF»
-						«ENDFOR»
-						return inicial;
-					'''
-				]
-				return method
-			}
+					«ENDIF»
+					«IF step.type==StateType.END»
+						//Estado final «step.name.toFirstUpper»
+						estados.get(estado«step.name.toFirstUpper»).setAccept(true);
+						estadosFinales.add(estados.get(estado«step.name.toFirstUpper»));
+						
+					«ENDIF»
+				«ENDFOR»
+				return inicial;
+			'''
+		]
+		return method
+	}
 
 //				members += automaton.toMethod("transiciones", typeRef(Set))[
 //					abstract = true
@@ -664,5 +736,4 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //					return null;
 //	   				'''
 //				]
-		}
-		
+}
