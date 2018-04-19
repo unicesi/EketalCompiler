@@ -186,7 +186,7 @@ LtlNot returns LtlExpression:{UnaryLtl}
 ;
 
 LtlAtom returns LtlExpression:
-	event=[EvDecl] | '('LtlOr')'
+	event=[EvDecl] | '('LtlThen')'
 ;
 
 //////////////////////////////////////
