@@ -10,7 +10,7 @@ import co.edu.icesi.ketal.core.NamedEvent;
 public class TestBuchiAutomaton {
 
 	@Test
-	public void test() {
+	public void testBasicAutomaton() {
 		Automaton automaton = TestBuchiCase.getInstance();
 		
 		NamedEvent anyEvent = new NamedEvent("Tales");
@@ -25,6 +25,14 @@ public class TestBuchiAutomaton {
 		assertTrue(evaluar);		
 		evaluar = automaton.evaluate(anyEvent);
 		assertFalse(evaluar);		
+	}
+	
+	@Test
+	public void test() {
+		Automaton automaton = TestBuchiComposed.getInstance();
+		NamedEvent eventHello = new NamedEvent("eventHello");
+		NamedEvent anotherEvent = new NamedEvent("anotherEvent");
+		NamedEvent otherEvent = new NamedEvent("otherEvent");
 	}
 
 }

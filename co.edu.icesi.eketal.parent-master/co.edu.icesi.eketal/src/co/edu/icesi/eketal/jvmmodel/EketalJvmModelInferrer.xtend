@@ -54,6 +54,12 @@ import co.edu.icesi.eketal.eketal.LtlThen
 import co.edu.icesi.eketal.eketal.impl.LtlOrImpl
 import co.edu.icesi.ketal.core.BuchiAutomaton
 import co.edu.icesi.ketal.core.BuchiTransition
+import java.io.BufferedReader
+import java.io.StringReader
+import co.edu.icesi.eketal.eketal.impl.AutomatonImpl
+import co.edu.icesi.eketal.eketal.impl.EketalFactoryImpl
+import java.util.ArrayList
+import java.util.List
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -293,6 +299,41 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def BuchiAutomatonInit(String string, Ltl declaracion) {
+		
+		var BufferedReader bufReader = new BufferedReader(new StringReader(string));
+		val TreeMap<String, String> states = new TreeMap;
+		val List<String> finalStates = new ArrayList;
+		var String line=null;
+		var String init
+		//println(line)
+		while( (line=bufReader.readLine()) !== null ){
+			if(line.startsWith("S")){
+				init = line.split("=").get(0)
+				states.put(init, null)
+			}else if(line.startsWith("RES")){
+				//Segunda línea estado inicial
+				//RES = S0,
+				states.put(line.substring(6, line.length-1), null)
+			}else if(line.startsWith("AS")){
+				//Última línea estados finales
+				//AS = { S1, S2 }
+				line.substring(0,line.length-1).split(Pattern.quote("{")).get(1).split(",").forEach[s|
+					finalStates.add(s.trim)
+				]
+				//finalStates.addAll(line.substring(0,line.length-1).split("{").get(1).split(",").forEach[s|s.trim])
+			}else if(line.equals("Empty")){
+				return null
+			}else{
+				//Primera línea la definición
+				
+			}
+		}
+		val String initial = init
+		
+		
+		
+		
+		
 		val method = declaracion.toMethod("initialize", typeRef(State)) [
 			parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(BuchiTransition)))
 			parameters += declaracion.toParameter("estadosFinales", typeRef(Set, typeRef(State)))
@@ -300,6 +341,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				typeRef(Hashtable, typeRef(Expression), typeRef(Character)))
 			static = true
 			visibility = JvmVisibility::PRIVATE
+			
 			body = '''
 				//Relación evento caracter
 				«typeRef(Map, typeRef(String), typeRef(Character))» mapping = new «typeRef(TreeMap, typeRef(String), typeRef(Character))»();
@@ -312,6 +354,23 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				«String» estadoLlegada = "";
 				
 				
+				«FOR step : states.keySet»
+					//Definición del estado: «step»
+					String estado«step.toFirstUpper» = "«step»";
+					estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
+					«IF step==initial»
+						//Estado inicial: «step»
+						inicial = estados.get(estado«step.toFirstUpper»);
+					«ENDIF»
+				«ENDFOR»
+				
+				
+				
+				«FOR step : finalStates»
+					//Estado final «step.toFirstUpper»
+					estados.get(estado«step.toFirstUpper»).setAccept(true);
+					estadosFinales.add(estados.get(estado«step.toFirstUpper»));
+				«ENDFOR»
 				return inicial;
 			'''
 		]
