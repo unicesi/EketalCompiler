@@ -18,7 +18,30 @@ public class BuchiAutomaton extends Automaton {
 			for (Transition transition : transitionsOfCurrentState) {
 				if(transition.evaluateExpression(event)){
 					//return super.perform(event, transition.getCharacter());
-					super.perform(event, transition.getCharacter());
+					perform(event, transition.getCharacter());
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean perform(Event event, char c) {
+		if (current != null)
+		{
+			if (current.getState() != null)
+			{
+				State temp = new State(current.getState().step(c));
+				//TODO this is a soft solution to a basic problem. No resolved.
+				// When a dk.brics.State step (C) the instance change.
+				
+				if (temp.getState()!= null)
+				{
+					current = new State(temp.getState());
+					current.setAccept(current.getState().isAccept());
+					current.setEventCauseThisState(event);
+					findTransitionsCurrentState();
 					return true;
 				}
 			}
@@ -34,7 +57,7 @@ public class BuchiAutomaton extends Automaton {
 		while(it.hasNext()){
 			temp = (Transition)it.next();
 			if(temp.getBegin().equals(current)){
-				temp.setExpression(getExpressionMapCharacter(temp.getCharacter()));
+				//temp.setExpression(getExpressionMapCharacter(temp.getCharacter()));
 				transitionsOfCurrentState.add(temp);
 			}
 		}		
