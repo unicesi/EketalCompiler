@@ -305,7 +305,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	def BuchiAutomatonInit(String string, Ltl declaracion) {
 		
 		var BufferedReader bufReader = new BufferedReader(new StringReader(string));
-		val TreeMap<String, List<BuchiTransitionImpl>> states = new TreeMap;
+		val TreeMap<String, List<String>> states = new TreeMap
 		val List<String> finalStates = new ArrayList;
 		var String line=null;
 		var String init
@@ -318,7 +318,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				//S0=(!green-> S0 |!red-> S1 |yellow-> S0),
 				//S1=(!red-> S1 |yellow-> S0).
 				var transitions = tempState.get(1)
-				var transitionOfState = new ArrayList<BuchiTransitionImpl>
+				val transitionOfState = newArrayList
 				if(transitions!==null && transitions!=""){
 					/*
 						String regex = "[().,]+";
@@ -340,21 +340,21 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					//(!red-> S1 |yellow-> S0).
 					var result = transitions.replaceAll(regex,"")
 					//!green-> S0 |!red-> S1 |yellow-> S0
-					
 					//Agrupa por el estado de llegada
 					//{S0,!green-> S0, yellow-> S0},{S1,!red-> S1}
-					
-					//var trans = result.split(Pattern.quote("|")).groupBy[t|t.split(Pattern.quote("->")).get(1).trim]
-					//for(stateTarget:trans.keySet){
-						//trans.get(stateTarget).join(Pattern.quote("||"))
-					//}
-					
-					//for(transition:result.split(Pattern.quote("|"))){
-						//!green-> S0
-						//var buchiTransition = transition.split(Pattern.quote("->"))
-						//transitionOfState.add(new BuchiTransitionImpl(buchiTransition.get(0).trim, buchiTransition.get(1).trim))
-					//}
-					//states.put(init, transitionOfState)
+					//Con el foreach se toma cada llave (estado de llegada) y se relaciona en un Map con las transiciones que llegan a dicho estado.
+					//Finalmente, se concatenan por medio del || 
+					//val trans = newHashMap
+					//result.split(Pattern.quote("|")).groupBy[t|t.split(Pattern.quote("->")).get(1).trim].forEach[stt,values|trans.put(stt,values.join(Pattern.quote("||")))]
+					result.split(Pattern.quote("|")).groupBy[
+						t|t.split(Pattern.quote("->")).get(1).trim
+					].forEach[
+						stt,values|
+						//values.forEach[x|x.split(Pattern.quote("->")).get(0)]
+						transitionOfState.add(values.join("||"))
+					]
+					println(transitionOfState)
+					states.put(init, transitionOfState)
 				}else{					
 					states.put(init, null)
 				}
@@ -416,14 +416,16 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				«FOR step : states.keySet»	
 					«IF states.get(step)!==null»
 						«FOR transition : states.get(step)»
-							//Transicion de «transition.transition» -> «transition.transition»
-							estadoLlegada = "«transition.target»";
-							if(!estados.containsKey(estadoLlegada)){
-								estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
-							}
-							caracter = (char)consecutivo;
-							consecutivo++;
-							«typeRef(Expression)» expresion = new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), mapping.get(nombreEvento)
+							//«println(transition)»
+«««							//Transicion de «transition.key» -> «transition.key»
+«««							estadoLlegada = "«transition.value»";
+«««							if(!estados.containsKey(estadoLlegada)){
+«««								estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
+«««							}
+«««							caracter = (char)consecutivo;
+«««							consecutivo++;
+«««							«typeRef(Expression)» expresion = new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), mapping.get(nombreEvento)
+							
 «««							nombreEvento = "«transition.event.name»";
 «««							if(!mapping.containsKey(nombreEvento)){
 «««								mapping.put(nombreEvento, caracter);
@@ -865,17 +867,4 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //					return null;
 //	   				'''
 //				]
-}
-class BuchiTransitionImpl{
-	String transition; 
-	String target;
-	
-	new(String transicion, String llegada){
-		transition=transicion
-		target=llegada
-	}
-	
-	def getTransition(){return transition}
-	def getTarget(){return target}
-	
 }
