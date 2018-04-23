@@ -121,7 +121,7 @@ class EketalValidator extends AbstractEketalValidator {
 					"'", EketalPackage.Literals.AUTOMATON__STEPS, MANY_INITIAL_STATES_FOUND)
 		}else{
 			for(state : initialState)
-				if(state.transitions==null || state.transitions.empty){
+				if(state.transitions===null || state.transitions.empty){
 					error("The automaton '" + automaton.name + "' must have at least one transition in his initial state '"+ state.name +
 							"'", EketalPackage.Literals.AUTOMATON__STEPS, NO_TRANSITIONS_FROM_INITIAL_STATE)
 				}			
@@ -157,7 +157,7 @@ class EketalValidator extends AbstractEketalValidator {
 		// e.g., platform:/resource/<project>/<source-folder>/org/example/.../TypeDecl.pascani
 		val URI = typeDecl.eResource.URI
 		val fileName = URI.lastSegment.substring(0, URI.lastSegment.indexOf(URI.fileExtension) - 1)
-		val isPublic = typeDecl.eContainer != null && typeDecl.eContainer instanceof Model
+		val isPublic = typeDecl.eContainer !== null && typeDecl.eContainer instanceof Model
 
 		if (isPublic && !fileName.equals(typeDecl.name)) {
 			error("The declared type '" + typeDecl.name + "' does not match the corresponding file name '" + fileName +

@@ -60,6 +60,10 @@ import co.edu.icesi.eketal.eketal.impl.AutomatonImpl
 import co.edu.icesi.eketal.eketal.impl.EketalFactoryImpl
 import java.util.ArrayList
 import java.util.List
+import co.edu.icesi.eketal.eketal.impl.StepImpl
+import org.eclipse.emf.common.util.EList
+import co.edu.icesi.eketal.eketal.TransDef
+import co.edu.icesi.eketal.eketal.impl.TransDefImpl
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -301,15 +305,59 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	def BuchiAutomatonInit(String string, Ltl declaracion) {
 		
 		var BufferedReader bufReader = new BufferedReader(new StringReader(string));
-		val TreeMap<String, String> states = new TreeMap;
+		val TreeMap<String, List<BuchiTransitionImpl>> states = new TreeMap;
 		val List<String> finalStates = new ArrayList;
 		var String line=null;
 		var String init
 		//println(line)
+		var regex = "[().,]+"
 		while( (line=bufReader.readLine()) !== null ){
 			if(line.startsWith("S")){
-				init = line.split("=").get(0)
-				states.put(init, null)
+				var tempState = line.split("=")
+				init = tempState.get(0)
+				//S0=(!green-> S0 |!red-> S1 |yellow-> S0),
+				//S1=(!red-> S1 |yellow-> S0).
+				var transitions = tempState.get(1)
+				var transitionOfState = new ArrayList<BuchiTransitionImpl>
+				if(transitions!==null && transitions!=""){
+					/*
+						String regex = "[().,]+";
+				        String prueba1 = "(!green-> S0 |!red-> S1 |yellow-> S0),";
+				        String prueba2 = "(!red-> S1 |yellow-> S0).";
+				        
+				        System.out.println(prueba1);
+				        String resultado1 = prueba1.replaceAll(regex,"");
+				        System.out.println(resultado1);
+				        System.out.println(prueba2);
+				        String resultado2 = prueba2.replaceAll(regex,"");
+				        System.out.println(resultado2);
+				        * out
+				        (!green-> S0 |!red-> S1 |yellow-> S0),
+						!green-> S0 |!red-> S1 |yellow-> S0
+						(!red-> S1 |yellow-> S0).
+						!red-> S1 |yellow-> S0
+					 */
+					//(!red-> S1 |yellow-> S0).
+					var result = transitions.replaceAll(regex,"")
+					//!green-> S0 |!red-> S1 |yellow-> S0
+					
+					//Agrupa por el estado de llegada
+					//{S0,!green-> S0, yellow-> S0},{S1,!red-> S1}
+					
+					//var trans = result.split(Pattern.quote("|")).groupBy[t|t.split(Pattern.quote("->")).get(1).trim]
+					//for(stateTarget:trans.keySet){
+						//trans.get(stateTarget).join(Pattern.quote("||"))
+					//}
+					
+					//for(transition:result.split(Pattern.quote("|"))){
+						//!green-> S0
+						//var buchiTransition = transition.split(Pattern.quote("->"))
+						//transitionOfState.add(new BuchiTransitionImpl(buchiTransition.get(0).trim, buchiTransition.get(1).trim))
+					//}
+					//states.put(init, transitionOfState)
+				}else{					
+					states.put(init, null)
+				}
 			}else if(line.startsWith("RES")){
 				//Segunda línea estado inicial
 				//RES = S0,
@@ -364,6 +412,29 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					«ENDIF»
 				«ENDFOR»
 				
+				
+				«FOR step : states.keySet»	
+					«IF states.get(step)!==null»
+						«FOR transition : states.get(step)»
+							//Transicion de «transition.transition» -> «transition.transition»
+							estadoLlegada = "«transition.target»";
+							if(!estados.containsKey(estadoLlegada)){
+								estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
+							}
+							caracter = (char)consecutivo;
+							consecutivo++;
+							«typeRef(Expression)» expresion = new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), mapping.get(nombreEvento)
+«««							nombreEvento = "«transition.event.name»";
+«««							if(!mapping.containsKey(nombreEvento)){
+«««								mapping.put(nombreEvento, caracter);
+«««								expressions.put(expresion);
+«««							}
+«««							«typeRef(Transition)» «step»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
+«««							transitionSet.add(«step»«transition.event.name.toFirstUpper»);
+							
+						«ENDFOR»
+					«ENDIF»
+				«ENDFOR»
 				
 				
 				«FOR step : finalStates»
@@ -767,7 +838,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							nombreEvento = "«transition.event.name»";
 							if(!mapping.containsKey(nombreEvento)){
 								mapping.put(nombreEvento, caracter);
-								expressions.put(new «DefaultEqualsExpression»(new «NamedEvent»(nombreEvento)), mapping.get(nombreEvento));
+								expressions.put(new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), mapping.get(nombreEvento));
 							}
 							«typeRef(Transition)» «step.name»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.name.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
 							transitionSet.add(«step.name»«transition.event.name.toFirstUpper»);
@@ -786,7 +857,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		]
 		return method
 	}
-
 //				members += automaton.toMethod("transiciones", typeRef(Set))[
 //					abstract = true
 //					static = true
@@ -795,4 +865,17 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 //					return null;
 //	   				'''
 //				]
+}
+class BuchiTransitionImpl{
+	String transition; 
+	String target;
+	
+	new(String transicion, String llegada){
+		transition=transicion
+		target=llegada
+	}
+	
+	def getTransition(){return transition}
+	def getTarget(){return target}
+	
 }
