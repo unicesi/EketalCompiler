@@ -351,9 +351,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					].forEach[
 						stt,values|
 						//values.forEach[x|x.split(Pattern.quote("->")).get(0)]
-						transitionOfState.add(values.join("||"))
+						transitionOfState.add(values.join("||")[x|x.split(Pattern.quote("->")).get(0)]+"->"+stt)
 					]
-					println(transitionOfState)
+					//println(transitionOfState)
 					states.put(init, transitionOfState)
 				}else{					
 					states.put(init, null)
@@ -392,7 +392,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			
 			body = '''
 				//Relación evento caracter
-				«typeRef(Map, typeRef(String), typeRef(Character))» mapping = new «typeRef(TreeMap, typeRef(String), typeRef(Character))»();
+				«typeRef(Map, typeRef(Expression), typeRef(Character))» mapping = new «typeRef(TreeMap, typeRef(Expression), typeRef(Character))»();
 				//Estado inicial
 				«typeRef(State)» inicial = null;
 				
@@ -416,19 +416,16 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				«FOR step : states.keySet»	
 					«IF states.get(step)!==null»
 						«FOR transition : states.get(step)»
-							//«println(transition)»
-«««							//Transicion de «transition.key» -> «transition.key»
-«««							estadoLlegada = "«transition.value»";
-«««							if(!estados.containsKey(estadoLlegada)){
-«««								estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
-«««							}
-«««							caracter = (char)consecutivo;
-«««							consecutivo++;
+							//Transicion «transition»
+							estadoLlegada = "«transition.split("->").get(1)»";
+							if(!estados.containsKey(estadoLlegada)){
+								estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
+							}
+							caracter = (char)consecutivo;
+							consecutivo++;
 «««							«typeRef(Expression)» expresion = new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), mapping.get(nombreEvento)
-							
-«««							nombreEvento = "«transition.event.name»";
-«««							if(!mapping.containsKey(nombreEvento)){
-«««								mapping.put(nombreEvento, caracter);
+«««							if(!mapping.containsKey(expresion)){
+«««								mapping.put(expresion, caracter);
 «««								expressions.put(expresion);
 «««							}
 «««							«typeRef(Transition)» «step»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
@@ -436,14 +433,14 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							
 						«ENDFOR»
 					«ENDIF»
+					
+					«IF finalStates.contains(step)»
+						//Estado final «step.toFirstUpper»
+						estados.get(estado«step.toFirstUpper»).setAccept(true);
+						estadosFinales.add(estados.get(estado«step.toFirstUpper»));
+					«ENDIF»
 				«ENDFOR»
-				
-				
-				«FOR step : finalStates»
-					//Estado final «step.toFirstUpper»
-					estados.get(estado«step.toFirstUpper»).setAccept(true);
-					estadosFinales.add(estados.get(estado«step.toFirstUpper»));
-				«ENDFOR»
+								
 				return inicial;
 			'''
 		]
