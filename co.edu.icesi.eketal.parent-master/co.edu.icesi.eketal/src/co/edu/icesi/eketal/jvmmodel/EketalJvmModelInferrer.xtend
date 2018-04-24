@@ -64,6 +64,14 @@ import co.edu.icesi.eketal.eketal.impl.StepImpl
 import org.eclipse.emf.common.util.EList
 import co.edu.icesi.eketal.eketal.TransDef
 import co.edu.icesi.eketal.eketal.impl.TransDefImpl
+import co.edu.icesi.ketal.core.NotExpression
+import co.edu.icesi.ketal.core.Or
+import java.util.Arrays
+import co.edu.icesi.ketal.core.And
+import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmExecutable
+import org.eclipse.xtext.common.types.JvmMember
+import org.eclipse.xtend2.lib.StringConcatenationClient
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -336,7 +344,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						!green-> S0 |!red-> S1 |yellow-> S0
 						(!red-> S1 |yellow-> S0).
 						!red-> S1 |yellow-> S0
-					 */
+					*/
 					//(!red-> S1 |yellow-> S0).
 					var result = transitions.replaceAll(regex,"")
 					//!green-> S0 |!red-> S1 |yellow-> S0
@@ -349,9 +357,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					result.split(Pattern.quote("|")).groupBy[
 						t|t.split(Pattern.quote("->")).get(1).trim
 					].forEach[
+						//adds each trigger value grouped by the target state
 						stt,values|
-						//values.forEach[x|x.split(Pattern.quote("->")).get(0)]
-						transitionOfState.add(values.join("||")[x|x.split(Pattern.quote("->")).get(0)]+"->"+stt)
+						transitionOfState.add(values.join("|")[x|x.split(Pattern.quote("->")).get(0)]+"->"+stt)
 					]
 					//println(transitionOfState)
 					states.put(init, transitionOfState)
@@ -379,9 +387,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val String initial = init
 		
 		
-		
-		
-		
 		val method = declaracion.toMethod("initialize", typeRef(State)) [
 			parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(BuchiTransition)))
 			parameters += declaracion.toParameter("estadosFinales", typeRef(Set, typeRef(State)))
@@ -398,7 +403,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				
 				int consecutivo = 65;
 				«Character» caracter = (char)consecutivo;
-				«String» nombreEvento = "";
+				«Expression» expression;
 				«String» estadoLlegada = "";
 				
 				
@@ -416,20 +421,22 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				«FOR step : states.keySet»	
 					«IF states.get(step)!==null»
 						«FOR transition : states.get(step)»
+							//«val splitTransition = transition.split("->")»
 							//Transicion «transition»
-							estadoLlegada = "«transition.split("->").get(1)»";
+							estadoLlegada = "«splitTransition.get(1)»";
 							if(!estados.containsKey(estadoLlegada)){
 								estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
 							}
 							caracter = (char)consecutivo;
 							consecutivo++;
-«««							«typeRef(Expression)» expresion = new «typeRef(DefaultEqualsExpression)»(new «typeRef(NamedEvent)»(nombreEvento)), mapping.get(nombreEvento)
-«««							if(!mapping.containsKey(expresion)){
-«««								mapping.put(expresion, caracter);
-«««								expressions.put(expresion);
-«««							}
-«««							«typeRef(Transition)» «step»«transition.event.name.toFirstUpper» = new «typeRef(Transition)»(estados.get(estado«step.toFirstUpper»), estados.get(estadoLlegada), mapping.get(nombreEvento));
-«««							transitionSet.add(«step»«transition.event.name.toFirstUpper»);
+							expression = «processExpression(splitTransition.get(0))»;
+							//if(!mapping.containsKey(expression)){
+							if(!expressions.containsKey(expression)){
+								//mapping.put(expression, caracter);
+								expressions.put(expression, caracter);
+							}
+							«typeRef(BuchiTransition)» «step»«splitTransition.get(1).toFirstUpper» = new «typeRef(BuchiTransition)»(estados.get(estado«step.toFirstUpper»), estados.get(estadoLlegada), expression);
+							transitionSet.add(«step»«splitTransition.get(1).toFirstUpper»);
 							
 						«ENDFOR»
 					«ENDIF»
@@ -445,6 +452,25 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			'''
 		]
 		return method
+	}
+	
+	def private StringConcatenationClient processExpression( String string) {
+		//excecutable.
+		if(string.contains("|")){
+			var array = string.split(Pattern.quote("|"))
+			val left = array.get(0)
+			val right = Arrays.copyOfRange(array, 1, array.length).join("|")
+			return '''new «Or»(«processExpression(left)»,«processExpression( right)»)'''
+		}else if(string.contains("&")){
+			var array = string.split(Pattern.quote("&"))
+			val left = array.get(0)
+			val right = Arrays.copyOfRange(array, 1, array.length).join("&")
+			return '''new «And»(«processExpression(left)»,«processExpression( right)»)'''
+		}else if(string.startsWith("!")){
+			return '''new «NotExpression»(«processExpression( string.substring(1))»)'''
+		}else{
+			return '''new «DefaultEqualsExpression»(new «NamedEvent»("«string»"))'''
+		}
 	}
 
 	def private String retrieveFormula(LtlExpression expression) {

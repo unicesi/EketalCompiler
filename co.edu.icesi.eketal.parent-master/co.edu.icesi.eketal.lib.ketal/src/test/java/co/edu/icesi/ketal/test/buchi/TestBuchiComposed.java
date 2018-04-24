@@ -56,7 +56,7 @@ public class TestBuchiComposed extends BuchiAutomaton {
 		//AS = { S1 }
 		
 		// Relación evento caracter
-		Map<String, Character> mapping = new TreeMap<String, Character>();
+		//Map<Expression, Character> mapping = new TreeMap<Expression, Character>();
 		// Estado inicial
 		co.edu.icesi.ketal.core.State inicial = null;
 
@@ -86,14 +86,12 @@ public class TestBuchiComposed extends BuchiAutomaton {
 		}
 		caracter = (char) consecutivo;
 		consecutivo++;
-		
 		Expression expressionAnotherEventEventHello = new Or(new DefaultEqualsExpression(new NamedEvent("anotherEvent")), new NotExpression(new DefaultEqualsExpression(new NamedEvent("eventHello"))));
-		if (!mapping.containsKey(nombreEvento)) {
-			mapping.put(nombreEvento, caracter);
-			expressions.put(expressionAnotherEventEventHello, mapping.get(nombreEvento));
+		if (!expressions.containsKey(expressionAnotherEventEventHello)) {
+			expressions.put(expressionAnotherEventEventHello, caracter);
 		}
 		co.edu.icesi.ketal.core.BuchiTransition firstStateEventHello = new co.edu.icesi.ketal.core.BuchiTransition(
-				estados.get(estadoS0), estados.get(estadoLlegada), mapping.get(nombreEvento), expressionAnotherEventEventHello);
+				estados.get(estadoS0), estados.get(estadoLlegada), expressionAnotherEventEventHello);
 		transitionSet.add(firstStateEventHello);
 		
 		// Transicion de otherEvent-> S2
@@ -104,11 +102,10 @@ public class TestBuchiComposed extends BuchiAutomaton {
 	    caracter = (char)consecutivo;
 	    consecutivo++;
 	    Expression expression = new DefaultEqualsExpression(new NamedEvent("otherEvent"));
-	    if(!mapping.containsKey(nombreEvento)){
-	    	mapping.put(nombreEvento, caracter);
-	    	expressions.put(expression, mapping.get(nombreEvento));
+	    if(!expressions.containsKey(expression)){
+	    	expressions.put(expression, caracter);
 	    }
-	    BuchiTransition finalStateInitServer = new BuchiTransition(estados.get(estadoS1), estados.get(estadoLlegada), mapping.get(nombreEvento),expression);
+	    BuchiTransition finalStateInitServer = new BuchiTransition(estados.get(estadoS1), estados.get(estadoLlegada),expression);
 	    transitionSet.add(finalStateInitServer);
 		
 	    
@@ -120,11 +117,10 @@ public class TestBuchiComposed extends BuchiAutomaton {
 	    caracter = (char)consecutivo;
 	    consecutivo++;
 	    expression = new DefaultEqualsExpression(new NamedEvent("otherEvent"));
-	    if(!mapping.containsKey(nombreEvento)){
-	    	mapping.put(nombreEvento, caracter);
-	    	expressions.put(expression, mapping.get(nombreEvento));
+	    if(!expressions.containsKey(expression)){
+	    	expressions.put(expression, caracter);
 	    }
-	    BuchiTransition otherEventS0 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada), mapping.get(nombreEvento),expression);
+	    BuchiTransition otherEventS0 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada),expression);
 	    transitionSet.add(otherEventS0);
 		
 	 // Transicion de anotherEvent-> S1
@@ -135,11 +131,10 @@ public class TestBuchiComposed extends BuchiAutomaton {
 	    caracter = (char)consecutivo;
 	    consecutivo++;
 	    expression = new DefaultEqualsExpression(new NamedEvent("anotherEvent"));
-	    if(!mapping.containsKey(nombreEvento)){
-	    	mapping.put(nombreEvento, caracter);
-	    	expressions.put(expression, mapping.get(nombreEvento));
+	    if(!expressions.containsKey(expression)){
+	    	expressions.put(expression, caracter);
 	    }
-	    BuchiTransition otherEventS2 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada), mapping.get(nombreEvento),expression);
+	    BuchiTransition otherEventS2 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada),expression);
 	    transitionSet.add(otherEventS2);
 	    
 		// Transicion de TRUE -> S1
@@ -150,12 +145,11 @@ public class TestBuchiComposed extends BuchiAutomaton {
 		caracter = (char) consecutivo;
 		consecutivo++;
 		nombreEvento = "TRUE";
-		if (!mapping.containsKey(nombreEvento)) {
-			mapping.put(nombreEvento, caracter);
-			expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
+		if (!expressions.containsKey(expression)) {
+			expressions.put(expression, caracter);
 		}
 		co.edu.icesi.ketal.core.BuchiTransition firstStateEventWorld = new co.edu.icesi.ketal.core.BuchiTransition(
-				estados.get(estadoS1), estados.get(estadoLlegada), mapping.get(nombreEvento), null);
+				estados.get(estadoS1), estados.get(estadoLlegada), null);
 		firstStateEventWorld.setAnyEvent(true);
 		transitionSet.add(firstStateEventWorld);
 	    
