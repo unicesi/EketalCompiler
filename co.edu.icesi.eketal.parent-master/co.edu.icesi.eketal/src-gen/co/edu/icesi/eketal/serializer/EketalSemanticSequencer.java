@@ -199,14 +199,14 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 				sequence_UnaryExpresion(context, (UnaryEvent) semanticObject); 
 				return; 
 			case EketalPackage.UNARY_LTL:
-				if (rule == grammarAccess.getLtlOrRule()
+				if (rule == grammarAccess.getLtlThenRule()
+						|| action == grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0()
+						|| rule == grammarAccess.getLtlOrRule()
 						|| action == grammarAccess.getLtlOrAccess().getLtlOrLeftAction_1_0()
 						|| rule == grammarAccess.getLtlAndRule()
 						|| action == grammarAccess.getLtlAndAccess().getLtlAndLeftAction_1_0()
 						|| rule == grammarAccess.getLtlUntilRule()
 						|| action == grammarAccess.getLtlUntilAccess().getLtlUntilLeftAction_1_0()
-						|| rule == grammarAccess.getLtlThenRule()
-						|| action == grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0()
 						|| rule == grammarAccess.getLtlUnaryRule()
 						|| rule == grammarAccess.getLtlAtomRule()) {
 					sequence_LtlAlways_LtlEventually_LtlNext_LtlNot(context, (UnaryLtl) semanticObject); 
@@ -749,14 +749,14 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     LtlThen returns UnaryLtl
+	 *     LtlThen.LtlThen_1_0 returns UnaryLtl
 	 *     LtlOr returns UnaryLtl
 	 *     LtlOr.LtlOr_1_0 returns UnaryLtl
 	 *     LtlAnd returns UnaryLtl
 	 *     LtlAnd.LtlAnd_1_0 returns UnaryLtl
 	 *     LtlUntil returns UnaryLtl
 	 *     LtlUntil.LtlUntil_1_0 returns UnaryLtl
-	 *     LtlThen returns UnaryLtl
-	 *     LtlThen.LtlThen_1_0 returns UnaryLtl
 	 *     LtlUnary returns UnaryLtl
 	 *     LtlAtom returns UnaryLtl
 	 *
@@ -791,14 +791,14 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     LtlThen returns LtlAnd
+	 *     LtlThen.LtlThen_1_0 returns LtlAnd
 	 *     LtlOr returns LtlAnd
 	 *     LtlOr.LtlOr_1_0 returns LtlAnd
 	 *     LtlAnd returns LtlAnd
 	 *     LtlAnd.LtlAnd_1_0 returns LtlAnd
 	 *     LtlUntil returns LtlAnd
 	 *     LtlUntil.LtlUntil_1_0 returns LtlAnd
-	 *     LtlThen returns LtlAnd
-	 *     LtlThen.LtlThen_1_0 returns LtlAnd
 	 *     LtlUnary returns LtlAnd
 	 *     LtlAtom returns LtlAnd
 	 *
@@ -824,14 +824,14 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     LtlThen returns LtlExpression
+	 *     LtlThen.LtlThen_1_0 returns LtlExpression
 	 *     LtlOr returns LtlExpression
 	 *     LtlOr.LtlOr_1_0 returns LtlExpression
 	 *     LtlAnd returns LtlExpression
 	 *     LtlAnd.LtlAnd_1_0 returns LtlExpression
 	 *     LtlUntil returns LtlExpression
 	 *     LtlUntil.LtlUntil_1_0 returns LtlExpression
-	 *     LtlThen returns LtlExpression
-	 *     LtlThen.LtlThen_1_0 returns LtlExpression
 	 *     LtlUnary returns LtlExpression
 	 *     LtlAtom returns LtlExpression
 	 *
@@ -914,14 +914,14 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     LtlThen returns LtlOr
+	 *     LtlThen.LtlThen_1_0 returns LtlOr
 	 *     LtlOr returns LtlOr
 	 *     LtlOr.LtlOr_1_0 returns LtlOr
 	 *     LtlAnd returns LtlOr
 	 *     LtlAnd.LtlAnd_1_0 returns LtlOr
 	 *     LtlUntil returns LtlOr
 	 *     LtlUntil.LtlUntil_1_0 returns LtlOr
-	 *     LtlThen returns LtlOr
-	 *     LtlThen.LtlThen_1_0 returns LtlOr
 	 *     LtlUnary returns LtlOr
 	 *     LtlAtom returns LtlOr
 	 *
@@ -947,19 +947,19 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     LtlThen returns LtlThen
+	 *     LtlThen.LtlThen_1_0 returns LtlThen
 	 *     LtlOr returns LtlThen
 	 *     LtlOr.LtlOr_1_0 returns LtlThen
 	 *     LtlAnd returns LtlThen
 	 *     LtlAnd.LtlAnd_1_0 returns LtlThen
 	 *     LtlUntil returns LtlThen
 	 *     LtlUntil.LtlUntil_1_0 returns LtlThen
-	 *     LtlThen returns LtlThen
-	 *     LtlThen.LtlThen_1_0 returns LtlThen
 	 *     LtlUnary returns LtlThen
 	 *     LtlAtom returns LtlThen
 	 *
 	 * Constraint:
-	 *     (left=LtlThen_LtlThen_1_0 op='->' right=LtlUnary)
+	 *     (left=LtlThen_LtlThen_1_0 op='->' right=LtlOr)
 	 */
 	protected void sequence_LtlThen(ISerializationContext context, LtlThen semanticObject) {
 		if (errorAcceptor != null) {
@@ -973,26 +973,26 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getLtlThenAccess().getOpHyphenMinusGreaterThanSignKeyword_1_1_0(), semanticObject.getOp());
-		feeder.accept(grammarAccess.getLtlThenAccess().getRightLtlUnaryParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.accept(grammarAccess.getLtlThenAccess().getRightLtlOrParserRuleCall_1_2_0(), semanticObject.getRight());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     LtlThen returns LtlUntil
+	 *     LtlThen.LtlThen_1_0 returns LtlUntil
 	 *     LtlOr returns LtlUntil
 	 *     LtlOr.LtlOr_1_0 returns LtlUntil
 	 *     LtlAnd returns LtlUntil
 	 *     LtlAnd.LtlAnd_1_0 returns LtlUntil
 	 *     LtlUntil returns LtlUntil
 	 *     LtlUntil.LtlUntil_1_0 returns LtlUntil
-	 *     LtlThen returns LtlUntil
-	 *     LtlThen.LtlThen_1_0 returns LtlUntil
 	 *     LtlUnary returns LtlUntil
 	 *     LtlAtom returns LtlUntil
 	 *
 	 * Constraint:
-	 *     (left=LtlUntil_LtlUntil_1_0 op='until' right=LtlThen)
+	 *     (left=LtlUntil_LtlUntil_1_0 op='until' right=LtlUnary)
 	 */
 	protected void sequence_LtlUntil(ISerializationContext context, LtlUntil semanticObject) {
 		if (errorAcceptor != null) {
@@ -1006,7 +1006,7 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getLtlUntilAccess().getLtlUntilLeftAction_1_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getLtlUntilAccess().getOpUntilKeyword_1_1_0(), semanticObject.getOp());
-		feeder.accept(grammarAccess.getLtlUntilAccess().getRightLtlThenParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.accept(grammarAccess.getLtlUntilAccess().getRightLtlUnaryParserRuleCall_1_2_0(), semanticObject.getRight());
 		feeder.finish();
 	}
 	
@@ -1017,7 +1017,7 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	 *     Ltl returns Ltl
 	 *
 	 * Constraint:
-	 *     (name=ID (params+=FullJvmFormalParameter params+=FullJvmFormalParameter*)? predicate=LtlOr)
+	 *     (name=ID (params+=FullJvmFormalParameter params+=FullJvmFormalParameter*)? predicate=LtlThen)
 	 */
 	protected void sequence_Ltl(ISerializationContext context, Ltl semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

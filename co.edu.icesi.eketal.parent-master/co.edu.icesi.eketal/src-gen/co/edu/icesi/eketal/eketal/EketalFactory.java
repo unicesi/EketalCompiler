@@ -231,6 +231,15 @@ public interface EketalFactory extends EFactory
   UnaryEvent createUnaryEvent();
 
   /**
+   * Returns a new object of class '<em>Ltl Then</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl Then</em>'.
+   * @generated
+   */
+  LtlThen createLtlThen();
+
+  /**
    * Returns a new object of class '<em>Ltl Or</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -256,15 +265,6 @@ public interface EketalFactory extends EFactory
    * @generated
    */
   LtlUntil createLtlUntil();
-
-  /**
-   * Returns a new object of class '<em>Ltl Then</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Ltl Then</em>'.
-   * @generated
-   */
-  LtlThen createLtlThen();
 
   /**
    * Returns a new object of class '<em>Unary Ltl</em>'.

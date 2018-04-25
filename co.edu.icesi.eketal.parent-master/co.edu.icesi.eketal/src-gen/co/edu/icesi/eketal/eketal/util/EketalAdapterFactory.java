@@ -191,6 +191,11 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
         return createUnaryEventAdapter();
       }
       @Override
+      public Adapter caseLtlThen(LtlThen object)
+      {
+        return createLtlThenAdapter();
+      }
+      @Override
       public Adapter caseLtlOr(LtlOr object)
       {
         return createLtlOrAdapter();
@@ -204,11 +209,6 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
       public Adapter caseLtlUntil(LtlUntil object)
       {
         return createLtlUntilAdapter();
-      }
-      @Override
-      public Adapter caseLtlThen(LtlThen object)
-      {
-        return createLtlThenAdapter();
       }
       @Override
       public Adapter caseUnaryLtl(UnaryLtl object)
@@ -583,6 +583,21 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlThen <em>Ltl Then</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.LtlThen
+   * @generated
+   */
+  public Adapter createLtlThenAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlOr <em>Ltl Or</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -623,21 +638,6 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createLtlUntilAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.LtlThen <em>Ltl Then</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see co.edu.icesi.eketal.eketal.LtlThen
-   * @generated
-   */
-  public Adapter createLtlThenAdapter()
   {
     return null;
   }

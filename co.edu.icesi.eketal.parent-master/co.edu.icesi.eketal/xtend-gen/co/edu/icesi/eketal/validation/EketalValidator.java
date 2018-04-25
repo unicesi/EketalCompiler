@@ -234,7 +234,7 @@ public class EketalValidator extends AbstractEketalValidator {
         }
       } else {
         for (final Step state_1 : initialState) {
-          if ((Objects.equal(state_1.getTransitions(), null) || state_1.getTransitions().isEmpty())) {
+          if (((state_1.getTransitions() == null) || state_1.getTransitions().isEmpty())) {
             String _name_2 = automaton.getName();
             String _plus_6 = ("The automaton \'" + _name_2);
             String _plus_7 = (_plus_6 + "\' must have at least one transition in his initial state \'");
@@ -297,7 +297,7 @@ public class EketalValidator extends AbstractEketalValidator {
     int _indexOf = URI.lastSegment().indexOf(URI.fileExtension());
     int _minus = (_indexOf - 1);
     final String fileName = _lastSegment.substring(0, _minus);
-    final boolean isPublic = ((!Objects.equal(typeDecl.eContainer(), null)) && (typeDecl.eContainer() instanceof Model));
+    final boolean isPublic = ((typeDecl.eContainer() != null) && (typeDecl.eContainer() instanceof Model));
     if ((isPublic && (!fileName.equals(typeDecl.getName())))) {
       String _name = typeDecl.getName();
       String _plus = ("The declared type \'" + _name);

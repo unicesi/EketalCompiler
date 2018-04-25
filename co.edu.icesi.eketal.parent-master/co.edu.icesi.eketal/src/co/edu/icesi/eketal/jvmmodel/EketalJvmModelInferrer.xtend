@@ -51,27 +51,18 @@ import co.edu.icesi.eketal.eketal.LtlAnd
 import co.edu.icesi.eketal.eketal.UnaryLtl
 import co.edu.icesi.eketal.eketal.LtlUntil
 import co.edu.icesi.eketal.eketal.LtlThen
-import co.edu.icesi.eketal.eketal.impl.LtlOrImpl
 import co.edu.icesi.ketal.core.BuchiAutomaton
 import co.edu.icesi.ketal.core.BuchiTransition
 import java.io.BufferedReader
 import java.io.StringReader
-import co.edu.icesi.eketal.eketal.impl.AutomatonImpl
-import co.edu.icesi.eketal.eketal.impl.EketalFactoryImpl
 import java.util.ArrayList
 import java.util.List
-import co.edu.icesi.eketal.eketal.impl.StepImpl
-import org.eclipse.emf.common.util.EList
-import co.edu.icesi.eketal.eketal.TransDef
-import co.edu.icesi.eketal.eketal.impl.TransDefImpl
 import co.edu.icesi.ketal.core.NotExpression
 import co.edu.icesi.ketal.core.Or
 import java.util.Arrays
 import co.edu.icesi.ketal.core.And
-import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmExecutable
-import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtend2.lib.StringConcatenationClient
+import co.edu.icesi.ketal.core.TrueExpression
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -252,11 +243,13 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				// Obtiene predicado de la formula
 				var LtlExpression tPredicate = ltl.predicate
 				// Recupera la formula completa
+				if(tPredicate===null){
+					return
+				}
 				var String formulae = retrieveFormula(tPredicate)
 				println(formulae)
 				val String buchiMachine = BuchiTranslator.translateToString(formulae)
 				println(buchiMachine)
-				// TODO Crear el automata de buchi
 				nameAutomaton = "co.edu.icesi.eketal.buchiautomaton." + ltl.name.toFirstUpper
 
 				acceptor.accept(ltl.toClass(nameAutomaton)) [
@@ -269,9 +262,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						visibility = JvmVisibility::PUBLIC
 						initializer = '''new «typeRef(HashMap)»<String, «typeRef(State)»>()'''
 					]
-
+					
 					members += ltl.toMethod("getInstance", typeRef(BuchiAutomaton)) [
 						static = true
+						documentation = buchiMachine
 						body = '''
 							if(instance==null){
 								//lista de estados finales
@@ -297,7 +291,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							ltl.toParameter("expressions", typeRef(Hashtable, typeRef(Expression), typeRef(Character)))
 						body = '''
 							super(transitions, begin, finalStates, expressions);
-							initializeAutomaton();
+							findTransitionsCurrentState();
 							instance = this;
 						'''
 					]
@@ -317,7 +311,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		val List<String> finalStates = new ArrayList;
 		var String line=null;
 		var String init
-		//println(line)
+		/*
+		 * The method replaceAll will erase the characters followed by this attribute, in other words
+		 * the ones contained in the brackets: comma, parentheses and dots.
+		 */
 		var regex = "[().,]+"
 		while( (line=bufReader.readLine()) !== null ){
 			if(line.startsWith("S")){
@@ -328,23 +325,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				var transitions = tempState.get(1)
 				val transitionOfState = newArrayList
 				if(transitions!==null && transitions!=""){
-					/*
-						String regex = "[().,]+";
-				        String prueba1 = "(!green-> S0 |!red-> S1 |yellow-> S0),";
-				        String prueba2 = "(!red-> S1 |yellow-> S0).";
-				        
-				        System.out.println(prueba1);
-				        String resultado1 = prueba1.replaceAll(regex,"");
-				        System.out.println(resultado1);
-				        System.out.println(prueba2);
-				        String resultado2 = prueba2.replaceAll(regex,"");
-				        System.out.println(resultado2);
-				        * out
-				        (!green-> S0 |!red-> S1 |yellow-> S0),
-						!green-> S0 |!red-> S1 |yellow-> S0
-						(!red-> S1 |yellow-> S0).
-						!red-> S1 |yellow-> S0
-					*/
 					//(!red-> S1 |yellow-> S0).
 					var result = transitions.replaceAll(regex,"")
 					//!green-> S0 |!red-> S1 |yellow-> S0
@@ -361,7 +341,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						stt,values|
 						transitionOfState.add(values.join("|")[x|x.split(Pattern.quote("->")).get(0)]+"->"+stt)
 					]
-					//println(transitionOfState)
 					states.put(init, transitionOfState)
 				}else{					
 					states.put(init, null)
@@ -384,8 +363,8 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				
 			}
 		}
-		val String initial = init
-		
+		val setStates = states.keySet
+		val String initial = setStates.head
 		
 		val method = declaracion.toMethod("initialize", typeRef(State)) [
 			parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(BuchiTransition)))
@@ -406,8 +385,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				«Expression» expression;
 				«String» estadoLlegada = "";
 				
-				
-				«FOR step : states.keySet»
+				«FOR step : setStates»
 					//Definición del estado: «step»
 					String estado«step.toFirstUpper» = "«step»";
 					estados.put(estado«step.toFirstUpper», new «typeRef(State)»());
@@ -417,11 +395,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					«ENDIF»
 				«ENDFOR»
 				
-				
-				«FOR step : states.keySet»	
+				«FOR step : setStates»	
 					«IF states.get(step)!==null»
 						«FOR transition : states.get(step)»
-							//«val splitTransition = transition.split("->")»
+							«var splitTransition = transition.split("->")»
 							//Transicion «transition»
 							estadoLlegada = "«splitTransition.get(1)»";
 							if(!estados.containsKey(estadoLlegada)){
@@ -430,12 +407,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							caracter = (char)consecutivo;
 							consecutivo++;
 							expression = «processExpression(splitTransition.get(0))»;
-							//if(!mapping.containsKey(expression)){
 							if(!expressions.containsKey(expression)){
-								//mapping.put(expression, caracter);
 								expressions.put(expression, caracter);
 							}
-							«typeRef(BuchiTransition)» «step»«splitTransition.get(1).toFirstUpper» = new «typeRef(BuchiTransition)»(estados.get(estado«step.toFirstUpper»), estados.get(estadoLlegada), expression);
+							«typeRef(BuchiTransition)» «step»«splitTransition.get(1).toFirstUpper» = new «typeRef(BuchiTransition)»(estados.get(estado«step.toFirstUpper»), estados.get(estadoLlegada), expressions.get(expression), expression);
 							transitionSet.add(«step»«splitTransition.get(1).toFirstUpper»);
 							
 						«ENDFOR»
@@ -447,14 +422,13 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						estadosFinales.add(estados.get(estado«step.toFirstUpper»));
 					«ENDIF»
 				«ENDFOR»
-								
 				return inicial;
 			'''
 		]
 		return method
 	}
 	
-	def private StringConcatenationClient processExpression( String string) {
+	def private StringConcatenationClient processExpression(String string) {
 		//excecutable.
 		if(string.contains("|")){
 			var array = string.split(Pattern.quote("|"))
@@ -469,7 +443,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		}else if(string.startsWith("!")){
 			return '''new «NotExpression»(«processExpression( string.substring(1))»)'''
 		}else{
-			return '''new «DefaultEqualsExpression»(new «NamedEvent»("«string»"))'''
+			if(string.equalsIgnoreCase("TRUE"))
+				return '''new «TrueExpression»()'''
+			else
+				return '''new «DefaultEqualsExpression»(new «NamedEvent»("«string»"))'''
 		}
 	}
 

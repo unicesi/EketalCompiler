@@ -5102,7 +5102,7 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleLtl"
-    // InternalEketal.g:1763:1: ruleLtl returns [EObject current=null] : (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlOr ) ) otherlv_9= '}' ) ;
+    // InternalEketal.g:1763:1: ruleLtl returns [EObject current=null] : (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlThen ) ) otherlv_9= '}' ) ;
     public final EObject ruleLtl() throws RecognitionException {
         EObject current = null;
 
@@ -5124,11 +5124,11 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalEketal.g:1769:2: ( (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlOr ) ) otherlv_9= '}' ) )
-            // InternalEketal.g:1770:2: (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlOr ) ) otherlv_9= '}' )
+            // InternalEketal.g:1769:2: ( (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlThen ) ) otherlv_9= '}' ) )
+            // InternalEketal.g:1770:2: (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlThen ) ) otherlv_9= '}' )
             {
-            // InternalEketal.g:1770:2: (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlOr ) ) otherlv_9= '}' )
-            // InternalEketal.g:1771:3: otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlOr ) ) otherlv_9= '}'
+            // InternalEketal.g:1770:2: (otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlThen ) ) otherlv_9= '}' )
+            // InternalEketal.g:1771:3: otherlv_0= 'ltl' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '(' ( ( (lv_params_3_0= ruleFullJvmFormalParameter ) ) (otherlv_4= ',' ( (lv_params_5_0= ruleFullJvmFormalParameter ) ) )* )? otherlv_6= ')' otherlv_7= '{' ( (lv_predicate_8_0= ruleLtlThen ) ) otherlv_9= '}'
             {
             otherlv_0=(Token)match(input,38,FOLLOW_3); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -5301,19 +5301,19 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_7, grammarAccess.getLtlAccess().getLeftCurlyBracketKeyword_5());
               		
             }
-            // InternalEketal.g:1851:3: ( (lv_predicate_8_0= ruleLtlOr ) )
-            // InternalEketal.g:1852:4: (lv_predicate_8_0= ruleLtlOr )
+            // InternalEketal.g:1851:3: ( (lv_predicate_8_0= ruleLtlThen ) )
+            // InternalEketal.g:1852:4: (lv_predicate_8_0= ruleLtlThen )
             {
-            // InternalEketal.g:1852:4: (lv_predicate_8_0= ruleLtlOr )
-            // InternalEketal.g:1853:5: lv_predicate_8_0= ruleLtlOr
+            // InternalEketal.g:1852:4: (lv_predicate_8_0= ruleLtlThen )
+            // InternalEketal.g:1853:5: lv_predicate_8_0= ruleLtlThen
             {
             if ( state.backtracking==0 ) {
 
-              					newCompositeNode(grammarAccess.getLtlAccess().getPredicateLtlOrParserRuleCall_6_0());
+              					newCompositeNode(grammarAccess.getLtlAccess().getPredicateLtlThenParserRuleCall_6_0());
               				
             }
             pushFollow(FOLLOW_31);
-            lv_predicate_8_0=ruleLtlOr();
+            lv_predicate_8_0=ruleLtlThen();
 
             state._fsp--;
             if (state.failed) return current;
@@ -5326,7 +5326,7 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
               						current,
               						"predicate",
               						lv_predicate_8_0,
-              						"co.edu.icesi.eketal.Eketal.LtlOr");
+              						"co.edu.icesi.eketal.Eketal.LtlThen");
               					afterParserOrEnumRuleCall();
               				
             }
@@ -5366,28 +5366,28 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleLtl"
 
 
-    // $ANTLR start "entryRuleLtlOr"
-    // InternalEketal.g:1878:1: entryRuleLtlOr returns [EObject current=null] : iv_ruleLtlOr= ruleLtlOr EOF ;
-    public final EObject entryRuleLtlOr() throws RecognitionException {
+    // $ANTLR start "entryRuleLtlThen"
+    // InternalEketal.g:1878:1: entryRuleLtlThen returns [EObject current=null] : iv_ruleLtlThen= ruleLtlThen EOF ;
+    public final EObject entryRuleLtlThen() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleLtlOr = null;
+        EObject iv_ruleLtlThen = null;
 
 
         try {
-            // InternalEketal.g:1878:46: (iv_ruleLtlOr= ruleLtlOr EOF )
-            // InternalEketal.g:1879:2: iv_ruleLtlOr= ruleLtlOr EOF
+            // InternalEketal.g:1878:48: (iv_ruleLtlThen= ruleLtlThen EOF )
+            // InternalEketal.g:1879:2: iv_ruleLtlThen= ruleLtlThen EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getLtlOrRule()); 
+               newCompositeNode(grammarAccess.getLtlThenRule()); 
             }
             pushFollow(FOLLOW_1);
-            iv_ruleLtlOr=ruleLtlOr();
+            iv_ruleLtlThen=ruleLtlThen();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleLtlOr; 
+               current =iv_ruleLtlThen; 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return current;
 
@@ -5403,16 +5403,16 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleLtlOr"
+    // $ANTLR end "entryRuleLtlThen"
 
 
-    // $ANTLR start "ruleLtlOr"
-    // InternalEketal.g:1885:1: ruleLtlOr returns [EObject current=null] : (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* ) ;
-    public final EObject ruleLtlOr() throws RecognitionException {
+    // $ANTLR start "ruleLtlThen"
+    // InternalEketal.g:1885:1: ruleLtlThen returns [EObject current=null] : (this_LtlOr_0= ruleLtlOr ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) ) )* ) ;
+    public final EObject ruleLtlThen() throws RecognitionException {
         EObject current = null;
 
         Token lv_op_2_0=null;
-        EObject this_LtlAnd_0 = null;
+        EObject this_LtlOr_0 = null;
 
         EObject lv_right_3_0 = null;
 
@@ -5421,42 +5421,42 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalEketal.g:1891:2: ( (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* ) )
-            // InternalEketal.g:1892:2: (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* )
+            // InternalEketal.g:1891:2: ( (this_LtlOr_0= ruleLtlOr ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) ) )* ) )
+            // InternalEketal.g:1892:2: (this_LtlOr_0= ruleLtlOr ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) ) )* )
             {
-            // InternalEketal.g:1892:2: (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* )
-            // InternalEketal.g:1893:3: this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )*
+            // InternalEketal.g:1892:2: (this_LtlOr_0= ruleLtlOr ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) ) )* )
+            // InternalEketal.g:1893:3: this_LtlOr_0= ruleLtlOr ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) ) )*
             {
             if ( state.backtracking==0 ) {
 
-              			newCompositeNode(grammarAccess.getLtlOrAccess().getLtlAndParserRuleCall_0());
+              			newCompositeNode(grammarAccess.getLtlThenAccess().getLtlOrParserRuleCall_0());
               		
             }
-            pushFollow(FOLLOW_16);
-            this_LtlAnd_0=ruleLtlAnd();
+            pushFollow(FOLLOW_32);
+            this_LtlOr_0=ruleLtlOr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			current = this_LtlAnd_0;
+              			current = this_LtlOr_0;
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalEketal.g:1901:3: ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )*
+            // InternalEketal.g:1901:3: ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) ) )*
             loop39:
             do {
                 int alt39=2;
                 int LA39_0 = input.LA(1);
 
-                if ( (LA39_0==26) ) {
+                if ( (LA39_0==37) ) {
                     alt39=1;
                 }
 
 
                 switch (alt39) {
             	case 1 :
-            	    // InternalEketal.g:1902:4: () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) )
+            	    // InternalEketal.g:1902:4: () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlOr ) )
             	    {
             	    // InternalEketal.g:1902:4: ()
             	    // InternalEketal.g:1903:5: 
@@ -5464,31 +5464,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	      					current = forceCreateModelElementAndSet(
-            	      						grammarAccess.getLtlOrAccess().getLtlOrLeftAction_1_0(),
+            	      						grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0(),
             	      						current);
             	      				
             	    }
 
             	    }
 
-            	    // InternalEketal.g:1909:4: ( (lv_op_2_0= '||' ) )
-            	    // InternalEketal.g:1910:5: (lv_op_2_0= '||' )
+            	    // InternalEketal.g:1909:4: ( (lv_op_2_0= '->' ) )
+            	    // InternalEketal.g:1910:5: (lv_op_2_0= '->' )
             	    {
-            	    // InternalEketal.g:1910:5: (lv_op_2_0= '||' )
-            	    // InternalEketal.g:1911:6: lv_op_2_0= '||'
+            	    // InternalEketal.g:1910:5: (lv_op_2_0= '->' )
+            	    // InternalEketal.g:1911:6: lv_op_2_0= '->'
             	    {
-            	    lv_op_2_0=(Token)match(input,26,FOLLOW_30); if (state.failed) return current;
+            	    lv_op_2_0=(Token)match(input,37,FOLLOW_30); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
-            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlOrAccess().getOpVerticalLineVerticalLineKeyword_1_1_0());
+            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlThenAccess().getOpHyphenMinusGreaterThanSignKeyword_1_1_0());
             	      					
             	    }
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElement(grammarAccess.getLtlOrRule());
+            	      							current = createModelElement(grammarAccess.getLtlThenRule());
             	      						}
-            	      						setWithLastConsumed(current, "op", lv_op_2_0, "||");
+            	      						setWithLastConsumed(current, "op", lv_op_2_0, "->");
             	      					
             	    }
 
@@ -5497,32 +5497,32 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalEketal.g:1923:4: ( (lv_right_3_0= ruleLtlAnd ) )
-            	    // InternalEketal.g:1924:5: (lv_right_3_0= ruleLtlAnd )
+            	    // InternalEketal.g:1923:4: ( (lv_right_3_0= ruleLtlOr ) )
+            	    // InternalEketal.g:1924:5: (lv_right_3_0= ruleLtlOr )
             	    {
-            	    // InternalEketal.g:1924:5: (lv_right_3_0= ruleLtlAnd )
-            	    // InternalEketal.g:1925:6: lv_right_3_0= ruleLtlAnd
+            	    // InternalEketal.g:1924:5: (lv_right_3_0= ruleLtlOr )
+            	    // InternalEketal.g:1925:6: lv_right_3_0= ruleLtlOr
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      						newCompositeNode(grammarAccess.getLtlOrAccess().getRightLtlAndParserRuleCall_1_2_0());
+            	      						newCompositeNode(grammarAccess.getLtlThenAccess().getRightLtlOrParserRuleCall_1_2_0());
             	      					
             	    }
-            	    pushFollow(FOLLOW_16);
-            	    lv_right_3_0=ruleLtlAnd();
+            	    pushFollow(FOLLOW_32);
+            	    lv_right_3_0=ruleLtlOr();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElementForParent(grammarAccess.getLtlOrRule());
+            	      							current = createModelElementForParent(grammarAccess.getLtlThenRule());
             	      						}
             	      						set(
             	      							current,
             	      							"right",
             	      							lv_right_3_0,
-            	      							"co.edu.icesi.eketal.Eketal.LtlAnd");
+            	      							"co.edu.icesi.eketal.Eketal.LtlOr");
             	      						afterParserOrEnumRuleCall();
             	      					
             	    }
@@ -5562,31 +5562,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleLtlOr"
+    // $ANTLR end "ruleLtlThen"
 
 
-    // $ANTLR start "entryRuleLtlAnd"
-    // InternalEketal.g:1947:1: entryRuleLtlAnd returns [EObject current=null] : iv_ruleLtlAnd= ruleLtlAnd EOF ;
-    public final EObject entryRuleLtlAnd() throws RecognitionException {
+    // $ANTLR start "entryRuleLtlOr"
+    // InternalEketal.g:1947:1: entryRuleLtlOr returns [EObject current=null] : iv_ruleLtlOr= ruleLtlOr EOF ;
+    public final EObject entryRuleLtlOr() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleLtlAnd = null;
+        EObject iv_ruleLtlOr = null;
 
 
         try {
-            // InternalEketal.g:1947:47: (iv_ruleLtlAnd= ruleLtlAnd EOF )
-            // InternalEketal.g:1948:2: iv_ruleLtlAnd= ruleLtlAnd EOF
+            // InternalEketal.g:1947:46: (iv_ruleLtlOr= ruleLtlOr EOF )
+            // InternalEketal.g:1948:2: iv_ruleLtlOr= ruleLtlOr EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getLtlAndRule()); 
+               newCompositeNode(grammarAccess.getLtlOrRule()); 
             }
             pushFollow(FOLLOW_1);
-            iv_ruleLtlAnd=ruleLtlAnd();
+            iv_ruleLtlOr=ruleLtlOr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleLtlAnd; 
+               current =iv_ruleLtlOr; 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return current;
 
@@ -5602,16 +5602,16 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleLtlAnd"
+    // $ANTLR end "entryRuleLtlOr"
 
 
-    // $ANTLR start "ruleLtlAnd"
-    // InternalEketal.g:1954:1: ruleLtlAnd returns [EObject current=null] : (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* ) ;
-    public final EObject ruleLtlAnd() throws RecognitionException {
+    // $ANTLR start "ruleLtlOr"
+    // InternalEketal.g:1954:1: ruleLtlOr returns [EObject current=null] : (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* ) ;
+    public final EObject ruleLtlOr() throws RecognitionException {
         EObject current = null;
 
         Token lv_op_2_0=null;
-        EObject this_LtlUntil_0 = null;
+        EObject this_LtlAnd_0 = null;
 
         EObject lv_right_3_0 = null;
 
@@ -5620,42 +5620,42 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalEketal.g:1960:2: ( (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* ) )
-            // InternalEketal.g:1961:2: (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* )
+            // InternalEketal.g:1960:2: ( (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* ) )
+            // InternalEketal.g:1961:2: (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* )
             {
-            // InternalEketal.g:1961:2: (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* )
-            // InternalEketal.g:1962:3: this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )*
+            // InternalEketal.g:1961:2: (this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )* )
+            // InternalEketal.g:1962:3: this_LtlAnd_0= ruleLtlAnd ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )*
             {
             if ( state.backtracking==0 ) {
 
-              			newCompositeNode(grammarAccess.getLtlAndAccess().getLtlUntilParserRuleCall_0());
+              			newCompositeNode(grammarAccess.getLtlOrAccess().getLtlAndParserRuleCall_0());
               		
             }
-            pushFollow(FOLLOW_18);
-            this_LtlUntil_0=ruleLtlUntil();
+            pushFollow(FOLLOW_16);
+            this_LtlAnd_0=ruleLtlAnd();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			current = this_LtlUntil_0;
+              			current = this_LtlAnd_0;
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalEketal.g:1970:3: ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )*
+            // InternalEketal.g:1970:3: ( () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) ) )*
             loop40:
             do {
                 int alt40=2;
                 int LA40_0 = input.LA(1);
 
-                if ( (LA40_0==27) ) {
+                if ( (LA40_0==26) ) {
                     alt40=1;
                 }
 
 
                 switch (alt40) {
             	case 1 :
-            	    // InternalEketal.g:1971:4: () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) )
+            	    // InternalEketal.g:1971:4: () ( (lv_op_2_0= '||' ) ) ( (lv_right_3_0= ruleLtlAnd ) )
             	    {
             	    // InternalEketal.g:1971:4: ()
             	    // InternalEketal.g:1972:5: 
@@ -5663,31 +5663,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	      					current = forceCreateModelElementAndSet(
-            	      						grammarAccess.getLtlAndAccess().getLtlAndLeftAction_1_0(),
+            	      						grammarAccess.getLtlOrAccess().getLtlOrLeftAction_1_0(),
             	      						current);
             	      				
             	    }
 
             	    }
 
-            	    // InternalEketal.g:1978:4: ( (lv_op_2_0= '&&' ) )
-            	    // InternalEketal.g:1979:5: (lv_op_2_0= '&&' )
+            	    // InternalEketal.g:1978:4: ( (lv_op_2_0= '||' ) )
+            	    // InternalEketal.g:1979:5: (lv_op_2_0= '||' )
             	    {
-            	    // InternalEketal.g:1979:5: (lv_op_2_0= '&&' )
-            	    // InternalEketal.g:1980:6: lv_op_2_0= '&&'
+            	    // InternalEketal.g:1979:5: (lv_op_2_0= '||' )
+            	    // InternalEketal.g:1980:6: lv_op_2_0= '||'
             	    {
-            	    lv_op_2_0=(Token)match(input,27,FOLLOW_30); if (state.failed) return current;
+            	    lv_op_2_0=(Token)match(input,26,FOLLOW_30); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
-            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlAndAccess().getOpAmpersandAmpersandKeyword_1_1_0());
+            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlOrAccess().getOpVerticalLineVerticalLineKeyword_1_1_0());
             	      					
             	    }
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElement(grammarAccess.getLtlAndRule());
+            	      							current = createModelElement(grammarAccess.getLtlOrRule());
             	      						}
-            	      						setWithLastConsumed(current, "op", lv_op_2_0, "&&");
+            	      						setWithLastConsumed(current, "op", lv_op_2_0, "||");
             	      					
             	    }
 
@@ -5696,32 +5696,32 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalEketal.g:1992:4: ( (lv_right_3_0= ruleLtlUntil ) )
-            	    // InternalEketal.g:1993:5: (lv_right_3_0= ruleLtlUntil )
+            	    // InternalEketal.g:1992:4: ( (lv_right_3_0= ruleLtlAnd ) )
+            	    // InternalEketal.g:1993:5: (lv_right_3_0= ruleLtlAnd )
             	    {
-            	    // InternalEketal.g:1993:5: (lv_right_3_0= ruleLtlUntil )
-            	    // InternalEketal.g:1994:6: lv_right_3_0= ruleLtlUntil
+            	    // InternalEketal.g:1993:5: (lv_right_3_0= ruleLtlAnd )
+            	    // InternalEketal.g:1994:6: lv_right_3_0= ruleLtlAnd
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      						newCompositeNode(grammarAccess.getLtlAndAccess().getRightLtlUntilParserRuleCall_1_2_0());
+            	      						newCompositeNode(grammarAccess.getLtlOrAccess().getRightLtlAndParserRuleCall_1_2_0());
             	      					
             	    }
-            	    pushFollow(FOLLOW_18);
-            	    lv_right_3_0=ruleLtlUntil();
+            	    pushFollow(FOLLOW_16);
+            	    lv_right_3_0=ruleLtlAnd();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElementForParent(grammarAccess.getLtlAndRule());
+            	      							current = createModelElementForParent(grammarAccess.getLtlOrRule());
             	      						}
             	      						set(
             	      							current,
             	      							"right",
             	      							lv_right_3_0,
-            	      							"co.edu.icesi.eketal.Eketal.LtlUntil");
+            	      							"co.edu.icesi.eketal.Eketal.LtlAnd");
             	      						afterParserOrEnumRuleCall();
             	      					
             	    }
@@ -5761,31 +5761,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleLtlAnd"
+    // $ANTLR end "ruleLtlOr"
 
 
-    // $ANTLR start "entryRuleLtlUntil"
-    // InternalEketal.g:2016:1: entryRuleLtlUntil returns [EObject current=null] : iv_ruleLtlUntil= ruleLtlUntil EOF ;
-    public final EObject entryRuleLtlUntil() throws RecognitionException {
+    // $ANTLR start "entryRuleLtlAnd"
+    // InternalEketal.g:2016:1: entryRuleLtlAnd returns [EObject current=null] : iv_ruleLtlAnd= ruleLtlAnd EOF ;
+    public final EObject entryRuleLtlAnd() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleLtlUntil = null;
+        EObject iv_ruleLtlAnd = null;
 
 
         try {
-            // InternalEketal.g:2016:49: (iv_ruleLtlUntil= ruleLtlUntil EOF )
-            // InternalEketal.g:2017:2: iv_ruleLtlUntil= ruleLtlUntil EOF
+            // InternalEketal.g:2016:47: (iv_ruleLtlAnd= ruleLtlAnd EOF )
+            // InternalEketal.g:2017:2: iv_ruleLtlAnd= ruleLtlAnd EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getLtlUntilRule()); 
+               newCompositeNode(grammarAccess.getLtlAndRule()); 
             }
             pushFollow(FOLLOW_1);
-            iv_ruleLtlUntil=ruleLtlUntil();
+            iv_ruleLtlAnd=ruleLtlAnd();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleLtlUntil; 
+               current =iv_ruleLtlAnd; 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return current;
 
@@ -5801,16 +5801,16 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleLtlUntil"
+    // $ANTLR end "entryRuleLtlAnd"
 
 
-    // $ANTLR start "ruleLtlUntil"
-    // InternalEketal.g:2023:1: ruleLtlUntil returns [EObject current=null] : (this_LtlThen_0= ruleLtlThen ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) ) )* ) ;
-    public final EObject ruleLtlUntil() throws RecognitionException {
+    // $ANTLR start "ruleLtlAnd"
+    // InternalEketal.g:2023:1: ruleLtlAnd returns [EObject current=null] : (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* ) ;
+    public final EObject ruleLtlAnd() throws RecognitionException {
         EObject current = null;
 
         Token lv_op_2_0=null;
-        EObject this_LtlThen_0 = null;
+        EObject this_LtlUntil_0 = null;
 
         EObject lv_right_3_0 = null;
 
@@ -5819,42 +5819,42 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalEketal.g:2029:2: ( (this_LtlThen_0= ruleLtlThen ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) ) )* ) )
-            // InternalEketal.g:2030:2: (this_LtlThen_0= ruleLtlThen ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) ) )* )
+            // InternalEketal.g:2029:2: ( (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* ) )
+            // InternalEketal.g:2030:2: (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* )
             {
-            // InternalEketal.g:2030:2: (this_LtlThen_0= ruleLtlThen ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) ) )* )
-            // InternalEketal.g:2031:3: this_LtlThen_0= ruleLtlThen ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) ) )*
+            // InternalEketal.g:2030:2: (this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )* )
+            // InternalEketal.g:2031:3: this_LtlUntil_0= ruleLtlUntil ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )*
             {
             if ( state.backtracking==0 ) {
 
-              			newCompositeNode(grammarAccess.getLtlUntilAccess().getLtlThenParserRuleCall_0());
+              			newCompositeNode(grammarAccess.getLtlAndAccess().getLtlUntilParserRuleCall_0());
               		
             }
-            pushFollow(FOLLOW_32);
-            this_LtlThen_0=ruleLtlThen();
+            pushFollow(FOLLOW_18);
+            this_LtlUntil_0=ruleLtlUntil();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			current = this_LtlThen_0;
+              			current = this_LtlUntil_0;
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalEketal.g:2039:3: ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) ) )*
+            // InternalEketal.g:2039:3: ( () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) ) )*
             loop41:
             do {
                 int alt41=2;
                 int LA41_0 = input.LA(1);
 
-                if ( (LA41_0==39) ) {
+                if ( (LA41_0==27) ) {
                     alt41=1;
                 }
 
 
                 switch (alt41) {
             	case 1 :
-            	    // InternalEketal.g:2040:4: () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlThen ) )
+            	    // InternalEketal.g:2040:4: () ( (lv_op_2_0= '&&' ) ) ( (lv_right_3_0= ruleLtlUntil ) )
             	    {
             	    // InternalEketal.g:2040:4: ()
             	    // InternalEketal.g:2041:5: 
@@ -5862,31 +5862,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	      					current = forceCreateModelElementAndSet(
-            	      						grammarAccess.getLtlUntilAccess().getLtlUntilLeftAction_1_0(),
+            	      						grammarAccess.getLtlAndAccess().getLtlAndLeftAction_1_0(),
             	      						current);
             	      				
             	    }
 
             	    }
 
-            	    // InternalEketal.g:2047:4: ( (lv_op_2_0= 'until' ) )
-            	    // InternalEketal.g:2048:5: (lv_op_2_0= 'until' )
+            	    // InternalEketal.g:2047:4: ( (lv_op_2_0= '&&' ) )
+            	    // InternalEketal.g:2048:5: (lv_op_2_0= '&&' )
             	    {
-            	    // InternalEketal.g:2048:5: (lv_op_2_0= 'until' )
-            	    // InternalEketal.g:2049:6: lv_op_2_0= 'until'
+            	    // InternalEketal.g:2048:5: (lv_op_2_0= '&&' )
+            	    // InternalEketal.g:2049:6: lv_op_2_0= '&&'
             	    {
-            	    lv_op_2_0=(Token)match(input,39,FOLLOW_30); if (state.failed) return current;
+            	    lv_op_2_0=(Token)match(input,27,FOLLOW_30); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
-            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlUntilAccess().getOpUntilKeyword_1_1_0());
+            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlAndAccess().getOpAmpersandAmpersandKeyword_1_1_0());
             	      					
             	    }
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElement(grammarAccess.getLtlUntilRule());
+            	      							current = createModelElement(grammarAccess.getLtlAndRule());
             	      						}
-            	      						setWithLastConsumed(current, "op", lv_op_2_0, "until");
+            	      						setWithLastConsumed(current, "op", lv_op_2_0, "&&");
             	      					
             	    }
 
@@ -5895,32 +5895,32 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalEketal.g:2061:4: ( (lv_right_3_0= ruleLtlThen ) )
-            	    // InternalEketal.g:2062:5: (lv_right_3_0= ruleLtlThen )
+            	    // InternalEketal.g:2061:4: ( (lv_right_3_0= ruleLtlUntil ) )
+            	    // InternalEketal.g:2062:5: (lv_right_3_0= ruleLtlUntil )
             	    {
-            	    // InternalEketal.g:2062:5: (lv_right_3_0= ruleLtlThen )
-            	    // InternalEketal.g:2063:6: lv_right_3_0= ruleLtlThen
+            	    // InternalEketal.g:2062:5: (lv_right_3_0= ruleLtlUntil )
+            	    // InternalEketal.g:2063:6: lv_right_3_0= ruleLtlUntil
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      						newCompositeNode(grammarAccess.getLtlUntilAccess().getRightLtlThenParserRuleCall_1_2_0());
+            	      						newCompositeNode(grammarAccess.getLtlAndAccess().getRightLtlUntilParserRuleCall_1_2_0());
             	      					
             	    }
-            	    pushFollow(FOLLOW_32);
-            	    lv_right_3_0=ruleLtlThen();
+            	    pushFollow(FOLLOW_18);
+            	    lv_right_3_0=ruleLtlUntil();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElementForParent(grammarAccess.getLtlUntilRule());
+            	      							current = createModelElementForParent(grammarAccess.getLtlAndRule());
             	      						}
             	      						set(
             	      							current,
             	      							"right",
             	      							lv_right_3_0,
-            	      							"co.edu.icesi.eketal.Eketal.LtlThen");
+            	      							"co.edu.icesi.eketal.Eketal.LtlUntil");
             	      						afterParserOrEnumRuleCall();
             	      					
             	    }
@@ -5960,31 +5960,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleLtlUntil"
+    // $ANTLR end "ruleLtlAnd"
 
 
-    // $ANTLR start "entryRuleLtlThen"
-    // InternalEketal.g:2085:1: entryRuleLtlThen returns [EObject current=null] : iv_ruleLtlThen= ruleLtlThen EOF ;
-    public final EObject entryRuleLtlThen() throws RecognitionException {
+    // $ANTLR start "entryRuleLtlUntil"
+    // InternalEketal.g:2085:1: entryRuleLtlUntil returns [EObject current=null] : iv_ruleLtlUntil= ruleLtlUntil EOF ;
+    public final EObject entryRuleLtlUntil() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleLtlThen = null;
+        EObject iv_ruleLtlUntil = null;
 
 
         try {
-            // InternalEketal.g:2085:48: (iv_ruleLtlThen= ruleLtlThen EOF )
-            // InternalEketal.g:2086:2: iv_ruleLtlThen= ruleLtlThen EOF
+            // InternalEketal.g:2085:49: (iv_ruleLtlUntil= ruleLtlUntil EOF )
+            // InternalEketal.g:2086:2: iv_ruleLtlUntil= ruleLtlUntil EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getLtlThenRule()); 
+               newCompositeNode(grammarAccess.getLtlUntilRule()); 
             }
             pushFollow(FOLLOW_1);
-            iv_ruleLtlThen=ruleLtlThen();
+            iv_ruleLtlUntil=ruleLtlUntil();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleLtlThen; 
+               current =iv_ruleLtlUntil; 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return current;
 
@@ -6000,12 +6000,12 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleLtlThen"
+    // $ANTLR end "entryRuleLtlUntil"
 
 
-    // $ANTLR start "ruleLtlThen"
-    // InternalEketal.g:2092:1: ruleLtlThen returns [EObject current=null] : (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* ) ;
-    public final EObject ruleLtlThen() throws RecognitionException {
+    // $ANTLR start "ruleLtlUntil"
+    // InternalEketal.g:2092:1: ruleLtlUntil returns [EObject current=null] : (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* ) ;
+    public final EObject ruleLtlUntil() throws RecognitionException {
         EObject current = null;
 
         Token lv_op_2_0=null;
@@ -6018,15 +6018,15 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalEketal.g:2098:2: ( (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* ) )
-            // InternalEketal.g:2099:2: (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* )
+            // InternalEketal.g:2098:2: ( (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* ) )
+            // InternalEketal.g:2099:2: (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* )
             {
-            // InternalEketal.g:2099:2: (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* )
-            // InternalEketal.g:2100:3: this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )*
+            // InternalEketal.g:2099:2: (this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )* )
+            // InternalEketal.g:2100:3: this_LtlUnary_0= ruleLtlUnary ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )*
             {
             if ( state.backtracking==0 ) {
 
-              			newCompositeNode(grammarAccess.getLtlThenAccess().getLtlUnaryParserRuleCall_0());
+              			newCompositeNode(grammarAccess.getLtlUntilAccess().getLtlUnaryParserRuleCall_0());
               		
             }
             pushFollow(FOLLOW_33);
@@ -6040,20 +6040,20 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalEketal.g:2108:3: ( () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )*
+            // InternalEketal.g:2108:3: ( () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) ) )*
             loop42:
             do {
                 int alt42=2;
                 int LA42_0 = input.LA(1);
 
-                if ( (LA42_0==37) ) {
+                if ( (LA42_0==39) ) {
                     alt42=1;
                 }
 
 
                 switch (alt42) {
             	case 1 :
-            	    // InternalEketal.g:2109:4: () ( (lv_op_2_0= '->' ) ) ( (lv_right_3_0= ruleLtlUnary ) )
+            	    // InternalEketal.g:2109:4: () ( (lv_op_2_0= 'until' ) ) ( (lv_right_3_0= ruleLtlUnary ) )
             	    {
             	    // InternalEketal.g:2109:4: ()
             	    // InternalEketal.g:2110:5: 
@@ -6061,31 +6061,31 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	      					current = forceCreateModelElementAndSet(
-            	      						grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0(),
+            	      						grammarAccess.getLtlUntilAccess().getLtlUntilLeftAction_1_0(),
             	      						current);
             	      				
             	    }
 
             	    }
 
-            	    // InternalEketal.g:2116:4: ( (lv_op_2_0= '->' ) )
-            	    // InternalEketal.g:2117:5: (lv_op_2_0= '->' )
+            	    // InternalEketal.g:2116:4: ( (lv_op_2_0= 'until' ) )
+            	    // InternalEketal.g:2117:5: (lv_op_2_0= 'until' )
             	    {
-            	    // InternalEketal.g:2117:5: (lv_op_2_0= '->' )
-            	    // InternalEketal.g:2118:6: lv_op_2_0= '->'
+            	    // InternalEketal.g:2117:5: (lv_op_2_0= 'until' )
+            	    // InternalEketal.g:2118:6: lv_op_2_0= 'until'
             	    {
-            	    lv_op_2_0=(Token)match(input,37,FOLLOW_30); if (state.failed) return current;
+            	    lv_op_2_0=(Token)match(input,39,FOLLOW_30); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
-            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlThenAccess().getOpHyphenMinusGreaterThanSignKeyword_1_1_0());
+            	      						newLeafNode(lv_op_2_0, grammarAccess.getLtlUntilAccess().getOpUntilKeyword_1_1_0());
             	      					
             	    }
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElement(grammarAccess.getLtlThenRule());
+            	      							current = createModelElement(grammarAccess.getLtlUntilRule());
             	      						}
-            	      						setWithLastConsumed(current, "op", lv_op_2_0, "->");
+            	      						setWithLastConsumed(current, "op", lv_op_2_0, "until");
             	      					
             	    }
 
@@ -6102,7 +6102,7 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      						newCompositeNode(grammarAccess.getLtlThenAccess().getRightLtlUnaryParserRuleCall_1_2_0());
+            	      						newCompositeNode(grammarAccess.getLtlUntilAccess().getRightLtlUnaryParserRuleCall_1_2_0());
             	      					
             	    }
             	    pushFollow(FOLLOW_33);
@@ -6113,7 +6113,7 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	      						if (current==null) {
-            	      							current = createModelElementForParent(grammarAccess.getLtlThenRule());
+            	      							current = createModelElementForParent(grammarAccess.getLtlUntilRule());
             	      						}
             	      						set(
             	      							current,
@@ -6159,7 +6159,7 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleLtlThen"
+    // $ANTLR end "ruleLtlUntil"
 
 
     // $ANTLR start "entryRuleLtlUnary"
@@ -7066,24 +7066,24 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleLtlAtom"
-    // InternalEketal.g:2460:1: ruleLtlAtom returns [EObject current=null] : ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')' ) ) ;
+    // InternalEketal.g:2460:1: ruleLtlAtom returns [EObject current=null] : ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')' ) ) ;
     public final EObject ruleLtlAtom() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
         Token otherlv_1=null;
         Token otherlv_3=null;
-        EObject this_LtlOr_2 = null;
+        EObject this_LtlThen_2 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalEketal.g:2466:2: ( ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')' ) ) )
-            // InternalEketal.g:2467:2: ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')' ) )
+            // InternalEketal.g:2466:2: ( ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')' ) ) )
+            // InternalEketal.g:2467:2: ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')' ) )
             {
-            // InternalEketal.g:2467:2: ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')' ) )
+            // InternalEketal.g:2467:2: ( ( (otherlv_0= RULE_ID ) ) | (otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')' ) )
             int alt44=2;
             int LA44_0 = input.LA(1);
 
@@ -7133,10 +7133,10 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalEketal.g:2482:3: (otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')' )
+                    // InternalEketal.g:2482:3: (otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')' )
                     {
-                    // InternalEketal.g:2482:3: (otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')' )
-                    // InternalEketal.g:2483:4: otherlv_1= '(' this_LtlOr_2= ruleLtlOr otherlv_3= ')'
+                    // InternalEketal.g:2482:3: (otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')' )
+                    // InternalEketal.g:2483:4: otherlv_1= '(' this_LtlThen_2= ruleLtlThen otherlv_3= ')'
                     {
                     otherlv_1=(Token)match(input,22,FOLLOW_30); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -7146,17 +7146,17 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
                     }
                     if ( state.backtracking==0 ) {
 
-                      				newCompositeNode(grammarAccess.getLtlAtomAccess().getLtlOrParserRuleCall_1_1());
+                      				newCompositeNode(grammarAccess.getLtlAtomAccess().getLtlThenParserRuleCall_1_1());
                       			
                     }
                     pushFollow(FOLLOW_20);
-                    this_LtlOr_2=ruleLtlOr();
+                    this_LtlThen_2=ruleLtlThen();
 
                     state._fsp--;
                     if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      				current = this_LtlOr_2;
+                      				current = this_LtlThen_2;
                       				afterParserOrEnumRuleCall();
                       			
                     }
@@ -34097,8 +34097,8 @@ public class InternalEketalParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000002000000000L});
     public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x0000070010400010L});
     public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000008000000002L});
-    public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0000002000000002L});
+    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000002000000002L});
+    public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0000008000000002L});
     public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x0000000000400010L});
     public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x0000100000000000L});
     public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x0000000000000000L,0x0000700000000000L});

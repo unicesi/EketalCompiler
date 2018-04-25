@@ -246,6 +246,14 @@ public class EketalSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case EketalPackage.LTL_THEN:
+      {
+        LtlThen ltlThen = (LtlThen)theEObject;
+        T result = caseLtlThen(ltlThen);
+        if (result == null) result = caseLtlExpression(ltlThen);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case EketalPackage.LTL_OR:
       {
         LtlOr ltlOr = (LtlOr)theEObject;
@@ -267,14 +275,6 @@ public class EketalSwitch<T> extends Switch<T>
         LtlUntil ltlUntil = (LtlUntil)theEObject;
         T result = caseLtlUntil(ltlUntil);
         if (result == null) result = caseLtlExpression(ltlUntil);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case EketalPackage.LTL_THEN:
-      {
-        LtlThen ltlThen = (LtlThen)theEObject;
-        T result = caseLtlThen(ltlThen);
-        if (result == null) result = caseLtlExpression(ltlThen);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -659,6 +659,22 @@ public class EketalSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Ltl Then</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Ltl Then</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseLtlThen(LtlThen object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Ltl Or</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -702,22 +718,6 @@ public class EketalSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseLtlUntil(LtlUntil object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Ltl Then</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Ltl Then</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseLtlThen(LtlThen object)
   {
     return null;
   }

@@ -1027,6 +1027,61 @@ public interface EketalPackage extends EPackage
   int UNARY_EVENT_FEATURE_COUNT = EVENT_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.LtlThenImpl <em>Ltl Then</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see co.edu.icesi.eketal.eketal.impl.LtlThenImpl
+   * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlThen()
+   * @generated
+   */
+  int LTL_THEN = 23;
+
+  /**
+   * The feature id for the '<em><b>Event</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LTL_THEN__EVENT = LTL_EXPRESSION__EVENT;
+
+  /**
+   * The feature id for the '<em><b>Op</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LTL_THEN__OP = LTL_EXPRESSION__OP;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LTL_THEN__LEFT = LTL_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LTL_THEN__RIGHT = LTL_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Ltl Then</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LTL_THEN_FEATURE_COUNT = LTL_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.LtlOrImpl <em>Ltl Or</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1034,7 +1089,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlOr()
    * @generated
    */
-  int LTL_OR = 23;
+  int LTL_OR = 24;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1089,7 +1144,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlAnd()
    * @generated
    */
-  int LTL_AND = 24;
+  int LTL_AND = 25;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1144,7 +1199,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlUntil()
    * @generated
    */
-  int LTL_UNTIL = 25;
+  int LTL_UNTIL = 26;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1190,61 +1245,6 @@ public interface EketalPackage extends EPackage
    * @ordered
    */
   int LTL_UNTIL_FEATURE_COUNT = LTL_EXPRESSION_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.LtlThenImpl <em>Ltl Then</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see co.edu.icesi.eketal.eketal.impl.LtlThenImpl
-   * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlThen()
-   * @generated
-   */
-  int LTL_THEN = 26;
-
-  /**
-   * The feature id for the '<em><b>Event</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LTL_THEN__EVENT = LTL_EXPRESSION__EVENT;
-
-  /**
-   * The feature id for the '<em><b>Op</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LTL_THEN__OP = LTL_EXPRESSION__OP;
-
-  /**
-   * The feature id for the '<em><b>Left</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LTL_THEN__LEFT = LTL_EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Right</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LTL_THEN__RIGHT = LTL_EXPRESSION_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Ltl Then</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LTL_THEN_FEATURE_COUNT = LTL_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.UnaryLtlImpl <em>Unary Ltl</em>}' class.
@@ -2137,6 +2137,38 @@ public interface EketalPackage extends EPackage
   EReference getUnaryEvent_Expr();
 
   /**
+   * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.LtlThen <em>Ltl Then</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Ltl Then</em>'.
+   * @see co.edu.icesi.eketal.eketal.LtlThen
+   * @generated
+   */
+  EClass getLtlThen();
+
+  /**
+   * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.LtlThen#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see co.edu.icesi.eketal.eketal.LtlThen#getLeft()
+   * @see #getLtlThen()
+   * @generated
+   */
+  EReference getLtlThen_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.LtlThen#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see co.edu.icesi.eketal.eketal.LtlThen#getRight()
+   * @see #getLtlThen()
+   * @generated
+   */
+  EReference getLtlThen_Right();
+
+  /**
    * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.LtlOr <em>Ltl Or</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2231,38 +2263,6 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EReference getLtlUntil_Right();
-
-  /**
-   * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.LtlThen <em>Ltl Then</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Ltl Then</em>'.
-   * @see co.edu.icesi.eketal.eketal.LtlThen
-   * @generated
-   */
-  EClass getLtlThen();
-
-  /**
-   * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.LtlThen#getLeft <em>Left</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Left</em>'.
-   * @see co.edu.icesi.eketal.eketal.LtlThen#getLeft()
-   * @see #getLtlThen()
-   * @generated
-   */
-  EReference getLtlThen_Left();
-
-  /**
-   * Returns the meta object for the containment reference '{@link co.edu.icesi.eketal.eketal.LtlThen#getRight <em>Right</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Right</em>'.
-   * @see co.edu.icesi.eketal.eketal.LtlThen#getRight()
-   * @see #getLtlThen()
-   * @generated
-   */
-  EReference getLtlThen_Right();
 
   /**
    * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.UnaryLtl <em>Unary Ltl</em>}'.
@@ -2993,6 +2993,32 @@ public interface EketalPackage extends EPackage
     EReference UNARY_EVENT__EXPR = eINSTANCE.getUnaryEvent_Expr();
 
     /**
+     * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.LtlThenImpl <em>Ltl Then</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see co.edu.icesi.eketal.eketal.impl.LtlThenImpl
+     * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlThen()
+     * @generated
+     */
+    EClass LTL_THEN = eINSTANCE.getLtlThen();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LTL_THEN__LEFT = eINSTANCE.getLtlThen_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LTL_THEN__RIGHT = eINSTANCE.getLtlThen_Right();
+
+    /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.LtlOrImpl <em>Ltl Or</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3069,32 +3095,6 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EReference LTL_UNTIL__RIGHT = eINSTANCE.getLtlUntil_Right();
-
-    /**
-     * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.LtlThenImpl <em>Ltl Then</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see co.edu.icesi.eketal.eketal.impl.LtlThenImpl
-     * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlThen()
-     * @generated
-     */
-    EClass LTL_THEN = eINSTANCE.getLtlThen();
-
-    /**
-     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference LTL_THEN__LEFT = eINSTANCE.getLtlThen_Left();
-
-    /**
-     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference LTL_THEN__RIGHT = eINSTANCE.getLtlThen_Right();
 
     /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.UnaryLtlImpl <em>Unary Ltl</em>}' class.
