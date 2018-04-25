@@ -47,5 +47,10 @@ public class DefaultEqualsExpression implements Expression{
 		{
 			return false;
 		}
+	}
+
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return this.event.equals(incomingEvent)?1:0.5;
 	}		
 }

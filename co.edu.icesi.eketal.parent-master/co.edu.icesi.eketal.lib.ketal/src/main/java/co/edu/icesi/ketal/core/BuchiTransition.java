@@ -2,42 +2,24 @@ package co.edu.icesi.ketal.core;
 
 public class BuchiTransition extends Transition implements Comparable<BuchiTransition>{
 	
-	private boolean anyEvent;
+	public BuchiTransition(State begin, State end, Character character, Expression label){
+		super(begin, end, character);
+		expression = label;
+	}
 	
-	public BuchiTransition(State begin, State end, Expression exp) {
-		super(begin, end, exp);
-		anyEvent = false;
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return expression.accuracyLevel(incomingEvent);
 	}
 	
 	@Override
 	public boolean evaluateExpression(Event incomingEvent) {
-		if(anyEvent){
-			return true;
-		}
 		return super.evaluateExpression(incomingEvent);
 	}
 	
-	public BuchiTransition(State begin, State end, Character character, Expression label){
-		super(begin, end, character);
-		expression = label;
-		anyEvent = false;
-	}
-
-	public boolean isAnyEvent() {
-		return anyEvent;
-	}
-
-	public void setAnyEvent(boolean anyEvent) {
-		this.anyEvent = anyEvent;
-	}
-
 	@Override
 	public int compareTo(BuchiTransition o) {
 		int retorno = character-o.character;
-		if(anyEvent){
-			//We prefer that the TRUE transitions must be evaluated at latest. 
-			retorno+=1000;
-		}
 		if(retorno==0){
 			if(!(begin.equals(o.begin)&&end.equals(o.end)&&expression.equals(o.expression))){
 				return -1;

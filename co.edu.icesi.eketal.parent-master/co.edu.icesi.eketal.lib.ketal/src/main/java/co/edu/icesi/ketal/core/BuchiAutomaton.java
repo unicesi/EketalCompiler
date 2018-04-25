@@ -1,7 +1,9 @@
 package co.edu.icesi.ketal.core;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,12 +17,31 @@ public class BuchiAutomaton extends Automaton {
 	@Override
 	public boolean evaluate(Event event) {
 		if(event instanceof NamedEvent){
+			List<Transition> validTransitions = new ArrayList<>();
 			for (Transition transition : transitionsOfCurrentState) {
 				if(transition.evaluateExpression(event)){
 					//return super.perform(event, transition.getCharacter());
-					perform(event, transition.getCharacter());
-					return true;
+					validTransitions.add(transition);
 				}
+			}
+			switch (validTransitions.size()) {
+			case 0:
+				return false;
+			case 1:
+				perform(event, validTransitions.get(0).getCharacter());
+				return true;
+			default:
+				int accurateTransition = 0;
+				double precision = 0;
+				for (int i = 0; i < validTransitions.size(); i++) {
+					double accuracylevel = validTransitions.get(i).accuracyLevel(event);
+					if(accuracylevel>precision){
+						accurateTransition=i;
+						precision = accuracylevel;
+					}
+				}
+				perform(event, validTransitions.get(accurateTransition).getCharacter());
+				return true;
 			}
 		}
 		return false;

@@ -33,7 +33,7 @@ public class TestBuchiCase extends BuchiAutomaton {
 			final co.edu.icesi.ketal.core.State begin, final Set<co.edu.icesi.ketal.core.State> finalStates,
 			final Hashtable<co.edu.icesi.ketal.core.Expression, Character> expressions) {
 		super(transitions, begin, finalStates, expressions);
-		initializeAutomaton();
+		findTransitionsCurrentState();
 		instance = this;
 	}
 
@@ -49,8 +49,6 @@ public class TestBuchiCase extends BuchiAutomaton {
 		 * AS = { finalState }
 		 */
 		
-		// Relación evento caracter
-		Map<String, Character> mapping = new TreeMap<String, Character>();
 		// Estado inicial
 		co.edu.icesi.ketal.core.State inicial = null;
 
@@ -79,12 +77,11 @@ public class TestBuchiCase extends BuchiAutomaton {
 		consecutivo++;
 		nombreEvento = "eventHello";
 		Expression expressionEventHello = new DefaultEqualsExpression(new NamedEvent(nombreEvento));
-		if (!mapping.containsKey(nombreEvento)) {
-			mapping.put(nombreEvento, caracter);
-			expressions.put(expressionEventHello, mapping.get(nombreEvento));
+		if (!expressions.containsKey(expressionEventHello)) {
+			expressions.put(expressionEventHello, caracter);
 		}
 		co.edu.icesi.ketal.core.BuchiTransition firstStateEventHello = new co.edu.icesi.ketal.core.BuchiTransition(
-				estados.get(estadoFirstState), estados.get(estadoLlegada), mapping.get(nombreEvento), expressionEventHello);
+				estados.get(estadoFirstState), estados.get(estadoLlegada), expressions.get(expressionEventHello), expressionEventHello);
 		transitionSet.add(firstStateEventHello);
 
 		// Transicion de TRUE -> firstState
@@ -95,13 +92,12 @@ public class TestBuchiCase extends BuchiAutomaton {
 		caracter = (char) consecutivo;
 		consecutivo++;
 		nombreEvento = "TRUE";
-		if (!mapping.containsKey(nombreEvento)) {
-			mapping.put(nombreEvento, caracter);
-			expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
+		Expression trueExpression=new TrueExpression();
+		if (!expressions.containsKey(trueExpression)) {
+			expressions.put(trueExpression, caracter);
 		}
 		co.edu.icesi.ketal.core.BuchiTransition firstStateEventWorld = new co.edu.icesi.ketal.core.BuchiTransition(
-				estados.get(estadoFirstState), estados.get(estadoLlegada), mapping.get(nombreEvento), null);
-		firstStateEventWorld.setAnyEvent(true);
+				estados.get(estadoFirstState), estados.get(estadoLlegada), expressions.get(trueExpression), trueExpression);
 		transitionSet.add(firstStateEventWorld);
 		
 		// Transicion de eventHello -> finalState
@@ -112,11 +108,11 @@ public class TestBuchiCase extends BuchiAutomaton {
 	    caracter = (char)consecutivo;
 	    consecutivo++;
 	    nombreEvento = "eventHello";
-	    if(!mapping.containsKey(nombreEvento)){
-	    	mapping.put(nombreEvento, caracter);
-	    	expressions.put(new DefaultEqualsExpression(new NamedEvent(nombreEvento)), mapping.get(nombreEvento));
+	    expressionEventHello = new DefaultEqualsExpression(new NamedEvent(nombreEvento));
+	    if(!expressions.containsKey(expressionEventHello)){
+	    	expressions.put(expressionEventHello, caracter);
 	    }
-	    BuchiTransition finalStateInitServer = new BuchiTransition(estados.get(estadoFinalState), estados.get(estadoLlegada), mapping.get(nombreEvento),expressionEventHello);
+	    BuchiTransition finalStateInitServer = new BuchiTransition(estados.get(estadoFinalState), estados.get(estadoLlegada), expressions.get(expressionEventHello), expressionEventHello);
 	    transitionSet.add(finalStateInitServer);
 		// Estado final FinalState
 		estados.get(estadoFinalState).setAccept(true);

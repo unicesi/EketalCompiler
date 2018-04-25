@@ -60,4 +60,9 @@ public class ConcurrentEqualsExpression implements Expression
 		}
 	}
 
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return 1;
+	}
+
 }

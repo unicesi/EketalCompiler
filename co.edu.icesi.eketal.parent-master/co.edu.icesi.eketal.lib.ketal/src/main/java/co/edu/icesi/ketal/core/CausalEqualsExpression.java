@@ -61,4 +61,9 @@ public class CausalEqualsExpression implements Expression
 			return false;
 		}
 	}
+
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return 1;
+	}
 }

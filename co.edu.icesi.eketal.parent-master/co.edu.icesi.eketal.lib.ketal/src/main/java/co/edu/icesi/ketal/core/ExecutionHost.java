@@ -53,4 +53,9 @@ public class ExecutionHost implements Unary {
 		}
 	}
 
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return 1;
+	}
+
 }

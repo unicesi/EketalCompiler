@@ -38,5 +38,11 @@ public class Or implements Binary{
 		throw new UnsupportedOperationException("The Binary Expressions can not do this operation");
 	}
 
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return Double.max(leftExpression.accuracyLevel(incomingEvent), rightExpression.accuracyLevel(incomingEvent));
+	}
+
+
 
 }

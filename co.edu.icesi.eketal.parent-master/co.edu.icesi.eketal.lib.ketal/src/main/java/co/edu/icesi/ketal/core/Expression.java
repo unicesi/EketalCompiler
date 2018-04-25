@@ -29,4 +29,15 @@ public interface Expression {
 	 */
 	public boolean setEvent(Event anEvent);
 	
+	/**
+	 * Calculates the level of acceptance between a transition and an incoming event.
+	 * @precondition using this method assumes that evaluate(incomingEvent) returns true. 
+	 * @param incomingEvent
+	 * @return If the event is the same, must return max level of acceptance.
+	 * If the event if different, must return 0,5 (because by precondition the evaluation eventually becomes true)
+	 * If is a trueEvent, must return 0,3 (lowest level of acceptance, as this means that is the complement function of transitions for that state)
+	 */
+	
+	public double accuracyLevel(Event incomingEvent);
+	
 }

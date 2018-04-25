@@ -52,4 +52,10 @@ public class And implements Binary{
 	}
 
 
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return Double.max(leftExpression.accuracyLevel(incomingEvent), rightExpression.accuracyLevel(incomingEvent));
+	}
+
+
 }

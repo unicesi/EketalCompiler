@@ -56,4 +56,9 @@ public class OriginatingHost implements Unary {
 		}
 	}
 
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return 1;
+	}
+
 }

@@ -91,6 +91,10 @@ public class Transition {
 		return false;
 	}
 	
+	public double accuracyLevel(Event incomingEvent){
+		return evaluateExpression(incomingEvent)?1:0;
+	}
+	
 	/**
 	 * Return mapped to an Expression and to Transition
 	 * @return

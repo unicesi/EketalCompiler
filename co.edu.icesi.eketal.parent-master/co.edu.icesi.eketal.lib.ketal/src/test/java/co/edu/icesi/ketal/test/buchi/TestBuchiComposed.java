@@ -15,6 +15,7 @@ import co.edu.icesi.ketal.core.NamedEvent;
 import co.edu.icesi.ketal.core.NotExpression;
 import co.edu.icesi.ketal.core.Or;
 import co.edu.icesi.ketal.core.State;
+import co.edu.icesi.ketal.core.TrueExpression;
 
 public class TestBuchiComposed extends BuchiAutomaton {
 	private static TestBuchiComposed instance;
@@ -40,7 +41,7 @@ public class TestBuchiComposed extends BuchiAutomaton {
 			final co.edu.icesi.ketal.core.State begin, final Set<co.edu.icesi.ketal.core.State> finalStates,
 			final Hashtable<co.edu.icesi.ketal.core.Expression, Character> expressions) {
 		super(transitions, begin, finalStates, expressions);
-		initializeAutomaton();
+		findTransitionsCurrentState();
 		instance = this;
 	}
 
@@ -91,7 +92,7 @@ public class TestBuchiComposed extends BuchiAutomaton {
 			expressions.put(expressionAnotherEventEventHello, caracter);
 		}
 		co.edu.icesi.ketal.core.BuchiTransition firstStateEventHello = new co.edu.icesi.ketal.core.BuchiTransition(
-				estados.get(estadoS0), estados.get(estadoLlegada), expressionAnotherEventEventHello);
+				estados.get(estadoS0), estados.get(estadoLlegada), expressions.get(expressionAnotherEventEventHello), expressionAnotherEventEventHello);
 		transitionSet.add(firstStateEventHello);
 		
 		// Transicion de otherEvent-> S2
@@ -105,7 +106,7 @@ public class TestBuchiComposed extends BuchiAutomaton {
 	    if(!expressions.containsKey(expression)){
 	    	expressions.put(expression, caracter);
 	    }
-	    BuchiTransition finalStateInitServer = new BuchiTransition(estados.get(estadoS1), estados.get(estadoLlegada),expression);
+	    BuchiTransition finalStateInitServer = new BuchiTransition(estados.get(estadoS0), estados.get(estadoLlegada), expressions.get(expression), expression);
 	    transitionSet.add(finalStateInitServer);
 		
 	    
@@ -120,7 +121,7 @@ public class TestBuchiComposed extends BuchiAutomaton {
 	    if(!expressions.containsKey(expression)){
 	    	expressions.put(expression, caracter);
 	    }
-	    BuchiTransition otherEventS0 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada),expression);
+	    BuchiTransition otherEventS0 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada), expressions.get(expression), expression);
 	    transitionSet.add(otherEventS0);
 		
 	 // Transicion de anotherEvent-> S1
@@ -134,7 +135,7 @@ public class TestBuchiComposed extends BuchiAutomaton {
 	    if(!expressions.containsKey(expression)){
 	    	expressions.put(expression, caracter);
 	    }
-	    BuchiTransition otherEventS2 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada),expression);
+	    BuchiTransition otherEventS2 = new BuchiTransition(estados.get(estadoS2), estados.get(estadoLlegada), expressions.get(expression), expression);
 	    transitionSet.add(otherEventS2);
 	    
 		// Transicion de TRUE -> S1
@@ -145,12 +146,12 @@ public class TestBuchiComposed extends BuchiAutomaton {
 		caracter = (char) consecutivo;
 		consecutivo++;
 		nombreEvento = "TRUE";
+		expression=new TrueExpression();
 		if (!expressions.containsKey(expression)) {
 			expressions.put(expression, caracter);
 		}
 		co.edu.icesi.ketal.core.BuchiTransition firstStateEventWorld = new co.edu.icesi.ketal.core.BuchiTransition(
-				estados.get(estadoS1), estados.get(estadoLlegada), null);
-		firstStateEventWorld.setAnyEvent(true);
+				estados.get(estadoS1), estados.get(estadoLlegada), expressions.get(expression), expression);
 		transitionSet.add(firstStateEventWorld);
 	    
 	    
@@ -159,5 +160,9 @@ public class TestBuchiComposed extends BuchiAutomaton {
 		estadosFinales.add(estados.get(estadoS1));
 
 		return inicial;
+	}
+
+	public void destroy() {
+		instance=null;
 	}
 }

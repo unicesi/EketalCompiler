@@ -40,6 +40,11 @@ public class NotExpression implements Unary{
 			return false;
 		}
 	}
+	
+	@Override
+	public double accuracyLevel(Event incomingEvent) {
+		return 1-exp.accuracyLevel(incomingEvent);
+	}
 
 
 }

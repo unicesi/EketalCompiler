@@ -9,7 +9,7 @@ import co.edu.icesi.ketal.core.NamedEvent;
 
 public class TestBuchiAutomaton {
 
-	@Test
+	//@Test
 	public void testBasicAutomaton() {
 		Automaton automaton = TestBuchiCase.getInstance();
 		
@@ -27,12 +27,64 @@ public class TestBuchiAutomaton {
 		assertFalse(evaluar);		
 	}
 	
+	//@Test
+	public void testComplex() {
+		TestBuchiComposed automaton = (TestBuchiComposed)TestBuchiComposed.getInstance();
+		NamedEvent eventHello = new NamedEvent("eventHello");
+		NamedEvent anotherEvent	 = new NamedEvent("anotherEvent");
+		NamedEvent otherEvent = new NamedEvent("otherEvent");
+		
+		assertFalse(automaton.evaluate(eventHello));
+		assertTrue(automaton.evaluate(otherEvent));
+		assertTrue(automaton.evaluate(otherEvent));
+		assertTrue(automaton.evaluate(otherEvent));
+		assertFalse(automaton.evaluate(eventHello));
+		
+		automaton.destroy();
+		automaton = (TestBuchiComposed)TestBuchiComposed.getInstance();
+		assertTrue(automaton.evaluate(anotherEvent));
+		assertTrue(automaton.evaluate(otherEvent));
+		assertTrue(automaton.evaluate(eventHello));
+		
+		automaton.destroy();
+		automaton = (TestBuchiComposed)TestBuchiComposed.getInstance();
+		assertTrue(automaton.evaluate(otherEvent));
+		assertFalse(automaton.evaluate(eventHello));
+		
+		automaton.destroy();
+		automaton = (TestBuchiComposed)TestBuchiComposed.getInstance();
+		assertTrue(automaton.evaluate(otherEvent));
+		assertTrue(automaton.evaluate(otherEvent));
+		assertTrue(automaton.evaluate(anotherEvent));
+		assertTrue(automaton.evaluate(eventHello));
+		assertTrue(automaton.evaluate(otherEvent));
+		
+	}
+	
 	@Test
 	public void test() {
-		Automaton automaton = TestBuchiComposed.getInstance();
-		NamedEvent eventHello = new NamedEvent("eventHello");
-		NamedEvent anotherEvent = new NamedEvent("anotherEvent");
-		NamedEvent otherEvent = new NamedEvent("otherEvent");
+		UntilExample automaton = (UntilExample)UntilExample.getInstance();
+		NamedEvent initServerHello = new NamedEvent("initServer");
+		NamedEvent initClientEvent	 = new NamedEvent("initClient");
+		NamedEvent outEvent = new NamedEvent("out");
+		
+		assertTrue(automaton.evaluate(initServerHello));
+		assertTrue(automaton.evaluate(initClientEvent));
+		assertTrue(automaton.evaluate(initServerHello));
+		assertTrue(automaton.evaluate(initClientEvent));
+		assertTrue(automaton.evaluate(initClientEvent));
+		assertTrue(automaton.evaluate(initServerHello));
+		assertTrue(automaton.evaluate(outEvent));
+		assertTrue(automaton.evaluate(initClientEvent));
+		assertTrue(automaton.evaluate(outEvent));
+		assertFalse(automaton.evaluate(initServerHello));
+		
+		automaton.destroy();
+		automaton = (UntilExample)UntilExample.getInstance();
+		assertTrue(automaton.evaluate(outEvent));
+		assertTrue(automaton.evaluate(outEvent));
+		assertTrue(automaton.evaluate(outEvent));
+		assertFalse(automaton.evaluate(initServerHello));
 	}
 
 }
