@@ -134,20 +134,6 @@ class EketalGenerator implements IGenerator{
 					//	System.out.println("[Aspectj] Threw an exception: " + e);
 					//}
 					after(): «event.name.toFirstLower»(){
-						Event event = new NamedEvent("«event.name»");
-						«EketalJvmModelInferrer.handlerClassName» distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
-						event.setLocalization(distribuidor.getAsyncAddress());
-						Map map = new HashMap<String, Object>();
-						distribuidor.multicast(event, map);
-						«FOR buchi: buchis»
-							Automaton automaton«buchi.name.toFirstUpper» = co.edu.icesi.eketal.buchiautomaton.«buchi.name.toFirstUpper».getInstance();
-							if(!automaton«buchi.name.toFirstUpper».evaluate(event)){
-								«EketalJvmModelInferrer.reaction».onViolation();
-							}else{
-								logger.info("[Aspectj] Event respects the property «buchi.name»");
-							}
-						«ENDFOR»
-						
 						«IF !automatons.isEmpty»
 							«FOR automatonName:automatons»
 								«IF eventsOfAutomaton.get(automatonName).contains(event.name)»
@@ -160,12 +146,20 @@ class EketalGenerator implements IGenerator{
 						«ENDIF»
 					}
 					before(): «event.name.toFirstLower»(){
-						«IF !automatons.isEmpty»
+						«IF !automatons.isEmpty || !buchis.isEmpty»
 							Event event = new NamedEvent("«event.name»");
 							«EketalJvmModelInferrer.handlerClassName» distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
 							event.setLocalization(distribuidor.getAsyncAddress());
 							Map map = new HashMap<String, Object>();
 							distribuidor.multicast(event, map);
+							«FOR buchi: buchis»
+								Automaton automaton«buchi.name.toFirstUpper» = co.edu.icesi.eketal.buchiautomaton.«buchi.name.toFirstUpper».getInstance();
+								if(!automaton«buchi.name.toFirstUpper».evaluate(event)){
+									«EketalJvmModelInferrer.reaction».onViolation();
+								}else{
+									logger.info("[Aspectj] Event respects the property «buchi.name»");
+								}
+							«ENDFOR»
 							«FOR automatonName:automatons»
 								«IF eventsOfAutomaton.get(automatonName).contains(event.name)»
 									Automaton «automatonName.name.toFirstLower» = «automatonName.name.toFirstUpper».getInstance();
