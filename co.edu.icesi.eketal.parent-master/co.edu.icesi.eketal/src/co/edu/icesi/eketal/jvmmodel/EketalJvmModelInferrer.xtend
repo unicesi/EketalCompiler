@@ -142,16 +142,23 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		// return steps
 		// ]
 		/*
-		 * Collects all the automatons and creates an automaton for each one
+		 * Collects all the automatons
 		 */
 		var automatons = element.typeDeclaration.declarations.filter(typeof(co.edu.icesi.eketal.eketal.Automaton));
+		
+		/*
+		 * Returns a where the keys are automatons and the values are the states of that automaton.
+		 */
 		val eventsOfAutomaton = automatons.toInvertedMap [ a |
 			val Set<String> steps = new TreeSet
 			// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
 			a.steps.forall[s|steps.add(a.name + ":" + s.name)]
 			return steps
 		]
-
+	
+		/*
+		 *  Creates an automaton java class for each one automaton in 'automatons'
+		 */
 		var String nameAutomaton;
 		for (declaracion : automatons) {
 			// Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
@@ -221,7 +228,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			]
 
 		}
-
+		
+		
+		
 		/*
 		 * Creates the class that contains the required reactions
 		 */
@@ -232,7 +241,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		 * Creates the class that handles the control in the jgroups
 		 */
 		val handlerClass = element.typeDeclaration;
-		createHandlerClass(acceptor, handlerClass, automatons.toSet)
+		createHandlerClass(acceptor, handlerClass, automatons.toSet, buchis.toSet)
 
 	}
 
@@ -502,7 +511,15 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					]
 				}
 			}
-
+			
+			members+=reactions.toMethod("onViolation", typeRef(void))[
+				static = true
+				body = '''
+					System.out.println("Formulae violated");
+					//System.exit(0);
+				'''
+			]
+			
 			val operations = reactions.declarations.filter(typeof(MSig))
 			if (!operations.isEmpty) {
 				for (method : operations) {
@@ -587,7 +604,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	/*
 	 * Also adds the Singleton nature
 	 */
-	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass, Set machines) {
+	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass, Set<co.edu.icesi.eketal.eketal.Automaton> machines, Set<Ltl> buchis) {
 		val automatons = machines.map[a|a as co.edu.icesi.eketal.eketal.Automaton].toSet
 		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol." + handlerClassName)) [
 			// Implementación de la simulación Singleton
@@ -626,6 +643,16 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 												co.edu.icesi.eketal.reaction.«reaction».verifyAfter(automaton«nameAutomaton.name.toFirstUpper»);					
 											}
 							«ENDFOR»
+							
+							«FOR buchi: buchis»
+								«typeRef(Automaton)» automaton«buchi.name.toFirstUpper» = co.edu.icesi.eketal.buchiautomaton.«buchi.name.toFirstUpper».getInstance();
+								if(!automaton«buchi.name.toFirstUpper».evaluate(event)){
+									co.edu.icesi.eketal.reaction.«reaction».onViolation();
+								}else{
+									«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Event respects the property «buchi.name»");
+								}
+							«ENDFOR»
+									
 							return handle;
 						}
 					};

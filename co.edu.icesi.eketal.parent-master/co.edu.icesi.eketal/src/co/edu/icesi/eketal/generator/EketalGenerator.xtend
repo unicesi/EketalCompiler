@@ -23,6 +23,7 @@ import co.edu.icesi.eketal.eketal.Decl
 import co.edu.icesi.eketal.eketal.Model
 import java.util.HashMap
 import co.edu.icesi.eketal.eketal.TPrefix
+import co.edu.icesi.eketal.eketal.Ltl
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -73,8 +74,10 @@ class EketalGenerator implements IGenerator{
 //		var String automatonName = null
 		var automatons = modelo.declarations.filter(Automaton)
 		
+		var buchis = modelo.declarations.filter(Ltl)
+		
 		val eventsOfAutomaton =  automatons.toInvertedMap[a | 
-			val Set events = new TreeSet
+			val Set<String> events = new TreeSet
 			a.steps.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
 			return events	
 		]
@@ -131,6 +134,20 @@ class EketalGenerator implements IGenerator{
 					//	System.out.println("[Aspectj] Threw an exception: " + e);
 					//}
 					after(): «event.name.toFirstLower»(){
+						Event event = new NamedEvent("«event.name»");
+						«EketalJvmModelInferrer.handlerClassName» distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
+						event.setLocalization(distribuidor.getAsyncAddress());
+						Map map = new HashMap<String, Object>();
+						distribuidor.multicast(event, map);
+						«FOR buchi: buchis»
+							Automaton automaton«buchi.name.toFirstUpper» = co.edu.icesi.eketal.buchiautomaton.«buchi.name.toFirstUpper».getInstance();
+							if(!automaton«buchi.name.toFirstUpper».evaluate(event)){
+								«EketalJvmModelInferrer.reaction».onViolation();
+							}else{
+								logger.info("[Aspectj] Event respects the property «buchi.name»");
+							}
+						«ENDFOR»
+						
 						«IF !automatons.isEmpty»
 							«FOR automatonName:automatons»
 								«IF eventsOfAutomaton.get(automatonName).contains(event.name)»
