@@ -1,4 +1,4 @@
-# REAL test's
+# REAL tests
 
   This are some test using the REAL compiler, to deploy, you must have locally installed with maven the REAL project as follows:
 
