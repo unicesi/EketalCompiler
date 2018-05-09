@@ -19,15 +19,48 @@ Or skipping the test from the compiler as follows:
 mvn clean install -DskipTests=true
 ```
 
-There are 3 examples that are:
+There are 4 examples explained below:
 
-## 1. Hadoop Yarn
+
+## 1. SecurityRestServer - Using Lineal Temporal Logic to verify a temporal property
+
+This example deploys a simple client/server application using REST in Java with Spark. The server deploys services for interacting with an API from a basic model. The client consumes several server's services.
+
+Finally, over the client a REAL's monitor is launched for verifying a temporal property over all the deployed clients. In order to use this example, we provide some instructions to detect a violation, but first we need to create the jars.
+
+```
+mvn clean package
+```
+
+This will create the jars for the client and the server. Now, we need to launch the server with:
+```
+java -jar target/SecurityRestServer.jar
+```
+It will deploy the server in the machine using its default ip, using the port 4567. You may query this server with your default browser, accessing to the following urls:
+
+```
+http://localhost:4567/hello
+http://localhost:4567/sessions
+http://localhost:4567/session/[1-4]
+```
+
+Now, once the server is running, you may deploy as many clients as you want to consume the server interfaces. The client may be run in two modes, first one that will address the violation, and the other one that only makes petitions. Modes are explained below:
+```
+java -jar target/SecurityRestServer-client.jar
+java -jar target/SecurityRestServer-client.jar -destroy
+```
+As the idea is to use different machine with different ip's, you can specify the server's ip with the -ip x.x.x.x option. If not specify, default is localhost. So, all the petitions will be done to that ip.
+```
+java -jar target/SecurityRestServer-client.jar -ip <your SERVER ip>
+
+## 2. Hadoop Yarn
+
 In this example, we provide an integration of REAL with Hadoop's Yarn project. Main objective is to count the number of Containers launched by yarn in each of the nodes, and, to communicate them eachother.
 
 To launch and test this example, we propose two ways. Inside the [HadoopYarn](https://github.com/unicesi/eketal/tree/master/test/HadoopYarn/)'s folder, you can find complete documentation for built the test, depending on your requirements.
 
 
-## 2. Hello-World
+## 3. Hello-World
 
 ### 1. Test
 ```
@@ -69,7 +102,7 @@ group localGroup{
    This declaration allows to create groups, composed by host's, that will filter the incoming and outcoming calls of the events. In other words, this is reflected in a validation for the received events, and verifies which machine (or node in the distributed application) triggered the event.
 
 
-## 3. Datarace
+## 4. Datarace
   This example was proposed to work in a real case, that consist in issue that occurs when various threads want to access the same memmory location concurrently, and can cause problems or bugs in the program. So, as can be seen in the Datarace.eketal file, There are some events, and one of them take place in a non-controled situation that ends up with a datarace if the incorrect sequence of methods calls is executed. To simulate this problem, there will be two programs that interact with the JBossCache, that is used to save and read some data
 
 The automaton looks for the following sequence of events: **consult** -> **insert** -> **insert**; when it finds it, triggers a reaction. Each node make a different interact in the cache, but their individual interacts are not recognized by the automaton to perform the reaction, so both programs must be running at the time to accomplish the expected event sequence.
@@ -116,7 +149,7 @@ mvn exec:java -Dexec.mainClass="local.RunExecute"
 
 This example shows how REAL detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
 
-## 4. Deadlock
+## 5. Deadlock
 
 **Run it via Maven**
 
@@ -141,28 +174,27 @@ Finally, use the stop command in both consoles to stop their channels.
 
 **Run it with Eclipse**
 
-### 3.1. Import project
+### 5.1. Import project
 First, import this example as a Maven project.
-#### 3.1.1. Go to "File" -> "Import…"
-#### 3.1.2. Then "Maven" -> "Existing Maven Projects"
-#### 3.1.3. Select the folder where you downloaded the sources, select the "Deadlock" test project and click on "Finish".
+#### 5.1.1. Go to "File" -> "Import…"
+#### 5.1.2. Then "Maven" -> "Existing Maven Projects"
+#### 5.1.3. Select the folder where you downloaded the sources, select the "Deadlock" test project and click on "Finish".
 
-### 3.2. Compile sources
+### 5.2. Compile sources
 The required classes to launch this project have to be generated, to do this, follow the instructions bellow
-#### 3.2.1. Right click on the project ->  ->
-#### 3.2.2. Then "Maven" -> "Existing Maven Projects"
+#### 5.2.1. Right click on the project ->  ->
+#### 5.2.2. Then "Maven" -> "Existing Maven Projects"
 
 To generate the required classes, once you have
-#### 3.2.3. Right click on the project -> "Maven" -> "Update Project..." and press "OK"
-#### 3.2.4. Right click on the project -> "Run As" -> "Maven Build..."
-#### 3.2.5. In the Goals field write "clean compile" and press the "Run" button
+#### 5.2.3. Right click on the project -> "Maven" -> "Update Project..." and press "OK"
+#### 5.2.4. Right click on the project -> "Run As" -> "Maven Build..."
+#### 5.2.5. In the Goals field write "clean compile" and press the "Run" button
 
-### 3.3. Run the test
+### 5.3. Run the test
 
-#### 3.3.1 Open two console views in eclipse. Go to "Window" -> "Show View" -> "Console". (recommended in the Console view to uncheck the "Show Console When Standard Out Changes" and "Show Console When Standard Errors Changes")
-#### 3.3.2 Run the project twice.
+#### 5.3.1 Open two console views in eclipse. Go to "Window" -> "Show View" -> "Console". (recommended in the Console view to uncheck the "Show Console When Standard Out Changes" and "Show Console When Standard Errors Changes")
+#### 5.3.2 Run the project twice.
 The application interacts with the user, so there are three reserved words to use this example, and they are: prepare, commit and stop.
-#### 3.3.3 Start both consoles with the command "prepare" to begin the JGroups channels.
-#### 3.3.4 In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
-#### 3.3.5 Finally, use the stop command in both consoles to stop their channels.
-  
+#### 5.3.3 Start both consoles with the command "prepare" to begin the JGroups channels.
+#### 5.3.4 In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
+#### 5.3.5 Finally, use the stop command in both consoles to stop their channels.

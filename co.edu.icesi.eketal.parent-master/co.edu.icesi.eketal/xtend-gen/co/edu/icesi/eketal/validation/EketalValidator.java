@@ -9,6 +9,8 @@ import co.edu.icesi.eketal.eketal.EvDecl;
 import co.edu.icesi.eketal.eketal.EventClass;
 import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.Host;
+import co.edu.icesi.eketal.eketal.Ltl;
+import co.edu.icesi.eketal.eketal.LtlExpression;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
@@ -55,8 +57,14 @@ public class EketalValidator extends AbstractEketalValidator {
   
   public final static String REPEATED_EVENT_NAME = "eketal.issue.repeatedEventName";
   
+  public final static String REPEATED_AUTOMATON_NAME = "eketal.issue.repeatedAutomatonName";
+  
+  public final static String CAPITAL_U_ON_EVENT = "eketal.issue.capitalUOnEvent";
+  
+  public final static String LTL_REQUIRED = "eketal.issue.ltlExpressionRequired";
+  
   @Check
-  public void checkRepeatedEventName(final EventClass myClass) {
+  public void checkRepeatedDeclarationsName(final EventClass myClass) {
     Iterable<EvDecl> events = Iterables.<EvDecl>filter(myClass.getDeclarations(), EvDecl.class);
     final Function1<EvDecl, String> _function = (EvDecl ev) -> {
       return ev.getName();
@@ -77,6 +85,36 @@ public class EketalValidator extends AbstractEketalValidator {
           "\'");
         this.error(_plus_1, EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, EketalValidator.REPEATED_EVENT_NAME);
       }
+    }
+    Iterable<Automaton> automatons = Iterables.<Automaton>filter(myClass.getDeclarations(), Automaton.class);
+    final Function1<Automaton, String> _function_2 = (Automaton aut) -> {
+      return aut.getName();
+    };
+    final Function2<String, List<Automaton>, Boolean> _function_3 = (String e, List<Automaton> l) -> {
+      int _size = l.size();
+      return Boolean.valueOf((_size > 1));
+    };
+    final Map<String, List<Automaton>> duplicateAutomaton = MapExtensions.<String, List<Automaton>>filter(IterableExtensions.<String, Automaton>groupBy(automatons, _function_2), _function_3);
+    boolean _isEmpty_1 = duplicateAutomaton.isEmpty();
+    boolean _not_1 = (!_isEmpty_1);
+    if (_not_1) {
+      Set<String> _keySet_1 = duplicateAutomaton.keySet();
+      for (final String automaton : _keySet_1) {
+        String _name_1 = myClass.getName();
+        String _plus_2 = ((("The automaton \'" + automaton) + "\' is repeated in \'") + _name_1);
+        String _plus_3 = (_plus_2 + 
+          "\'");
+        this.error(_plus_3, EketalPackage.Literals.EVENT_CLASS__DECLARATIONS, EketalValidator.REPEATED_AUTOMATON_NAME);
+      }
+    }
+  }
+  
+  @Check
+  public void capitalUOnEvents(final EvDecl event) {
+    boolean _contains = event.getName().contains("U");
+    if (_contains) {
+      this.error(((("The name of the event \'" + event) + "\' may not contain capital U i its name\'") + 
+        "\'"), EketalPackage.Literals.EV_DECL__NAME, EketalValidator.CAPITAL_U_ON_EVENT);
     }
   }
   
@@ -104,6 +142,20 @@ public class EketalValidator extends AbstractEketalValidator {
           "\'");
         this.error(_plus_3, EketalPackage.Literals.STEP__TRANSITIONS, EketalValidator.DETERMINIST_AUTOMATON_DEFINITION);
       }
+    }
+  }
+  
+  @Check
+  public void checkValidLtlFormulae(final Ltl formula) {
+    LtlExpression _predicate = formula.getPredicate();
+    boolean _tripleEquals = (_predicate == null);
+    if (_tripleEquals) {
+      String _name = formula.getName();
+      String _plus = ("The Ltl \'" + _name);
+      String _plus_1 = (_plus + "\' must contain a formula to evaluate\'");
+      String _plus_2 = (_plus_1 + 
+        "\'");
+      this.error(_plus_2, EketalPackage.Literals.LTL__NAME, EketalValidator.LTL_REQUIRED);
     }
   }
   
@@ -182,7 +234,7 @@ public class EketalValidator extends AbstractEketalValidator {
         }
       } else {
         for (final Step state_1 : initialState) {
-          if ((Objects.equal(state_1.getTransitions(), null) || state_1.getTransitions().isEmpty())) {
+          if (((state_1.getTransitions() == null) || state_1.getTransitions().isEmpty())) {
             String _name_2 = automaton.getName();
             String _plus_6 = ("The automaton \'" + _name_2);
             String _plus_7 = (_plus_6 + "\' must have at least one transition in his initial state \'");
@@ -245,7 +297,7 @@ public class EketalValidator extends AbstractEketalValidator {
     int _indexOf = URI.lastSegment().indexOf(URI.fileExtension());
     int _minus = (_indexOf - 1);
     final String fileName = _lastSegment.substring(0, _minus);
-    final boolean isPublic = ((!Objects.equal(typeDecl.eContainer(), null)) && (typeDecl.eContainer() instanceof Model));
+    final boolean isPublic = ((typeDecl.eContainer() != null) && (typeDecl.eContainer() instanceof Model));
     if ((isPublic && (!fileName.equals(typeDecl.getName())))) {
       String _name = typeDecl.getName();
       String _plus = ("The declared type \'" + _name);

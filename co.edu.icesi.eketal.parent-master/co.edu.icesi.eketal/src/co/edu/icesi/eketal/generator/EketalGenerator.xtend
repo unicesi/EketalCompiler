@@ -23,6 +23,7 @@ import co.edu.icesi.eketal.eketal.Decl
 import co.edu.icesi.eketal.eketal.Model
 import java.util.HashMap
 import co.edu.icesi.eketal.eketal.TPrefix
+import co.edu.icesi.eketal.eketal.Ltl
 
 //https://www.eclipse.org/forums/index.php/t/486215/
 
@@ -37,11 +38,11 @@ class EketalGenerator implements IGenerator{
 		val Set<String> importedLibraries = new TreeSet()
 		if(listModel.hasNext){
 			val modelo = listModel.next
-			if(modelo.name!=null)
+			if(modelo.name!==null)
 				importedLibraries+=modelo.name+".*"
-			if(modelo.importSection!=null && !modelo.importSection.importDeclarations.empty){
+			if(modelo.importSection!==null && !modelo.importSection.importDeclarations.empty){
 				modelo.importSection.importDeclarations.forEach[
-					if(it.importedNamespace!=null)
+					if(it.importedNamespace!==null)
 						importedLibraries+=it.importedNamespace
 					else
 						importedLibraries+=it.importedTypeName
@@ -73,8 +74,10 @@ class EketalGenerator implements IGenerator{
 //		var String automatonName = null
 		var automatons = modelo.declarations.filter(Automaton)
 		
+		var buchis = modelo.declarations.filter(Ltl)
+		
 		val eventsOfAutomaton =  automatons.toInvertedMap[a | 
-			val Set events = new TreeSet
+			val Set<String> events = new TreeSet
 			a.steps.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
 			return events	
 		]
@@ -143,12 +146,20 @@ class EketalGenerator implements IGenerator{
 						«ENDIF»
 					}
 					before(): «event.name.toFirstLower»(){
-						«IF !automatons.isEmpty»
+						«IF !automatons.isEmpty || !buchis.isEmpty»
 							Event event = new NamedEvent("«event.name»");
 							«EketalJvmModelInferrer.handlerClassName» distribuidor = «EketalJvmModelInferrer.handlerClassName».getInstance();
 							event.setLocalization(distribuidor.getAsyncAddress());
 							Map map = new HashMap<String, Object>();
 							distribuidor.multicast(event, map);
+							«FOR buchi: buchis»
+								Automaton automaton«buchi.name.toFirstUpper» = co.edu.icesi.eketal.buchiautomaton.«buchi.name.toFirstUpper».getInstance();
+								if(!automaton«buchi.name.toFirstUpper».evaluate(event)){
+									«EketalJvmModelInferrer.reaction».onViolation();
+								}else{
+									logger.info("[Aspectj] Event respects the property «buchi.name»");
+								}
+							«ENDFOR»
 							«FOR automatonName:automatons»
 								«IF eventsOfAutomaton.get(automatonName).contains(event.name)»
 									Automaton «automatonName.name.toFirstLower» = «automatonName.name.toFirstUpper».getInstance();
@@ -222,7 +233,7 @@ class EketalGenerator implements IGenerator{
 	 */
 
 	def eventExpression(EventExpression event, TreeSet<String> pointcuts) {
-			if(event.tipoEvento!=null){
+			if(event.tipoEvento!==null){
 				var eventKind = event.tipoEvento
 				switch(eventKind){
 					Trigger:{
@@ -273,9 +284,9 @@ class EketalGenerator implements IGenerator{
 				}
 			}
 			return '''if(«body»)'''
-		}else if(attribute.hostgroup!=null){
+		}else if(attribute.hostgroup!==null){
 			return '''if(«EketalJvmModelInferrer.groupClassName».host("«attribute.hostgroup.name»"))'''
-		}else if(attribute.ongroup!=null){
+		}else if(attribute.ongroup!==null){
 			return '''if(«EketalJvmModelInferrer.groupClassName».on("«attribute.ongroup.name»"))'''
 //			return '''on()'''//TODO acá debe hacer otro procesamiento dado que este elemento no está
 //			//soportado por aspectj
@@ -295,9 +306,9 @@ class EketalGenerator implements IGenerator{
 		}
 		
 		var String typeReturn = null
-		if(trigger.returndef==null){
+		if(trigger.returndef===null){
 			typeReturn=""
-		}else if(trigger.returndef.astk==null){
+		}else if(trigger.returndef.astk===null){
 			typeReturn=trigger.returndef.jvmRef.simpleName
 		}else{
 			typeReturn = "*"

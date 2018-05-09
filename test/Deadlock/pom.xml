@@ -12,7 +12,7 @@
 		<jbase-version>0.7.0</jbase-version>
 		<jre-version>1.8</jre-version>
 		<aspectj.version>1.8.9</aspectj.version>
-		<eketal-version>2.0.1-SNAPSHOT</eketal-version>
+		<eketal-version>3.0.0-SNAPSHOT</eketal-version>
 	</properties>
 
 	<dependencies>
@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>co.edu.icesi.eketal</groupId>
-			<artifactId>co.edu.icesi.eketal.lib</artifactId>
+			<artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
 			<version>${eketal-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
@@ -206,7 +206,7 @@
 						</dependency>
 						<dependency>
 							<groupId>co.edu.icesi.eketal</groupId>
-							<artifactId>co.edu.icesi.eketal.lib</artifactId>
+							<artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
 							<version>${eketal-version}</version>
 					</dependency>
 				</dependencies>

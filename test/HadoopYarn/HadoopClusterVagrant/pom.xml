@@ -36,7 +36,7 @@
     <xtext-version>2.12.0</xtext-version>
     <jre-version>1.8</jre-version>
     <aspectj.version>1.8.9</aspectj.version>
-	<eketal-version>2.0.1-SNAPSHOT</eketal-version>
+	<eketal-version>3.0.0-SNAPSHOT</eketal-version>
   </properties>
 
   <dependencies>

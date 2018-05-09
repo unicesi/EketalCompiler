@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: co.edu.icesi.eketal
 Bundle-Vendor: Icesi
-Bundle-Version: 2.0.1.qualifier
+Bundle-Version: 3.0.0.qualifier
 Bundle-SymbolicName: co.edu.icesi.eketal; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
@@ -34,6 +34,8 @@ Export-Package: co.edu.icesi.eketal,
 Import-Package: co.edu.icesi.ketal.core,
  co.edu.icesi.ketal.distribution,
  co.edu.icesi.ketal.distribution.transports.jgroups,
+ co.edu.icesi.ltl2buchi.translator,
+ gov.nasa.ltl.exceptions,
  dk.brics.automaton,
  org.apache.log4j,
  org.jgroups

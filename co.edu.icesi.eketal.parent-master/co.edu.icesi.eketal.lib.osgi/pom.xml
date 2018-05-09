@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <parent>
       <groupId>co.edu.icesi.eketal</groupId>
 	  <artifactId>co.edu.icesi.eketal.parent</artifactId>
-	  <version>2.0.1-SNAPSHOT</version>
+	  <version>3.0.0-SNAPSHOT</version>
  </parent>
  
   <artifactId>co.edu.icesi.eketal.lib.osgi</artifactId>	
@@ -14,7 +14,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <dependencies>
       <dependency>
           <groupId>co.edu.icesi.eketal</groupId>
-          <artifactId>co.edu.icesi.eketal.lib</artifactId>
+          <artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>co.edu.icesi.eketal</groupId>
+          <artifactId>co.edu.icesi.eketal.lib.ltl2buchi</artifactId>
           <version>${project.version}</version>
       </dependency>
   </dependencies>

@@ -1,0 +1,14 @@
+package co.edu.escuelaing.icesi;
+
+eventclass SecurityProperty{
+	
+	event sessionLogin(): call(void SecurityClient.createSession());
+	event constructor(): call(SecurityClient.^new());
+	event write(): call(void SecurityClient.write(String));
+	event sessionLogout(): call(void SecurityClient.destroySession());
+	event prints():call (void SecurityClient.printSessions());
+	
+	ltl Formulae(){
+		always(sessionLogin -> next(write until sessionLogout))
+	}
+}

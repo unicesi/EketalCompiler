@@ -15,6 +15,12 @@ import co.edu.icesi.eketal.eketal.Host;
 import co.edu.icesi.eketal.eketal.JVMTYPE;
 import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.KindAttribute;
+import co.edu.icesi.eketal.eketal.Ltl;
+import co.edu.icesi.eketal.eketal.LtlAnd;
+import co.edu.icesi.eketal.eketal.LtlExpression;
+import co.edu.icesi.eketal.eketal.LtlOr;
+import co.edu.icesi.eketal.eketal.LtlThen;
+import co.edu.icesi.eketal.eketal.LtlUntil;
 import co.edu.icesi.eketal.eketal.MSig;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.OrEvent;
@@ -23,6 +29,7 @@ import co.edu.icesi.eketal.eketal.Step;
 import co.edu.icesi.eketal.eketal.TransDef;
 import co.edu.icesi.eketal.eketal.Trigger;
 import co.edu.icesi.eketal.eketal.UnaryEvent;
+import co.edu.icesi.eketal.eketal.UnaryLtl;
 import co.edu.icesi.eketal.services.EketalGrammarAccess;
 import com.google.inject.Inject;
 import java.util.Set;
@@ -149,6 +156,24 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 			case EketalPackage.KIND_ATTRIBUTE:
 				sequence_KindAttribute(context, (KindAttribute) semanticObject); 
 				return; 
+			case EketalPackage.LTL:
+				sequence_Ltl(context, (Ltl) semanticObject); 
+				return; 
+			case EketalPackage.LTL_AND:
+				sequence_LtlAnd(context, (LtlAnd) semanticObject); 
+				return; 
+			case EketalPackage.LTL_EXPRESSION:
+				sequence_LtlAtom(context, (LtlExpression) semanticObject); 
+				return; 
+			case EketalPackage.LTL_OR:
+				sequence_LtlOr(context, (LtlOr) semanticObject); 
+				return; 
+			case EketalPackage.LTL_THEN:
+				sequence_LtlThen(context, (LtlThen) semanticObject); 
+				return; 
+			case EketalPackage.LTL_UNTIL:
+				sequence_LtlUntil(context, (LtlUntil) semanticObject); 
+				return; 
 			case EketalPackage.MSIG:
 				sequence_MSig(context, (MSig) semanticObject); 
 				return; 
@@ -173,6 +198,37 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 			case EketalPackage.UNARY_EVENT:
 				sequence_UnaryExpresion(context, (UnaryEvent) semanticObject); 
 				return; 
+			case EketalPackage.UNARY_LTL:
+				if (rule == grammarAccess.getLtlThenRule()
+						|| action == grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0()
+						|| rule == grammarAccess.getLtlOrRule()
+						|| action == grammarAccess.getLtlOrAccess().getLtlOrLeftAction_1_0()
+						|| rule == grammarAccess.getLtlAndRule()
+						|| action == grammarAccess.getLtlAndAccess().getLtlAndLeftAction_1_0()
+						|| rule == grammarAccess.getLtlUntilRule()
+						|| action == grammarAccess.getLtlUntilAccess().getLtlUntilLeftAction_1_0()
+						|| rule == grammarAccess.getLtlUnaryRule()
+						|| rule == grammarAccess.getLtlAtomRule()) {
+					sequence_LtlAlways_LtlEventually_LtlNext_LtlNot(context, (UnaryLtl) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getLtlAlwaysRule()) {
+					sequence_LtlAlways(context, (UnaryLtl) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getLtlEventuallyRule()) {
+					sequence_LtlEventually(context, (UnaryLtl) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getLtlNextRule()) {
+					sequence_LtlNext(context, (UnaryLtl) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getLtlNotRule()) {
+					sequence_LtlNot(context, (UnaryLtl) semanticObject); 
+					return; 
+				}
+				else break;
 			}
 		else if (epackage == JbasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -687,6 +743,283 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	 *     (hostgroup=[Group|ID] | ongroup=[Group|ID] | condition=XParenthesizedExpression)
 	 */
 	protected void sequence_KindAttribute(ISerializationContext context, KindAttribute semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlThen returns UnaryLtl
+	 *     LtlThen.LtlThen_1_0 returns UnaryLtl
+	 *     LtlOr returns UnaryLtl
+	 *     LtlOr.LtlOr_1_0 returns UnaryLtl
+	 *     LtlAnd returns UnaryLtl
+	 *     LtlAnd.LtlAnd_1_0 returns UnaryLtl
+	 *     LtlUntil returns UnaryLtl
+	 *     LtlUntil.LtlUntil_1_0 returns UnaryLtl
+	 *     LtlUnary returns UnaryLtl
+	 *     LtlAtom returns UnaryLtl
+	 *
+	 * Constraint:
+	 *     ((op='next' expr=LtlAtom) | (op='always' expr=LtlAtom) | (op='eventually' expr=LtlAtom) | (op='!' expr=LtlAtom))
+	 */
+	protected void sequence_LtlAlways_LtlEventually_LtlNext_LtlNot(ISerializationContext context, UnaryLtl semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlAlways returns UnaryLtl
+	 *
+	 * Constraint:
+	 *     (op='always' expr=LtlAtom)
+	 */
+	protected void sequence_LtlAlways(ISerializationContext context, UnaryLtl semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlAlwaysAccess().getOpAlwaysKeyword_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlAlwaysAccess().getExprLtlAtomParserRuleCall_2_0(), semanticObject.getExpr());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlThen returns LtlAnd
+	 *     LtlThen.LtlThen_1_0 returns LtlAnd
+	 *     LtlOr returns LtlAnd
+	 *     LtlOr.LtlOr_1_0 returns LtlAnd
+	 *     LtlAnd returns LtlAnd
+	 *     LtlAnd.LtlAnd_1_0 returns LtlAnd
+	 *     LtlUntil returns LtlAnd
+	 *     LtlUntil.LtlUntil_1_0 returns LtlAnd
+	 *     LtlUnary returns LtlAnd
+	 *     LtlAtom returns LtlAnd
+	 *
+	 * Constraint:
+	 *     (left=LtlAnd_LtlAnd_1_0 op='&&' right=LtlUntil)
+	 */
+	protected void sequence_LtlAnd(ISerializationContext context, LtlAnd semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_AND__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_AND__LEFT));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_AND__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_AND__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlAndAccess().getLtlAndLeftAction_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getLtlAndAccess().getOpAmpersandAmpersandKeyword_1_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlAndAccess().getRightLtlUntilParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlThen returns LtlExpression
+	 *     LtlThen.LtlThen_1_0 returns LtlExpression
+	 *     LtlOr returns LtlExpression
+	 *     LtlOr.LtlOr_1_0 returns LtlExpression
+	 *     LtlAnd returns LtlExpression
+	 *     LtlAnd.LtlAnd_1_0 returns LtlExpression
+	 *     LtlUntil returns LtlExpression
+	 *     LtlUntil.LtlUntil_1_0 returns LtlExpression
+	 *     LtlUnary returns LtlExpression
+	 *     LtlAtom returns LtlExpression
+	 *
+	 * Constraint:
+	 *     event=[EvDecl|ID]
+	 */
+	protected void sequence_LtlAtom(ISerializationContext context, LtlExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__EVENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__EVENT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlAtomAccess().getEventEvDeclIDTerminalRuleCall_0_0_1(), semanticObject.eGet(EketalPackage.Literals.LTL_EXPRESSION__EVENT, false));
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlEventually returns UnaryLtl
+	 *
+	 * Constraint:
+	 *     (op='eventually' expr=LtlAtom)
+	 */
+	protected void sequence_LtlEventually(ISerializationContext context, UnaryLtl semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlEventuallyAccess().getOpEventuallyKeyword_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlEventuallyAccess().getExprLtlAtomParserRuleCall_2_0(), semanticObject.getExpr());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlNext returns UnaryLtl
+	 *
+	 * Constraint:
+	 *     (op='next' expr=LtlAtom)
+	 */
+	protected void sequence_LtlNext(ISerializationContext context, UnaryLtl semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlNextAccess().getOpNextKeyword_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlNextAccess().getExprLtlAtomParserRuleCall_2_0(), semanticObject.getExpr());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlNot returns UnaryLtl
+	 *
+	 * Constraint:
+	 *     (op='!' expr=LtlAtom)
+	 */
+	protected void sequence_LtlNot(ISerializationContext context, UnaryLtl semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.UNARY_LTL__EXPR));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlNotAccess().getOpExclamationMarkKeyword_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlNotAccess().getExprLtlAtomParserRuleCall_2_0(), semanticObject.getExpr());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlThen returns LtlOr
+	 *     LtlThen.LtlThen_1_0 returns LtlOr
+	 *     LtlOr returns LtlOr
+	 *     LtlOr.LtlOr_1_0 returns LtlOr
+	 *     LtlAnd returns LtlOr
+	 *     LtlAnd.LtlAnd_1_0 returns LtlOr
+	 *     LtlUntil returns LtlOr
+	 *     LtlUntil.LtlUntil_1_0 returns LtlOr
+	 *     LtlUnary returns LtlOr
+	 *     LtlAtom returns LtlOr
+	 *
+	 * Constraint:
+	 *     (left=LtlOr_LtlOr_1_0 op='||' right=LtlAnd)
+	 */
+	protected void sequence_LtlOr(ISerializationContext context, LtlOr semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_OR__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_OR__LEFT));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_OR__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_OR__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlOrAccess().getLtlOrLeftAction_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getLtlOrAccess().getOpVerticalLineVerticalLineKeyword_1_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlOrAccess().getRightLtlAndParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlThen returns LtlThen
+	 *     LtlThen.LtlThen_1_0 returns LtlThen
+	 *     LtlOr returns LtlThen
+	 *     LtlOr.LtlOr_1_0 returns LtlThen
+	 *     LtlAnd returns LtlThen
+	 *     LtlAnd.LtlAnd_1_0 returns LtlThen
+	 *     LtlUntil returns LtlThen
+	 *     LtlUntil.LtlUntil_1_0 returns LtlThen
+	 *     LtlUnary returns LtlThen
+	 *     LtlAtom returns LtlThen
+	 *
+	 * Constraint:
+	 *     (left=LtlThen_LtlThen_1_0 op='->' right=LtlOr)
+	 */
+	protected void sequence_LtlThen(ISerializationContext context, LtlThen semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_THEN__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_THEN__LEFT));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_THEN__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_THEN__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlThenAccess().getLtlThenLeftAction_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getLtlThenAccess().getOpHyphenMinusGreaterThanSignKeyword_1_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlThenAccess().getRightLtlOrParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     LtlThen returns LtlUntil
+	 *     LtlThen.LtlThen_1_0 returns LtlUntil
+	 *     LtlOr returns LtlUntil
+	 *     LtlOr.LtlOr_1_0 returns LtlUntil
+	 *     LtlAnd returns LtlUntil
+	 *     LtlAnd.LtlAnd_1_0 returns LtlUntil
+	 *     LtlUntil returns LtlUntil
+	 *     LtlUntil.LtlUntil_1_0 returns LtlUntil
+	 *     LtlUnary returns LtlUntil
+	 *     LtlAtom returns LtlUntil
+	 *
+	 * Constraint:
+	 *     (left=LtlUntil_LtlUntil_1_0 op='until' right=LtlUnary)
+	 */
+	protected void sequence_LtlUntil(ISerializationContext context, LtlUntil semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_UNTIL__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_UNTIL__LEFT));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_EXPRESSION__OP));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.LTL_UNTIL__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.LTL_UNTIL__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLtlUntilAccess().getLtlUntilLeftAction_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getLtlUntilAccess().getOpUntilKeyword_1_1_0(), semanticObject.getOp());
+		feeder.accept(grammarAccess.getLtlUntilAccess().getRightLtlUnaryParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Decl returns Ltl
+	 *     Ltl returns Ltl
+	 *
+	 * Constraint:
+	 *     (name=ID (params+=FullJvmFormalParameter params+=FullJvmFormalParameter*)? predicate=LtlThen)
+	 */
+	protected void sequence_Ltl(ISerializationContext context, Ltl semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

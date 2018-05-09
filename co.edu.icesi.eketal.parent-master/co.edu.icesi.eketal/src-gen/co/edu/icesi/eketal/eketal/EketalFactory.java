@@ -168,6 +168,24 @@ public interface EketalFactory extends EFactory
   TransDef createTransDef();
 
   /**
+   * Returns a new object of class '<em>Ltl</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl</em>'.
+   * @generated
+   */
+  Ltl createLtl();
+
+  /**
+   * Returns a new object of class '<em>Ltl Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl Expression</em>'.
+   * @generated
+   */
+  LtlExpression createLtlExpression();
+
+  /**
    * Returns a new object of class '<em>Rc</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -211,6 +229,51 @@ public interface EketalFactory extends EFactory
    * @generated
    */
   UnaryEvent createUnaryEvent();
+
+  /**
+   * Returns a new object of class '<em>Ltl Then</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl Then</em>'.
+   * @generated
+   */
+  LtlThen createLtlThen();
+
+  /**
+   * Returns a new object of class '<em>Ltl Or</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl Or</em>'.
+   * @generated
+   */
+  LtlOr createLtlOr();
+
+  /**
+   * Returns a new object of class '<em>Ltl And</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl And</em>'.
+   * @generated
+   */
+  LtlAnd createLtlAnd();
+
+  /**
+   * Returns a new object of class '<em>Ltl Until</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ltl Until</em>'.
+   * @generated
+   */
+  LtlUntil createLtlUntil();
+
+  /**
+   * Returns a new object of class '<em>Unary Ltl</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Unary Ltl</em>'.
+   * @generated
+   */
+  UnaryLtl createUnaryLtl();
 
   /**
    * Returns the package supported by this factory.

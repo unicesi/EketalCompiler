@@ -20,9 +20,9 @@ Model:
 EventClass:
 	'eventclass' name=ID '{' declarations+=Decl* '}'
 ;
-	
+
 Decl:
-	Automaton
+	Automaton | Ltl
 	| Rc
 	| MSig
 	| JVarD
@@ -115,7 +115,6 @@ Ip:
 ////Automata definicion
 //////////////////////////////////////
 //TODO estado de finalización default
-//TODO Restricción de que solo puede haber un autómata
 Automaton:
 	'automaton' name=ID '('(params+=FullJvmFormalParameter 
         (',' params+=FullJvmFormalParameter)*)?')' '{' steps+=Step* '}'
@@ -133,6 +132,61 @@ enum StateType:
 	state |
 	start |
 	end
+;
+
+//////////////////////////////////////
+////Linear Temporal Logic definition
+//////////////////////////////////////
+//TODO precedences:
+//Unary->Binary
+//Bind from right to left
+//always eventually p = (always (eventually p))
+//p until q until r = p until (q until r)
+//until -> &&,||,->
+//http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
+Ltl:
+	'ltl' name=ID '('(params+=FullJvmFormalParameter 
+        (',' params+=FullJvmFormalParameter)*)?')' '{' predicate=LtlThen '}'
+;
+
+LtlThen returns LtlExpression:
+	LtlOr ({LtlThen.left=current} op='->' right=LtlOr)*
+;
+
+LtlOr returns LtlExpression:
+	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*
+;
+
+LtlAnd  returns LtlExpression:
+	LtlUntil ({LtlAnd.left=current} op='&&' right=LtlUntil)*
+;
+
+LtlUntil  returns LtlExpression:
+	LtlUnary ({LtlUntil.left=current} op='until' right=LtlUnary)*
+;
+
+LtlUnary returns LtlExpression:
+	LtlAtom | LtlAlways | LtlNext | LtlEventually | LtlNot
+;
+
+LtlNext returns LtlExpression:{UnaryLtl}
+	op='next' expr=LtlAtom
+;
+
+LtlAlways returns LtlExpression:{UnaryLtl}
+	op='always' expr=LtlAtom
+;
+
+LtlEventually returns LtlExpression:{UnaryLtl}
+	op='eventually' expr=LtlAtom
+;
+
+LtlNot returns LtlExpression:{UnaryLtl}
+	op='!' expr=LtlAtom
+;
+
+LtlAtom returns LtlExpression:
+	event=[EvDecl] | '('LtlThen')'
 ;
 
 //////////////////////////////////////

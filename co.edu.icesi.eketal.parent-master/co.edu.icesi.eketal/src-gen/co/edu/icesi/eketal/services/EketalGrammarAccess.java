@@ -125,14 +125,15 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Decl");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cAutomatonParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cRcParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cMSigParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cJVarDParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
-		private final RuleCall cGroupParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		private final RuleCall cEvDeclParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cLtlParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cRcParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cMSigParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cJVarDParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cGroupParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cEvDeclParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
 		
 		//Decl:
-		//	Automaton
+		//	Automaton | Ltl
 		//	| Rc
 		//	| MSig
 		//	| JVarD
@@ -140,26 +141,29 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		//	| EvDecl;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//Automaton | Rc | MSig | JVarD | Group | EvDecl
+		//Automaton | Ltl | Rc | MSig | JVarD | Group | EvDecl
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//Automaton
 		public RuleCall getAutomatonParserRuleCall_0() { return cAutomatonParserRuleCall_0; }
 		
+		//Ltl
+		public RuleCall getLtlParserRuleCall_1() { return cLtlParserRuleCall_1; }
+		
 		//Rc
-		public RuleCall getRcParserRuleCall_1() { return cRcParserRuleCall_1; }
+		public RuleCall getRcParserRuleCall_2() { return cRcParserRuleCall_2; }
 		
 		//MSig
-		public RuleCall getMSigParserRuleCall_2() { return cMSigParserRuleCall_2; }
+		public RuleCall getMSigParserRuleCall_3() { return cMSigParserRuleCall_3; }
 		
 		//JVarD
-		public RuleCall getJVarDParserRuleCall_3() { return cJVarDParserRuleCall_3; }
+		public RuleCall getJVarDParserRuleCall_4() { return cJVarDParserRuleCall_4; }
 		
 		//Group
-		public RuleCall getGroupParserRuleCall_4() { return cGroupParserRuleCall_4; }
+		public RuleCall getGroupParserRuleCall_5() { return cGroupParserRuleCall_5; }
 		
 		//EvDecl
-		public RuleCall getEvDeclParserRuleCall_5() { return cEvDeclParserRuleCall_5; }
+		public RuleCall getEvDeclParserRuleCall_6() { return cEvDeclParserRuleCall_6; }
 	}
 	public class JVarDElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.JVarD");
@@ -906,7 +910,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		//////Automata definicion
 		////////////////////////////////////////
 		////TODO estado de finalización default
-		////TODO Restricción de que solo puede haber un autómata
 		//Automaton:
 		//	'automaton' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' steps+=Step*
 		//	'}';
@@ -1080,6 +1083,442 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//ID
 		public RuleCall getTargetStepIDTerminalRuleCall_2_0_1() { return cTargetStepIDTerminalRuleCall_2_0_1; }
+	}
+	public class LtlElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Ltl");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cLtlKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Assignment cParamsAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final RuleCall cParamsFullJvmFormalParameterParserRuleCall_3_0_0 = (RuleCall)cParamsAssignment_3_0.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
+		private final Keyword cCommaKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Assignment cParamsAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final RuleCall cParamsFullJvmFormalParameterParserRuleCall_3_1_1_0 = (RuleCall)cParamsAssignment_3_1_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cPredicateAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cPredicateLtlThenParserRuleCall_6_0 = (RuleCall)cPredicateAssignment_6.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		
+		////////////////////////////////////////
+		//////Linear Temporal Logic definition
+		////////////////////////////////////////
+		////TODO precedences:
+		////Unary->Binary
+		////Bind from right to left
+		////always eventually p = (always (eventually p))
+		////p until q until r = p until (q until r)
+		////until -> &&,||,->
+		////http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
+		//Ltl:
+		//	'ltl' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' predicate=LtlThen
+		//	'}';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'ltl' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' predicate=LtlThen '}'
+		public Group getGroup() { return cGroup; }
+		
+		//'ltl'
+		public Keyword getLtlKeyword_0() { return cLtlKeyword_0; }
+		
+		//name=ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		
+		//(params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)?
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//params+=FullJvmFormalParameter
+		public Assignment getParamsAssignment_3_0() { return cParamsAssignment_3_0; }
+		
+		//FullJvmFormalParameter
+		public RuleCall getParamsFullJvmFormalParameterParserRuleCall_3_0_0() { return cParamsFullJvmFormalParameterParserRuleCall_3_0_0; }
+		
+		//(',' params+=FullJvmFormalParameter)*
+		public Group getGroup_3_1() { return cGroup_3_1; }
+		
+		//','
+		public Keyword getCommaKeyword_3_1_0() { return cCommaKeyword_3_1_0; }
+		
+		//params+=FullJvmFormalParameter
+		public Assignment getParamsAssignment_3_1_1() { return cParamsAssignment_3_1_1; }
+		
+		//FullJvmFormalParameter
+		public RuleCall getParamsFullJvmFormalParameterParserRuleCall_3_1_1_0() { return cParamsFullJvmFormalParameterParserRuleCall_3_1_1_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+		
+		//'{'
+		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
+		
+		//predicate=LtlThen
+		public Assignment getPredicateAssignment_6() { return cPredicateAssignment_6; }
+		
+		//LtlThen
+		public RuleCall getPredicateLtlThenParserRuleCall_6_0() { return cPredicateLtlThenParserRuleCall_6_0; }
+		
+		//'}'
+		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+	}
+	public class LtlThenElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlThen");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cLtlOrParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cLtlThenLeftAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cOpAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final Keyword cOpHyphenMinusGreaterThanSignKeyword_1_1_0 = (Keyword)cOpAssignment_1_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cRightLtlOrParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
+		
+		//LtlThen LtlExpression:
+		//	LtlOr ({LtlThen.left=current} op='->' right=LtlOr)*;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//LtlOr ({LtlThen.left=current} op='->' right=LtlOr)*
+		public Group getGroup() { return cGroup; }
+		
+		//LtlOr
+		public RuleCall getLtlOrParserRuleCall_0() { return cLtlOrParserRuleCall_0; }
+		
+		//({LtlThen.left=current} op='->' right=LtlOr)*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{LtlThen.left=current}
+		public Action getLtlThenLeftAction_1_0() { return cLtlThenLeftAction_1_0; }
+		
+		//op='->'
+		public Assignment getOpAssignment_1_1() { return cOpAssignment_1_1; }
+		
+		//'->'
+		public Keyword getOpHyphenMinusGreaterThanSignKeyword_1_1_0() { return cOpHyphenMinusGreaterThanSignKeyword_1_1_0; }
+		
+		//right=LtlOr
+		public Assignment getRightAssignment_1_2() { return cRightAssignment_1_2; }
+		
+		//LtlOr
+		public RuleCall getRightLtlOrParserRuleCall_1_2_0() { return cRightLtlOrParserRuleCall_1_2_0; }
+	}
+	public class LtlOrElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlOr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cLtlAndParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cLtlOrLeftAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cOpAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final Keyword cOpVerticalLineVerticalLineKeyword_1_1_0 = (Keyword)cOpAssignment_1_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cRightLtlAndParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
+		
+		//LtlOr LtlExpression:
+		//	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*
+		public Group getGroup() { return cGroup; }
+		
+		//LtlAnd
+		public RuleCall getLtlAndParserRuleCall_0() { return cLtlAndParserRuleCall_0; }
+		
+		//({LtlOr.left=current} op='||' right=LtlAnd)*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{LtlOr.left=current}
+		public Action getLtlOrLeftAction_1_0() { return cLtlOrLeftAction_1_0; }
+		
+		//op='||'
+		public Assignment getOpAssignment_1_1() { return cOpAssignment_1_1; }
+		
+		//'||'
+		public Keyword getOpVerticalLineVerticalLineKeyword_1_1_0() { return cOpVerticalLineVerticalLineKeyword_1_1_0; }
+		
+		//right=LtlAnd
+		public Assignment getRightAssignment_1_2() { return cRightAssignment_1_2; }
+		
+		//LtlAnd
+		public RuleCall getRightLtlAndParserRuleCall_1_2_0() { return cRightLtlAndParserRuleCall_1_2_0; }
+	}
+	public class LtlAndElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlAnd");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cLtlUntilParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cLtlAndLeftAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cOpAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final Keyword cOpAmpersandAmpersandKeyword_1_1_0 = (Keyword)cOpAssignment_1_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cRightLtlUntilParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
+		
+		//LtlAnd LtlExpression:
+		//	LtlUntil ({LtlAnd.left=current} op='&&' right=LtlUntil)*;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//LtlUntil ({LtlAnd.left=current} op='&&' right=LtlUntil)*
+		public Group getGroup() { return cGroup; }
+		
+		//LtlUntil
+		public RuleCall getLtlUntilParserRuleCall_0() { return cLtlUntilParserRuleCall_0; }
+		
+		//({LtlAnd.left=current} op='&&' right=LtlUntil)*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{LtlAnd.left=current}
+		public Action getLtlAndLeftAction_1_0() { return cLtlAndLeftAction_1_0; }
+		
+		//op='&&'
+		public Assignment getOpAssignment_1_1() { return cOpAssignment_1_1; }
+		
+		//'&&'
+		public Keyword getOpAmpersandAmpersandKeyword_1_1_0() { return cOpAmpersandAmpersandKeyword_1_1_0; }
+		
+		//right=LtlUntil
+		public Assignment getRightAssignment_1_2() { return cRightAssignment_1_2; }
+		
+		//LtlUntil
+		public RuleCall getRightLtlUntilParserRuleCall_1_2_0() { return cRightLtlUntilParserRuleCall_1_2_0; }
+	}
+	public class LtlUntilElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlUntil");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cLtlUnaryParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cLtlUntilLeftAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cOpAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final Keyword cOpUntilKeyword_1_1_0 = (Keyword)cOpAssignment_1_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cRightLtlUnaryParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
+		
+		//LtlUntil LtlExpression:
+		//	LtlUnary ({LtlUntil.left=current} op='until' right=LtlUnary)*;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//LtlUnary ({LtlUntil.left=current} op='until' right=LtlUnary)*
+		public Group getGroup() { return cGroup; }
+		
+		//LtlUnary
+		public RuleCall getLtlUnaryParserRuleCall_0() { return cLtlUnaryParserRuleCall_0; }
+		
+		//({LtlUntil.left=current} op='until' right=LtlUnary)*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{LtlUntil.left=current}
+		public Action getLtlUntilLeftAction_1_0() { return cLtlUntilLeftAction_1_0; }
+		
+		//op='until'
+		public Assignment getOpAssignment_1_1() { return cOpAssignment_1_1; }
+		
+		//'until'
+		public Keyword getOpUntilKeyword_1_1_0() { return cOpUntilKeyword_1_1_0; }
+		
+		//right=LtlUnary
+		public Assignment getRightAssignment_1_2() { return cRightAssignment_1_2; }
+		
+		//LtlUnary
+		public RuleCall getRightLtlUnaryParserRuleCall_1_2_0() { return cRightLtlUnaryParserRuleCall_1_2_0; }
+	}
+	public class LtlUnaryElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlUnary");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cLtlAtomParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cLtlAlwaysParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cLtlNextParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cLtlEventuallyParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cLtlNotParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		
+		//LtlUnary LtlExpression:
+		//	LtlAtom | LtlAlways | LtlNext | LtlEventually | LtlNot;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//LtlAtom | LtlAlways | LtlNext | LtlEventually | LtlNot
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//LtlAtom
+		public RuleCall getLtlAtomParserRuleCall_0() { return cLtlAtomParserRuleCall_0; }
+		
+		//LtlAlways
+		public RuleCall getLtlAlwaysParserRuleCall_1() { return cLtlAlwaysParserRuleCall_1; }
+		
+		//LtlNext
+		public RuleCall getLtlNextParserRuleCall_2() { return cLtlNextParserRuleCall_2; }
+		
+		//LtlEventually
+		public RuleCall getLtlEventuallyParserRuleCall_3() { return cLtlEventuallyParserRuleCall_3; }
+		
+		//LtlNot
+		public RuleCall getLtlNotParserRuleCall_4() { return cLtlNotParserRuleCall_4; }
+	}
+	public class LtlNextElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlNext");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cUnaryLtlAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cOpAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cOpNextKeyword_1_0 = (Keyword)cOpAssignment_1.eContents().get(0);
+		private final Assignment cExprAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cExprLtlAtomParserRuleCall_2_0 = (RuleCall)cExprAssignment_2.eContents().get(0);
+		
+		//LtlNext LtlExpression:
+		//	{UnaryLtl} op='next' expr=LtlAtom;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{UnaryLtl} op='next' expr=LtlAtom
+		public Group getGroup() { return cGroup; }
+		
+		//{UnaryLtl}
+		public Action getUnaryLtlAction_0() { return cUnaryLtlAction_0; }
+		
+		//op='next'
+		public Assignment getOpAssignment_1() { return cOpAssignment_1; }
+		
+		//'next'
+		public Keyword getOpNextKeyword_1_0() { return cOpNextKeyword_1_0; }
+		
+		//expr=LtlAtom
+		public Assignment getExprAssignment_2() { return cExprAssignment_2; }
+		
+		//LtlAtom
+		public RuleCall getExprLtlAtomParserRuleCall_2_0() { return cExprLtlAtomParserRuleCall_2_0; }
+	}
+	public class LtlAlwaysElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlAlways");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cUnaryLtlAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cOpAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cOpAlwaysKeyword_1_0 = (Keyword)cOpAssignment_1.eContents().get(0);
+		private final Assignment cExprAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cExprLtlAtomParserRuleCall_2_0 = (RuleCall)cExprAssignment_2.eContents().get(0);
+		
+		//LtlAlways LtlExpression:
+		//	{UnaryLtl} op='always' expr=LtlAtom;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{UnaryLtl} op='always' expr=LtlAtom
+		public Group getGroup() { return cGroup; }
+		
+		//{UnaryLtl}
+		public Action getUnaryLtlAction_0() { return cUnaryLtlAction_0; }
+		
+		//op='always'
+		public Assignment getOpAssignment_1() { return cOpAssignment_1; }
+		
+		//'always'
+		public Keyword getOpAlwaysKeyword_1_0() { return cOpAlwaysKeyword_1_0; }
+		
+		//expr=LtlAtom
+		public Assignment getExprAssignment_2() { return cExprAssignment_2; }
+		
+		//LtlAtom
+		public RuleCall getExprLtlAtomParserRuleCall_2_0() { return cExprLtlAtomParserRuleCall_2_0; }
+	}
+	public class LtlEventuallyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlEventually");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cUnaryLtlAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cOpAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cOpEventuallyKeyword_1_0 = (Keyword)cOpAssignment_1.eContents().get(0);
+		private final Assignment cExprAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cExprLtlAtomParserRuleCall_2_0 = (RuleCall)cExprAssignment_2.eContents().get(0);
+		
+		//LtlEventually LtlExpression:
+		//	{UnaryLtl} op='eventually' expr=LtlAtom;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{UnaryLtl} op='eventually' expr=LtlAtom
+		public Group getGroup() { return cGroup; }
+		
+		//{UnaryLtl}
+		public Action getUnaryLtlAction_0() { return cUnaryLtlAction_0; }
+		
+		//op='eventually'
+		public Assignment getOpAssignment_1() { return cOpAssignment_1; }
+		
+		//'eventually'
+		public Keyword getOpEventuallyKeyword_1_0() { return cOpEventuallyKeyword_1_0; }
+		
+		//expr=LtlAtom
+		public Assignment getExprAssignment_2() { return cExprAssignment_2; }
+		
+		//LtlAtom
+		public RuleCall getExprLtlAtomParserRuleCall_2_0() { return cExprLtlAtomParserRuleCall_2_0; }
+	}
+	public class LtlNotElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlNot");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cUnaryLtlAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cOpAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cOpExclamationMarkKeyword_1_0 = (Keyword)cOpAssignment_1.eContents().get(0);
+		private final Assignment cExprAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cExprLtlAtomParserRuleCall_2_0 = (RuleCall)cExprAssignment_2.eContents().get(0);
+		
+		//LtlNot LtlExpression:
+		//	{UnaryLtl} op='!' expr=LtlAtom;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{UnaryLtl} op='!' expr=LtlAtom
+		public Group getGroup() { return cGroup; }
+		
+		//{UnaryLtl}
+		public Action getUnaryLtlAction_0() { return cUnaryLtlAction_0; }
+		
+		//op='!'
+		public Assignment getOpAssignment_1() { return cOpAssignment_1; }
+		
+		//'!'
+		public Keyword getOpExclamationMarkKeyword_1_0() { return cOpExclamationMarkKeyword_1_0; }
+		
+		//expr=LtlAtom
+		public Assignment getExprAssignment_2() { return cExprAssignment_2; }
+		
+		//LtlAtom
+		public RuleCall getExprLtlAtomParserRuleCall_2_0() { return cExprLtlAtomParserRuleCall_2_0; }
+	}
+	public class LtlAtomElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.LtlAtom");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Assignment cEventAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
+		private final CrossReference cEventEvDeclCrossReference_0_0 = (CrossReference)cEventAssignment_0.eContents().get(0);
+		private final RuleCall cEventEvDeclIDTerminalRuleCall_0_0_1 = (RuleCall)cEventEvDeclCrossReference_0_0.eContents().get(1);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final RuleCall cLtlThenParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final Keyword cRightParenthesisKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
+		
+		//LtlAtom LtlExpression:
+		//	event=[EvDecl] | '(' LtlThen ')';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//event=[EvDecl] | '(' LtlThen ')'
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//event=[EvDecl]
+		public Assignment getEventAssignment_0() { return cEventAssignment_0; }
+		
+		//[EvDecl]
+		public CrossReference getEventEvDeclCrossReference_0_0() { return cEventEvDeclCrossReference_0_0; }
+		
+		//ID
+		public RuleCall getEventEvDeclIDTerminalRuleCall_0_0_1() { return cEventEvDeclIDTerminalRuleCall_0_0_1; }
+		
+		//'(' LtlThen ')'
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_1_0() { return cLeftParenthesisKeyword_1_0; }
+		
+		//LtlThen
+		public RuleCall getLtlThenParserRuleCall_1_1() { return cLtlThenParserRuleCall_1_1; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_1_2() { return cRightParenthesisKeyword_1_2; }
 	}
 	public class RcElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Rc");
@@ -1295,6 +1734,17 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	private final StepElements pStep;
 	private final TransDefElements pTransDef;
 	private final StateTypeElements eStateType;
+	private final LtlElements pLtl;
+	private final LtlThenElements pLtlThen;
+	private final LtlOrElements pLtlOr;
+	private final LtlAndElements pLtlAnd;
+	private final LtlUntilElements pLtlUntil;
+	private final LtlUnaryElements pLtlUnary;
+	private final LtlNextElements pLtlNext;
+	private final LtlAlwaysElements pLtlAlways;
+	private final LtlEventuallyElements pLtlEventually;
+	private final LtlNotElements pLtlNot;
+	private final LtlAtomElements pLtlAtom;
 	private final RcElements pRc;
 	private final PosElements ePos;
 	private final BodyElements pBody;
@@ -1344,6 +1794,17 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		this.pStep = new StepElements();
 		this.pTransDef = new TransDefElements();
 		this.eStateType = new StateTypeElements();
+		this.pLtl = new LtlElements();
+		this.pLtlThen = new LtlThenElements();
+		this.pLtlOr = new LtlOrElements();
+		this.pLtlAnd = new LtlAndElements();
+		this.pLtlUntil = new LtlUntilElements();
+		this.pLtlUnary = new LtlUnaryElements();
+		this.pLtlNext = new LtlNextElements();
+		this.pLtlAlways = new LtlAlwaysElements();
+		this.pLtlEventually = new LtlEventuallyElements();
+		this.pLtlNot = new LtlNotElements();
+		this.pLtlAtom = new LtlAtomElements();
 		this.pRc = new RcElements();
 		this.ePos = new PosElements();
 		this.pBody = new BodyElements();
@@ -1414,7 +1875,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Decl:
-	//	Automaton
+	//	Automaton | Ltl
 	//	| Rc
 	//	| MSig
 	//	| JVarD
@@ -1615,7 +2076,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	//////Automata definicion
 	////////////////////////////////////////
 	////TODO estado de finalización default
-	////TODO Restricción de que solo puede haber un autómata
 	//Automaton:
 	//	'automaton' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' steps+=Step*
 	//	'}';
@@ -1657,6 +2117,127 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public EnumRule getStateTypeRule() {
 		return getStateTypeAccess().getRule();
+	}
+	
+	////////////////////////////////////////
+	//////Linear Temporal Logic definition
+	////////////////////////////////////////
+	////TODO precedences:
+	////Unary->Binary
+	////Bind from right to left
+	////always eventually p = (always (eventually p))
+	////p until q until r = p until (q until r)
+	////until -> &&,||,->
+	////http://www.cds.caltech.edu/~murray/courses/afrl-sp12/L3_ltl-24Apr12.pdf
+	//Ltl:
+	//	'ltl' name=ID '(' (params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)*)? ')' '{' predicate=LtlThen
+	//	'}';
+	public LtlElements getLtlAccess() {
+		return pLtl;
+	}
+	
+	public ParserRule getLtlRule() {
+		return getLtlAccess().getRule();
+	}
+	
+	//LtlThen LtlExpression:
+	//	LtlOr ({LtlThen.left=current} op='->' right=LtlOr)*;
+	public LtlThenElements getLtlThenAccess() {
+		return pLtlThen;
+	}
+	
+	public ParserRule getLtlThenRule() {
+		return getLtlThenAccess().getRule();
+	}
+	
+	//LtlOr LtlExpression:
+	//	LtlAnd ({LtlOr.left=current} op='||' right=LtlAnd)*;
+	public LtlOrElements getLtlOrAccess() {
+		return pLtlOr;
+	}
+	
+	public ParserRule getLtlOrRule() {
+		return getLtlOrAccess().getRule();
+	}
+	
+	//LtlAnd LtlExpression:
+	//	LtlUntil ({LtlAnd.left=current} op='&&' right=LtlUntil)*;
+	public LtlAndElements getLtlAndAccess() {
+		return pLtlAnd;
+	}
+	
+	public ParserRule getLtlAndRule() {
+		return getLtlAndAccess().getRule();
+	}
+	
+	//LtlUntil LtlExpression:
+	//	LtlUnary ({LtlUntil.left=current} op='until' right=LtlUnary)*;
+	public LtlUntilElements getLtlUntilAccess() {
+		return pLtlUntil;
+	}
+	
+	public ParserRule getLtlUntilRule() {
+		return getLtlUntilAccess().getRule();
+	}
+	
+	//LtlUnary LtlExpression:
+	//	LtlAtom | LtlAlways | LtlNext | LtlEventually | LtlNot;
+	public LtlUnaryElements getLtlUnaryAccess() {
+		return pLtlUnary;
+	}
+	
+	public ParserRule getLtlUnaryRule() {
+		return getLtlUnaryAccess().getRule();
+	}
+	
+	//LtlNext LtlExpression:
+	//	{UnaryLtl} op='next' expr=LtlAtom;
+	public LtlNextElements getLtlNextAccess() {
+		return pLtlNext;
+	}
+	
+	public ParserRule getLtlNextRule() {
+		return getLtlNextAccess().getRule();
+	}
+	
+	//LtlAlways LtlExpression:
+	//	{UnaryLtl} op='always' expr=LtlAtom;
+	public LtlAlwaysElements getLtlAlwaysAccess() {
+		return pLtlAlways;
+	}
+	
+	public ParserRule getLtlAlwaysRule() {
+		return getLtlAlwaysAccess().getRule();
+	}
+	
+	//LtlEventually LtlExpression:
+	//	{UnaryLtl} op='eventually' expr=LtlAtom;
+	public LtlEventuallyElements getLtlEventuallyAccess() {
+		return pLtlEventually;
+	}
+	
+	public ParserRule getLtlEventuallyRule() {
+		return getLtlEventuallyAccess().getRule();
+	}
+	
+	//LtlNot LtlExpression:
+	//	{UnaryLtl} op='!' expr=LtlAtom;
+	public LtlNotElements getLtlNotAccess() {
+		return pLtlNot;
+	}
+	
+	public ParserRule getLtlNotRule() {
+		return getLtlNotAccess().getRule();
+	}
+	
+	//LtlAtom LtlExpression:
+	//	event=[EvDecl] | '(' LtlThen ')';
+	public LtlAtomElements getLtlAtomAccess() {
+		return pLtlAtom;
+	}
+	
+	public ParserRule getLtlAtomRule() {
+		return getLtlAtomAccess().getRule();
 	}
 	
 	////////////////////////////////////////
