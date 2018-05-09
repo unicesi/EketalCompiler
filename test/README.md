@@ -21,6 +21,7 @@ mvn clean install -DskipTests=true
 
 There are 4 examples explained below:
 
+
 ## 1. SecurityRestServer - Using Lineal Temporal Logic to verify a temporal property
 
 This example deploys a simple client/server application using REST in Java with Spark. The server deploys services for interacting with an API from a basic model. The client consumes several server's services.
@@ -53,6 +54,7 @@ As the idea is to use different machine with different ip's, you can specify the
 java -jar target/SecurityRestServer-client.jar -ip <your SERVER ip>
 
 ## 2. Hadoop Yarn
+
 In this example, we provide an integration of REAL with Hadoop's Yarn project. Main objective is to count the number of Containers launched by yarn in each of the nodes, and, to communicate them eachother.
 
 To launch and test this example, we propose two ways. Inside the [HadoopYarn](https://github.com/unicesi/eketal/tree/master/test/HadoopYarn/)'s folder, you can find complete documentation for built the test, depending on your requirements.
