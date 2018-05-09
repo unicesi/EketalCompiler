@@ -22,7 +22,7 @@ mvn clean install -DskipTests=true
 There are 4 examples explained below:
 
 
-## 1. SecurityRestServer - Using Lineal Temporal Logic to verify a temporal property
+## 1. SecurityRestServer - Using Lineal Temporal Logic for verifying a temporal property
 
 This example deploys a simple client/server application using REST in Java with Spark. The server deploys services for interacting with an API from a basic model. The client consumes several server's services.
 
