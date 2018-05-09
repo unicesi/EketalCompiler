@@ -4,10 +4,12 @@
   This project uses XText to implement a compiler for REAL. We use Jbase to generate pure java expressions and statements using the XText framework.
 
   The compiler generates AspectJ and Java code to instrument monitoring in distributed applications.
+  
+  REAL's runtime detection can be achieved by using finite state machines and linear temporal logic, over declared events. Examples about use cases in both formalisms may be found in the [test folder](https://github.com/unicesi/eketal/tree/master/test).
 
   This guide describes how to install the development environment and test it. If you are a developer interested in experimenting with the language or a reviewer interested in the project, this may be the recommended installation procedure, we recommend to install this project via Maven.
 
-  If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using Maven. Then we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
+  If you are interested in extending or contributing to the language design and compiler implementation we also provide a description of how to download the source code and generate the development environment. First, we describe how to download the source code, how to compile it using Maven. Then, we describe how to install the IDE as an Eclipse's plugin and create the development environment from eclipse.
 
 ## 1. Installing REAL's development environment using MAVEN
 
