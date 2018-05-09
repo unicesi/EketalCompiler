@@ -52,7 +52,7 @@ java -jar target/SecurityRestServer-client.jar -destroy
 As the idea is to use different machine with different ip's, you can specify the server's ip with the -ip x.x.x.x option. If not specify, default is localhost. So, all the petitions will be done to that ip.
 ```
 java -jar target/SecurityRestServer-client.jar -ip <your SERVER ip>
-
+```
 ## 2. Hadoop Yarn
 
 In this example, we provide an integration of REAL with Hadoop's Yarn project. Main objective is to count the number of Containers launched by yarn in each of the nodes, and, to communicate them eachother.
