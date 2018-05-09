@@ -1,0 +1,33 @@
+{
+  "nodes": {
+    "slave1": {
+      ":node": "slave1",
+      ":ip": "192.168.2.72",
+      ":host": "slave1",
+      ":isMaster" : "false",
+      "ports": [
+        {
+          ":host": 2202,
+          ":guest": 22,
+          ":id": "ssh"
+        }
+      ],
+      ":memory": 1024
+    }
+	,
+	"master": {
+      ":node": "master",
+      ":ip": "192.168.2.71",
+      ":host": "master",
+      ":isMaster" : "true",
+      "ports": [
+        {
+          ":host": 2201,
+          ":guest": 22,
+          ":id": "ssh"
+        }
+      ],
+      ":memory": 2048
+    }
+  }
+}

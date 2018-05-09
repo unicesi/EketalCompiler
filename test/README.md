@@ -1,6 +1,6 @@
-# Eketal test's
+# REAL test's
 
-  This are some test using the Eketal compiler, to deploy, you must have locally installed with maven the eketal project as follows:
+  This are some test using the REAL compiler, to deploy, you must have locally installed with maven the REAL project as follows:
 
   You must have maven installed
 
@@ -52,8 +52,13 @@ As the idea is to use different machine with different ip's, you can specify the
 ```
 java -jar target/SecurityRestServer-client.jar -ip <your SERVER ip>
 
+## 2. Hadoop Yarn
+In this example, we provide an integration of REAL with Hadoop's Yarn project. Main objective is to count the number of Containers launched by yarn in each of the nodes, and, to communicate them eachother.
 
-## 2. Hello-World
+To launch and test this example, we propose two ways. Inside the [HadoopYarn](https://github.com/unicesi/eketal/tree/master/test/HadoopYarn/)'s folder, you can find complete documentation for built the test, depending on your requirements.
+
+
+## 3. Hello-World
 
 ### 1. Test
 ```
@@ -64,7 +69,7 @@ java -jar target/SecurityRestServer-client.jar -ip <your SERVER ip>
 ### 2. About the source code
    Once it has finished, you can check the generated files in Hello-World/src/main/generated-sources/ directory.
   
-   Once you have installed this project in eclipse, you can create your own sample project of type Eketal in the "New Project" window, this project have a class with the .eketal extension and his own TestClass, all the other classes are generated.
+   Once you have installed this project in eclipse, you can create your own sample project of type REAL in the "New Project" window, this project have a class with the .eketal extension and his own TestClass, all the other classes are generated.
    
    About the implementation: This example defines the declaration of an automaton, a working group and the events of interest. We will look toward the source code of the class to explain each of his statements.
    
@@ -95,7 +100,7 @@ group localGroup{
    This declaration allows to create groups, composed by host's, that will filter the incoming and outcoming calls of the events. In other words, this is reflected in a validation for the received events, and verifies which machine (or node in the distributed application) triggered the event.
 
 
-## 3. Datarace
+## 4. Datarace
   This example was proposed to work in a real case, that consist in issue that occurs when various threads want to access the same memmory location concurrently, and can cause problems or bugs in the program. So, as can be seen in the Datarace.eketal file, There are some events, and one of them take place in a non-controled situation that ends up with a datarace if the incorrect sequence of methods calls is executed. To simulate this problem, there will be two programs that interact with the JBossCache, that is used to save and read some data
 
 The automaton looks for the following sequence of events: **consult** -> **insert** -> **insert**; when it finds it, triggers a reaction. Each node make a different interact in the cache, but their individual interacts are not recognized by the automaton to perform the reaction, so both programs must be running at the time to accomplish the expected event sequence.
@@ -140,9 +145,9 @@ Now, open a new command line and run the following:
 mvn exec:java -Dexec.mainClass="local.RunExecute"
 ```
 
-This example shows how Eketal detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
+This example shows how REAL detects a complex pattern, followed by the automaton, in two different Java Virtual Machine's. Once both programs are up, run the command "start" in the program named **StartExecute**, and in the other command line write the same instruction "start", to deploy it. Finally, watch how they send messages between them. At the end of the example, Both programs show the message of the *reaction* defined in the eventClass.
 
-## 4. Deadlock
+## 5. Deadlock
 
 **Run it via Maven**
 
@@ -167,27 +172,27 @@ Finally, use the stop command in both consoles to stop their channels.
 
 **Run it with Eclipse**
 
-### 4.1. Import project
+### 5.1. Import project
 First, import this example as a Maven project.
-#### 4.1.1. Go to "File" -> "Import…"
-#### 4.1.2. Then "Maven" -> "Existing Maven Projects"
-#### 4.1.3. Select the folder where you downloaded the sources, select the "Deadlock" test project and click on "Finish".
+#### 5.1.1. Go to "File" -> "Import…"
+#### 5.1.2. Then "Maven" -> "Existing Maven Projects"
+#### 5.1.3. Select the folder where you downloaded the sources, select the "Deadlock" test project and click on "Finish".
 
-### 4.2. Compile sources
+### 5.2. Compile sources
 The required classes to launch this project have to be generated, to do this, follow the instructions bellow
-#### 4.2.1. Right click on the project ->  ->
-#### 4.2.2. Then "Maven" -> "Existing Maven Projects"
+#### 5.2.1. Right click on the project ->  ->
+#### 5.2.2. Then "Maven" -> "Existing Maven Projects"
 
 To generate the required classes, once you have
-#### 4.2.3. Right click on the project -> "Maven" -> "Update Project..." and press "OK"
-#### 4.2.4. Right click on the project -> "Run As" -> "Maven Build..."
-#### 4.2.5. In the Goals field write "clean compile" and press the "Run" button
+#### 5.2.3. Right click on the project -> "Maven" -> "Update Project..." and press "OK"
+#### 5.2.4. Right click on the project -> "Run As" -> "Maven Build..."
+#### 5.2.5. In the Goals field write "clean compile" and press the "Run" button
 
-### 4.3. Run the test
+### 5.3. Run the test
 
-#### 4.3.1 Open two console views in eclipse. Go to "Window" -> "Show View" -> "Console". (recommended in the Console view to uncheck the "Show Console When Standard Out Changes" and "Show Console When Standard Errors Changes")
-#### 4.3.2 Run the project twice.
+#### 5.3.1 Open two console views in eclipse. Go to "Window" -> "Show View" -> "Console". (recommended in the Console view to uncheck the "Show Console When Standard Out Changes" and "Show Console When Standard Errors Changes")
+#### 5.3.2 Run the project twice.
 The application interacts with the user, so there are three reserved words to use this example, and they are: prepare, commit and stop.
-#### 4.3.3 Start both consoles with the command "prepare" to begin the JGroups channels.
-#### 4.3.4 In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
-#### 4.3.5 Finally, use the stop command in both consoles to stop their channels.
+#### 5.3.3 Start both consoles with the command "prepare" to begin the JGroups channels.
+#### 5.3.4 In one of the consoles write "commit", and watch in the other console view how it recognize the event and print the Deadlock. 
+#### 5.3.5 Finally, use the stop command in both consoles to stop their channels.

@@ -10,6 +10,7 @@ import co.edu.icesi.eketal.eketal.EventPredicate;
 import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.JVMTYPE;
 import co.edu.icesi.eketal.eketal.KindAttribute;
+import co.edu.icesi.eketal.eketal.Ltl;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.OrEvent;
 import co.edu.icesi.eketal.eketal.Step;
@@ -111,8 +112,9 @@ public class EketalGenerator implements IGenerator {
     _builder.newLine();
     String packageDefinition = _builder.toString();
     Iterable<Automaton> automatons = Iterables.<Automaton>filter(modelo.getDeclarations(), Automaton.class);
-    final Function1<Automaton, Set> _function = (Automaton a) -> {
-      final Set events = new TreeSet<Object>();
+    Iterable<Ltl> buchis = Iterables.<Ltl>filter(modelo.getDeclarations(), Ltl.class);
+    final Function1<Automaton, Set<String>> _function = (Automaton a) -> {
+      final Set<String> events = new TreeSet<String>();
       final Consumer<Step> _function_1 = (Step s) -> {
         final Function1<TransDef, Boolean> _function_2 = (TransDef t) -> {
           return Boolean.valueOf(events.add(t.getEvent().getName()));
@@ -122,7 +124,7 @@ public class EketalGenerator implements IGenerator {
       a.getSteps().forEach(_function_1);
       return events;
     };
-    final Map<Automaton, Set> eventsOfAutomaton = IterableExtensions.<Automaton, Set>toInvertedMap(automatons, _function);
+    final Map<Automaton, Set<String>> eventsOfAutomaton = IterableExtensions.<Automaton, Set<String>>toInvertedMap(automatons, _function);
     Set<String> importedLibraries = new TreeSet<String>();
     Iterables.<String>addAll(importedLibraries, libraries);
     TreeSet<String> pointcuts = new TreeSet<String>();
@@ -269,9 +271,7 @@ public class EketalGenerator implements IGenerator {
             _builder_1.append("(){");
             _builder_1.newLineIfNotEmpty();
             {
-              boolean _isEmpty_1 = IterableExtensions.isEmpty(automatons);
-              boolean _not_1 = (!_isEmpty_1);
-              if (_not_1) {
+              if (((!IterableExtensions.isEmpty(automatons)) || (!IterableExtensions.isEmpty(buchis)))) {
                 _builder_1.append("\t");
                 _builder_1.append("\t");
                 _builder_1.append("Event event = new NamedEvent(\"");
@@ -299,6 +299,49 @@ public class EketalGenerator implements IGenerator {
                 _builder_1.append("distribuidor.multicast(event, map);");
                 _builder_1.newLine();
                 {
+                  for(final Ltl buchi : buchis) {
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("Automaton automaton");
+                    String _firstUpper_4 = StringExtensions.toFirstUpper(buchi.getName());
+                    _builder_1.append(_firstUpper_4, "\t\t");
+                    _builder_1.append(" = co.edu.icesi.eketal.buchiautomaton.");
+                    String _firstUpper_5 = StringExtensions.toFirstUpper(buchi.getName());
+                    _builder_1.append(_firstUpper_5, "\t\t");
+                    _builder_1.append(".getInstance();");
+                    _builder_1.newLineIfNotEmpty();
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("if(!automaton");
+                    String _firstUpper_6 = StringExtensions.toFirstUpper(buchi.getName());
+                    _builder_1.append(_firstUpper_6, "\t\t");
+                    _builder_1.append(".evaluate(event)){");
+                    _builder_1.newLineIfNotEmpty();
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append(EketalJvmModelInferrer.reaction, "\t\t\t");
+                    _builder_1.append(".onViolation();");
+                    _builder_1.newLineIfNotEmpty();
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("}else{");
+                    _builder_1.newLine();
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("logger.info(\"[Aspectj] Event respects the property ");
+                    String _name_3 = buchi.getName();
+                    _builder_1.append(_name_3, "\t\t\t");
+                    _builder_1.append("\");");
+                    _builder_1.newLineIfNotEmpty();
+                    _builder_1.append("\t");
+                    _builder_1.append("\t");
+                    _builder_1.append("}");
+                    _builder_1.newLine();
+                  }
+                }
+                {
                   for(final Automaton automatonName_1 : automatons) {
                     {
                       boolean _contains_1 = eventsOfAutomaton.get(automatonName_1).contains(((EvDecl)event).getName());
@@ -309,8 +352,8 @@ public class EketalGenerator implements IGenerator {
                         String _firstLower_7 = StringExtensions.toFirstLower(automatonName_1.getName());
                         _builder_1.append(_firstLower_7, "\t\t");
                         _builder_1.append(" = ");
-                        String _firstUpper_4 = StringExtensions.toFirstUpper(automatonName_1.getName());
-                        _builder_1.append(_firstUpper_4, "\t\t");
+                        String _firstUpper_7 = StringExtensions.toFirstUpper(automatonName_1.getName());
+                        _builder_1.append(_firstUpper_7, "\t\t");
                         _builder_1.append(".getInstance();");
                         _builder_1.newLineIfNotEmpty();
                         _builder_1.append("\t");
@@ -329,8 +372,8 @@ public class EketalGenerator implements IGenerator {
                         _builder_1.append("\t");
                         _builder_1.append("\t");
                         _builder_1.append("logger.info(\"[Aspectj] Before: Event not recognized by the automaton: ");
-                        String _firstUpper_5 = StringExtensions.toFirstUpper(automatonName_1.getName());
-                        _builder_1.append(_firstUpper_5, "\t\t\t");
+                        String _firstUpper_8 = StringExtensions.toFirstUpper(automatonName_1.getName());
+                        _builder_1.append(_firstUpper_8, "\t\t\t");
                         _builder_1.append("\");");
                         _builder_1.newLineIfNotEmpty();
                         _builder_1.append("\t");
@@ -355,16 +398,16 @@ public class EketalGenerator implements IGenerator {
                         _builder_1.append("\t");
                         _builder_1.append("\t");
                         _builder_1.append("//System.out.println(\"[Aspectj] Before: Recognized event \"+event+\" in ");
-                        String _name_3 = automatonName_1.getName();
-                        _builder_1.append(_name_3, "\t\t\t");
+                        String _name_4 = automatonName_1.getName();
+                        _builder_1.append(_name_4, "\t\t\t");
                         _builder_1.append("\");");
                         _builder_1.newLineIfNotEmpty();
                         _builder_1.append("\t");
                         _builder_1.append("\t");
                         _builder_1.append("\t");
                         _builder_1.append("logger.info(\"[Aspectj] Before: Recognized event \"+event+\" in ");
-                        String _firstUpper_6 = StringExtensions.toFirstUpper(automatonName_1.getName());
-                        _builder_1.append(_firstUpper_6, "\t\t\t");
+                        String _firstUpper_9 = StringExtensions.toFirstUpper(automatonName_1.getName());
+                        _builder_1.append(_firstUpper_9, "\t\t\t");
                         _builder_1.append("\");");
                         _builder_1.newLineIfNotEmpty();
                         _builder_1.append("\t");
