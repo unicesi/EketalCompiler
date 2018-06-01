@@ -51,6 +51,11 @@ public class JGroupsAsyncFacade extends JGroupsAbstractFacade {
 		initializeFacade();
 	}
 
+	public JGroupsAsyncFacade(String groupName, JGroupsEventBroker jeb, String props) {
+		super("ASYNC-" + groupName, jeb, props);
+		initializeFacade();
+	}
+
 	/**
 	 * Sets this class as the messages receiver and connects the channel to the
 	 * ASYNC group

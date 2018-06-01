@@ -109,6 +109,8 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case EketalPackage.PROTOCOL:
+        return createProtocolFromString(eDataType, initialValue);
       case EketalPackage.TPREFIX:
         return createTPrefixFromString(eDataType, initialValue);
       case EketalPackage.STATE_TYPE:
@@ -130,6 +132,8 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case EketalPackage.PROTOCOL:
+        return convertProtocolToString(eDataType, instanceValue);
       case EketalPackage.TPREFIX:
         return convertTPrefixToString(eDataType, instanceValue);
       case EketalPackage.STATE_TYPE:
@@ -447,6 +451,28 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     UnaryLtlImpl unaryLtl = new UnaryLtlImpl();
     return unaryLtl;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Protocol createProtocolFromString(EDataType eDataType, String initialValue)
+  {
+    Protocol result = Protocol.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertProtocolToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
   }
 
   /**

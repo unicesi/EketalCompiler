@@ -10,8 +10,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EventClass">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="protocol" eType="#//Protocol"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interface" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="declarations" upperBound="-1"
         eType="#//Decl" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Protocol">
+    <eLiterals name="UDP" literal="UDP"/>
+    <eLiterals name="TCP" value="1" literal="TCP"/>
+    <eLiterals name="TCP_NIO2" value="2" literal="TCP_NIO2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Decl"/>
   <eClassifiers xsi:type="ecore:EClass" name="JVarD" eSuperTypes="#//Decl">

@@ -6,6 +6,7 @@ package co.edu.icesi.eketal.eketal.impl;
 import co.edu.icesi.eketal.eketal.Decl;
 import co.edu.icesi.eketal.eketal.EketalPackage;
 import co.edu.icesi.eketal.eketal.EventClass;
+import co.edu.icesi.eketal.eketal.Protocol;
 
 import java.util.Collection;
 
@@ -32,6 +33,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.EventClassImpl#getName <em>Name</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.EventClassImpl#getProtocol <em>Protocol</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.impl.EventClassImpl#getInterface <em>Interface</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.impl.EventClassImpl#getDeclarations <em>Declarations</em>}</li>
  * </ul>
  *
@@ -58,6 +61,46 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getProtocol() <em>Protocol</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getProtocol()
+   * @generated
+   * @ordered
+   */
+  protected static final Protocol PROTOCOL_EDEFAULT = Protocol.UDP;
+
+  /**
+   * The cached value of the '{@link #getProtocol() <em>Protocol</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getProtocol()
+   * @generated
+   * @ordered
+   */
+  protected Protocol protocol = PROTOCOL_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getInterface() <em>Interface</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getInterface()
+   * @generated
+   * @ordered
+   */
+  protected static final String INTERFACE_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getInterface() <em>Interface</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getInterface()
+   * @generated
+   * @ordered
+   */
+  protected String interface_ = INTERFACE_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getDeclarations() <em>Declarations</em>}' containment reference list.
@@ -118,6 +161,52 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
    * <!-- end-user-doc -->
    * @generated
    */
+  public Protocol getProtocol()
+  {
+    return protocol;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setProtocol(Protocol newProtocol)
+  {
+    Protocol oldProtocol = protocol;
+    protocol = newProtocol == null ? PROTOCOL_EDEFAULT : newProtocol;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.EVENT_CLASS__PROTOCOL, oldProtocol, protocol));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getInterface()
+  {
+    return interface_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setInterface(String newInterface)
+  {
+    String oldInterface = interface_;
+    interface_ = newInterface;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, EketalPackage.EVENT_CLASS__INTERFACE, oldInterface, interface_));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EList<Decl> getDeclarations()
   {
     if (declarations == null)
@@ -155,6 +244,10 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
     {
       case EketalPackage.EVENT_CLASS__NAME:
         return getName();
+      case EketalPackage.EVENT_CLASS__PROTOCOL:
+        return getProtocol();
+      case EketalPackage.EVENT_CLASS__INTERFACE:
+        return getInterface();
       case EketalPackage.EVENT_CLASS__DECLARATIONS:
         return getDeclarations();
     }
@@ -174,6 +267,12 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
     {
       case EketalPackage.EVENT_CLASS__NAME:
         setName((String)newValue);
+        return;
+      case EketalPackage.EVENT_CLASS__PROTOCOL:
+        setProtocol((Protocol)newValue);
+        return;
+      case EketalPackage.EVENT_CLASS__INTERFACE:
+        setInterface((String)newValue);
         return;
       case EketalPackage.EVENT_CLASS__DECLARATIONS:
         getDeclarations().clear();
@@ -196,6 +295,12 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
       case EketalPackage.EVENT_CLASS__NAME:
         setName(NAME_EDEFAULT);
         return;
+      case EketalPackage.EVENT_CLASS__PROTOCOL:
+        setProtocol(PROTOCOL_EDEFAULT);
+        return;
+      case EketalPackage.EVENT_CLASS__INTERFACE:
+        setInterface(INTERFACE_EDEFAULT);
+        return;
       case EketalPackage.EVENT_CLASS__DECLARATIONS:
         getDeclarations().clear();
         return;
@@ -215,6 +320,10 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
     {
       case EketalPackage.EVENT_CLASS__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case EketalPackage.EVENT_CLASS__PROTOCOL:
+        return protocol != PROTOCOL_EDEFAULT;
+      case EketalPackage.EVENT_CLASS__INTERFACE:
+        return INTERFACE_EDEFAULT == null ? interface_ != null : !INTERFACE_EDEFAULT.equals(interface_);
       case EketalPackage.EVENT_CLASS__DECLARATIONS:
         return declarations != null && !declarations.isEmpty();
     }
@@ -234,6 +343,10 @@ public class EventClassImpl extends MinimalEObjectImpl.Container implements Even
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
     result.append(name);
+    result.append(", protocol: ");
+    result.append(protocol);
+    result.append(", interface: ");
+    result.append(interface_);
     result.append(')');
     return result.toString();
   }

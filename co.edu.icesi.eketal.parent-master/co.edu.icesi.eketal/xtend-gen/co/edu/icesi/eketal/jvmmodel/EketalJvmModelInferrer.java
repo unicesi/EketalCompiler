@@ -18,6 +18,7 @@ import co.edu.icesi.eketal.eketal.LtlUntil;
 import co.edu.icesi.eketal.eketal.MSig;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.Pos;
+import co.edu.icesi.eketal.eketal.Protocol;
 import co.edu.icesi.eketal.eketal.Rc;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
@@ -1169,6 +1170,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
    * Also adds the Singleton nature
    */
   public void createHandlerClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass eventDefinitionClass, final Set<Automaton> machines, final Set<Ltl> buchis) {
+    final Protocol protocol = eventDefinitionClass.getProtocol();
+    InputOutput.<String>println(("protocol" + protocol));
+    final String matchInterface = eventDefinitionClass.getInterface();
+    InputOutput.<String>println(("interfaces" + matchInterface));
     final Function1<Automaton, Automaton> _function = (Automaton a) -> {
       return ((Automaton) a);
     };
@@ -1373,19 +1378,50 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("};");
             _builder.newLine();
-            _builder.append("eventBroker = new ");
-            JvmTypeReference _typeRef_6 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(JGroupsEventBroker.class);
-            _builder.append(_typeRef_6);
-            _builder.append("(\"Eketal\", brokerMessageHandler, true);");
-            _builder.newLineIfNotEmpty();
+            {
+              if ((((protocol == null) || Objects.equal(protocol, Protocol.UDP)) && (matchInterface == null))) {
+                _builder.append("eventBroker = new ");
+                JvmTypeReference _typeRef_6 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(JGroupsEventBroker.class);
+                _builder.append(_typeRef_6);
+                _builder.append("(\"Eketal\", brokerMessageHandler, true);");
+                _builder.newLineIfNotEmpty();
+              } else {
+                _builder.append("eventBroker = new ");
+                JvmTypeReference _typeRef_7 = EketalJvmModelInferrer.this._typeReferenceBuilder.typeRef(JGroupsEventBroker.class);
+                _builder.append(_typeRef_7);
+                _builder.append("(\"Eketal\", brokerMessageHandler, true, props);");
+                _builder.newLineIfNotEmpty();
+              }
+            }
           }
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
       JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(eventDefinitionClass, _function_5);
       this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_3, _constructor);
-      EList<JvmMember> _members_4 = it.getMembers();
-      final Procedure1<JvmOperation> _function_6 = (JvmOperation it_1) -> {
+      if ((((protocol != null) && (!Objects.equal(protocol, Protocol.UDP))) || (matchInterface != null))) {
+        EList<JvmMember> _members_4 = it.getMembers();
+        final Procedure1<JvmField> _function_6 = (JvmField it_1) -> {
+          if (((protocol == null) || Objects.equal(protocol, Protocol.UDP))) {
+            this._jvmTypesBuilder.setInitializer(it_1, this.generateUDP(matchInterface));
+          } else {
+            final TreeSet<String> ips = new TreeSet<String>();
+            final Consumer<Group> _function_7 = (Group it_2) -> {
+              final Consumer<Host> _function_8 = (Host g) -> {
+                String _ip = g.getIp();
+                ips.add(_ip);
+              };
+              it_2.getHosts().forEach(_function_8);
+            };
+            Iterables.<Group>filter(eventDefinitionClass.getDeclarations(), Group.class).forEach(_function_7);
+            this._jvmTypesBuilder.setInitializer(it_1, this.generateTCP(matchInterface, protocol, ips));
+          }
+        };
+        JvmField _field_3 = this._jvmTypesBuilder.toField(eventDefinitionClass, "props", this._typeReferenceBuilder.typeRef(String.class), _function_6);
+        this._jvmTypesBuilder.<JvmField>operator_add(_members_4, _field_3);
+      }
+      EList<JvmMember> _members_5 = it.getMembers();
+      final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -1403,10 +1439,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getInstance", this._typeReferenceBuilder.typeRef(it), _function_6);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method);
-      EList<JvmMember> _members_5 = it.getMembers();
-      final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
+      JvmOperation _method = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getInstance", this._typeReferenceBuilder.typeRef(it), _function_7);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method);
+      EList<JvmMember> _members_6 = it.getMembers();
+      final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
         JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(eventDefinitionClass, "evento", this._typeReferenceBuilder.typeRef(Event.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -1423,10 +1459,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "multicast", this._typeReferenceBuilder.typeRef(void.class), _function_7);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_1);
-      EList<JvmMember> _members_6 = it.getMembers();
-      final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
+      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "multicast", this._typeReferenceBuilder.typeRef(void.class), _function_8);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_1);
+      EList<JvmMember> _members_7 = it.getMembers();
+      final Procedure1<JvmOperation> _function_9 = (JvmOperation it_1) -> {
         it_1.setStatic(false);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -1480,10 +1516,290 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getAsyncAddress", this._typeReferenceBuilder.typeRef(URL.class), _function_8);
-      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_2);
+      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(eventDefinitionClass, "getAsyncAddress", this._typeReferenceBuilder.typeRef(URL.class), _function_9);
+      this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_2);
     };
     acceptor.<JvmGenericType>accept(this._jvmTypesBuilder.toClass(eventDefinitionClass, ("co.edu.icesi.eketal.handlercontrol." + EketalJvmModelInferrer.handlerClassName)), _function_1);
+  }
+  
+  public StringConcatenationClient generateTCP(final String bindInterface, final Protocol protocol, final TreeSet<String> ips) {
+    StringConcatenationClient _client = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        {
+          boolean _equals = Objects.equal(protocol, Protocol.TCP);
+          if (_equals) {
+            _builder.append("\"TCP(bind_port=7800;\"+");
+            _builder.newLine();
+          } else {
+            boolean _equals_1 = Objects.equal(protocol, Protocol.TCP_NIO2);
+            if (_equals_1) {
+              _builder.append("\"TCP_NIO2(bind_port=7800;\"+");
+              _builder.newLine();
+            }
+          }
+        }
+        _builder.newLine();
+        {
+          if ((bindInterface != null)) {
+            _builder.append("\"bind_addr=match-interface:");
+            _builder.append(bindInterface);
+            _builder.append(";\"+");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.newLine();
+        _builder.append("\"recv_buf_size=${tcp.recv_buf_size:130k};\"+");
+        _builder.newLine();
+        _builder.append("\"send_buf_size=${tcp.send_buf_size:130k};\"+");
+        _builder.newLine();
+        _builder.append("\"max_bundle_size=64K;\"+");
+        _builder.newLine();
+        _builder.append("\"sock_conn_timeout=300;\"+");
+        _builder.newLine();
+        _builder.newLine();
+        _builder.append("\"TCPPING(async_discovery=true;\"+");
+        _builder.newLine();
+        _builder.append("\"initial_hosts=${jgroups.tcpping.initial_hosts:");
+        final Function1<String, CharSequence> _function = (String ip) -> {
+          return (ip + "[7800]");
+        };
+        String _join = IterableExtensions.<String>join(ips, ",", _function);
+        _builder.append(_join);
+        _builder.append("};\"+");
+        _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        {
+          boolean _equals_2 = Objects.equal(protocol, Protocol.TCP);
+          if (_equals_2) {
+            _builder.append("\"port_range=2):\"+");
+            _builder.newLine();
+          } else {
+            boolean _equals_3 = Objects.equal(protocol, Protocol.TCP_NIO2);
+            if (_equals_3) {
+              _builder.append("\"port_range=3):\"+");
+              _builder.newLine();
+            }
+          }
+        }
+        _builder.append("\"MERGE3(min_interval=10000;max_interval=30000):\" +");
+        _builder.newLine();
+        _builder.append("\"FD_SOCK():\" +");
+        _builder.newLine();
+        {
+          boolean _equals_4 = Objects.equal(protocol, Protocol.TCP);
+          if (_equals_4) {
+            _builder.append("\"FD(timeout=12000):\" +");
+            _builder.newLine();
+          } else {
+            boolean _equals_5 = Objects.equal(protocol, Protocol.TCP_NIO2);
+            if (_equals_5) {
+              _builder.append("\"FD_ALL(timeout=12000;max_tries=3):\" +");
+              _builder.newLine();
+            }
+          }
+        }
+        _builder.newLine();
+        _builder.append("\"VERIFY_SUSPECT(timeout=2000):\" +");
+        _builder.newLine();
+        _builder.append("\"BARRIER():\" +");
+        _builder.newLine();
+        _builder.append("\t\t  \t");
+        _builder.append("\"pbcast.NAKACK2(use_mcast_xmit=false;discard_delivered_msgs=true):\" +");
+        _builder.newLine();
+        _builder.append("\t\t    ");
+        _builder.append("\"UNICAST3():\"+");
+        _builder.newLine();
+        _builder.append("\"pbcast.STABLE(stability_delay=2000;desired_avg_gossip=50000;max_bytes=4M):\" +");
+        _builder.newLine();
+        _builder.append("\t\t    ");
+        _builder.append("\"pbcast.GMS(join_timeout=10000;print_local_addr=true;view_bundling=true):\"+");
+        _builder.newLine();
+        _builder.append("\"MFC(max_credits=4M;min_threshold=0.4):\"+");
+        _builder.newLine();
+        _builder.append("\"FRAG2(frag_size=60k):\" +");
+        _builder.newLine();
+        _builder.append("\"pbcast.STATE_TRANSFER()\"");
+        _builder.newLine();
+      }
+    };
+    return _client;
+  }
+  
+  public StringConcatenationClient generateUDP(final String bindInterface) {
+    StringConcatenationClient _client = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        _builder.append("\"UDP(mcast_port=${jgroups.udp.mcast_port:45588};\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"bind_addr=match-interface:");
+        _builder.append(bindInterface, "\t");
+        _builder.append(";\"+");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"tos=8;\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"ucast_recv_buf_size=210K;\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"ucast_send_buf_size=210K;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"mcast_recv_buf_size=210K;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"mcast_send_buf_size=210K;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"max_bundle_size=64K;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"max_bundle_timeout=30;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"enable_diagnostics=true;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_naming_pattern=cl;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"logical_addr_cache_max_size=1000;\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"timer_type=new3;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"timer.min_threads=2;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"timer.max_threads=4;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"timer.keep_alive_time=3000;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"timer.queue_max_size=500;\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"timer.rejection_policy=abort;\"+");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.enabled=true;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.min_threads=10;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.max_threads=80;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.keep_alive_time=5000;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.queue_enabled=true;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.queue_max_size=50000;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"thread_pool.rejection_policy=discard;\"+");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"oob_thread_pool.enabled=true;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"oob_thread_pool.min_threads=5;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"oob_thread_pool.max_threads=80;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"oob_thread_pool.keep_alive_time=5000;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"oob_thread_pool.rejection_policy=discard):\"+");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"PING(break_on_coord_rsp=true):\" +");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"MERGE3(min_interval=10000;max_interval=30000):\" +");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"FD_SOCK():\" +");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"FD_ALL(timeout=12000):\" +");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"VERIFY_SUSPECT(timeout=2000):\" +");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"BARRIER():\" +");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("  \t");
+        _builder.append("\"pbcast.NAKACK2(use_mcast_xmit=true;xmit_interval=500;xmit_table_num_rows=100;xmit_table_msgs_per_row=2000;\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"xmit_table_max_compaction_time=35000;max_msg_batch_size=500;discard_delivered_msgs=true):\" +");
+        _builder.newLine();
+        _builder.append("\t\t\t   ");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"UNICAST3(xmit_interval=500;xmit_table_num_rows=100;xmit_table_msgs_per_row=2000;\"+");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"xmit_table_max_compaction_time=60000;max_msg_batch_size=500):\"+");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"pbcast.STABLE(stability_delay=2000;desired_avg_gossip=50000;max_bytes=4M):\" +");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"pbcast.GMS(join_timeout=10000;print_local_addr=true;view_bundling=true,merge_timeout=7000,max_bundling_time=1000,resume_task_timeout=15000):\"+");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"UFC(max_credits=4M;min_threshold=0.4):\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"MFC(max_credits=4M;min_threshold=0.4):\"+");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"FRAG2(frag_size=60k):\" +");
+        _builder.newLine();
+        _builder.append("    ");
+        _builder.append("\"RSVP(resend_interval=2000;timeout=10000):\"+");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("//\"pbcast.GMS(join_timeout=5000;print_local_addr=true;view_bundling=true):Causal(causal_order_prot_interest=false)\";");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\"pbcast.STATE_TRANSFER()\"");
+        _builder.newLine();
+      }
+    };
+    return _client;
   }
   
   public void createGroupClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass claseGrupos) {

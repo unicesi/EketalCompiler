@@ -63,6 +63,7 @@ import java.util.Arrays
 import co.edu.icesi.ketal.core.And
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import co.edu.icesi.ketal.core.TrueExpression
+import co.edu.icesi.eketal.eketal.Protocol
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -117,6 +118,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			return;
 
 		var eventClass = element.typeDeclaration
+		
 		var eventClassGenerate = eventClass.toClass(eventClass.fullyQualifiedName)
 
 //		eventClassGenerate.eAdapters.add(new OutputConfigurationAdapter(EketalOutputConfigurationProvider::ASPECTJ_OUTPUT))
@@ -600,11 +602,17 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 
 		]
 	}
-
+	
+	
 	/*
 	 * Also adds the Singleton nature
 	 */
 	def createHandlerClass(IJvmDeclaredTypeAcceptor acceptor, EventClass eventDefinitionClass, Set<co.edu.icesi.eketal.eketal.Automaton> machines, Set<Ltl> buchis) {
+		val protocol = eventDefinitionClass.protocol
+		println("protocol"+protocol)
+		val matchInterface = eventDefinitionClass.interface
+		println("interfaces"+matchInterface)
+		
 		val automatons = machines.map[a|a as co.edu.icesi.eketal.eketal.Automaton].toSet
 		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol." + handlerClassName)) [
 			// Implementación de la simulación Singleton
@@ -656,12 +664,32 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							return handle;
 						}
 					};
-					eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler, true);
+					«IF (protocol===null || protocol==Protocol.UDP) && matchInterface===null»
+						eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler, true);
+					«ELSE»
+						eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler, true, props);
+					«ENDIF»
 				'''
 			// TODO automaton name
 			// TODO if
 			]
-
+			
+			if((protocol!==null && protocol!=Protocol.UDP) || matchInterface!==null){
+				//creates the default protocol field
+				members+=eventDefinitionClass.toField("props", typeRef(String))[
+					if(protocol===null || protocol==Protocol.UDP){
+						initializer = generateUDP(matchInterface)
+					}else{
+						//Collects the hosts
+						val ips = new TreeSet()
+						eventDefinitionClass.declarations.filter(typeof(Group)).forEach [
+							it.hosts.forEach[g|ips+=g.ip]
+						]
+						initializer = generateTCP(matchInterface, protocol, ips)
+					}
+				]
+			}
+			
 			members += eventDefinitionClass.toMethod("getInstance", typeRef(it)) [
 				static = true
 				body = '''
@@ -728,6 +756,115 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		 * ]		
 		 */
 		]
+	}
+	
+	def StringConcatenationClient generateTCP(String bindInterface, Protocol protocol, TreeSet<String> ips){
+		return '''
+			«IF protocol==Protocol.TCP»
+				"TCP(bind_port=7800;"+
+			«ELSEIF protocol==Protocol.TCP_NIO2»
+				"TCP_NIO2(bind_port=7800;"+
+			«ENDIF»
+			
+			«IF bindInterface!==null»
+				"bind_addr=match-interface:«bindInterface»;"+
+			«ENDIF»
+			
+			"recv_buf_size=${tcp.recv_buf_size:130k};"+
+			"send_buf_size=${tcp.send_buf_size:130k};"+
+			"max_bundle_size=64K;"+
+			"sock_conn_timeout=300;"+
+			
+			"TCPPING(async_discovery=true;"+
+			"initial_hosts=${jgroups.tcpping.initial_hosts:«ips.join(",", [ip| ip+"[7800]"])»};"+
+			
+			«IF protocol==Protocol.TCP»
+				"port_range=2):"+
+			«ELSEIF protocol==Protocol.TCP_NIO2»
+				"port_range=3):"+
+			«ENDIF»
+			"MERGE3(min_interval=10000;max_interval=30000):" +
+			"FD_SOCK():" +
+			«IF protocol==Protocol.TCP»
+				"FD(timeout=12000):" +
+			«ELSEIF protocol==Protocol.TCP_NIO2»
+				"FD_ALL(timeout=12000;max_tries=3):" +
+			«ENDIF»
+			
+			"VERIFY_SUSPECT(timeout=2000):" +
+			"BARRIER():" +
+		  	"pbcast.NAKACK2(use_mcast_xmit=false;discard_delivered_msgs=true):" +
+		    "UNICAST3():"+
+			"pbcast.STABLE(stability_delay=2000;desired_avg_gossip=50000;max_bytes=4M):" +
+		    "pbcast.GMS(join_timeout=10000;print_local_addr=true;view_bundling=true):"+
+			"MFC(max_credits=4M;min_threshold=0.4):"+
+			"FRAG2(frag_size=60k):" +
+			"pbcast.STATE_TRANSFER()"
+			'''
+	}
+	
+	def StringConcatenationClient generateUDP(String bindInterface) {
+		return '''
+			"UDP(mcast_port=${jgroups.udp.mcast_port:45588};"+
+				"bind_addr=match-interface:«bindInterface»;"+
+				
+				"tos=8;"+
+				"ucast_recv_buf_size=210K;"+
+				"ucast_send_buf_size=210K;"+
+			    "mcast_recv_buf_size=210K;"+
+			    "mcast_send_buf_size=210K;"+
+			    "max_bundle_size=64K;"+
+			    "max_bundle_timeout=30;"+
+			    "enable_diagnostics=true;"+
+			    "thread_naming_pattern=cl;"+
+			    "logical_addr_cache_max_size=1000;"+
+				
+			    "timer_type=new3;"+
+			    "timer.min_threads=2;"+
+			    "timer.max_threads=4;"+
+			    "timer.keep_alive_time=3000;"+
+			    "timer.queue_max_size=500;"+
+				"timer.rejection_policy=abort;"+
+		
+			    "thread_pool.enabled=true;"+
+			    "thread_pool.min_threads=10;"+
+			    "thread_pool.max_threads=80;"+
+			    "thread_pool.keep_alive_time=5000;"+
+			    "thread_pool.queue_enabled=true;"+
+			    "thread_pool.queue_max_size=50000;"+
+			    "thread_pool.rejection_policy=discard;"+
+		
+			    "oob_thread_pool.enabled=true;"+
+			    "oob_thread_pool.min_threads=5;"+
+			    "oob_thread_pool.max_threads=80;"+
+			    "oob_thread_pool.keep_alive_time=5000;"+
+			    "oob_thread_pool.rejection_policy=discard):"+
+		
+				"PING(break_on_coord_rsp=true):" +
+				"MERGE3(min_interval=10000;max_interval=30000):" +
+		
+				"FD_SOCK():" +
+				"FD_ALL(timeout=12000):" +
+				"VERIFY_SUSPECT(timeout=2000):" +
+				"BARRIER():" +
+		
+			  	"pbcast.NAKACK2(use_mcast_xmit=true;xmit_interval=500;xmit_table_num_rows=100;xmit_table_msgs_per_row=2000;"+
+				"xmit_table_max_compaction_time=35000;max_msg_batch_size=500;discard_delivered_msgs=true):" +
+						   
+			    "UNICAST3(xmit_interval=500;xmit_table_num_rows=100;xmit_table_msgs_per_row=2000;"+
+			    "xmit_table_max_compaction_time=60000;max_msg_batch_size=500):"+
+		
+				"pbcast.STABLE(stability_delay=2000;desired_avg_gossip=50000;max_bytes=4M):" +
+			    "pbcast.GMS(join_timeout=10000;print_local_addr=true;view_bundling=true,merge_timeout=7000,max_bundling_time=1000,resume_task_timeout=15000):"+
+		
+				"UFC(max_credits=4M;min_threshold=0.4):"+
+				"MFC(max_credits=4M;min_threshold=0.4):"+
+		
+				"FRAG2(frag_size=60k):" +
+			    "RSVP(resend_interval=2000;timeout=10000):"+
+				//"pbcast.GMS(join_timeout=5000;print_local_addr=true;view_bundling=true):Causal(causal_order_prot_interest=false)";
+				"pbcast.STATE_TRANSFER()"
+		'''
 	}
 
 	def createGroupClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseGrupos) {

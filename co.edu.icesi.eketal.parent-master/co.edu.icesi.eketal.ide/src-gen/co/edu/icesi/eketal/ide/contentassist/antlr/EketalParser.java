@@ -82,12 +82,15 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNumberAccess().getAlternatives_1_1_1(), "rule__Number__Alternatives_1_1_1");
 					put(grammarAccess.getJvmArgumentTypeReferenceAccess().getAlternatives(), "rule__JvmArgumentTypeReference__Alternatives");
 					put(grammarAccess.getJvmWildcardTypeReferenceAccess().getAlternatives_2(), "rule__JvmWildcardTypeReference__Alternatives_2");
+					put(grammarAccess.getProtocolAccess().getAlternatives(), "rule__Protocol__Alternatives");
 					put(grammarAccess.getTPrefixAccess().getAlternatives(), "rule__TPrefix__Alternatives");
 					put(grammarAccess.getStateTypeAccess().getAlternatives(), "rule__StateType__Alternatives");
 					put(grammarAccess.getPosAccess().getAlternatives(), "rule__Pos__Alternatives");
 					put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
 					put(grammarAccess.getModelAccess().getGroup_0(), "rule__Model__Group_0__0");
 					put(grammarAccess.getEventClassAccess().getGroup(), "rule__EventClass__Group__0");
+					put(grammarAccess.getEventClassAccess().getGroup_2(), "rule__EventClass__Group_2__0");
+					put(grammarAccess.getEventClassAccess().getGroup_3(), "rule__EventClass__Group_3__0");
 					put(grammarAccess.getJVarDAccess().getGroup(), "rule__JVarD__Group__0");
 					put(grammarAccess.getMSigAccess().getGroup(), "rule__MSig__Group__0");
 					put(grammarAccess.getMSigAccess().getGroup_3(), "rule__MSig__Group_3__0");
@@ -374,7 +377,9 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelAccess().getImportSectionAssignment_1(), "rule__Model__ImportSectionAssignment_1");
 					put(grammarAccess.getModelAccess().getTypeDeclarationAssignment_2(), "rule__Model__TypeDeclarationAssignment_2");
 					put(grammarAccess.getEventClassAccess().getNameAssignment_1(), "rule__EventClass__NameAssignment_1");
-					put(grammarAccess.getEventClassAccess().getDeclarationsAssignment_3(), "rule__EventClass__DeclarationsAssignment_3");
+					put(grammarAccess.getEventClassAccess().getProtocolAssignment_2_2(), "rule__EventClass__ProtocolAssignment_2_2");
+					put(grammarAccess.getEventClassAccess().getInterfaceAssignment_3_2(), "rule__EventClass__InterfaceAssignment_3_2");
+					put(grammarAccess.getEventClassAccess().getDeclarationsAssignment_5(), "rule__EventClass__DeclarationsAssignment_5");
 					put(grammarAccess.getJVarDAccess().getNameAssignment_0(), "rule__JVarD__NameAssignment_0");
 					put(grammarAccess.getJVarDAccess().getTypeAssignment_2(), "rule__JVarD__TypeAssignment_2");
 					put(grammarAccess.getMSigAccess().getNameAssignment_1(), "rule__MSig__NameAssignment_1");
