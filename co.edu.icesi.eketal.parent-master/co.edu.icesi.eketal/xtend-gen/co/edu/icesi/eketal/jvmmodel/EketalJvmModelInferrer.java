@@ -1409,7 +1409,11 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
             final Consumer<Group> _function_7 = (Group it_2) -> {
               final Consumer<Host> _function_8 = (Host g) -> {
                 String _ip = g.getIp();
-                ips.add(_ip);
+                boolean _notEquals = (!Objects.equal(_ip, "localhost"));
+                if (_notEquals) {
+                  String _ip_1 = g.getIp();
+                  ips.add(_ip_1);
+                }
               };
               it_2.getHosts().forEach(_function_8);
             };

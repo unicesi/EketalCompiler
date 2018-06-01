@@ -683,7 +683,11 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						//Collects the hosts
 						val ips = new TreeSet()
 						eventDefinitionClass.declarations.filter(typeof(Group)).forEach [
-							it.hosts.forEach[g|ips+=g.ip]
+							it.hosts.forEach[g|
+								if(g.ip!="localhost"){
+									ips+=g.ip
+								}
+							]
 						]
 						initializer = generateTCP(matchInterface, protocol, ips)
 					}
@@ -776,7 +780,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			"sock_conn_timeout=300;"+
 			
 			"TCPPING(async_discovery=true;"+
-			"initial_hosts=${jgroups.tcpping.initial_hosts:«ips.join(",", [ip| ip+"[7800]"])»};"+
+			"initial_hosts=${jgroups.tcpping.initial_hosts:«ips.join(",", [
+				ip| ip+"[7800]"
+			])»};"+
 			
 			«IF protocol==Protocol.TCP»
 				"port_range=2):"+
