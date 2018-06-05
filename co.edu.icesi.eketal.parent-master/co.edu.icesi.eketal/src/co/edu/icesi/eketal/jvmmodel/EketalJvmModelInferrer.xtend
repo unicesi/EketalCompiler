@@ -777,7 +777,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			"recv_buf_size=${tcp.recv_buf_size:130k};"+
 			"send_buf_size=${tcp.send_buf_size:130k};"+
 			"max_bundle_size=64K;"+
-			"sock_conn_timeout=300;"+
+			"sock_conn_timeout=300:"+
 			
 			"TCPPING(async_discovery=true;"+
 			"initial_hosts=${jgroups.tcpping.initial_hosts:«ips.join(",", [

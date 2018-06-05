@@ -1559,7 +1559,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         _builder.newLine();
         _builder.append("\"max_bundle_size=64K;\"+");
         _builder.newLine();
-        _builder.append("\"sock_conn_timeout=300;\"+");
+        _builder.append("\"sock_conn_timeout=300:\"+");
         _builder.newLine();
         _builder.newLine();
         _builder.append("\"TCPPING(async_discovery=true;\"+");
