@@ -6,6 +6,11 @@
     copyrightFields="false" runtimeVersion="2.11" usedGenPackages="platform:/resource/jbase/model/custom/Jbase.genmodel#//jbase platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
   <genPackages prefix="Eketal" basePackage="co.edu.icesi.eketal" disposableProviderFactory="true"
       fileExtensions="eketal" ecorePackage="Eketal.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Eketal.ecore#//Protocol">
+      <genEnumLiterals ecoreEnumLiteral="Eketal.ecore#//Protocol/UDP"/>
+      <genEnumLiterals ecoreEnumLiteral="Eketal.ecore#//Protocol/TCP"/>
+      <genEnumLiterals ecoreEnumLiteral="Eketal.ecore#//Protocol/TCP_NIO2"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Eketal.ecore#//TPrefix">
       <genEnumLiterals ecoreEnumLiteral="Eketal.ecore#//TPrefix/call"/>
       <genEnumLiterals ecoreEnumLiteral="Eketal.ecore#//TPrefix/execution"/>
@@ -27,6 +32,8 @@
     </genClasses>
     <genClasses ecoreClass="Eketal.ecore#//EventClass">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//EventClass/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//EventClass/protocol"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Eketal.ecore#//EventClass/interface"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Eketal.ecore#//EventClass/declarations"/>
     </genClasses>
     <genClasses ecoreClass="Eketal.ecore#//Decl"/>

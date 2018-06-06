@@ -27,6 +27,7 @@ import co.edu.icesi.eketal.eketal.MSig;
 import co.edu.icesi.eketal.eketal.Model;
 import co.edu.icesi.eketal.eketal.OrEvent;
 import co.edu.icesi.eketal.eketal.Pos;
+import co.edu.icesi.eketal.eketal.Protocol;
 import co.edu.icesi.eketal.eketal.Rc;
 import co.edu.icesi.eketal.eketal.StateType;
 import co.edu.icesi.eketal.eketal.Step;
@@ -261,6 +262,13 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EEnum protocolEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EEnum tPrefixEEnum = null;
 
   /**
@@ -409,9 +417,29 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getEventClass_Protocol()
+  {
+    return (EAttribute)eventClassEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getEventClass_Interface()
+  {
+    return (EAttribute)eventClassEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getEventClass_Declarations()
   {
-    return (EReference)eventClassEClass.getEStructuralFeatures().get(1);
+    return (EReference)eventClassEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1249,6 +1277,16 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getProtocol()
+  {
+    return protocolEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getTPrefix()
   {
     return tPrefixEEnum;
@@ -1311,6 +1349,8 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
 
     eventClassEClass = createEClass(EVENT_CLASS);
     createEAttribute(eventClassEClass, EVENT_CLASS__NAME);
+    createEAttribute(eventClassEClass, EVENT_CLASS__PROTOCOL);
+    createEAttribute(eventClassEClass, EVENT_CLASS__INTERFACE);
     createEReference(eventClassEClass, EVENT_CLASS__DECLARATIONS);
 
     declEClass = createEClass(DECL);
@@ -1423,6 +1463,7 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEReference(unaryLtlEClass, UNARY_LTL__EXPR);
 
     // Create enums
+    protocolEEnum = createEEnum(PROTOCOL);
     tPrefixEEnum = createEEnum(TPREFIX);
     stateTypeEEnum = createEEnum(STATE_TYPE);
     posEEnum = createEEnum(POS);
@@ -1489,6 +1530,8 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
 
     initEClass(eventClassEClass, EventClass.class, "EventClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getEventClass_Name(), ecorePackage.getEString(), "name", null, 0, 1, EventClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getEventClass_Protocol(), this.getProtocol(), "protocol", null, 0, 1, EventClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getEventClass_Interface(), ecorePackage.getEString(), "interface", null, 0, 1, EventClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEventClass_Declarations(), this.getDecl(), null, "declarations", null, 0, -1, EventClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(declEClass, Decl.class, "Decl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1601,6 +1644,11 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEReference(getUnaryLtl_Expr(), this.getLtlExpression(), null, "expr", null, 0, 1, UnaryLtl.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
+    initEEnum(protocolEEnum, Protocol.class, "Protocol");
+    addEEnumLiteral(protocolEEnum, Protocol.UDP);
+    addEEnumLiteral(protocolEEnum, Protocol.TCP);
+    addEEnumLiteral(protocolEEnum, Protocol.TCP_NIO2);
+
     initEEnum(tPrefixEEnum, TPrefix.class, "TPrefix");
     addEEnumLiteral(tPrefixEEnum, TPrefix.CALL);
     addEEnumLiteral(tPrefixEEnum, TPrefix.EXECUTION);

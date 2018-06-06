@@ -148,7 +148,7 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		    "xmit_table_max_compaction_time=60000;max_msg_batch_size=500):"+
 
 			"pbcast.STABLE(stability_delay=2000;desired_avg_gossip=50000;max_bytes=4M):" +
-		    "pbcast.GMS(join_timeout=10000;print_local_addr=true;view_bundling=true,merge_timeout=7000,max_bundling_time=1000,resume_task_timeout=15000):"+
+		    "pbcast.GMS(join_timeout=10000;print_local_addr=true;view_bundling=true;merge_timeout=7000;max_bundling_time=1000;resume_task_timeout=15000):"+
 
 			"UFC(max_credits=4M;min_threshold=0.4):"+
 			"MFC(max_credits=4M;min_threshold=0.4):"+
@@ -182,6 +182,19 @@ public abstract class JGroupsAbstractFacade extends ReceiverAdapter {
 		this.jeb = jeb;
 		try {
 			channel = new JChannel(props);
+			initializeAddress();
+		} catch (Exception e) {
+			getLogger().error(e.getMessage());
+//			e.printStackTrace();
+		}
+	}
+	
+
+	public JGroupsAbstractFacade(String groupName, JGroupsEventBroker jeb, String customProps) {
+		this.groupName = groupName;
+		this.jeb = jeb;
+		try {
+			channel = new JChannel(customProps);
 			initializeAddress();
 		} catch (Exception e) {
 			getLogger().error(e.getMessage());

@@ -88,16 +88,27 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEventclassKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cDeclarationsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cDeclarationsDeclParserRuleCall_3_0 = (RuleCall)cDeclarationsAssignment_3.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cProtocolKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Assignment cProtocolAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cProtocolProtocolEnumRuleCall_2_2_0 = (RuleCall)cProtocolAssignment_2_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cBindintfKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cInterfaceAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cInterfaceSTRINGTerminalRuleCall_3_2_0 = (RuleCall)cInterfaceAssignment_3_2.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cDeclarationsAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cDeclarationsDeclParserRuleCall_5_0 = (RuleCall)cDeclarationsAssignment_5.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//EventClass:
-		//	'eventclass' name=ID '{' declarations+=Decl* '}';
+		//	'eventclass' name=ID ('protocol' '=' protocol=Protocol)? ('bindintf' '=' interface=STRING)? '{' declarations+=Decl*
+		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'eventclass' name=ID '{' declarations+=Decl* '}'
+		//'eventclass' name=ID ('protocol' '=' protocol=Protocol)? ('bindintf' '=' interface=STRING)? '{' declarations+=Decl* '}'
 		public Group getGroup() { return cGroup; }
 		
 		//'eventclass'
@@ -109,17 +120,47 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
+		//('protocol' '=' protocol=Protocol)?
+		public Group getGroup_2() { return cGroup_2; }
+		
+		//'protocol'
+		public Keyword getProtocolKeyword_2_0() { return cProtocolKeyword_2_0; }
+		
+		//'='
+		public Keyword getEqualsSignKeyword_2_1() { return cEqualsSignKeyword_2_1; }
+		
+		//protocol=Protocol
+		public Assignment getProtocolAssignment_2_2() { return cProtocolAssignment_2_2; }
+		
+		//Protocol
+		public RuleCall getProtocolProtocolEnumRuleCall_2_2_0() { return cProtocolProtocolEnumRuleCall_2_2_0; }
+		
+		//('bindintf' '=' interface=STRING)?
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//'bindintf'
+		public Keyword getBindintfKeyword_3_0() { return cBindintfKeyword_3_0; }
+		
+		//'='
+		public Keyword getEqualsSignKeyword_3_1() { return cEqualsSignKeyword_3_1; }
+		
+		//interface=STRING
+		public Assignment getInterfaceAssignment_3_2() { return cInterfaceAssignment_3_2; }
+		
+		//STRING
+		public RuleCall getInterfaceSTRINGTerminalRuleCall_3_2_0() { return cInterfaceSTRINGTerminalRuleCall_3_2_0; }
+		
 		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 		
 		//declarations+=Decl*
-		public Assignment getDeclarationsAssignment_3() { return cDeclarationsAssignment_3; }
+		public Assignment getDeclarationsAssignment_5() { return cDeclarationsAssignment_5; }
 		
 		//Decl
-		public RuleCall getDeclarationsDeclParserRuleCall_3_0() { return cDeclarationsDeclParserRuleCall_3_0; }
+		public RuleCall getDeclarationsDeclParserRuleCall_5_0() { return cDeclarationsDeclParserRuleCall_5_0; }
 		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 	public class DeclElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Decl");
@@ -1610,6 +1651,43 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getBodyXBlockExpressionParserRuleCall_0() { return cBodyXBlockExpressionParserRuleCall_0; }
 	}
 	
+	public class ProtocolElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Protocol");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cUDPEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cUDPUDPKeyword_0_0 = (Keyword)cUDPEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cTCPEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cTCPTCPKeyword_1_0 = (Keyword)cTCPEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cTCP_NIO2EnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cTCP_NIO2TCP_NIO2Keyword_2_0 = (Keyword)cTCP_NIO2EnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum Protocol:
+		//	UDP |
+		//	TCP |
+		//	TCP_NIO2;
+		public EnumRule getRule() { return rule; }
+		
+		//UDP | TCP | TCP_NIO2
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//UDP
+		public EnumLiteralDeclaration getUDPEnumLiteralDeclaration_0() { return cUDPEnumLiteralDeclaration_0; }
+		
+		//"UDP"
+		public Keyword getUDPUDPKeyword_0_0() { return cUDPUDPKeyword_0_0; }
+		
+		//TCP
+		public EnumLiteralDeclaration getTCPEnumLiteralDeclaration_1() { return cTCPEnumLiteralDeclaration_1; }
+		
+		//"TCP"
+		public Keyword getTCPTCPKeyword_1_0() { return cTCPTCPKeyword_1_0; }
+		
+		//TCP_NIO2
+		public EnumLiteralDeclaration getTCP_NIO2EnumLiteralDeclaration_2() { return cTCP_NIO2EnumLiteralDeclaration_2; }
+		
+		//"TCP_NIO2"
+		public Keyword getTCP_NIO2TCP_NIO2Keyword_2_0() { return cTCP_NIO2TCP_NIO2Keyword_2_0; }
+	}
 	public class TPrefixElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.TPrefix");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1712,6 +1790,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	
 	private final ModelElements pModel;
 	private final EventClassElements pEventClass;
+	private final ProtocolElements eProtocol;
 	private final DeclElements pDecl;
 	private final JVarDElements pJVarD;
 	private final MSigElements pMSig;
@@ -1772,6 +1851,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		this.gaXtype = gaXtype;
 		this.pModel = new ModelElements();
 		this.pEventClass = new EventClassElements();
+		this.eProtocol = new ProtocolElements();
 		this.pDecl = new DeclElements();
 		this.pJVarD = new JVarDElements();
 		this.pMSig = new MSigElements();
@@ -1865,13 +1945,26 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//EventClass:
-	//	'eventclass' name=ID '{' declarations+=Decl* '}';
+	//	'eventclass' name=ID ('protocol' '=' protocol=Protocol)? ('bindintf' '=' interface=STRING)? '{' declarations+=Decl*
+	//	'}';
 	public EventClassElements getEventClassAccess() {
 		return pEventClass;
 	}
 	
 	public ParserRule getEventClassRule() {
 		return getEventClassAccess().getRule();
+	}
+	
+	//enum Protocol:
+	//	UDP |
+	//	TCP |
+	//	TCP_NIO2;
+	public ProtocolElements getProtocolAccess() {
+		return eProtocol;
+	}
+	
+	public EnumRule getProtocolRule() {
+		return getProtocolAccess().getRule();
 	}
 	
 	//Decl:

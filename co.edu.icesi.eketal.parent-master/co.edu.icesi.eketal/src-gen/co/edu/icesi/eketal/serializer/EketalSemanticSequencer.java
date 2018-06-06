@@ -680,7 +680,7 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	 *     EventClass returns EventClass
 	 *
 	 * Constraint:
-	 *     (name=ID declarations+=Decl*)
+	 *     (name=ID protocol=Protocol? interface=STRING? declarations+=Decl*)
 	 */
 	protected void sequence_EventClass(ISerializationContext context, EventClass semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

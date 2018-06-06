@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link co.edu.icesi.eketal.eketal.EventClass#getName <em>Name</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.EventClass#getProtocol <em>Protocol</em>}</li>
+ *   <li>{@link co.edu.icesi.eketal.eketal.EventClass#getInterface <em>Interface</em>}</li>
  *   <li>{@link co.edu.icesi.eketal.eketal.EventClass#getDeclarations <em>Declarations</em>}</li>
  * </ul>
  *
@@ -51,6 +53,61 @@ public interface EventClass extends EObject
    * @generated
    */
   void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Protocol</b></em>' attribute.
+   * The literals are from the enumeration {@link co.edu.icesi.eketal.eketal.Protocol}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Protocol</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Protocol</em>' attribute.
+   * @see co.edu.icesi.eketal.eketal.Protocol
+   * @see #setProtocol(Protocol)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getEventClass_Protocol()
+   * @model
+   * @generated
+   */
+  Protocol getProtocol();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.EventClass#getProtocol <em>Protocol</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Protocol</em>' attribute.
+   * @see co.edu.icesi.eketal.eketal.Protocol
+   * @see #getProtocol()
+   * @generated
+   */
+  void setProtocol(Protocol value);
+
+  /**
+   * Returns the value of the '<em><b>Interface</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Interface</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Interface</em>' attribute.
+   * @see #setInterface(String)
+   * @see co.edu.icesi.eketal.eketal.EketalPackage#getEventClass_Interface()
+   * @model
+   * @generated
+   */
+  String getInterface();
+
+  /**
+   * Sets the value of the '{@link co.edu.icesi.eketal.eketal.EventClass#getInterface <em>Interface</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Interface</em>' attribute.
+   * @see #getInterface()
+   * @generated
+   */
+  void setInterface(String value);
 
   /**
    * Returns the value of the '<em><b>Declarations</b></em>' containment reference list.

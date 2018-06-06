@@ -2,7 +2,7 @@
 <feature
       id="co.edu.icesi.eketal.feature"
       label="Eketal Feature "
-      version="3.0.0.qualifier">
+      version="3.1.0.qualifier">
 
    <requires>
       <import plugin="org.eclipse.xtext"/>

@@ -124,13 +124,31 @@ public interface EketalPackage extends EPackage
   int EVENT_CLASS__NAME = 0;
 
   /**
+   * The feature id for the '<em><b>Protocol</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EVENT_CLASS__PROTOCOL = 1;
+
+  /**
+   * The feature id for the '<em><b>Interface</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EVENT_CLASS__INTERFACE = 2;
+
+  /**
    * The feature id for the '<em><b>Declarations</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EVENT_CLASS__DECLARATIONS = 1;
+  int EVENT_CLASS__DECLARATIONS = 3;
 
   /**
    * The number of structural features of the '<em>Event Class</em>' class.
@@ -139,7 +157,7 @@ public interface EketalPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EVENT_CLASS_FEATURE_COUNT = 2;
+  int EVENT_CLASS_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.DeclImpl <em>Decl</em>}' class.
@@ -1293,6 +1311,16 @@ public interface EketalPackage extends EPackage
   int UNARY_LTL_FEATURE_COUNT = LTL_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link co.edu.icesi.eketal.eketal.Protocol <em>Protocol</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see co.edu.icesi.eketal.eketal.Protocol
+   * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getProtocol()
+   * @generated
+   */
+  int PROTOCOL = 28;
+
+  /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1300,7 +1328,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getTPrefix()
    * @generated
    */
-  int TPREFIX = 28;
+  int TPREFIX = 29;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.StateType <em>State Type</em>}' enum.
@@ -1310,7 +1338,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getStateType()
    * @generated
    */
-  int STATE_TYPE = 29;
+  int STATE_TYPE = 30;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.Pos <em>Pos</em>}' enum.
@@ -1320,7 +1348,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getPos()
    * @generated
    */
-  int POS = 30;
+  int POS = 31;
 
 
   /**
@@ -1386,6 +1414,28 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EAttribute getEventClass_Name();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.EventClass#getProtocol <em>Protocol</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Protocol</em>'.
+   * @see co.edu.icesi.eketal.eketal.EventClass#getProtocol()
+   * @see #getEventClass()
+   * @generated
+   */
+  EAttribute getEventClass_Protocol();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.EventClass#getInterface <em>Interface</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Interface</em>'.
+   * @see co.edu.icesi.eketal.eketal.EventClass#getInterface()
+   * @see #getEventClass()
+   * @generated
+   */
+  EAttribute getEventClass_Interface();
 
   /**
    * Returns the meta object for the containment reference list '{@link co.edu.icesi.eketal.eketal.EventClass#getDeclarations <em>Declarations</em>}'.
@@ -2286,6 +2336,16 @@ public interface EketalPackage extends EPackage
   EReference getUnaryLtl_Expr();
 
   /**
+   * Returns the meta object for enum '{@link co.edu.icesi.eketal.eketal.Protocol <em>Protocol</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Protocol</em>'.
+   * @see co.edu.icesi.eketal.eketal.Protocol
+   * @generated
+   */
+  EEnum getProtocol();
+
+  /**
    * Returns the meta object for enum '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2389,6 +2449,22 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EAttribute EVENT_CLASS__NAME = eINSTANCE.getEventClass_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Protocol</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EVENT_CLASS__PROTOCOL = eINSTANCE.getEventClass_Protocol();
+
+    /**
+     * The meta object literal for the '<em><b>Interface</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EVENT_CLASS__INTERFACE = eINSTANCE.getEventClass_Interface();
 
     /**
      * The meta object literal for the '<em><b>Declarations</b></em>' containment reference list feature.
@@ -3113,6 +3189,16 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EReference UNARY_LTL__EXPR = eINSTANCE.getUnaryLtl_Expr();
+
+    /**
+     * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.Protocol <em>Protocol</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see co.edu.icesi.eketal.eketal.Protocol
+     * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getProtocol()
+     * @generated
+     */
+    EEnum PROTOCOL = eINSTANCE.getProtocol();
 
     /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}' enum.

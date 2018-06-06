@@ -18,7 +18,13 @@ Model:
 ;
 
 EventClass:
-	'eventclass' name=ID '{' declarations+=Decl* '}'
+	'eventclass' name=ID ('protocol' '=' protocol=Protocol)? ('bindintf' '=' interface=STRING)? '{' declarations+=Decl* '}'
+;
+
+enum Protocol:
+	UDP		|
+	TCP		|
+	TCP_NIO2 
 ;
 
 Decl:
