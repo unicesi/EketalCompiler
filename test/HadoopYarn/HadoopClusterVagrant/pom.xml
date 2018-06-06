@@ -36,26 +36,34 @@
     <xtext-version>2.12.0</xtext-version>
     <jre-version>1.8</jre-version>
     <aspectj.version>1.8.9</aspectj.version>
-	<eketal-version>3.1.0-SNAPSHOT</eketal-version>
+    <eketal-version>3.1.0-SNAPSHOT</eketal-version>
   </properties>
 
   <dependencies>
-  	<dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjrt</artifactId>
-        <version>${aspectj.version}</version>
-    </dependency>
     <dependency>
-        <groupId>co.edu.icesi.eketal</groupId>
-        <artifactId>co.edu.icesi.eketal.lib</artifactId>
-        <version>${eketal-version}</version>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>${aspectj.version}</version>
     </dependency>
-  	<dependency>
-	    <groupId>org.eclipse.xtext</groupId>
-	    <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-	    <version>${xtext-version}</version>
-	</dependency>
-  
+
+    <dependency>
+      <groupId>co.edu.icesi.eketal</groupId>
+      <artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
+      <version>${eketal-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>co.edu.icesi.eketal</groupId>
+      <artifactId>co.edu.icesi.eketal.lib.ltl2buchi</artifactId>
+      <version>${eketal-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+      <version>${xtext-version}</version>
+    </dependency>
+
     <!-- 'mvn dependency:analyze' fails to detect use of this dependency -->
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -277,7 +285,7 @@
 
   <build>
     <plugins>
-            <plugin>
+      <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.8</version>
@@ -364,22 +372,27 @@
                     </languages>
                 </configuration>
                 <dependencies>
-                    <dependency>
+                   <dependency>
                         <groupId>net.sf.xtext-jbase</groupId>
                         <artifactId>jbase</artifactId>
                         <version>0.7.0</version>
-                    </dependency>
-                    <dependency>
+                   </dependency>
+                   <dependency>
                         <groupId>co.edu.icesi.eketal</groupId>
                         <artifactId>co.edu.icesi.eketal</artifactId>
                         <version>${eketal-version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>co.edu.icesi.eketal</groupId>
-                        <artifactId>co.edu.icesi.eketal.lib</artifactId>
-                        <version>${eketal-version}</version>
-                    </dependency>
-                    <dependency>
+                   </dependency>
+                   <dependency>
+                     <groupId>co.edu.icesi.eketal</groupId>
+                     <artifactId>co.edu.icesi.eketal.lib.ketal</artifactId>
+                     <version>${eketal-version}</version>
+                   </dependency>
+                   <dependency>
+                     <groupId>co.edu.icesi.eketal</groupId>
+                      <artifactId>co.edu.icesi.eketal.lib.ltl2buchi</artifactId>
+                      <version>${eketal-version}</version>
+                   </dependency>
+                   <dependency>
 					    <groupId>org.eclipse.xtext</groupId>
 					    <artifactId>org.eclipse.xtext.builder.standalone</artifactId>
 					    <version>${xtext-version}</version>
@@ -401,7 +414,7 @@
 					    <scope>runtime</scope>
 					</dependency>
                 </dependencies>
-            </plugin>
+      </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
