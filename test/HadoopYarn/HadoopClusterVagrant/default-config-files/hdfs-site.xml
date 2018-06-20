@@ -24,11 +24,11 @@
 	<property>
         <name>dfs.namenode.name.dir</name>
         <value>file:///home/vagrant/hdfs/</value>
-        <description>NameNode directory for namespace and transaction logs storage.</	description>
+        <description>NameNode directory for namespace and transaction logs storage.</description>
     </property>
     <property>
         <name>dfs.datanode.name.dir</name>
         <value>file:///home/vagrant/hdfs/</value>
-        <description>NameNode directory for namespace and transaction logs storage.</	description>
+        <description>NameNode directory for namespace and transaction logs storage.</description>
     </property>
 </configuration>
