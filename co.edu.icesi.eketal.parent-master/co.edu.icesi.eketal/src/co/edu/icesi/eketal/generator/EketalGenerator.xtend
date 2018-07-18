@@ -63,11 +63,11 @@ class EketalGenerator implements IGenerator{
 	
 	
 	def prepareFileName(String packageName, String fileName) {
-		return (packageName + "._" + fileName).replace(".", File.separator) + ".aj"
+		return (packageName + "." + fileName).replace(".", File.separator) + ".aj"
 	}
 	
 	def CharSequence generate(EventClass modelo, String packageName, Set<String> libraries){
-		aspectClass = "_"+modelo.name
+		aspectClass = modelo.name
 		var packageDefinition = '''package «packageName»;
 		
 		'''

@@ -127,6 +127,24 @@
 					<groupId>org.eclipse.xtend</groupId>
 					<artifactId>xtend-maven-plugin</artifactId>
 					<version>${xtextVersion}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.core</artifactId>
+						<version>3.13.102</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.compiler.apt</artifactId>
+						<version>1.3.110</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.compiler.tool</artifactId>
+						<version>1.2.101</version>
+					</dependency>
+				</dependencies>
 					<executions>
 						<execution>
 							<goals>
