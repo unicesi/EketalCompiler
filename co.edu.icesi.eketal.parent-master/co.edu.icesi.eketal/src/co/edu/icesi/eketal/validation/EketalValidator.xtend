@@ -17,6 +17,7 @@ import java.net.URL
 import java.net.MalformedURLException
 import co.edu.icesi.eketal.eketal.EvDecl
 import co.edu.icesi.eketal.eketal.Ltl
+import java.util.regex.Pattern
 
 /**
  * This class contains custom validation rules. 
@@ -36,6 +37,7 @@ class EketalValidator extends AbstractEketalValidator {
 	public static val REPEATED_AUTOMATON_NAME = "eketal.issue.repeatedAutomatonName"
 	public static val CAPITAL_U_ON_EVENT = "eketal.issue.capitalUOnEvent"
 	public static val LTL_REQUIRED = "eketal.issue.ltlExpressionRequired"
+	public static val INCONSISTENT_IP_INTERVAL = "eketal.issue.inconsistentIntervalIp"
 	
 	@Check
 	def checkRepeatedDeclarationsName(EventClass myClass){
@@ -89,13 +91,26 @@ class EketalValidator extends AbstractEketalValidator {
 		for(host:group.hosts){
 			try {
 				if(!(host.ip.equals("localhost")||host.ip.equals("jphost"))){
-					var bytes = host.ip.split("\\.")
+					//var bytes = host.ip.split("\\.")
+					var bytes = host.ip.split(Pattern.quote("."))
 					for(byteIter:bytes){
 						if(byteIter=='*'){							
 							
+						}else if(byteIter.contains("[")){
+							var range = byteIter.substring(1, byteIter.length-1).split(Pattern.quote("-"))
+							var from = Integer.parseInt(range.get(0))
+							var to = Integer.parseInt(range.get(1))
+							if(from<0 || from>255 || to<0 || to>255){
+								error("The host '" + host+ "' cannot be resolved because their bytes must must be between 0<x<255 in '" + group.name +
+									"'", EketalPackage.Literals.GROUP__NAME, NO_VALID_IP)								
+							}
+							if(to<from){
+								error("The host '" + host+ "' cannot be resolved because the interval is inconsistent, as the latets number should be higher than the first one in '" + group.name +
+									"'", EketalPackage.Literals.GROUP__NAME, INCONSISTENT_IP_INTERVAL)
+							}
 						}else if(Integer.parseInt(byteIter)<0 || Integer.parseInt(byteIter)>255){
 							error("The host '" + host+ "' cannot be resolved because their bytes must must be between 0<x<255 in '" + group.name +
-								"'", EketalPackage.Literals.GROUP__NAME, NO_VALID_IP)							
+								"'", EketalPackage.Literals.GROUP__NAME, NO_VALID_IP)						
 						}
 					}
 					var URL test = new URL("http://"+host.ip)

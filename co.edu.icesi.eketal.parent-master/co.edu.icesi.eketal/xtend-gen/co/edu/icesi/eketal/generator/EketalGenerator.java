@@ -95,14 +95,12 @@ public class EketalGenerator implements IGenerator {
   }
   
   public String prepareFileName(final String packageName, final String fileName) {
-    String _replace = ((packageName + "._") + fileName).replace(".", File.separator);
+    String _replace = ((packageName + ".") + fileName).replace(".", File.separator);
     return (_replace + ".aj");
   }
   
   public CharSequence generate(final EventClass modelo, final String packageName, final Set<String> libraries) {
-    String _name = modelo.getName();
-    String _plus = ("_" + _name);
-    this.aspectClass = _plus;
+    this.aspectClass = modelo.getName();
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(packageName);
@@ -246,8 +244,8 @@ public class EketalGenerator implements IGenerator {
                     _builder_1.append("\t");
                     _builder_1.append("\t");
                     _builder_1.append("//System.out.println(\"[Aspectj] After: Recognized event in ");
-                    String _name_1 = automatonName.getName();
-                    _builder_1.append(_name_1, "\t\t");
+                    String _name = automatonName.getName();
+                    _builder_1.append(_name, "\t\t");
                     _builder_1.append("\");");
                     _builder_1.newLineIfNotEmpty();
                     _builder_1.append("\t");
@@ -275,8 +273,8 @@ public class EketalGenerator implements IGenerator {
                 _builder_1.append("\t");
                 _builder_1.append("\t");
                 _builder_1.append("Event event = new NamedEvent(\"");
-                String _name_2 = ((EvDecl)event).getName();
-                _builder_1.append(_name_2, "\t\t");
+                String _name_1 = ((EvDecl)event).getName();
+                _builder_1.append(_name_1, "\t\t");
                 _builder_1.append("\");");
                 _builder_1.newLineIfNotEmpty();
                 _builder_1.append("\t");
@@ -331,8 +329,8 @@ public class EketalGenerator implements IGenerator {
                     _builder_1.append("\t");
                     _builder_1.append("\t");
                     _builder_1.append("logger.info(\"[Aspectj] Event respects the property ");
-                    String _name_3 = buchi.getName();
-                    _builder_1.append(_name_3, "\t\t\t");
+                    String _name_2 = buchi.getName();
+                    _builder_1.append(_name_2, "\t\t\t");
                     _builder_1.append("\");");
                     _builder_1.newLineIfNotEmpty();
                     _builder_1.append("\t");
@@ -398,8 +396,8 @@ public class EketalGenerator implements IGenerator {
                         _builder_1.append("\t");
                         _builder_1.append("\t");
                         _builder_1.append("//System.out.println(\"[Aspectj] Before: Recognized event \"+event+\" in ");
-                        String _name_4 = automatonName_1.getName();
-                        _builder_1.append(_name_4, "\t\t\t");
+                        String _name_3 = automatonName_1.getName();
+                        _builder_1.append(_name_3, "\t\t\t");
                         _builder_1.append("\");");
                         _builder_1.newLineIfNotEmpty();
                         _builder_1.append("\t");

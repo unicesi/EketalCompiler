@@ -874,12 +874,18 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives_2_1 = (Alternatives)cGroup_2.eContents().get(1);
 		private final RuleCall cINTTerminalRuleCall_2_1_0 = (RuleCall)cAlternatives_2_1.eContents().get(0);
 		private final RuleCall cANYTerminalRuleCall_2_1_1 = (RuleCall)cAlternatives_2_1.eContents().get(1);
+		private final Group cGroup_2_1_2 = (Group)cAlternatives_2_1.eContents().get(2);
+		private final Keyword cLeftSquareBracketKeyword_2_1_2_0 = (Keyword)cGroup_2_1_2.eContents().get(0);
+		private final RuleCall cINTTerminalRuleCall_2_1_2_1 = (RuleCall)cGroup_2_1_2.eContents().get(1);
+		private final Keyword cHyphenMinusKeyword_2_1_2_2 = (Keyword)cGroup_2_1_2.eContents().get(2);
+		private final RuleCall cINTTerminalRuleCall_2_1_2_3 = (RuleCall)cGroup_2_1_2.eContents().get(3);
+		private final Keyword cRightSquareBracketKeyword_2_1_2_4 = (Keyword)cGroup_2_1_2.eContents().get(4);
 		
 		//Ip:
-		//	"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY);
+		//	"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY | '[' INT '-' INT ']');
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY)
+		//"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY | '[' INT '-' INT ']')
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//"jphost"
@@ -888,7 +894,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		//"localhost"
 		public Keyword getLocalhostKeyword_1() { return cLocalhostKeyword_1; }
 		
-		//(INT '.' (INT '.' (INT '.')?)?)? (INT | ANY)
+		//(INT '.' (INT '.' (INT '.')?)?)? (INT | ANY | '[' INT '-' INT ']')
 		public Group getGroup_2() { return cGroup_2; }
 		
 		//(INT '.' (INT '.' (INT '.')?)?)?
@@ -918,7 +924,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		//'.'
 		public Keyword getFullStopKeyword_2_0_2_2_1() { return cFullStopKeyword_2_0_2_2_1; }
 		
-		//INT | ANY
+		//INT | ANY | '[' INT '-' INT ']'
 		public Alternatives getAlternatives_2_1() { return cAlternatives_2_1; }
 		
 		//INT
@@ -926,6 +932,71 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//ANY
 		public RuleCall getANYTerminalRuleCall_2_1_1() { return cANYTerminalRuleCall_2_1_1; }
+		
+		//'[' INT '-' INT ']'
+		public Group getGroup_2_1_2() { return cGroup_2_1_2; }
+		
+		//'['
+		public Keyword getLeftSquareBracketKeyword_2_1_2_0() { return cLeftSquareBracketKeyword_2_1_2_0; }
+		
+		//INT
+		public RuleCall getINTTerminalRuleCall_2_1_2_1() { return cINTTerminalRuleCall_2_1_2_1; }
+		
+		//'-'
+		public Keyword getHyphenMinusKeyword_2_1_2_2() { return cHyphenMinusKeyword_2_1_2_2; }
+		
+		//INT
+		public RuleCall getINTTerminalRuleCall_2_1_2_3() { return cINTTerminalRuleCall_2_1_2_3; }
+		
+		//']'
+		public Keyword getRightSquareBracketKeyword_2_1_2_4() { return cRightSquareBracketKeyword_2_1_2_4; }
+	}
+	public class Interval_IpElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Interval_Ip");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cFromAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cFromINTTerminalRuleCall_1_0 = (RuleCall)cFromAssignment_1.eContents().get(0);
+		private final Keyword cHyphenMinusKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cToAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cToINTTerminalRuleCall_3_0 = (RuleCall)cToAssignment_3.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		////Alias_Ip:
+		////	name="jphost" | name="localhost"
+		////;
+		////
+		////Universal_Ip:
+		////	(INT '.' (INT '.' (INT '.')?)?)? (INT | ANY  | '[' from=INT '-' to=INT ']') 
+		////;
+		////
+		//Interval_Ip:
+		//	'[' from=INT '-' to=INT ']';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'[' from=INT '-' to=INT ']'
+		public Group getGroup() { return cGroup; }
+		
+		//'['
+		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
+		
+		//from=INT
+		public Assignment getFromAssignment_1() { return cFromAssignment_1; }
+		
+		//INT
+		public RuleCall getFromINTTerminalRuleCall_1_0() { return cFromINTTerminalRuleCall_1_0; }
+		
+		//'-'
+		public Keyword getHyphenMinusKeyword_2() { return cHyphenMinusKeyword_2; }
+		
+		//to=INT
+		public Assignment getToAssignment_3() { return cToAssignment_3; }
+		
+		//INT
+		public RuleCall getToINTTerminalRuleCall_3_0() { return cToINTTerminalRuleCall_3_0; }
+		
+		//']'
+		public Keyword getRightSquareBracketKeyword_4() { return cRightSquareBracketKeyword_4; }
 	}
 	public class AutomatonElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "co.edu.icesi.eketal.Eketal.Automaton");
@@ -1148,7 +1219,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		////////////////////////////////////////
 		//////Linear Temporal Logic definition
 		////////////////////////////////////////
-		////TODO precedences:
 		////Unary->Binary
 		////Bind from right to left
 		////always eventually p = (always (eventually p))
@@ -1809,6 +1879,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	private final GroupElements pGroup;
 	private final HostElements pHost;
 	private final IpElements pIp;
+	private final Interval_IpElements pInterval_Ip;
 	private final AutomatonElements pAutomaton;
 	private final StepElements pStep;
 	private final TransDefElements pTransDef;
@@ -1870,6 +1941,7 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 		this.pGroup = new GroupElements();
 		this.pHost = new HostElements();
 		this.pIp = new IpElements();
+		this.pInterval_Ip = new Interval_IpElements();
 		this.pAutomaton = new AutomatonElements();
 		this.pStep = new StepElements();
 		this.pTransDef = new TransDefElements();
@@ -2156,13 +2228,31 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Ip:
-	//	"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY);
+	//	"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY | '[' INT '-' INT ']');
 	public IpElements getIpAccess() {
 		return pIp;
 	}
 	
 	public ParserRule getIpRule() {
 		return getIpAccess().getRule();
+	}
+	
+	////Alias_Ip:
+	////	name="jphost" | name="localhost"
+	////;
+	////
+	////Universal_Ip:
+	////	(INT '.' (INT '.' (INT '.')?)?)? (INT | ANY  | '[' from=INT '-' to=INT ']') 
+	////;
+	////
+	//Interval_Ip:
+	//	'[' from=INT '-' to=INT ']';
+	public Interval_IpElements getInterval_IpAccess() {
+		return pInterval_Ip;
+	}
+	
+	public ParserRule getInterval_IpRule() {
+		return getInterval_IpAccess().getRule();
 	}
 	
 	////////////////////////////////////////
@@ -2215,7 +2305,6 @@ public class EketalGrammarAccess extends AbstractGrammarElementFinder {
 	////////////////////////////////////////
 	//////Linear Temporal Logic definition
 	////////////////////////////////////////
-	////TODO precedences:
 	////Unary->Binary
 	////Bind from right to left
 	////always eventually p = (always (eventually p))

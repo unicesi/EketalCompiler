@@ -1527,6 +1527,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
   }
   
   public StringConcatenationClient generateTCP(final String bindInterface, final Protocol protocol, final TreeSet<String> ips) {
+    final TreeSet<String> processedIps = this.processIps(ips);
     StringConcatenationClient _client = new StringConcatenationClient() {
       @Override
       protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
@@ -1568,7 +1569,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         final Function1<String, CharSequence> _function = (String ip) -> {
           return (ip + "[7800]");
         };
-        String _join = IterableExtensions.<String>join(ips, ",", _function);
+        String _join = IterableExtensions.<String>join(processedIps, ",", _function);
         _builder.append(_join);
         _builder.append("};\"+");
         _builder.newLineIfNotEmpty();
@@ -1628,6 +1629,32 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
       }
     };
     return _client;
+  }
+  
+  public TreeSet<String> processIps(final TreeSet<String> set) {
+    final TreeSet<String> retorno = new TreeSet<String>();
+    final Consumer<String> _function = (String ip) -> {
+      boolean _contains = ip.contains("[");
+      if (_contains) {
+        String[] splitIp = ip.split(Pattern.quote("["));
+        int _length = splitIp[1].length();
+        int _minus = (_length - 1);
+        String[] limits = splitIp[1].substring(0, _minus).split(Pattern.quote("-"));
+        for (int i = Integer.parseInt(limits[0]); (i <= Integer.parseInt(limits[1])); i++) {
+          String _get = splitIp[0];
+          String _plus = (_get + Integer.valueOf(i));
+          retorno.add(_plus);
+        }
+      } else {
+        boolean _contains_1 = ip.contains("*");
+        if (_contains_1) {
+        } else {
+          retorno.add(ip);
+        }
+      }
+    };
+    set.forEach(_function);
+    return retorno;
   }
   
   public StringConcatenationClient generateUDP(final String bindInterface) {
@@ -1809,22 +1836,23 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
   public void createGroupClass(final IJvmDeclaredTypeAcceptor acceptor, final EventClass claseGrupos) {
     final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
       final TreeSet<String> grupos = new TreeSet<String>();
-      final Function1<Host, String> _function_1 = (Host h) -> {
-        return h.getIp();
-      };
-      final Function1<Host, String> function = _function_1;
-      final Consumer<Group> _function_2 = (Group it_1) -> {
+      final Consumer<Group> _function_1 = (Group it_1) -> {
+        final TreeSet<String> hosts = new TreeSet<String>();
+        final Consumer<Host> _function_2 = (Host host) -> {
+          hosts.add(host.getIp());
+        };
+        it_1.getHosts().forEach(_function_2);
         String _name = it_1.getName();
         String _plus = ("\"" + _name);
         String _plus_1 = (_plus + ":[");
-        String _join = IterableExtensions.<Host>join(it_1.getHosts(), ",", function);
+        String _join = IterableExtensions.join(this.processIps(hosts), ",");
         String _plus_2 = (_plus_1 + _join);
         String _plus_3 = (_plus_2 + "]\"");
         grupos.add(_plus_3);
       };
-      Iterables.<Group>filter(claseGrupos.getDeclarations(), Group.class).forEach(_function_2);
+      Iterables.<Group>filter(claseGrupos.getDeclarations(), Group.class).forEach(_function_1);
       EList<JvmMember> _members = it.getMembers();
-      final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
+      final Procedure1<JvmField> _function_2 = (JvmField it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -1837,10 +1865,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setInitializer(it_1, _client);
       };
-      JvmField _field = this._jvmTypesBuilder.toField(claseGrupos, "SET_VALUES", this._typeReferenceBuilder.typeRef("java.lang.String[]"), _function_3);
+      JvmField _field = this._jvmTypesBuilder.toField(claseGrupos, "SET_VALUES", this._typeReferenceBuilder.typeRef("java.lang.String[]"), _function_2);
       this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
       EList<JvmMember> _members_1 = it.getMembers();
-      final Procedure1<JvmField> _function_4 = (JvmField it_1) -> {
+      final Procedure1<JvmField> _function_3 = (JvmField it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -1850,10 +1878,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setInitializer(it_1, _client);
       };
-      JvmField _field_1 = this._jvmTypesBuilder.toField(claseGrupos, "grupos", this._typeReferenceBuilder.typeRef(Map.class, this._typeReferenceBuilder.typeRef(String.class), this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(URL.class))), _function_4);
+      JvmField _field_1 = this._jvmTypesBuilder.toField(claseGrupos, "grupos", this._typeReferenceBuilder.typeRef(Map.class, this._typeReferenceBuilder.typeRef(String.class), this._typeReferenceBuilder.typeRef(Set.class, this._typeReferenceBuilder.typeRef(URL.class))), _function_3);
       this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field_1);
       EList<JvmMember> _members_2 = it.getMembers();
-      final Procedure1<JvmOperation> _function_5 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_4 = (JvmOperation it_1) -> {
         it_1.setStatic(true);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
@@ -1950,15 +1978,15 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method = this._jvmTypesBuilder.toMethod(claseGrupos, "initializeGroups", this._typeReferenceBuilder.typeRef(Map.class), _function_5);
+      JvmOperation _method = this._jvmTypesBuilder.toMethod(claseGrupos, "initializeGroups", this._typeReferenceBuilder.typeRef(Map.class), _function_4);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method);
       EList<JvmMember> _members_3 = it.getMembers();
-      final Procedure1<JvmConstructor> _function_6 = (JvmConstructor it_1) -> {
+      final Procedure1<JvmConstructor> _function_5 = (JvmConstructor it_1) -> {
       };
-      JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(claseGrupos, _function_6);
+      JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(claseGrupos, _function_5);
       this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_3, _constructor);
       EList<JvmMember> _members_4 = it.getMembers();
-      final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_6 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
         JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "newGrupo", this._typeReferenceBuilder.typeRef(String.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -1975,10 +2003,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(claseGrupos, "addGroup", this._typeReferenceBuilder.typeRef(void.class), _function_7);
+      JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(claseGrupos, "addGroup", this._typeReferenceBuilder.typeRef(void.class), _function_6);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method_1);
       EList<JvmMember> _members_5 = it.getMembers();
-      final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
         JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "grupoEliminar", this._typeReferenceBuilder.typeRef(String.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -1992,10 +2020,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(claseGrupos, "removeGroup", this._typeReferenceBuilder.typeRef(Boolean.class), _function_8);
+      JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(claseGrupos, "removeGroup", this._typeReferenceBuilder.typeRef(Boolean.class), _function_7);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_2);
       EList<JvmMember> _members_6 = it.getMembers();
-      final Procedure1<JvmOperation> _function_9 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
         JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "grupo", this._typeReferenceBuilder.typeRef(String.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -2009,10 +2037,10 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_3 = this._jvmTypesBuilder.toMethod(claseGrupos, "on", this._typeReferenceBuilder.typeRef(boolean.class), _function_9);
+      JvmOperation _method_3 = this._jvmTypesBuilder.toMethod(claseGrupos, "on", this._typeReferenceBuilder.typeRef(boolean.class), _function_8);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_3);
       EList<JvmMember> _members_7 = it.getMembers();
-      final Procedure1<JvmOperation> _function_10 = (JvmOperation it_1) -> {
+      final Procedure1<JvmOperation> _function_9 = (JvmOperation it_1) -> {
         EList<JvmFormalParameter> _parameters = it_1.getParameters();
         JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(claseGrupos, "nombreGrupo", this._typeReferenceBuilder.typeRef(String.class));
         this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -2068,7 +2096,7 @@ public class EketalJvmModelInferrer extends AbstractModelInferrer {
         };
         this._jvmTypesBuilder.setBody(it_1, _client);
       };
-      JvmOperation _method_4 = this._jvmTypesBuilder.toMethod(claseGrupos, "host", this._typeReferenceBuilder.typeRef(boolean.class), _function_10);
+      JvmOperation _method_4 = this._jvmTypesBuilder.toMethod(claseGrupos, "host", this._typeReferenceBuilder.typeRef(boolean.class), _function_9);
       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_4);
     };
     acceptor.<JvmGenericType>accept(this._jvmTypesBuilder.toClass(claseGrupos, ("co.edu.icesi.eketal.groupsimpl." + EketalJvmModelInferrer.groupClassName)), _function);

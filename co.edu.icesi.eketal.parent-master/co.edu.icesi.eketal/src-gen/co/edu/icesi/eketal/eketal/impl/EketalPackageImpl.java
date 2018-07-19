@@ -15,6 +15,7 @@ import co.edu.icesi.eketal.eketal.EventExpression;
 import co.edu.icesi.eketal.eketal.EventPredicate;
 import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.Host;
+import co.edu.icesi.eketal.eketal.Interval_Ip;
 import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.KindAttribute;
 import co.edu.icesi.eketal.eketal.Ltl;
@@ -151,6 +152,13 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * @generated
    */
   private EClass hostEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass interval_IpEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -797,6 +805,36 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getInterval_Ip()
+  {
+    return interval_IpEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getInterval_Ip_From()
+  {
+    return (EAttribute)interval_IpEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getInterval_Ip_To()
+  {
+    return (EAttribute)interval_IpEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getAutomaton()
   {
     return automatonEClass;
@@ -1399,6 +1437,10 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     createEAttribute(hostEClass, HOST__IP);
     createEReference(hostEClass, HOST__GROUP_ID);
 
+    interval_IpEClass = createEClass(INTERVAL_IP);
+    createEAttribute(interval_IpEClass, INTERVAL_IP__FROM);
+    createEAttribute(interval_IpEClass, INTERVAL_IP__TO);
+
     automatonEClass = createEClass(AUTOMATON);
     createEAttribute(automatonEClass, AUTOMATON__NAME);
     createEReference(automatonEClass, AUTOMATON__PARAMS);
@@ -1579,6 +1621,10 @@ public class EketalPackageImpl extends EPackageImpl implements EketalPackage
     initEClass(hostEClass, Host.class, "Host", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getHost_Ip(), ecorePackage.getEString(), "ip", null, 0, 1, Host.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getHost_GroupId(), this.getGroup(), null, "groupId", null, 0, 1, Host.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(interval_IpEClass, Interval_Ip.class, "Interval_Ip", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getInterval_Ip_From(), ecorePackage.getEInt(), "from", null, 0, 1, Interval_Ip.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getInterval_Ip_To(), ecorePackage.getEInt(), "to", null, 0, 1, Interval_Ip.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(automatonEClass, Automaton.class, "Automaton", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAutomaton_Name(), ecorePackage.getEString(), "name", null, 0, 1, Automaton.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

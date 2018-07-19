@@ -141,6 +141,15 @@ public interface EketalFactory extends EFactory
   Host createHost();
 
   /**
+   * Returns a new object of class '<em>Interval Ip</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Interval Ip</em>'.
+   * @generated
+   */
+  Interval_Ip createInterval_Ip();
+
+  /**
    * Returns a new object of class '<em>Automaton</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

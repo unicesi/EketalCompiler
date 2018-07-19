@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.validation.Check;
@@ -62,6 +63,8 @@ public class EketalValidator extends AbstractEketalValidator {
   public final static String CAPITAL_U_ON_EVENT = "eketal.issue.capitalUOnEvent";
   
   public final static String LTL_REQUIRED = "eketal.issue.ltlExpressionRequired";
+  
+  public final static String INCONSISTENT_IP_INTERVAL = "eketal.issue.inconsistentIntervalIp";
   
   @Check
   public void checkRepeatedDeclarationsName(final EventClass myClass) {
@@ -166,35 +169,58 @@ public class EketalValidator extends AbstractEketalValidator {
       try {
         boolean _not = (!(host.getIp().equals("localhost") || host.getIp().equals("jphost")));
         if (_not) {
-          String[] bytes = host.getIp().split("\\.");
+          String[] bytes = host.getIp().split(Pattern.quote("."));
           for (final String byteIter : bytes) {
             boolean _equals = Objects.equal(byteIter, "*");
             if (_equals) {
             } else {
-              if (((Integer.parseInt(byteIter) < 0) || (Integer.parseInt(byteIter) > 255))) {
-                String _name = group.getName();
-                String _plus = ((("The host \'" + host) + "\' cannot be resolved because their bytes must must be between 0<x<255 in \'") + _name);
-                String _plus_1 = (_plus + 
-                  "\'");
-                this.error(_plus_1, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
+              boolean _contains = byteIter.contains("[");
+              if (_contains) {
+                int _length = byteIter.length();
+                int _minus = (_length - 1);
+                String[] range = byteIter.substring(1, _minus).split(Pattern.quote("-"));
+                int from = Integer.parseInt(range[0]);
+                int to = Integer.parseInt(range[1]);
+                if (((((from < 0) || (from > 255)) || (to < 0)) || (to > 255))) {
+                  String _name = group.getName();
+                  String _plus = ((("The host \'" + host) + "\' cannot be resolved because their bytes must must be between 0<x<255 in \'") + _name);
+                  String _plus_1 = (_plus + 
+                    "\'");
+                  this.error(_plus_1, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
+                }
+                if ((to < from)) {
+                  String _name_1 = group.getName();
+                  String _plus_2 = ((("The host \'" + host) + "\' cannot be resolved because the interval is inconsistent, as the latets number should be higher than the first one in \'") + _name_1);
+                  String _plus_3 = (_plus_2 + 
+                    "\'");
+                  this.error(_plus_3, EketalPackage.Literals.GROUP__NAME, EketalValidator.INCONSISTENT_IP_INTERVAL);
+                }
+              } else {
+                if (((Integer.parseInt(byteIter) < 0) || (Integer.parseInt(byteIter) > 255))) {
+                  String _name_2 = group.getName();
+                  String _plus_4 = ((("The host \'" + host) + "\' cannot be resolved because their bytes must must be between 0<x<255 in \'") + _name_2);
+                  String _plus_5 = (_plus_4 + 
+                    "\'");
+                  this.error(_plus_5, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
+                }
               }
             }
           }
           String _ip = host.getIp();
-          String _plus_2 = ("http://" + _ip);
-          URL test = new URL(_plus_2);
+          String _plus_6 = ("http://" + _ip);
+          URL test = new URL(_plus_6);
         }
       } catch (final Throwable _t) {
         if (_t instanceof MalformedURLException) {
           final MalformedURLException exception = (MalformedURLException)_t;
           String _ip_1 = host.getIp();
-          String _plus_3 = ("The host \'" + _ip_1);
-          String _plus_4 = (_plus_3 + "\' cannot be resolved as a correct address in the group\'");
-          String _name_1 = group.getName();
-          String _plus_5 = (_plus_4 + _name_1);
-          String _plus_6 = (_plus_5 + 
+          String _plus_7 = ("The host \'" + _ip_1);
+          String _plus_8 = (_plus_7 + "\' cannot be resolved as a correct address in the group\'");
+          String _name_3 = group.getName();
+          String _plus_9 = (_plus_8 + _name_3);
+          String _plus_10 = (_plus_9 + 
             "\'");
-          this.error(_plus_6, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
+          this.error(_plus_10, EketalPackage.Literals.GROUP__NAME, EketalValidator.NO_VALID_IP);
         } else if (_t instanceof Exception) {
           final Exception e = (Exception)_t;
         } else {

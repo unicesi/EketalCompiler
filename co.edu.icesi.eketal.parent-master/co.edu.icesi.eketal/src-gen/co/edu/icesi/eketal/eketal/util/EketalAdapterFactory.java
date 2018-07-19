@@ -141,6 +141,11 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
         return createHostAdapter();
       }
       @Override
+      public Adapter caseInterval_Ip(Interval_Ip object)
+      {
+        return createInterval_IpAdapter();
+      }
+      @Override
       public Adapter caseAutomaton(Automaton object)
       {
         return createAutomatonAdapter();
@@ -428,6 +433,21 @@ public class EketalAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createHostAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link co.edu.icesi.eketal.eketal.Interval_Ip <em>Interval Ip</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see co.edu.icesi.eketal.eketal.Interval_Ip
+   * @generated
+   */
+  public Adapter createInterval_IpAdapter()
   {
     return null;
   }

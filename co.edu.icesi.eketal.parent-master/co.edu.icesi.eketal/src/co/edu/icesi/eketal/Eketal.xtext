@@ -114,7 +114,8 @@ Host:
 ;
 
 Ip:
-	"jphost" | "localhost" | (INT '.' (INT '.' (INT '.')?)?)? (INT | ANY)
+	"jphost" | "localhost" | 
+	(INT '.' (INT '.' (INT '.')?)?)? (INT | ANY  | '[' INT '-' INT ']') 
 ;
 
 //////////////////////////////////////
@@ -143,7 +144,6 @@ enum StateType:
 //////////////////////////////////////
 ////Linear Temporal Logic definition
 //////////////////////////////////////
-//TODO precedences:
 //Unary->Binary
 //Bind from right to left
 //always eventually p = (always (eventually p))

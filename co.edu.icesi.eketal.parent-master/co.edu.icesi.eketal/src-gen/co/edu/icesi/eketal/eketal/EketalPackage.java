@@ -585,6 +585,43 @@ public interface EketalPackage extends EPackage
   int HOST_FEATURE_COUNT = 2;
 
   /**
+   * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.Interval_IpImpl <em>Interval Ip</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see co.edu.icesi.eketal.eketal.impl.Interval_IpImpl
+   * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getInterval_Ip()
+   * @generated
+   */
+  int INTERVAL_IP = 13;
+
+  /**
+   * The feature id for the '<em><b>From</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INTERVAL_IP__FROM = 0;
+
+  /**
+   * The feature id for the '<em><b>To</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INTERVAL_IP__TO = 1;
+
+  /**
+   * The number of structural features of the '<em>Interval Ip</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INTERVAL_IP_FEATURE_COUNT = 2;
+
+  /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.impl.AutomatonImpl <em>Automaton</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -592,7 +629,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getAutomaton()
    * @generated
    */
-  int AUTOMATON = 13;
+  int AUTOMATON = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -638,7 +675,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getStep()
    * @generated
    */
-  int STEP = 14;
+  int STEP = 15;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -684,7 +721,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getTransDef()
    * @generated
    */
-  int TRANS_DEF = 15;
+  int TRANS_DEF = 16;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -721,7 +758,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtl()
    * @generated
    */
-  int LTL = 16;
+  int LTL = 17;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -767,7 +804,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlExpression()
    * @generated
    */
-  int LTL_EXPRESSION = 17;
+  int LTL_EXPRESSION = 18;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -804,7 +841,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getRc()
    * @generated
    */
-  int RC = 18;
+  int RC = 19;
 
   /**
    * The feature id for the '<em><b>Syncex</b></em>' attribute.
@@ -868,7 +905,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getBody()
    * @generated
    */
-  int BODY = 19;
+  int BODY = 20;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -896,7 +933,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getOrEvent()
    * @generated
    */
-  int OR_EVENT = 20;
+  int OR_EVENT = 21;
 
   /**
    * The feature id for the '<em><b>Tipo Evento</b></em>' containment reference.
@@ -951,7 +988,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getAndEvent()
    * @generated
    */
-  int AND_EVENT = 21;
+  int AND_EVENT = 22;
 
   /**
    * The feature id for the '<em><b>Tipo Evento</b></em>' containment reference.
@@ -1006,7 +1043,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getUnaryEvent()
    * @generated
    */
-  int UNARY_EVENT = 22;
+  int UNARY_EVENT = 23;
 
   /**
    * The feature id for the '<em><b>Tipo Evento</b></em>' containment reference.
@@ -1052,7 +1089,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlThen()
    * @generated
    */
-  int LTL_THEN = 23;
+  int LTL_THEN = 24;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1107,7 +1144,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlOr()
    * @generated
    */
-  int LTL_OR = 24;
+  int LTL_OR = 25;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1162,7 +1199,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlAnd()
    * @generated
    */
-  int LTL_AND = 25;
+  int LTL_AND = 26;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1217,7 +1254,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getLtlUntil()
    * @generated
    */
-  int LTL_UNTIL = 26;
+  int LTL_UNTIL = 27;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1272,7 +1309,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getUnaryLtl()
    * @generated
    */
-  int UNARY_LTL = 27;
+  int UNARY_LTL = 28;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -1318,7 +1355,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getProtocol()
    * @generated
    */
-  int PROTOCOL = 28;
+  int PROTOCOL = 29;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.TPrefix <em>TPrefix</em>}' enum.
@@ -1328,7 +1365,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getTPrefix()
    * @generated
    */
-  int TPREFIX = 29;
+  int TPREFIX = 30;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.StateType <em>State Type</em>}' enum.
@@ -1338,7 +1375,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getStateType()
    * @generated
    */
-  int STATE_TYPE = 30;
+  int STATE_TYPE = 31;
 
   /**
    * The meta object id for the '{@link co.edu.icesi.eketal.eketal.Pos <em>Pos</em>}' enum.
@@ -1348,7 +1385,7 @@ public interface EketalPackage extends EPackage
    * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getPos()
    * @generated
    */
-  int POS = 31;
+  int POS = 32;
 
 
   /**
@@ -1821,6 +1858,38 @@ public interface EketalPackage extends EPackage
    * @generated
    */
   EReference getHost_GroupId();
+
+  /**
+   * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.Interval_Ip <em>Interval Ip</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Interval Ip</em>'.
+   * @see co.edu.icesi.eketal.eketal.Interval_Ip
+   * @generated
+   */
+  EClass getInterval_Ip();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Interval_Ip#getFrom <em>From</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>From</em>'.
+   * @see co.edu.icesi.eketal.eketal.Interval_Ip#getFrom()
+   * @see #getInterval_Ip()
+   * @generated
+   */
+  EAttribute getInterval_Ip_From();
+
+  /**
+   * Returns the meta object for the attribute '{@link co.edu.icesi.eketal.eketal.Interval_Ip#getTo <em>To</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>To</em>'.
+   * @see co.edu.icesi.eketal.eketal.Interval_Ip#getTo()
+   * @see #getInterval_Ip()
+   * @generated
+   */
+  EAttribute getInterval_Ip_To();
 
   /**
    * Returns the meta object for class '{@link co.edu.icesi.eketal.eketal.Automaton <em>Automaton</em>}'.
@@ -2775,6 +2844,32 @@ public interface EketalPackage extends EPackage
      * @generated
      */
     EReference HOST__GROUP_ID = eINSTANCE.getHost_GroupId();
+
+    /**
+     * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.Interval_IpImpl <em>Interval Ip</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see co.edu.icesi.eketal.eketal.impl.Interval_IpImpl
+     * @see co.edu.icesi.eketal.eketal.impl.EketalPackageImpl#getInterval_Ip()
+     * @generated
+     */
+    EClass INTERVAL_IP = eINSTANCE.getInterval_Ip();
+
+    /**
+     * The meta object literal for the '<em><b>From</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute INTERVAL_IP__FROM = eINSTANCE.getInterval_Ip_From();
+
+    /**
+     * The meta object literal for the '<em><b>To</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute INTERVAL_IP__TO = eINSTANCE.getInterval_Ip_To();
 
     /**
      * The meta object literal for the '{@link co.edu.icesi.eketal.eketal.impl.AutomatonImpl <em>Automaton</em>}' class.

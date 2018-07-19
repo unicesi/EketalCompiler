@@ -12,6 +12,7 @@ import co.edu.icesi.eketal.eketal.EventClass;
 import co.edu.icesi.eketal.eketal.EventExpression;
 import co.edu.icesi.eketal.eketal.Group;
 import co.edu.icesi.eketal.eketal.Host;
+import co.edu.icesi.eketal.eketal.Interval_Ip;
 import co.edu.icesi.eketal.eketal.JVMTYPE;
 import co.edu.icesi.eketal.eketal.JVarD;
 import co.edu.icesi.eketal.eketal.KindAttribute;
@@ -146,6 +147,9 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 				return; 
 			case EketalPackage.HOST:
 				sequence_Host(context, (Host) semanticObject); 
+				return; 
+			case EketalPackage.INTERVAL_IP:
+				sequence_Interval_Ip(context, (Interval_Ip) semanticObject); 
 				return; 
 			case EketalPackage.JVMTYPE:
 				sequence_TypeReturn(context, (JVMTYPE) semanticObject); 
@@ -709,6 +713,27 @@ public class EketalSemanticSequencer extends JbaseSemanticSequencer {
 	 */
 	protected void sequence_Host(ISerializationContext context, Host semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Interval_Ip returns Interval_Ip
+	 *
+	 * Constraint:
+	 *     (from=INT to=INT)
+	 */
+	protected void sequence_Interval_Ip(ISerializationContext context, Interval_Ip semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.INTERVAL_IP__FROM) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.INTERVAL_IP__FROM));
+			if (transientValues.isValueTransient(semanticObject, EketalPackage.Literals.INTERVAL_IP__TO) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, EketalPackage.Literals.INTERVAL_IP__TO));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getInterval_IpAccess().getFromINTTerminalRuleCall_1_0(), semanticObject.getFrom());
+		feeder.accept(grammarAccess.getInterval_IpAccess().getToINTTerminalRuleCall_3_0(), semanticObject.getTo());
+		feeder.finish();
 	}
 	
 	

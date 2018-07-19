@@ -3612,6 +3612,12 @@ rule__Ip__Alternatives_2_1
 		RULE_ANY
 		{ after(grammarAccess.getIpAccess().getANYTerminalRuleCall_2_1_1()); }
 	)
+	|
+	(
+		{ before(grammarAccess.getIpAccess().getGroup_2_1_2()); }
+		(rule__Ip__Group_2_1_2__0)
+		{ after(grammarAccess.getIpAccess().getGroup_2_1_2()); }
+	)
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -7513,6 +7519,141 @@ rule__Ip__Group_2_0_2_2__1__Impl
 	{ before(grammarAccess.getIpAccess().getFullStopKeyword_2_0_2_2_1()); }
 	'.'
 	{ after(grammarAccess.getIpAccess().getFullStopKeyword_2_0_2_2_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__Ip__Group_2_1_2__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Ip__Group_2_1_2__0__Impl
+	rule__Ip__Group_2_1_2__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getIpAccess().getLeftSquareBracketKeyword_2_1_2_0()); }
+	'['
+	{ after(grammarAccess.getIpAccess().getLeftSquareBracketKeyword_2_1_2_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Ip__Group_2_1_2__1__Impl
+	rule__Ip__Group_2_1_2__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getIpAccess().getINTTerminalRuleCall_2_1_2_1()); }
+	RULE_INT
+	{ after(grammarAccess.getIpAccess().getINTTerminalRuleCall_2_1_2_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Ip__Group_2_1_2__2__Impl
+	rule__Ip__Group_2_1_2__3
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__2__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getIpAccess().getHyphenMinusKeyword_2_1_2_2()); }
+	'-'
+	{ after(grammarAccess.getIpAccess().getHyphenMinusKeyword_2_1_2_2()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Ip__Group_2_1_2__3__Impl
+	rule__Ip__Group_2_1_2__4
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__3__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getIpAccess().getINTTerminalRuleCall_2_1_2_3()); }
+	RULE_INT
+	{ after(grammarAccess.getIpAccess().getINTTerminalRuleCall_2_1_2_3()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__4
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Ip__Group_2_1_2__4__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Ip__Group_2_1_2__4__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getIpAccess().getRightSquareBracketKeyword_2_1_2_4()); }
+	']'
+	{ after(grammarAccess.getIpAccess().getRightSquareBracketKeyword_2_1_2_4()); }
 )
 ;
 finally {

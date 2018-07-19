@@ -116,6 +116,8 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getIpAccess().getGroup_2_0(), "rule__Ip__Group_2_0__0");
 					put(grammarAccess.getIpAccess().getGroup_2_0_2(), "rule__Ip__Group_2_0_2__0");
 					put(grammarAccess.getIpAccess().getGroup_2_0_2_2(), "rule__Ip__Group_2_0_2_2__0");
+					put(grammarAccess.getIpAccess().getGroup_2_1_2(), "rule__Ip__Group_2_1_2__0");
+					put(grammarAccess.getInterval_IpAccess().getGroup(), "rule__Interval_Ip__Group__0");
 					put(grammarAccess.getAutomatonAccess().getGroup(), "rule__Automaton__Group__0");
 					put(grammarAccess.getAutomatonAccess().getGroup_3(), "rule__Automaton__Group_3__0");
 					put(grammarAccess.getAutomatonAccess().getGroup_3_1(), "rule__Automaton__Group_3_1__0");
@@ -412,6 +414,8 @@ public class EketalParser extends AbstractContentAssistParser {
 					put(grammarAccess.getGroupAccess().getHostsAssignment_3(), "rule__Group__HostsAssignment_3");
 					put(grammarAccess.getHostAccess().getIpAssignment_0(), "rule__Host__IpAssignment_0");
 					put(grammarAccess.getHostAccess().getGroupIdAssignment_1(), "rule__Host__GroupIdAssignment_1");
+					put(grammarAccess.getInterval_IpAccess().getFromAssignment_1(), "rule__Interval_Ip__FromAssignment_1");
+					put(grammarAccess.getInterval_IpAccess().getToAssignment_3(), "rule__Interval_Ip__ToAssignment_3");
 					put(grammarAccess.getAutomatonAccess().getNameAssignment_1(), "rule__Automaton__NameAssignment_1");
 					put(grammarAccess.getAutomatonAccess().getParamsAssignment_3_0(), "rule__Automaton__ParamsAssignment_3_0");
 					put(grammarAccess.getAutomatonAccess().getParamsAssignment_3_1_1(), "rule__Automaton__ParamsAssignment_3_1_1");

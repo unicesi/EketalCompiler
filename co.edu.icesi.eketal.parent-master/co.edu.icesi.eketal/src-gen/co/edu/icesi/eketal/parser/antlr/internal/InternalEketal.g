@@ -1507,6 +1507,38 @@ ruleIp returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
 				{
 					newLeafNode(this_ANY_9, grammarAccess.getIpAccess().getANYTerminalRuleCall_2_1_1());
 				}
+				    |
+				(
+					kw='['
+					{
+						$current.merge(kw);
+						newLeafNode(kw, grammarAccess.getIpAccess().getLeftSquareBracketKeyword_2_1_2_0());
+					}
+					this_INT_11=RULE_INT
+					{
+						$current.merge(this_INT_11);
+					}
+					{
+						newLeafNode(this_INT_11, grammarAccess.getIpAccess().getINTTerminalRuleCall_2_1_2_1());
+					}
+					kw='-'
+					{
+						$current.merge(kw);
+						newLeafNode(kw, grammarAccess.getIpAccess().getHyphenMinusKeyword_2_1_2_2());
+					}
+					this_INT_13=RULE_INT
+					{
+						$current.merge(this_INT_13);
+					}
+					{
+						newLeafNode(this_INT_13, grammarAccess.getIpAccess().getINTTerminalRuleCall_2_1_2_3());
+					}
+					kw=']'
+					{
+						$current.merge(kw);
+						newLeafNode(kw, grammarAccess.getIpAccess().getRightSquareBracketKeyword_2_1_2_4());
+					}
+				)
 			)
 		)
 	)

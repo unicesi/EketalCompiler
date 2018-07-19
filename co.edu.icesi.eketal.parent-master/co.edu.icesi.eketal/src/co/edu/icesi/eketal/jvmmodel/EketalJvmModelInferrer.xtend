@@ -763,6 +763,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	def StringConcatenationClient generateTCP(String bindInterface, Protocol protocol, TreeSet<String> ips){
+		val processedIps = processIps(ips);
 		return '''
 			«IF protocol==Protocol.TCP»
 				"TCP(bind_port=7800;"+
@@ -780,7 +781,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			"sock_conn_timeout=300):"+
 			
 			"TCPPING(async_discovery=true;"+
-			"initial_hosts=${jgroups.tcpping.initial_hosts:«ips.join(",", [
+			"initial_hosts=${jgroups.tcpping.initial_hosts:«processedIps.join(",", [
 				ip| ip+"[7800]"
 			])»};"+
 			
@@ -807,6 +808,24 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			"FRAG2(frag_size=60k):" +
 			"pbcast.STATE_TRANSFER()"
 			'''
+	}
+	
+	def processIps(TreeSet<String> set) {
+		val TreeSet<String> retorno = new TreeSet
+		set.forEach[ip | 
+			if(ip.contains("[")){
+				var splitIp = ip.split(Pattern.quote("["))
+				var limits = splitIp.get(1).substring(0,splitIp.get(1).length-1).split(Pattern.quote("-"))
+				for(var i = Integer.parseInt(limits.get(0)); i<=Integer.parseInt(limits.get(1)); i++){
+					retorno.add(splitIp.get(0)+i)
+				}
+			}else if(ip.contains("*")){
+				
+			}else{
+				retorno.add(ip)				
+			}
+		]
+		return retorno
 	}
 	
 	def StringConcatenationClient generateUDP(String bindInterface) {
@@ -877,9 +896,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl." + groupClassName)) [
 //			annotations+=annotationRef(Singleton)
 			val grupos = new TreeSet()
-			val function = [Host h|h.ip]
 			claseGrupos.declarations.filter(typeof(Group)).forEach [
-				grupos += "\"" + it.name + ":[" + it.hosts.join(",", function) + "]\""
+				val hosts = new TreeSet()
+				it.hosts.forEach[host | hosts.add(host.ip)]
+				grupos += "\"" + it.name + ":[" + processIps(hosts).join(",") + "]\""
 			]
 
 			members += claseGrupos.toField("SET_VALUES", typeRef("java.lang.String[]")) [

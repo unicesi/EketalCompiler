@@ -79,6 +79,7 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
       case EketalPackage.JVMTYPE: return createJVMTYPE();
       case EketalPackage.GROUP: return createGroup();
       case EketalPackage.HOST: return createHost();
+      case EketalPackage.INTERVAL_IP: return createInterval_Ip();
       case EketalPackage.AUTOMATON: return createAutomaton();
       case EketalPackage.STEP: return createStep();
       case EketalPackage.TRANS_DEF: return createTransDef();
@@ -286,6 +287,17 @@ public class EketalFactoryImpl extends EFactoryImpl implements EketalFactory
   {
     HostImpl host = new HostImpl();
     return host;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Interval_Ip createInterval_Ip()
+  {
+    Interval_IpImpl interval_Ip = new Interval_IpImpl();
+    return interval_Ip;
   }
 
   /**
