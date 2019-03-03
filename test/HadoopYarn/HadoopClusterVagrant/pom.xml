@@ -33,7 +33,7 @@
     <container-executor.conf.dir>../etc/hadoop</container-executor.conf.dir>
     <container-executor.additional_cflags></container-executor.additional_cflags>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <xtext-version>2.12.0</xtext-version>
+    <xtext-version>2.15.0</xtext-version>
     <jre-version>1.8</jre-version>
     <aspectj.version>1.8.9</aspectj.version>
     <eketal-version>3.1.0-SNAPSHOT</eketal-version>
@@ -391,7 +391,7 @@
                    <dependency>
                         <groupId>net.sf.xtext-jbase</groupId>
                         <artifactId>jbase</artifactId>
-                        <version>0.7.0</version>
+                        <version>0.9.0</version>
                    </dependency>
                    <dependency>
                         <groupId>co.edu.icesi.eketal</groupId>
