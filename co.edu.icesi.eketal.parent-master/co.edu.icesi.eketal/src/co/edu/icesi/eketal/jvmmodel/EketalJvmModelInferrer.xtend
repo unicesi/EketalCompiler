@@ -80,9 +80,9 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject extension IQualifiedNameProvider
 
-	public static String groupClassName = "_GroupsControl"
-	public static String handlerClassName = "_EventHandler"
-	public static String reaction = "_Reaction"
+	public static String PREFIX_NAME_FOR_GROUP_CLASSES = "_GroupsControl"
+	public static String PREFIX_NAME_FOR_EVENT_CLASSES = "_EventHandler"
+	public static String PREFIX_NAME_FOR_REACTION_CLASSES = "_Reaction"
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -110,59 +110,46 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	 *            <code>true</code>.
 	 */
 	def dispatch void infer(Model element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
-//		println("Inferring model for " + element.name)
 		val implementation = element.toClass(element.fullyQualifiedName)
 
 		if (implementation === null)
 			return;
 
-		var eventClass = element.typeDeclaration
+		var eventClassDefinition = element.typeDeclaration
 		
-		var eventClassGenerate = eventClass.toClass(eventClass.fullyQualifiedName)
+		var eventClassToGenerate = eventClassDefinition.toClass(eventClassDefinition.fullyQualifiedName)
 
-//		eventClassGenerate.eAdapters.add(new OutputConfigurationAdapter(EketalOutputConfigurationProvider::ASPECTJ_OUTPUT))
-		eventClassGenerate.eAdapters.add(new OutputConfigurationAdapter(IFileSystemAccess.DEFAULT_OUTPUT))
+		eventClassToGenerate.eAdapters.add(new OutputConfigurationAdapter(IFileSystemAccess.DEFAULT_OUTPUT))
 
-		acceptor.accept(eventClassGenerate) [
+		acceptor.accept(eventClassToGenerate) [
 			println("línea 97 Inferrer")
 		]
 
 		/*
 		 * Creates a class that contains the groups declared
 		 */
-		val groupsClass = element.typeDeclaration
-		createGroupClass(acceptor, groupsClass)
+		val groupDefinitions = element.typeDeclaration
+		createGroupClass(acceptor, groupDefinitions)
 
-		var buchis = element.typeDeclaration.declarations.filter(typeof(Ltl));
-		createBuchis(acceptor, buchis)
+		var buchiAutomatonDefinitions = element.typeDeclaration.declarations.filter(typeof(Ltl));
+		createBuchis(acceptor, buchiAutomatonDefinitions)
 
-		// val eventsOfLtlFormula = buchis.toInvertedMap [ a |
-		// val Set<String> steps = new TreeSet
-		// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
-		// a.predicate.event
-		// return steps
-		// ]
-		/*
-		 * Collects all the automatons
-		 */
-		var automatons = element.typeDeclaration.declarations.filter(typeof(co.edu.icesi.eketal.eketal.Automaton));
+		var automatonDefinitions = element.typeDeclaration.declarations.filter(typeof(co.edu.icesi.eketal.eketal.Automaton));
 		
 		/*
 		 * Returns a where the keys are automatons and the values are the states of that automaton.
 		 */
-		val eventsOfAutomaton = automatons.toInvertedMap [ a |
-			val Set<String> steps = new TreeSet
-			// steps.addAll(a.steps.toSet)//.forEach[s|s.transitions.forall[t|events.add(t.event.name)]]
-			a.steps.forall[s|steps.add(a.name + ":" + s.name)]
-			return steps
+		val eventsRepresentedByMapAutomatonToStates = automatonDefinitions.toInvertedMap [ automaton |
+			val Set<String> setOfStatesByAutomaton = new TreeSet
+			automaton.steps.forall[state|setOfStatesByAutomaton.add(automaton.name + ":" + state.name)]
+			return setOfStatesByAutomaton
 		]
 	
 		/*
 		 *  Creates an automaton java class for each one automaton in 'automatons'
 		 */
 		var String nameAutomaton;
-		for (declaracion : automatons) {
+		for (declaracion : automatonDefinitions) {
 			// Debe ir con la ruta para el que compilador entienda que no es el objeto automáta de la libreria ketal, sino el elmento automata de la definicion del lenguaje (es decir, la producción)
 			/*
 			 * Creates the class with the singleton nature
@@ -170,7 +157,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 			nameAutomaton = "co.edu.icesi.eketal.automaton." + declaracion.name.toFirstUpper
 
 			acceptor.accept(declaracion.toClass(nameAutomaton)) [
-				// superTypes+=entity.superType.cloneWithProxies
 				val typeAutomaton = typeRef(it)
 				superTypes += typeRef(Automaton)
 				members += declaracion.toField("instance", typeAutomaton)[static = true]
@@ -199,7 +185,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				]
 
 				members += declaracion.toMethod("evaluate", typeRef(boolean)) [
-//					annotations+=annotationRef(typeRef(Override).class)
 					parameters += declaracion.toParameter("event", typeRef(Event))
 					body = '''
 						if(event instanceof «typeRef(NamedEvent)»){
@@ -223,27 +208,16 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						instance = this;
 					'''
 				]
-				/*
-				 * Creates the main method
-				 */
-				members += AutomatonInit(declaracion as co.edu.icesi.eketal.eketal.Automaton)
+				members += initializeAutomaton(declaracion as co.edu.icesi.eketal.eketal.Automaton)
 			]
 
 		}
 		
-		
-		
-		/*
-		 * Creates the class that contains the required reactions
-		 */
 		var reactions = element.typeDeclaration;
-		createReactionClass(acceptor, reactions, eventsOfAutomaton)
+		createReactionClass(acceptor, reactions, eventsRepresentedByMapAutomatonToStates)
 
-		/*
-		 * Creates the class that handles the control in the jgroups
-		 */
 		val handlerClass = element.typeDeclaration;
-		createHandlerClass(acceptor, handlerClass, automatons.toSet, buchis.toSet)
+		createHandlerClass(acceptor, handlerClass, automatonDefinitions.toSet, buchiAutomatonDefinitions.toSet)
 
 	}
 
@@ -251,9 +225,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		var String nameAutomaton;
 		for (Ltl ltl : ltls) {
 			if (ltl.predicate !== null) {
-				// Obtiene predicado de la formula
 				var LtlExpression tPredicate = ltl.predicate
-				// Recupera la formula completa
 				if(tPredicate===null){
 					return
 				}
@@ -264,7 +236,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				nameAutomaton = "co.edu.icesi.eketal.buchiautomaton." + ltl.name.toFirstUpper
 
 				acceptor.accept(ltl.toClass(nameAutomaton)) [
-					// superTypes+=entity.superType.cloneWithProxies
 					val typeAutomaton = typeRef(it)
 					superTypes += typeRef(BuchiAutomaton)
 					members += ltl.toField("instance", typeAutomaton)[static = true]
@@ -306,24 +277,21 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 							instance = this;
 						'''
 					]
-					/*
-					 * Creates the main method
-					 */
-					members += BuchiAutomatonInit(buchiMachine, ltl as Ltl)
+					members += initializebuchiAutomaton(buchiMachine, ltl as Ltl)
 				]
 			}
 		}
 	}
 
-	def BuchiAutomatonInit(String string, Ltl declaracion) {
+	def initializebuchiAutomaton(String buchiFormulae, Ltl declaracion) {
 		
-		var BufferedReader bufReader = new BufferedReader(new StringReader(string));
+		var BufferedReader bufReader = new BufferedReader(new StringReader(buchiFormulae));
 		val TreeMap<String, List<String>> states = new TreeMap
 		val List<String> finalStates = new ArrayList;
 		var String line=null;
 		var String init
 		/*
-		 * The method replaceAll will erase the characters followed by this attribute, in other words
+		 * The method replaceAll will erase the characters followed by this regular expression, in other words
 		 * the ones contained in the brackets: comma, parentheses and dots.
 		 */
 		var regex = "[().,]+"
@@ -371,7 +339,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				return null
 			}else{
 				//Primera línea la definición
-				
 			}
 		}
 		val setStates = states.keySet
@@ -439,25 +406,24 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		return method
 	}
 	
-	def private StringConcatenationClient processExpression(String string) {
-		//excecutable.
-		if(string.contains("|")){
-			var array = string.split(Pattern.quote("|"))
+	def private StringConcatenationClient processExpression(String expression) {
+		if(expression.contains("|")){
+			var array = expression.split(Pattern.quote("|"))
 			val left = array.get(0)
 			val right = Arrays.copyOfRange(array, 1, array.length).join("|")
 			return '''new «Or»(«processExpression(left)»,«processExpression( right)»)'''
-		}else if(string.contains("&")){
-			var array = string.split(Pattern.quote("&"))
+		}else if(expression.contains("&")){
+			var array = expression.split(Pattern.quote("&"))
 			val left = array.get(0)
 			val right = Arrays.copyOfRange(array, 1, array.length).join("&")
 			return '''new «And»(«processExpression(left)»,«processExpression( right)»)'''
-		}else if(string.startsWith("!")){
-			return '''new «NotExpression»(«processExpression( string.substring(1))»)'''
+		}else if(expression.startsWith("!")){
+			return '''new «NotExpression»(«processExpression( expression.substring(1))»)'''
 		}else{
-			if(string.equalsIgnoreCase("TRUE"))
+			if(expression.equalsIgnoreCase("TRUE"))
 				return '''new «TrueExpression»()'''
 			else
-				return '''new «DefaultEqualsExpression»(new «NamedEvent»("«string»"))'''
+				return '''new «DefaultEqualsExpression»(new «NamedEvent»("«expression»"))'''
 		}
 	}
 
@@ -503,7 +469,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def createReactionClass(IJvmDeclaredTypeAcceptor acceptor, EventClass reactions, Map automatonsMap) {
-		acceptor.accept(reactions.toClass("co.edu.icesi.eketal.reaction." + reaction)) [
+		acceptor.accept(reactions.toClass("co.edu.icesi.eketal.reaction." + PREFIX_NAME_FOR_REACTION_CLASSES)) [
 			val set = reactions.declarations.filter(typeof(Rc))
 			val variables = reactions.declarations.filter(typeof(JVarD))
 			if (!variables.isEmpty) {
@@ -544,11 +510,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				members += reactions.toMethod(name, typeRef(void)) [
 					static = true
 					body = rc.body.body
-//					printBody(event.body.body as XBlockExpression)
-//						def printBody(XBlockExpression exp){
-//						val body = NodeModelUtils.findActualNodeFor(exp)
-//						return body.text
-//					}
 				]
 				if (rc.pos == Pos.BEFORE) {
 					before.put(rc.automaton.name + ":" + rc.state.name, name + "()")
@@ -614,11 +575,11 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		println("interfaces"+matchInterface)
 		
 		val automatons = machines.map[a|a as co.edu.icesi.eketal.eketal.Automaton].toSet
-		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol." + handlerClassName)) [
+		acceptor.accept(eventDefinitionClass.toClass("co.edu.icesi.eketal.handlercontrol." + PREFIX_NAME_FOR_EVENT_CLASSES)) [
 			// Implementación de la simulación Singleton
 			members += eventDefinitionClass.toField("instance", typeRef(it)) [
 				static = true
-				initializer = '''new «co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName»()'''
+				initializer = '''new «PREFIX_NAME_FOR_EVENT_CLASSES»()'''
 			]
 
 			members += eventDefinitionClass.toField("brokerMessageHandler", typeRef(BrokerMessageHandler)) [
@@ -647,15 +608,15 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 											}else{
 												«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Recognized event "+event+" in «nameAutomaton.name»");
 												//System.out.println("[Handle] Recognized event "+event+" by automaton «nameAutomaton.name»");							
-												co.edu.icesi.eketal.reaction.«reaction».verifyBefore(automaton«nameAutomaton.name.toFirstUpper»);					
-												co.edu.icesi.eketal.reaction.«reaction».verifyAfter(automaton«nameAutomaton.name.toFirstUpper»);					
+												co.edu.icesi.eketal.reaction.«PREFIX_NAME_FOR_REACTION_CLASSES».verifyBefore(automaton«nameAutomaton.name.toFirstUpper»);					
+												co.edu.icesi.eketal.reaction.«PREFIX_NAME_FOR_REACTION_CLASSES».verifyAfter(automaton«nameAutomaton.name.toFirstUpper»);					
 											}
 							«ENDFOR»
 							
 							«FOR buchi: buchis»
 								«typeRef(Automaton)» automaton«buchi.name.toFirstUpper» = co.edu.icesi.eketal.buchiautomaton.«buchi.name.toFirstUpper».getInstance();
 								if(!automaton«buchi.name.toFirstUpper».evaluate(event)){
-									co.edu.icesi.eketal.reaction.«reaction».onViolation();
+									co.edu.icesi.eketal.reaction.«PREFIX_NAME_FOR_REACTION_CLASSES».onViolation();
 								}else{
 									«typeRef(ReceiverMessageHandler)».getLogger().info("[Handle] Event respects the property «buchi.name»");
 								}
@@ -670,8 +631,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						eventBroker = new «typeRef(JGroupsEventBroker)»("Eketal", brokerMessageHandler, true, props);
 					«ENDIF»
 				'''
-			// TODO automaton name
-			// TODO if
 			]
 			
 			if((protocol!==null && protocol!=Protocol.UDP) || matchInterface!==null){
@@ -689,7 +648,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 								}
 							]
 						]
-						initializer = generateTCP(matchInterface, protocol, ips)
+						initializer = generateTcpProperties(matchInterface, protocol, ips)
 					}
 				]
 			}
@@ -698,12 +657,12 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				static = true
 				body = '''
 					if(instance==null)
-						instance = new «co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName»();
+						instance = new «PREFIX_NAME_FOR_EVENT_CLASSES»();
 					return instance;
 				'''
 			]
 			// Aquí termina la definición sintética del Sigleton
-			// TODO en este es el mulsticasSync o el Async?
+			
 			members += eventDefinitionClass.toMethod("multicast", typeRef(void)) [
 				parameters += eventDefinitionClass.toParameter("evento", Event.typeRef)
 				parameters += eventDefinitionClass.toParameter("map", Map.typeRef)
@@ -731,38 +690,10 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					}
 				'''
 			]
-
-		// TODO Síncrono
-		/* 
-		 * members+=eventDefinitionClass.toField("ketalMessageHandler", typeRef(BrokerMessageHandler))[
-		 * 	static = true
-		 * 	initializer = '''new «typeRef(KetalMessageHandler)»()'''
-		 * ]
-		 * members+=eventDefinitionClass.toField("eventBrokerHandler", typeRef(EventBroker))[
-		 * 	static = true
-		 * 	initializer = '''new «typeRef(JGroupsEventBroker)»("Eketal", ketalMessageHandler)'''
-		 * ]
-		 * members+=eventDefinitionClass
-		 * .toMethod("multicastSync", typeRef(void))[
-		 * 	parameters+=eventDefinitionClass.toParameter("evento", Event.typeRef)
-		 * 	parameters+=eventDefinitionClass.toParameter("map", Map.typeRef)
-		 * 	static = false
-		 * 	body='''
-		 * 		eventBrokerHandler.multicastSync(evento, map);
-		 * 	'''
-		 * ]
-		 * members+=eventDefinitionClass.toMethod("getEvents", typeRef(Vector))[
-		 * 	parameters+=eventDefinitionClass.toParameter("evento", Event.typeRef)
-		 * 	static = true
-		 * 	body='''
-		 * 		return ((((«typeRef(KetalMessageHandler)») ketalMessageHandler).getVectorEvents()));
-		 * 	'''
-		 * ]		
-		 */
 		]
 	}
 	
-	def StringConcatenationClient generateTCP(String bindInterface, Protocol protocol, TreeSet<String> ips){
+	def StringConcatenationClient generateTcpProperties(String bindInterface, Protocol protocol, TreeSet<String> ips){
 		val processedIps = processIps(ips);
 		return '''
 			«IF protocol==Protocol.TCP»
@@ -893,8 +824,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def createGroupClass(IJvmDeclaredTypeAcceptor acceptor, EventClass claseGrupos) {
-		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl." + groupClassName)) [
-//			annotations+=annotationRef(Singleton)
+		acceptor.accept(claseGrupos.toClass("co.edu.icesi.eketal.groupsimpl." + PREFIX_NAME_FOR_GROUP_CLASSES)) [
 			val grupos = new TreeSet()
 			claseGrupos.declarations.filter(typeof(Group)).forEach [
 				val hosts = new TreeSet()
@@ -922,7 +852,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 						for(«typeRef(String)» ip : keyValue[1].split(",")){
 							try{
 								if(ip.equals("localhost")){
-									co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName» local = co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName».getInstance();
+									co.edu.icesi.eketal.handlercontrol.«PREFIX_NAME_FOR_EVENT_CLASSES» local = co.edu.icesi.eketal.handlercontrol.«PREFIX_NAME_FOR_EVENT_CLASSES».getInstance();
 									values.add(new «typeRef(URL)»("http://"+local.getAsyncAddress().getHost()));
 								}else{
 									values.add(new «typeRef(URL)»("http://"+ip));
@@ -957,7 +887,6 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 				'''
 			]
 
-			// TODO realizar el llamado para ver
 			members += claseGrupos.toMethod("on", typeRef(boolean)) [
 				parameters += claseGrupos.toParameter("grupo", typeRef(String))
 				static = true
@@ -973,7 +902,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 					if(grupos==null){
 						return false;
 					}
-					co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName» local = co.edu.icesi.eketal.handlercontrol.«co.edu.icesi.eketal.jvmmodel.EketalJvmModelInferrer.handlerClassName».getInstance();
+					co.edu.icesi.eketal.handlercontrol.«PREFIX_NAME_FOR_EVENT_CLASSES» local = co.edu.icesi.eketal.handlercontrol.«PREFIX_NAME_FOR_EVENT_CLASSES».getInstance();
 					«typeRef(URL)» url = local.getAsyncAddress();
 					«typeRef(boolean)» retorno = false;
 					try{						
@@ -988,7 +917,7 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def AutomatonInit(co.edu.icesi.eketal.eketal.Automaton declaracion) {
+	def initializeAutomaton(co.edu.icesi.eketal.eketal.Automaton declaracion) {
 		val method = declaracion.toMethod("initialize", typeRef(State)) [
 			parameters += declaracion.toParameter("transitionSet", typeRef(Set, typeRef(Transition)))
 			parameters += declaracion.toParameter("estadosFinales", typeRef(Set, typeRef(State)))
@@ -1049,12 +978,4 @@ class EketalJvmModelInferrer extends AbstractModelInferrer {
 		]
 		return method
 	}
-//				members += automaton.toMethod("transiciones", typeRef(Set))[
-//					abstract = true
-//					static = true
-//					visibility = JvmVisibility.PRIVATE
-//					body = '''
-//					return null;
-//	   				'''
-//				]
 }
